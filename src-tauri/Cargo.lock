@@ -1117,6 +1117,7 @@ dependencies = [
  "cbc 0.1.2",
  "flate2",
  "getrandom 0.2.17",
+ "gtk",
  "hmac 0.12.1",
  "lzma-rs",
  "pbkdf2 0.12.2",

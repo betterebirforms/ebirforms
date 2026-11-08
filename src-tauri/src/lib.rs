@@ -280,6 +280,19 @@ pub fn run() {
                 LogicalPosition::new(0.0, 0.0),
                 LogicalSize::new(width, CAPTION_HEIGHT),
             )?;
+            // Linux: wry packs every child webview into the window's GtkBox with expand + fill, and ignores the
+            // bounds above for a box parent, so GTK split the height evenly (a ~390 px blue caption over half a
+            // page). Repack the caption as a fixed 30 px row; the content webview takes the rest.
+            #[cfg(target_os = "linux")]
+            caption.with_webview(|w| {
+                use gtk::prelude::*;
+                let view = w.inner();
+                view.set_size_request(-1, CAPTION_HEIGHT as i32);
+                view.set_vexpand(false);
+                if let Some(parent) = view.parent().and_then(|p| p.downcast::<gtk::Box>().ok()) {
+                    parent.set_child_packing(&view, false, true, 0, gtk::PackType::Start);
+                }
+            })?;
             let content = window.add_child(
                 WebviewBuilder::new("content", WebviewUrl::External(base)),
                 LogicalPosition::new(0.0, CAPTION_HEIGHT),
