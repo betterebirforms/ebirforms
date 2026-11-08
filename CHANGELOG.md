@@ -8,6 +8,8 @@ Append-only, latest first. What changed and why; current state lives in README.m
   form logic (works of the Philippine Government, RA 8293 §176.1, prior approval needed for profit), and the
   third-party libraries under their own licenses.
 - A `v*` tag now publishes the release (it was a draft nobody could see). v0.1.0 is the first.
+- CI keeps BIR's zip under its own name, so packages are named v7.9.6.2.1 (they came out as v7.9.6.1, the version BIR's
+  release notes still carry) and the `bir` job fails if the staged version differs from the URL's.
 
 ## 2026-11-08: README in three languages
 

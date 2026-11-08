@@ -29,9 +29,11 @@ jobs:
         with: { node-version: 24, cache: npm }
       - run: sudo apt-get update && sudo apt-get install -y innoextract
       - run: npm ci
-      - run: curl -fsSL -A "Mozilla/5.0" -o bir.zip "$BIR_ZIP_URL"
-      - run: npm run extract -- bir.zip
+      # keep BIR's file name: stage-package.mjs reads the version (7.9.6.2.1) from it; the release notes still say 7.9.6.1
+      - run: curl -fsSL -A "Mozilla/5.0" -o "$(basename "$BIR_ZIP_URL")" "$BIR_ZIP_URL"
+      - run: npm run extract -- "$(basename "$BIR_ZIP_URL")"
       - run: node tool/stage-package.mjs
+      - run: grep -qF "\"bir_version\": \"$(basename "$BIR_ZIP_URL" | sed -E 's/.*_v(.*)\.zip/\1/')\"" src-tauri/package-bir/_package.json
       - uses: actions/upload-artifact@v4
         with: { name: package-bir, path: src-tauri/package-bir, include-hidden-files: true }
 
