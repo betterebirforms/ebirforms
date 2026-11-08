@@ -18,8 +18,7 @@ forms offline. The saved files are the same as BIR's own app makes. This app is 
 
    <img src="https://raw.githubusercontent.com/betterebirforms/ebirforms/main/asset/brand/release/windows-1.png" width="260" alt="Windows protected your PC, with the More info link"> <img src="https://raw.githubusercontent.com/betterebirforms/ebirforms/main/asset/brand/release/windows-2.png" width="260" alt="Windows protected your PC, with the Run anyway button">
 
-3. Click **Next** until you see **Install**, then **Install** and **Finish**. You don't need an administrator
-   account.
+3. Click **Next** on each screen, then **Finish**. You don't need an administrator account.
 
 ## Mac
 
@@ -42,8 +41,9 @@ You only do this once. On macOS 12 to 14, you can instead right-click eBIRForms 
 
 - **`.deb`** (Ubuntu, Debian, Mint): in a terminal, in the folder you downloaded it to, run
   `sudo apt install ./Offline_eBIRForms_Package_*_Linux_amd64.deb`. Then open eBIRForms from your app list.
-- **`.AppImage`** (any distribution): right-click the file, open **Properties**, and turn on **Allow executing file
-  as program** (or run `chmod +x` on it). Then double-click it.
+- **`.AppImage`** (any distribution): right-click the file and open **Properties**. Turn on **Executable as
+  Program** (Ubuntu 24.04 and later) or **Allow executing file as program** (Ubuntu 22.04), or run `chmod +x` on
+  it. Then double-click it.
 
 ## After installing
 
