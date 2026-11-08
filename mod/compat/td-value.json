@@ -1,0 +1,12 @@
+{
+  "title": "2200A computes its excise tax",
+  "about": "Old Internet Explorer let code read any HTML attribute as a property. 2200A reads each tax rate that way, which gives nothing in newer browsers. This reads the attribute directly.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "find": "(\\.getElementById\\('[^'()]*'\\s*\\+\\s*\\w+\\s*\\+\\s*'ATR'\\))\\.value\\b",
+      "to": "$1.getAttribute('value')"
+    }
+  ]
+}

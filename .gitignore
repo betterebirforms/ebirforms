@@ -3,19 +3,21 @@ dist/
 dist-web/
 .env
 .env.*.local
-# extractor output (BIR's full tree incl. native helpers with embedded secrets) — copy usable assets to asset/bir/
+# extractor output (BIR's full tree incl. native helpers with embedded secrets); copy usable assets to asset/bir/
 vendor/original/
 src-tauri/target/
 src-tauri/gen/
 *.log
 .DS_Store
 .data/
+# your own mods and on/off switches while developing (mod/README.md)
+.mod/
 bench/result/*.log
 
 # SFTP integration + e2e upload fixtures are derived by hand during a session
 test/fixture/uploaded.*
 
-# private correspondence for BIR (security disclosure) — never committed
+# private correspondence for BIR (security disclosure), never committed
 docs/bir/private/
 src-tauri/package-bir/
 dist-package/

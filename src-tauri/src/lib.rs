@@ -1,3 +1,4 @@
+mod bir_mod;
 mod codec;
 #[cfg(feature = "bir-submit")]
 mod crypto;
@@ -45,6 +46,7 @@ pub fn serve_headless(dist_dir: std::path::PathBuf, original_dir: std::path::Pat
         original: original_dir,
         shipped: None,
         data: data_dir,
+        mod_dir: std::env::var_os("EBF_MOD_DIR").map(std::path::PathBuf::from),
         token: std::env::var("EBF_TOKEN").unwrap_or_else(|_| host::random_token()),
         print: Box::new(|| Err("no window to print in the headless host".into())),
         close: Box::new(|| Err("no window to close in the headless host".into())),
@@ -238,6 +240,8 @@ pub fn run() {
                     // `npm run package` ships BIR's tree as Resources/bir; absent in dev and in a plain build
                     shipped: if rust_host_data.is_none() { app.path().resource_dir().ok().map(|r| r.join("bir")) } else { None },
                     data: data.clone(),
+                    // the user's own mods: <app data>/mod (beside data/, not inside it)
+                    mod_dir: Some(root.join("mod")),
                     token: host::random_token(),
                     // print the content webview (BIR's page), never the caption bar
                     print: Box::new(move || {

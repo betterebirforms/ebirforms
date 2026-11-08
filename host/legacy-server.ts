@@ -15,10 +15,13 @@ import { validateTin } from "../src/lib/tin.ts";
 import { decodeCp1252, encodeCp1252 } from "../src/lib/cp1252.ts";
 import { parseSavefile, serializeSavefile, withoutSecret } from "../src/lib/savefile.ts";
 import { patchedJqueryFor, patchForm, patchScript } from "./form-patch.ts";
+import { modList, modSummary } from "./mod.ts";
 
 export interface LegacyHostOption {
   original_dir: string;
   data_dir: string;
+  /** The user's own mods and on/off switches (mod/README.md). Kept apart from data_dir, which BIR's pages write to. */
+  mod_dir?: string;
   /** Shim script URL injected into every .hta page. */
   shim_url: string;
   /** Required on every /__vfs call so other local pages cannot drive the filesystem. */
@@ -248,6 +251,10 @@ export function createLegacyHost(option: LegacyHostOption) {
         res.writeHead(404, { "cache-control": "no-store" }).end(); // where the shim sends BIR's network calls
         return;
       }
+      if (url.pathname === "/__mod") {
+        res.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" }).end(JSON.stringify({ ok: true, mod: modSummary(modList(option.mod_dir)) }));
+        return;
+      }
       if (url.pathname === "/__status") {
         const has_form = existsSync(join(original, "forms", "BIR-Form0605.hta"));
         res.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" }).end(JSON.stringify({ ok: true, has_form }));
@@ -290,13 +297,13 @@ export function createLegacyHost(option: LegacyHostOption) {
         if (ext === "hta" || ext === "html" || ext === "htm") {
           const html = byte.toString("utf8").replace(/^﻿/, "");
           // only top-level .hta pages get the shim; .html files are fragments forms pull in with $.load()
-          res.writeHead(200, { "content-type": MIME.hta!, "cache-control": "no-store" }).end(ext === "hta" ? injectShim(patchForm(rel, html)) : html);
+          res.writeHead(200, { "content-type": MIME.hta!, "cache-control": "no-store" }).end(ext === "hta" ? injectShim(patchForm(rel, html, option.mod_dir)) : html);
           return;
         }
         if (ext === "js") {
           // replace BIR's vulnerable jQuery/jQuery-UI with the vendored patched versions (WL bug 7)
           const patched = patchedJqueryFor(rel);
-          const text = patched && existsSync(patched) ? readFileSync(patched, "utf8") : patchScript(rel, byte.toString("utf8"), version);
+          const text = patched && existsSync(patched) ? readFileSync(patched, "utf8") : patchScript(rel, byte.toString("utf8"), version, option.mod_dir);
           res.writeHead(200, { "content-type": MIME.js! }).end(text);
           return;
         }

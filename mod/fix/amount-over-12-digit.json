@@ -1,0 +1,12 @@
+{
+  "title": "Very large amounts are capped, not set to zero",
+  "about": "BIR's round() turned any amount over 12 digits into 0.00. This keeps the first 12 digits instead, which is what BIR's own code tries to do a few lines earlier.",
+  "on": true,
+  "file": "js/string-util(2014)?\\.js$",
+  "rule": [
+    {
+      "find": "(length > 12\\)\\s*\\{\\s*)return false;",
+      "to": "$1return true;"
+    }
+  ]
+}

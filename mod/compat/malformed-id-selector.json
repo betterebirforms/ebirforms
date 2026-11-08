@@ -1,0 +1,12 @@
+{
+  "title": "1701 rebuilds its schedules on reopen",
+  "about": "The 1701 forms build a broken jQuery selector. BIR's old jQuery ignored the broken part; the newer jQuery stops with an error. The broken part is removed, which matches what the old jQuery did.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "text": "[id=\"#\"' + tableID + ']",
+      "to": ""
+    }
+  ]
+}

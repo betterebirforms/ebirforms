@@ -1,0 +1,11 @@
+{
+  "title": "Unused encryption and compression libraries are not loaded",
+  "about": "Every form loads Blowfish and LZString, but no form ever calls them. They are served empty.",
+  "on": true,
+  "file": "/(blowfish|lz-string-[\\d.]+)\\.js$",
+  "rule": [
+    {
+      "empty": "/* {name}: dead code (never called by any form), served empty */"
+    }
+  ]
+}

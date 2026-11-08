@@ -1,0 +1,12 @@
+{
+  "title": "Long forms print every page",
+  "about": "In Internet Explorer, print() waited until printing was done. On a Mac it returns right away, so the line after it put the form back to one page before printing started. That line now waits until the print sheet closes.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "find": "window\\.print\\(\\);((?:\\s*//[^\\n]*\\n)*\\s*)(restoreOriginalState\\(\\);|\\$\\('#schedule1'\\)\\.css\\(\\{'width': '1600px'\\}\\);\\s*\\$\\('#Page2Content'\\)\\.css\\(\\{'width': '1600px'\\}\\);)",
+      "to": "window.print();$1window.__ebfAfterPrint(function () { $2 });"
+    }
+  ]
+}

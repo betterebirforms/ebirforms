@@ -8,7 +8,7 @@
 //!
 //! Writes only land in the data root. Bound to 127.0.0.1 only.
 
-use crate::{codec, package};
+use crate::{bir_mod, codec, package};
 #[cfg(feature = "bir-submit")]
 use crate::{crypto, dispatch, submit};
 use serde_json::{json, Value};
@@ -28,6 +28,8 @@ pub struct Host {
     /// nothing has been imported into `original`.
     pub shipped: Option<PathBuf>,
     pub data: PathBuf,
+    /// The user's own mods and on/off switches (mod/README.md). Kept apart from `data`, which BIR's pages write to.
+    pub mod_dir: Option<PathBuf>,
     pub token: String,
     /// Native print of the main window (WKWebView has no working window.print()).
     pub print: Box<dyn Fn() -> Result<(), String> + Send>,
@@ -534,6 +536,7 @@ impl Host {
                 Err(e) => json!({ "ok": false, "error": e }),
             }),
             (_, "/__offline") => bytes(404, "text/plain", Vec::new()), // where the shim sends BIR's network calls
+            (Method::Get, "/__mod") => json_reply(json!({ "ok": true, "mod": bir_mod::summary(&bir_mod::mod_list(self.mod_dir.as_deref())) })),
             (Method::Get, "/__status") => json_reply(json!({ "ok": true, "has_form": self.has_form() })),
             (Method::Get, p) if p.starts_with("/legacy/") => self.legacy(&p["/legacy/".len()..]),
             (Method::Get, p) => self.shell(p),
@@ -565,7 +568,7 @@ impl Host {
         let Ok(data) = fs::read(&p) else { return bytes(500, "text/plain", Vec::new()) };
         if ext == "hta" {
             let html = String::from_utf8_lossy(&data).trim_start_matches('\u{feff}').to_string();
-            let html = codec::patch_form(&rel_str, html);
+            let html = bir_mod::apply(&bir_mod::mod_list(self.mod_dir.as_deref()), &rel_str, html, "");
             let tag = format!(r#"<script src="/legacy-shim.js" data-token="{}"></script>"#, self.token);
             let html = match html.to_ascii_lowercase().find("<head") {
                 Some(at) => {
@@ -582,7 +585,7 @@ impl Host {
             if let Some(patched) = patched_jquery(&lower) {
                 return bytes(200, mime("js"), patched.to_vec());
             }
-            return bytes(200, mime("js"), codec::patch_script(&rel_str, String::from_utf8_lossy(&data).into_owned(), &self.package_version()).into_bytes());
+            return bytes(200, mime("js"), bir_mod::apply(&bir_mod::mod_list(self.mod_dir.as_deref()), &rel_str, String::from_utf8_lossy(&data).into_owned(), &self.package_version()).into_bytes());
         }
         bytes(200, mime(&ext), data)
     }
@@ -735,6 +738,7 @@ mod shareable_test {
             original: data.join("original"),
             shipped: None,
             data,
+            mod_dir: None,
             token: "t".into(),
             print: Box::new(|| Ok(())),
             close: Box::new(|| Ok(())),

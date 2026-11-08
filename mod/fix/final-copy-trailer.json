@@ -1,0 +1,13 @@
+{
+  "title": "1701A recognises its own final copies",
+  "about": "A form that writes the 2014 footer into its savefile also has to look for the 2014 footer when it checks for a final copy. 1701A looked for the 2012 one, so it never saw its own final copies.",
+  "on": true,
+  "file": "form",
+  "if": "All Rights Reserved BIR 2014.</span>",
+  "rule": [
+    {
+      "text": "\"All Rights Reserved BIR 2012.0\"",
+      "to": "\"All Rights Reserved BIR 2014.0\""
+    }
+  ]
+}

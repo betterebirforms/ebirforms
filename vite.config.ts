@@ -17,6 +17,7 @@ function legacyHost(): Plugin {
       const handle = createLegacyHost({
         original_dir: process.env.EBIRFORMS_ORIGINAL_DIR ?? "vendor/original",
         data_dir: process.env.EBIRFORMS_DATA_DIR ?? ".data",
+        mod_dir: process.env.EBIRFORMS_MOD_DIR ?? ".mod",
         shim_url: "/legacy-shim.js",
         token,
       });

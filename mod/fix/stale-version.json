@@ -1,0 +1,13 @@
+{
+  "title": "The version number shown is the real one",
+  "about": "environment.js hard-codes an old version (7.9.6.0). This puts in the version of the package actually installed.",
+  "on": true,
+  "file": "js/environment\\.js$",
+  "rule": [
+    {
+      "find": "var\\s+currVer\\s*=\\s*'[^']*';",
+      "to": "var currVer = '{version}';",
+      "once": true
+    }
+  ]
+}

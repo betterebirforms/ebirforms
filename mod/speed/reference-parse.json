@@ -1,0 +1,12 @@
+{
+  "title": "Forms with long code lists open faster",
+  "about": "BIR's code list loaders re-read a 150 KB block of text once per entry. The shim now reads it once. On our test Mac, 1601F opens in about 1.2 s instead of 1.4 s.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "find": "String\\((\\w+)\\.innerHTML\\)\\.split\\(",
+      "to": "String(window.__ebfInnerHTML($1)).split("
+    }
+  ]
+}

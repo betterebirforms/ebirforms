@@ -223,3 +223,40 @@ describe("dead-code removal (WL bug 20)", () => {
     expect(ps("js/aes.js", "live();")).toBe("live();");
   });
 });
+
+// Same inputs and outputs as `ports_the_webkit_compat_rewrites` in src-tauri/src/codec.rs, so both hosts are held to one result.
+describe("1700 reopen compat mods (compat/load-data-div, empty-table-body, live-inner-html)", () => {
+  it("1700 (2018) strips <DIV> case-insensitively and splits saved records on any whitespace", () => {
+    const out = patchForm(
+      "forms/BIR-Form1700v2018.hta",
+      'response = response.replaceAll("<DIV>", "").replaceAll("</DIV>",""); var loadElements = response.split("\\n");',
+    );
+    expect(out).toBe(
+      'response = response.replace(/<DIV>/gi, "").replace(/<\\/DIV>/gi, ""); var loadElements = response.replace(/\\r/g, "").split(/\\n\\s*/);',
+    );
+  });
+
+  it("1700 (2018) gets a <tbody> in an empty table, other forms do not", () => {
+    const table = '<table id="t" class="tblForm"> </table>';
+    expect(patchForm("forms/BIR-Form1700v2018.hta", table)).toBe('<table id="t" class="tblForm"><tbody></tbody> </table>');
+    expect(patchForm("forms/BIR-Form2551M.hta", table)).toBe(table);
+  });
+
+  it("1700 copies typed values with the pop-up rows, other forms are untouched", () => {
+    const copy = '$("#" + mainTable.id).html(function () { return $("#" + tempTable.id).html(); });';
+    expect(patchForm("forms/BIR-Form1700.hta", copy)).toBe(
+      '$("#" + mainTable.id).html(function () { return window.__ebfLiveHtml(tempTable); });',
+    );
+    expect(patchForm("forms/BIR-Form1701.hta", copy)).toBe(copy);
+  });
+});
+
+import { fixSlowReferenceParse } from "../host/form-patch.ts";
+describe("speed/reference-parse (WL bug 15)", () => {
+  it("routes the per-record innerHTML split through the shim's memoizer, and nothing else", () => {
+    expect(fixSlowReferenceParse("var a = String(response.innerHTML).split('atc' + i + ':');")).toBe(
+      "var a = String(window.__ebfInnerHTML(response)).split('atc' + i + ':');",
+    );
+    expect(fixSlowReferenceParse("response.innerHTML = x;")).toBe("response.innerHTML = x;");
+  });
+});

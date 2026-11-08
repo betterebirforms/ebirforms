@@ -1,0 +1,17 @@
+{
+  "title": "1702-RT rebuilds its Schedule II rows on reopen",
+  "about": "Old Internet Explorer did not count blank text between tags; newer browsers do. 1702-RT tells rows apart by that count, so on a Mac it never rebuilt them. This counts tags only, as IE did.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1702RT",
+    "1702RTv2018",
+    "1702RTv2018C"
+  ],
+  "rule": [
+    {
+      "find": "\\b(checkrow|currentRow|row)\\.childNodes\\.length(\\s*==\\s*[45]\\b)",
+      "to": "$1.children.length$2"
+    }
+  ]
+}

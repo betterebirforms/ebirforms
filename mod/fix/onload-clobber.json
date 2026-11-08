@@ -1,0 +1,12 @@
+{
+  "title": "Tax rates load without breaking the page's own startup",
+  "about": "tax-rate-helper.js replaced window.onload, which wiped out any other startup code. It now adds a listener instead.",
+  "on": true,
+  "file": "js/tax-rate-helper\\.js$",
+  "rule": [
+    {
+      "find": "window\\.onload\\s*=\\s*(\\w+)\\s*;",
+      "to": "window.addEventListener(\"load\", $1);"
+    }
+  ]
+}

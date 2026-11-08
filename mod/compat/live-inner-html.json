@@ -1,0 +1,15 @@
+{
+  "title": "1700 keeps its pop-up rows on reopen",
+  "about": "Old Internet Explorer copied what you typed along with the HTML. 1700's pop-ups rely on that to keep their rows. Newer browsers copy only the blank HTML, so rows came back empty. The shim copies the typed values too.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1700"
+  ],
+  "rule": [
+    {
+      "find": "return \\$\\(\"#\" \\+ (tempTable|mainTable)\\.id\\)\\.html\\(\\);",
+      "to": "return window.__ebfLiveHtml($1);"
+    }
+  ]
+}

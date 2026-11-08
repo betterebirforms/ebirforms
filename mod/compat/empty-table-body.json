@@ -1,0 +1,16 @@
+{
+  "title": "1700 (2018) keeps its extra employers on reopen",
+  "about": "Old Internet Explorer added a <tbody> to every table, even empty ones. 1700's employer pop-up adds rows into that <tbody>. Newer browsers don't create one, so rows were lost. This adds it.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1700v2018"
+  ],
+  "rule": [
+    {
+      "find": "(<table\\b[^>]*>)(\\s*(?:</t[dr]>\\s*)*</table>)",
+      "to": "$1<tbody></tbody>$2",
+      "nocase": true
+    }
+  ]
+}

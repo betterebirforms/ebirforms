@@ -1,0 +1,15 @@
+{
+  "title": "1702-RT forms no longer freeze on open",
+  "about": "In the 2018 1702-RT forms, the compute functions call each other in a circle and never stop. This lets each compute function run once at a time, which settles every value in one pass.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1702RTv2018",
+    "1702RTv2018C"
+  ],
+  "rule": [
+    {
+      "guard": "compute\\w*"
+    }
+  ]
+}

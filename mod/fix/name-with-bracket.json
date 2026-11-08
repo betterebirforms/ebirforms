@@ -1,0 +1,13 @@
+{
+  "title": "Names and addresses with brackets save correctly",
+  "about": "BIR's save code meant to skip names and addresses when it cleans up brackets, but its check (A || B) is always true. So \"ABC (PHILS.) INC.\" was saved as \"ABC -PHILS. INC.\". This changes || to && so names keep their brackets.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "find": "(elem\\[i\\]\\.id\\s*!==?\\s*'[^']+'\\s*)\\|\\|(\\s*elem\\[i\\]\\.id\\s*!==?\\s*')",
+      "to": "$1&&$2",
+      "repeat": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Saved returns list newest first, by real date",
+  "about": "The main screen sorted saved returns by a mm/dd/yyyy string, so December 2023 came before January 2025. This sorts by yyyy/mm/dd. The date shown does not change.",
+  "on": true,
+  "file": "main",
+  "rule": [
+    {
+      "text": "returnsList[i] = dtCreated + \"<tr>",
+      "to": "returnsList[i] = dtCreated.substr(6, 4) + '/' + dtCreated.substr(0, 5) + dtCreated.substr(10) + \"<tr>",
+      "once": true
+    }
+  ]
+}

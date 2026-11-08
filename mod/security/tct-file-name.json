@@ -1,0 +1,16 @@
+{
+  "title": "A title number cannot change where a file is saved",
+  "about": "1606 and 1706 put the TCT (land title) number into the savefile name. A TCT with / or .. in it could steer the file somewhere else. Only letters and numbers are kept in the file name now.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1606",
+    "1706"
+  ],
+  "rule": [
+    {
+      "find": "(\"_\" ?\\+ ?(?:d|document)\\.getElementById\\(['\"]frm(?:1606|1706):txtTCT['\"]\\)\\.value)(\\.replace\\(/-/g, ?['\"]['\"]\\))?",
+      "to": "$1.replace(/[^A-Za-z0-9]/g, '')"
+    }
+  ]
+}

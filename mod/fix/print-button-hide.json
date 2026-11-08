@@ -1,0 +1,12 @@
+{
+  "title": "Print view hides the on-screen buttons",
+  "about": "0605's print view used $(this.id), which selects nothing, so its buttons showed up on paper. $(this) is what was meant.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "text": "$(this.id)",
+      "to": "$(this)"
+    }
+  ]
+}

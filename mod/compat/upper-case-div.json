@@ -1,0 +1,12 @@
+{
+  "title": "1621 and 1801 keep all their schedule rows on reopen",
+  "about": "Old Internet Explorer wrote HTML tags in capitals (<DIV>); newer browsers write <div>. These forms counted saved rows by looking for <DIV>, found none, and dropped rows. The search now ignores case.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "find": "(\\.match\\(/<DIV>[^/\\n]*/)g\\)",
+      "to": "$1gi)"
+    }
+  ]
+}

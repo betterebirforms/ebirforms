@@ -36,7 +36,7 @@ tokio = { version = "1.53.3", optional = true, features = ["rt", "net", "io-util
 
 [features]
 # BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload.
-# The shareable build (`--no-default-features`) has none of it — see ROADMAP P4.
+# The shareable build (`--no-default-features`) has none of it; it is what the downloads use.
 default = ["bir-submit"]
 bir-submit = ["dep:aes", "dep:cbc", "dep:sha2", "dep:sha1", "dep:hmac", "dep:pbkdf2", "dep:base64", "dep:flate2", "dep:russh", "dep:russh-sftp", "dep:tokio"]
 

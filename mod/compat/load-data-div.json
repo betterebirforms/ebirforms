@@ -1,0 +1,20 @@
+{
+  "title": "1700 (2018) reopens a saved return",
+  "about": "1700's reopen code strips <DIV> tags, but newer browsers write <div>, so nothing was stripped and the return loaded empty. The strip now ignores case, and the spaces between saved records are skipped.",
+  "on": true,
+  "file": "form",
+  "rule": [
+    {
+      "text": ".replaceAll(\"<DIV>\", \"\")",
+      "to": ".replace(/<DIV>/gi, \"\")"
+    },
+    {
+      "text": ".replaceAll(\"</DIV>\",\"\")",
+      "to": ".replace(/<\\/DIV>/gi, \"\")"
+    },
+    {
+      "text": "var loadElements = response.split(\"\\n\");",
+      "to": "var loadElements = response.replace(/\\r/g, \"\").split(/\\n\\s*/);"
+    }
+  ]
+}

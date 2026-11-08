@@ -1,0 +1,15 @@
+{
+  "title": "1701 (2018) reopens a return with attachments",
+  "about": "BIR's old jQuery quietly ignored $(\"#\") with an empty id. The newer, safer jQuery we serve stops with an error, so the return did not load. An empty id now gives an empty result, as before.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1701v2018"
+  ],
+  "rule": [
+    {
+      "find": "\\$\\(\"#\" \\+ (\\w+)\\)",
+      "to": "$($1 === \"\" ? [] : \"#\" + $1)"
+    }
+  ]
+}
