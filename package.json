@@ -28,10 +28,13 @@
     "bundle:review": "node tool/bundle-review.mjs",
     "package": "node tool/package.mjs",
     "check:doc": "vitest run test/doc.test.ts",
-    "check:roundtrip": "npm run build:web && vitest run test/web-roundtrip.test.ts"
+    "check:roundtrip": "npm run build:web && vitest run test/web-roundtrip.test.ts",
+    "asset:dmg": "node tool/dmg-background.mjs"
   },
   "license": "MIT",
-  "engines": { "node": ">=22.18" },
+  "engines": {
+    "node": ">=22.18"
+  },
   "type": "module",
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",

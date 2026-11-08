@@ -29,6 +29,7 @@ Each part of the plan below says which layer it touches.
 |---|---|---|---|
 | Signed macOS app | macOS warns on every first open | app | The `.dmg` opens with no warning. Needs an Apple Developer ID (owner) |
 | Try the Windows and Linux packages on real machines | They build in CI but no one has opened them | app | A return is filled, saved, printed and reopened on Windows 11 and Ubuntu 22.04 |
+| Block BIR's pages from going online | Any mod's script can send page data to any website today, because BIR's pages run with no content security policy | app + mods | BIR's pages can reach only the app's own server, and a mod that needs the internet says so with a `network` key that the user has to approve |
 | Send BIR our list of bugs in its package | We offered BIR a list of the bugs we found, and private notes on the security ones | none | Sent to BIR. The security notes go to BIR only, never in this repo |
 | Hear back from BIR | We have asked BIR how it wants this app released | none | BIR replies. No public beta or web launch before that |
 
@@ -42,6 +43,8 @@ Each part of the plan below says which layer it touches.
 | Open the rebuilt forms from BIR's main screen | The rebuilt forms are 1:1 but only reachable at `/form`; Fill-up still opens BIR's page | rebuild | Fill-up and View open the rebuilt form, with a switch back to BIR's page |
 | Old editions open and print only | People reopen old returns, but shouldn't file new ones on superseded forms | rebuild | Superseded forms (`src/lib/catalog.ts`) open saved returns and print, and refuse a new return |
 | Version messages shown as text | BIR's version check puts its message into the page as HTML | mods | A `<script>` in the message shows as text |
+| Choose where returns are saved | People asked for Google Drive. Saving into a folder that Google Drive, Dropbox, iCloud or OneDrive already syncs covers all of them, with no cloud login inside the app | app | A "Save returns in" setting moves saved returns and profiles to a folder you pick, and BIR's forms save and reopen there |
+| A small API for mods | A mod can't ask the app for anything: no file picker, no profile, no settings | app + mods | A mod can ask for a file picker or the profile, each one only after the user allows it, through one documented call |
 | Proxy setting in the app | Today it is a hand-edited file | app | A setting in the app, saved where the full build reads it |
 | Keyboard and screen reader | Tab order and labels were never checked | rebuild | The rebuilt 1701Q can be filled with the keyboard only and read by VoiceOver |
 

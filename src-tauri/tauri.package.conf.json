@@ -1,6 +1,14 @@
 {
   "bundle": {
     "targets": ["app", "dmg"],
-    "resources": { "package-bir/": "bir/" }
+    "resources": { "package-bir/": "bir/" },
+    "macOS": {
+      "dmg": {
+        "background": "dmg/background.tiff",
+        "windowSize": { "width": 760, "height": 660 },
+        "appPosition": { "x": 190, "y": 130 },
+        "applicationFolderPosition": { "x": 570, "y": 130 }
+      }
+    }
   }
 }

@@ -14,6 +14,7 @@ Ideas considered and killed, with the reason, so they are not re-proposed. Appen
 | Release a public beta or announce a web launch date before BIR replies | The TOSA warnings on r/taxPH and the proposal's promise ("not released until the Bureau says how"). Building is fine; publishing waits. | 2026-11-08 |
 | Ship BIR's own form pages in the web version | It is the derivative-work case the TOSA names; the web version uses the native rewritten forms only. | 2026-11-08 |
 | Resend or mass-email BIR / RDOs to speed up a reply | Gets the address filtered and damages track A and any later TSP application. One email per office; follow up once, citing ticket 20261107_00563_E. | 2026-11-08 |
+| Google Drive sign-in inside a mod or the app | A Google token would sit inside BIR's page or the app, and a mod would need open internet access to use it. Choosing a save folder that Drive for desktop syncs gives the same result for every cloud service (ROADMAP Next). | 2026-11-09 |
 
 **Reversed 2026-10-26:** "Commit the recovered BIR forms/assets" is no longer rejected. BIR's forms and artwork are
 government works (RA 8293 §176.1, no copyright), so the repo and app may use them; see NOTICE.md. BIR's native

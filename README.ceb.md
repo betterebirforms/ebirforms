@@ -54,7 +54,7 @@ Kuhaa ang file para sa imong computer sa **[pinakabag-ong release](https://githu
 
 - **Mac:** ablihi ang `.dmg` ug i-drag ang **eBIRForms** ngadto sa Applications. Sa unang pag-abli, babagan kini sa
   macOS kay wala pa ma-notarize ang app. I-click ang **Done**, adto sa **System Settings > Privacy & Security**, ug
-  i-click ang **Open Anyway**. Sa macOS 12 hangtod 14, i-right-click ang app ug pilia ang **Open**.
+  i-click ang **Open Anyway**, dayon ang abuhon nga **Open Anyway** (dili ang asul) ug ang password sa imong Mac. Sa macOS 12 hangtod 14, i-right-click ang app ug pilia ang **Open**.
 - **Windows:** padagana ang setup `.exe`. Kung motungha ang SmartScreen, i-click ang **More info**, dayon
   **Run anyway**.
 - **Linux:** himoang executable ang `.AppImage` (`chmod +x`) ug padagana kini, o i-install ang `.deb` gamit ang

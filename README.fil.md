@@ -54,7 +54,7 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 
 - **Mac:** buksan ang `.dmg` at i-drag ang **eBIRForms** sa Applications. Sa unang pagbukas, haharangin ito ng macOS
   dahil hindi pa notarized ang app. I-click ang **Done**, pumunta sa **System Settings > Privacy & Security**, at
-  i-click ang **Open Anyway**. Sa macOS 12 hanggang 14, i-right-click ang app at piliin ang **Open**.
+  i-click ang **Open Anyway**, pagkatapos ang kulay-abong **Open Anyway** (hindi ang asul) at ang password ng Mac mo. Sa macOS 12 hanggang 14, i-right-click ang app at piliin ang **Open**.
 - **Windows:** patakbuhin ang setup `.exe`. Kung lumabas ang SmartScreen, i-click ang **More info**, tapos
   **Run anyway**.
 - **Linux:** gawing executable ang `.AppImage` (`chmod +x`) at patakbuhin ito, o i-install ang `.deb` gamit ang

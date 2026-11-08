@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- The macOS download's window background. Rendered by `npm run asset:dmg`.
+     The design is 760 x 620 points at the top left; the rest of the 1500 x 1200 canvas continues the backdrop, so a
+     resized window never shows white. The app icon sits at (190, 130) and the Applications folder at (570, 130):
+     keep them in step with src-tauri/tauri.package.conf.json.
+     step-1/2/3.png are real screenshots of macOS 26 opening the downloaded app; retake them if macOS changes. -->
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1500px; height: 1200px; overflow: hidden; }
+  body { font: 13px/1.35 -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; color: #14286B;
+    background: #FAFBFD; position: relative; }
+  h1 { position: absolute; top: 30px; left: 0; width: 760px; text-align: center; font-size: 21px; font-weight: 700;
+    letter-spacing: -.01em; }
+  .arrow { position: absolute; left: 290px; top: 100px; width: 180px; height: 60px; }
+  .band { position: absolute; left: 0; top: 250px; width: 1500px; height: 950px; background: #14286B; }
+  .card { position: absolute; left: 24px; top: 268px; width: 712px; color: #fff; }
+  .step { display: grid; margin-top: 4px; grid-template-columns: 160px 330px 160px; justify-content: space-between; align-items: start; }
+  .t { font-size: 12px; font-weight: 600; min-height: 40px; display: flex; gap: 7px; }
+  .t em { font-style: normal; color: #F4B400; }
+  .n { flex: none; display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%;
+    background: #F4B400; color: #14286B; font-size: 11px; font-weight: 800; }
+  .shot { position: relative; }
+  .shot img { display: block; width: 100%; border-radius: 14px; box-shadow: 0 0 0 1px rgba(255,255,255,.22), 0 8px 22px rgba(0,0,0,.35); }
+  .shot.wide img { border-radius: 10px; }
+  .ring { position: absolute; border: 2.5px solid #F4B400; border-radius: 12px; }
+  .fine { margin-top: 14px; font-size: 11px; line-height: 1.45; color: #AFC0EA; padding: 0 4px; }
+  .fine b { color: #fff; font-weight: 600; }
+</style>
+<h1>Drag eBIRForms into Applications</h1>
+<svg class="arrow" viewBox="0 0 180 60"><path d="M24 30 H152" stroke="#8C97B2" stroke-width="2.5" stroke-linecap="round"/><path d="M142 21 L153 30 L142 39" fill="none" stroke="#8C97B2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="band"></div>
+<div class="card">
+  <div class="step">
+    <div>
+      <div class="t"><span class="n">1</span><span>Open eBIRForms. Click <em>Done</em>.</span></div>
+      <div class="shot"><img src="step-1.png"><div class="ring" style="left:4%;top:82%;width:92%;height:15%"></div></div>
+    </div>
+    <div>
+      <div class="t"><span class="n">2</span><span>System Settings › Privacy &amp; Security. Click <em>Open Anyway</em>.</span></div>
+      <div class="shot wide"><img src="step-2.png"><div class="ring" style="left:73.5%;top:2%;width:25.5%;height:34%"></div></div>
+      <div class="fine"><b>Only once.</b> After this it opens normally.</div>
+      <div class="fine"><b>macOS 12 to 14:</b> right-click the app, then Open.</div>
+    </div>
+    <div>
+      <div class="t"><span class="n">3</span><span>Click <em>Open Anyway</em>, then your password.</span></div>
+      <div class="shot"><img src="step-3.png"><div class="ring" style="left:4%;top:76.5%;width:92%;height:11.5%"></div></div>
+    </div>
+  </div>
+</div>

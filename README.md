@@ -54,7 +54,7 @@ Get the file for your computer from the **[latest release](https://github.com/be
 
 - **Mac:** open the `.dmg` and drag **eBIRForms** to Applications. The first time you open it, macOS blocks it
   because the app is not notarized. Click **Done**, then go to **System Settings > Privacy & Security** and click
-  **Open Anyway**. On macOS 12 to 14, right-click the app and choose **Open** instead.
+  **Open Anyway**, then the grey **Open Anyway** button (not the blue one) and your Mac password. On macOS 12 to 14, right-click the app and choose **Open** instead.
 - **Windows:** run the setup `.exe`. If SmartScreen appears, click **More info**, then **Run anyway**.
 - **Linux:** make the `.AppImage` executable (`chmod +x`) and run it, or install the `.deb` with
   `sudo apt install ./..._amd64.deb`.

@@ -72,6 +72,9 @@ npm run build:share  # the desktop app without online submission
 npm run check:share  # proves that build has no BIR server names or secrets in it
 ```
 
+The macOS download opens on a window that shows how to install and first open the app. Edit
+`asset/brand/dmg/background.html`, then run `npm run asset:dmg` (macOS only) to redraw it.
+
 The macOS package is signed, notarized and stapled when `APPLE_SIGNING_IDENTITY` names a Developer ID Application
 certificate and `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID` (or `APPLE_API_KEY` / `APPLE_API_ISSUER` /
 `APPLE_API_KEY_PATH`) are set. Without them it is built unsigned.
