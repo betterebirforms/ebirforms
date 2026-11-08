@@ -22,6 +22,10 @@
   <a href="README.md">English</a> · <b>Filipino</b> · <a href="README.ceb.md">Cebuano</a>
 </p>
 
+<p align="center">
+  <img src="asset/brand/device.webp" width="100%" alt="eBIRForms sa Mac, Windows PC at Linux laptop">
+</p>
+
 > Hindi opisyal. Walang kaugnayan sa, at hindi inendorso ng, Bureau of Internal Revenue (BIR).
 
 ## I-download

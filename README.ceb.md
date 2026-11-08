@@ -22,6 +22,10 @@
   <a href="README.md">English</a> · <a href="README.fil.md">Filipino</a> · <b>Cebuano</b>
 </p>
 
+<p align="center">
+  <img src="asset/brand/device.webp" width="100%" alt="eBIRForms sa Mac, Windows PC ug Linux laptop">
+</p>
+
 > Dili opisyal. Walay kalabutan sa, ug wala gi-endorso sa, Bureau of Internal Revenue (BIR).
 
 ## I-download

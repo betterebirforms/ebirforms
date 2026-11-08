@@ -6,6 +6,7 @@ the `docs/` folder.
 ## Unreleased
 
 - New GitHub profile picture: the "e" from BIR's eBIRForms logo, in a blue, red and gold gradient. The app icon is still the eagle.
+- The README now opens with a picture of eBIRForms running on a Mac, a Windows PC and a Linux laptop.
 
 ## v0.1.0 (8 November 2026)
 
