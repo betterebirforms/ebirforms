@@ -2,6 +2,12 @@
 
 Append-only, latest first. What changed and why; current state lives in README.md.
 
+## 2026-11-08 — short README
+
+- README cut to what a downloader needs: download link, compatibility (macOS 12+, Apple Silicon + Intel, BIR
+  v7.9.6.2 / 7.9.6.2.1, Windows-compatible savefiles), install steps including macOS 15's Open Anyway, links.
+  Build, test, environment, architecture and legal detail moved to `docs/development.md`.
+
 ## 2026-11-08 — merged to main; two 1700 defects reported; DMG signing wired
 
 - `parity-1to1` fast-forwarded into `main`: all 84 forms native and 1:1.

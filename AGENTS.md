@@ -27,7 +27,7 @@ We keep the forms' computations and the savefile format compatible, and replace 
 
 ## Rules
 
-- BIR's forms, form pages, artwork, images and reference data **may** be used, committed and bundled (README
+- BIR's forms, form pages, artwork, images and reference data **may** be used, committed and bundled (docs/development.md
   "Legal"). Copy what you need into `asset/bir/` (or next to the code that uses it); `vendor/original/` itself stays
   gitignored as the extractor's output. Tests that read the full tree still use `it.skipIf(!existsSync(...))`.
 - Two hard lines, for security not copyright: never commit BIR's native helpers (`_installer/*.exe`, `*.dll`,

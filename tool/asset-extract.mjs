@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copy BIR's artwork that the native forms show from the recovered tree into the committed asset/bir/ (README
+// Copy BIR's artwork that the native forms show from the recovered tree into the committed asset/bir/ (docs/development.md
 // "Legal": government works, bundled freely). Re-run after importing a newer BIR package.
 //   - header.png       the "Republic of the Philippines / Bureau of Internal Revenue" banner with the seal
 //   - barcode/<DIR>/   the per-page barcode BIR prints on every form page (img/<DIR>_BarCode/), e.g. "1601-FQ 01/18 P1"
