@@ -1,6 +1,6 @@
 [package]
 name = "ebirforms"
-version = "0.1.0"
+version = "0.1.1"
 license = "MIT"
 description = "Cross-platform rebuild of the BIR Offline eBIRForms Package"
 edition = "2021"

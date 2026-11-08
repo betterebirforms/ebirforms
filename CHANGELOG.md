@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.1 (9 November 2026)
+
 - Linux: the title bar is its normal height again. Before, it filled the top half of the window and pushed BIR's main screen down.
 - The download page now explains how to install on Windows, Mac and Linux, with pictures of each step.
 - The Windows installer shows the eBIRForms name and logo.
