@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/BIR%20package-v7.9.6.2.1-C8102E" alt="BIR package v7.9.6.2.1">
   <img src="https://img.shields.io/badge/forms-84-F4B400" alt="84 forms">
   <img src="https://img.shields.io/badge/status-beta-555" alt="Status: beta">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2EA44F" alt="License: MIT"></a>
 </p>
 
 <p align="center">
@@ -63,3 +64,5 @@ Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the sam
 - Building from source: [docs/development.md](docs/development.md)
 
 BIR's forms are works of the Philippine Government (RA 8293 §176.1). The logo is adapted from BIR's seal.
+
+Code: [MIT License](LICENSE). BIR's forms and artwork are not covered by it; see [NOTICE.md](NOTICE.md).

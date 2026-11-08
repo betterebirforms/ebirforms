@@ -2,6 +2,13 @@
 
 Append-only, latest first. What changed and why; current state lives in README.md.
 
+## 2026-11-08: MIT License; releases publish on tag
+
+- `LICENSE` (MIT) covers the project's code; `NOTICE.md` lists what it does not cover: BIR's forms, pages, artwork and
+  form logic (works of the Philippine Government, RA 8293 §176.1, prior approval needed for profit), and the
+  third-party libraries under their own licenses.
+- A `v*` tag now publishes the release (it was a draft nobody could see). v0.1.0 is the first.
+
 ## 2026-11-08: README in three languages
 
 - README in English, Filipino (`README.fil.md`) and Cebuano (`README.ceb.md`), with the logo centred above the title

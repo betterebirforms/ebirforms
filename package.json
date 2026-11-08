@@ -29,7 +29,7 @@
     "package": "node tool/package.mjs",
     "check:roundtrip": "npm run build:web && vitest run test/web-roundtrip.test.ts"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",

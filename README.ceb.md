@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/BIR%20package-v7.9.6.2.1-C8102E" alt="BIR package v7.9.6.2.1">
   <img src="https://img.shields.io/badge/forms-84-F4B400" alt="84 forms">
   <img src="https://img.shields.io/badge/status-beta-555" alt="Status: beta">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2EA44F" alt="License: MIT"></a>
 </p>
 
 <p align="center">
@@ -64,3 +65,5 @@ Human niana, sulati ang imong profile, pagpili og form, i-click ang **Fill-up**,
 - Pag-build gikan sa source: [docs/development.md](docs/development.md)
 
 Ang mga form sa BIR mga buhat sa Gobyerno sa Pilipinas (RA 8293 §176.1). Ang logo gibase sa selyo sa BIR.
+
+Code: [MIT License](LICENSE). Dili apil niini ang mga form ug artwork sa BIR; tan-awa ang [NOTICE.md](NOTICE.md).
