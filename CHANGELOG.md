@@ -2,6 +2,12 @@
 
 Append-only, latest first. What changed and why; current state lives in README.md.
 
+## 2026-11-08: README in three languages
+
+- README in English, Filipino (`README.fil.md`) and Cebuano (`README.ceb.md`), with the logo centred above the title
+  (it sat on the heading rule), status badges, and a headed Compatibility table. No em dashes in the README.
+- Repo description, homepage and 19 topics set on GitHub for search.
+
 ## 2026-11-08 — logo: BIR's eagle, traced
 
 - The logo, app icons and avatar are now a close crop of BIR's own seal: the eagle's head, the sun's rays and the red

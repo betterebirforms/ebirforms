@@ -48,11 +48,11 @@ How to rewrite a form and the 1:1 bar: [docs/rewrite-playbook.md](rewrite-playbo
 | `VITE_DEV_SERVER_PORT` | `10900` | Vite dev server (block 10900–10999; the packaged host uses 10907) |
 | `EBIRFORMS_ORIGINAL_DIR` | `vendor/original` | Where the dev extractor writes the recovered tree |
 | `EBIRFORMS_DATA_DIR` | `.data` | Dev data root (savefile/, profile/) |
-| `EBIRFORMS_GOLDEN_SAVEFILE` | — | Optional: a real savefile, round-trip tested byte-for-byte |
-| `EBIRFORMS_HOST_URL` / `EBIRFORMS_HOST_DATA` | — | Run the 0605 end-to-end test against another host (e.g. the packaged app) |
-| `EBF_PARITY` | — | Run the 1:1 scoreboard: `1` for every native form, or a comma list of form codes |
-| `EBF_PARITY_STRICT` | — | Scoreboard treats an empty box and `0.00` as different (BIR's Validate does) |
-| `EBF_CAPTURE` / `EBF_CAPTURE_UPPER` | — | Re-capture `src/form/template/*.json` / `src/form/upper-case.json` from BIR's forms (`1` or a code list) |
+| `EBIRFORMS_GOLDEN_SAVEFILE` | (none) | Optional: a real savefile, round-trip tested byte-for-byte |
+| `EBIRFORMS_HOST_URL` / `EBIRFORMS_HOST_DATA` | (none) | Run the 0605 end-to-end test against another host (e.g. the packaged app) |
+| `EBF_PARITY` | (none) | Run the 1:1 scoreboard: `1` for every native form, or a comma list of form codes |
+| `EBF_PARITY_STRICT` | (none) | Scoreboard treats an empty box and `0.00` as different (BIR's Validate does) |
+| `EBF_CAPTURE` / `EBF_CAPTURE_UPPER` | (none) | Re-capture `src/form/template/*.json` / `src/form/upper-case.json` from BIR's forms (`1` or a code list) |
 
 ## Architecture
 
