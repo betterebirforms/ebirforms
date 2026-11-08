@@ -60,6 +60,8 @@ Kuhaa ang file para sa imong computer sa **[pinakabag-ong release](https://githu
 - **Linux:** himoang executable ang `.AppImage` (`chmod +x`) ug padagana kini, o i-install ang `.deb` gamit ang
   `sudo apt install ./..._amd64.deb`.
 
+Adunay mga hulagway sa matag lakang sa [download page](https://github.com/betterebirforms/ebirforms/releases/latest).
+
 Human niana, sulati ang imong profile, pagpili og form, i-click ang **Fill-up**, ug **Save**, sama sa app sa BIR.
 
 ## Mga link

@@ -60,6 +60,8 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 - **Linux:** gawing executable ang `.AppImage` (`chmod +x`) at patakbuhin ito, o i-install ang `.deb` gamit ang
   `sudo apt install ./..._amd64.deb`.
 
+May mga larawan ng bawat hakbang sa [download page](https://github.com/betterebirforms/ebirforms/releases/latest).
+
 Pagkatapos, punan ang iyong profile, pumili ng form, i-click ang **Fill-up**, at **Save**, gaya ng sa app ng BIR.
 
 ## Mga link

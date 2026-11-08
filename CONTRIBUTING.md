@@ -123,6 +123,7 @@ list. After a batch of work, run `/sync-docs` in Claude Code (this repo's versio
 | `docs/development.md` | current | A command, test switch or setting is added or changed |
 | `docs/rewrite-playbook.md` | current | The way forms are rebuilt or checked changes |
 | `mod/README.md` | current | The mod file format or the mod folders change |
+| `.github/release-note.md` | current | How to install changes on any system. It is the text of every release page |
 | `NOTICE.md` | current | What BIR material or third-party code is included changes |
 
 ## Commits

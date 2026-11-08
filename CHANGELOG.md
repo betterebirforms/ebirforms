@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- The download page now explains how to install on Windows, Mac and Linux, with pictures for the Mac steps.
+- The Windows installer shows the eBIRForms name and logo.
 - The Mac download now shows, in its own window, how to install the app and how to open it the first time,
   since macOS asks you to confirm an app that Apple has not signed.
 - Every change we make to BIR's forms is now a separate file you can read, and switch off to get BIR's original

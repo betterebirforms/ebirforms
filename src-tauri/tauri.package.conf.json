@@ -1,14 +1,38 @@
 {
   "bundle": {
-    "targets": ["app", "dmg"],
-    "resources": { "package-bir/": "bir/" },
+    "targets": [
+      "app",
+      "dmg"
+    ],
+    "resources": {
+      "package-bir/": "bir/"
+    },
     "macOS": {
       "dmg": {
         "background": "dmg/background.tiff",
-        "windowSize": { "width": 760, "height": 660 },
-        "appPosition": { "x": 190, "y": 130 },
-        "applicationFolderPosition": { "x": 570, "y": 130 }
+        "windowSize": {
+          "width": 760,
+          "height": 660
+        },
+        "appPosition": {
+          "x": 190,
+          "y": 130
+        },
+        "applicationFolderPosition": {
+          "x": 570,
+          "y": 130
+        }
       }
-    }
+    },
+    "windows": {
+      "nsis": {
+        "sidebarImage": "installer/sidebar.bmp",
+        "headerImage": "installer/header.bmp",
+        "uninstallerHeaderImage": "installer/header.bmp",
+        "installerIcon": "icons/icon.ico"
+      }
+    },
+    "shortDescription": "BIR's Offline eBIRForms Package, rebuilt for Windows, macOS and Linux",
+    "longDescription": "Fill in, save and print BIR tax returns offline. All 84 of BIR's forms, with the same saved files as BIR's own app."
   }
 }

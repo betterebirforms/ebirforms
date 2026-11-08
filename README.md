@@ -59,6 +59,8 @@ Get the file for your computer from the **[latest release](https://github.com/be
 - **Linux:** make the `.AppImage` executable (`chmod +x`) and run it, or install the `.deb` with
   `sudo apt install ./..._amd64.deb`.
 
+Step-by-step pictures for each system are on the [download page](https://github.com/betterebirforms/ebirforms/releases/latest).
+
 Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
 
 ## Links

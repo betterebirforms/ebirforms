@@ -77,6 +77,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: write }
     steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: .github/release-note.md, sparse-checkout-cone-mode: false }
       - uses: actions/download-artifact@v4
         with: { pattern: "dist-*", path: out, merge-multiple: true }
       - run: ls -la out
@@ -84,4 +86,5 @@ jobs:
         with:
           draft: false
           make_latest: true
+          body_path: .github/release-note.md   # the release page's install steps for each platform
           files: out/*
