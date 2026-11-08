@@ -5,7 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
-- New GitHub profile picture: BIR's eagle, sized to fit the circle.
+- New GitHub profile picture: the "e" from BIR's eBIRForms logo, in a blue, red and gold gradient. The app icon is still the eagle.
 
 ## v0.1.0 (8 November 2026)
 
