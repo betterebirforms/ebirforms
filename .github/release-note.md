@@ -15,6 +15,9 @@ forms offline. The saved files are the same as BIR's own app makes. This app is 
 1. Open the `setup.exe` you downloaded.
 2. If Windows shows **Windows protected your PC**, click **More info**, then **Run anyway**. Windows shows this for
    new apps that are not signed yet.
+
+   <img src="https://raw.githubusercontent.com/betterebirforms/ebirforms/main/asset/brand/release/windows-1.png" width="260" alt="Windows protected your PC, with the More info link"> <img src="https://raw.githubusercontent.com/betterebirforms/ebirforms/main/asset/brand/release/windows-2.png" width="260" alt="Windows protected your PC, with the Run anyway button">
+
 3. Click **Next** until you see **Install**, then **Install** and **Finish**. You don't need an administrator
    account.
 

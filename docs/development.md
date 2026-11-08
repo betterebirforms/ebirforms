@@ -76,7 +76,8 @@ The macOS download opens on a window that shows how to install and first open th
 `asset/brand/dmg/background.html`, then run `npm run asset:dmg` (macOS only) to redraw it. The Windows installer's
 side picture and banner come from `asset/brand/installer/`; redraw them with `npm run asset:nsis`.
 
-The release page text (install steps for each system) is `.github/release-note.md`. CI puts it on every release.
+The release page text (install steps for each system) is `.github/release-note.md`. CI puts it on every release. Its Windows pictures
+(`asset/brand/release/`) are real SmartScreen screenshots from GitHub's Windows Server 2025 runner.
 
 The macOS package is signed, notarized and stapled when `APPLE_SIGNING_IDENTITY` names a Developer ID Application
 certificate and `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID` (or `APPLE_API_KEY` / `APPLE_API_ISSUER` /
