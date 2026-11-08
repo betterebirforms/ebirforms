@@ -54,7 +54,7 @@ npm run dev          # Vite on 127.0.0.1:10900
 npm run tauri dev    # desktop window
 npm run gate         # typecheck + tests
 npm run build:web    # the web version (native forms only, OPFS, offline) → dist-web/; not published
-npm run package      # universal macOS DMG, shareable build + BIR's forms bundled → dist-package/ (unsigned; signs + notarizes with APPLE_* env, see tool/package.mjs)
+npm run package      # this platform's package (macOS DMG / Windows setup.exe / Linux AppImage+deb) with BIR's forms → dist-package/
 npm run check:roundtrip   # web savefile → BIR's own form page, field by field
 EBF_NAME=1 npx vitest run test/export-name.test.ts   # every native savefile name == BIR's createXMLFileName
 ```

@@ -2,6 +2,19 @@
 
 Append-only, latest first. What changed and why; current state lives in README.md.
 
+## 2026-11-08 — every platform; BIR's 7.9.6.2.1 contents; new logo
+
+- `npm run package` builds the current platform's package: macOS universal DMG, Windows x64 NSIS installer, Linux
+  AppImage + deb. CI downloads BIR's official 7.9.6.2.1 zip once, stages its forms, and builds all three (first run:
+  all jobs green; Windows/Linux packages built, not yet launched on those systems). A `v*` tag drafts a release.
+- BIR's 7.9.6.2.1 is the v7.9.6.2 package of RMC No. 104-2026 (24 Sep 2026): 0605 ATC MC350/MC351 and tax type MA
+  (Micro Taxpayer Abatement), plus fixes to 1601-FQ, 1603Qv2018, 1702Qv2018C and 1801v2018. The app serves those
+  pages as shipped, and the native forms are 1:1 with them (parity: 0605 96/96, 1601FQ 168/168, 1603Qv2018 77/77,
+  1702Qv2018C 112/112, 1801v2018 212/212).
+- New logo (`asset/brand/logo.svg`): the seal simplified — scalloped edge, blue band with three stars, sun rays, red
+  and gold sweeps, a form where the seal has its column; app icons regenerated. 50 geometric alternatives in
+  `asset/brand/icon50/` (`generate.py` rebuilds them).
+
 ## 2026-11-08 — short README
 
 - README cut to what a downloader needs: download link, compatibility (macOS 12+, Apple Silicon + Intel, BIR
