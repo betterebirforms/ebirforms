@@ -2,6 +2,13 @@
 
 Append-only, latest first. What changed and why; current state lives in README.md.
 
+## 2026-11-08 — logo: BIR's eagle, traced
+
+- The logo, app icons and avatar are now a close crop of BIR's own seal: the eagle's head, the sun's rays and the red
+  swirl, traced from `img/bir.png` (`asset/brand/seal/source/`). The white gaps at the bottom and top right are filled
+  red, and the band's star is dropped so the icon still reads at 32 px. Replaces the geometric seal and the 50
+  rejected geometric icons (`asset/brand/icon50/`, removed).
+
 ## 2026-11-08 — every platform; BIR's 7.9.6.2.1 contents; new logo
 
 - `npm run package` builds the current platform's package: macOS universal DMG, Windows x64 NSIS installer, Linux
