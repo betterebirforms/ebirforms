@@ -1,4 +1,4 @@
-// A schema-driven renderer for any P3 rewritten form — no inline IE JavaScript, live exact-centavo compute,
+// A schema-driven renderer for any rebuilt form: no inline IE JavaScript, live exact-centavo compute,
 // real validation, and a save that writes a file byte-compatible with the legacy form and BIR.
 import { useMemo, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
@@ -106,14 +106,14 @@ export function FormView({ form_code, profile, initial, onClose, onSaved }: { fo
   return (
     <section className="panel form-view">
       <div className="bir-banner">
-        <img src={birHeaderUrl} alt="Republic of the Philippines — Bureau of Internal Revenue" />
+        <img src={birHeaderUrl} alt="Republic of the Philippines, Bureau of Internal Revenue" />
         {barcodeUrl(form_code).slice(0, 1).map((url) => (
           <img key={url} className="bir-barcode" src={url} alt={`BIR Form ${form_code} barcode, page 1`} />
         ))}
       </div>
       <header className="form-head">
         <h2>
-          BIR Form {form_code} — {schema.title} (rewritten)
+          BIR Form {form_code}: {schema.title} (rebuilt)
         </h2>
         <button className="ghost" onClick={onClose}>
           Back

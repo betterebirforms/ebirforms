@@ -1,0 +1,32 @@
+name: A form gives a different result from BIR's
+description: A computed amount, a saved field or a printed page differs from BIR's own eBIRForms on Windows.
+labels: [form, parity]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every form is meant to match BIR's own app exactly, including BIR's own mistakes (BIR's server checks
+        BIR's arithmetic). A difference is a bug here. **Use made-up values, never your real TIN or return.**
+  - type: input
+    id: form
+    attributes:
+      label: Form code
+      placeholder: 1701Q
+    validations: { required: true }
+  - type: textarea
+    id: step
+    attributes:
+      label: What you entered
+      description: The fields and values, in order, so someone else can type the same thing.
+    validations: { required: true }
+  - type: textarea
+    id: diff
+    attributes:
+      label: What differs
+      description: The item number, the value in BIR's app, and the value in this app.
+    validations: { required: true }
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where it differs
+      options: [On screen, In the saved file, When printed, When reopened]

@@ -117,7 +117,7 @@ function NativeScreen({ form_code }: { form_code: string | null }) {
   );
 }
 
-/** Taxpayer profiles (`profile/<TIN>.xml`, the same files BIR's main screen keeps) — picked one prefills new forms. */
+/** Taxpayer profiles (`profile/<TIN>.xml`, the same files BIR's main screen keeps) ; the one you pick fills in new forms. */
 function ProfilePick() {
   const [name, setName] = useState<string[]>([]);
   useEffect(() => {
@@ -133,7 +133,7 @@ function ProfilePick() {
         value={query().get("profile") ?? ""}
         onChange={(e) => window.location.assign(e.target.value ? `/form#profile=${encodeURIComponent(e.target.value)}` : "/form")}
       >
-        <option value="">None — type it on the form</option>
+        <option value="">None (type it on the form)</option>
         {name.map((n) => (
           <option key={n} value={n}>
             {n.replace(/\.xml$/, "")}
@@ -241,8 +241,7 @@ function ImportScreen({ onDone }: { onDone: () => void }) {
     <section className="empty">
       <h1>Set up eBIRForms</h1>
       <p>
-        This app runs BIR's official forms. It doesn't ship them — you add them once from BIR's own download,
-        and they stay on this computer.
+        This app runs BIR's official forms. Add them once from BIR's own download. They stay on this computer.
       </p>
       <ol className="steps">
         <li>
@@ -250,7 +249,7 @@ function ImportScreen({ onDone }: { onDone: () => void }) {
           <a href="https://www.bir.gov.ph/eBIRForms" target="_blank" rel="noreferrer">
             bir.gov.ph
           </a>{" "}
-          (the .zip for Windows is the right one — nothing is installed or run).
+          (the .zip for Windows is the right one; nothing in it is installed or run).
         </li>
         <li>Choose that file below.</li>
       </ol>

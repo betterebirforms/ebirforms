@@ -1,53 +1,36 @@
-# TASK: make the shell 1:1 with BIR's real eBIRForms (serve BIRForms.hta)
+# TASK: repo arranged for contributors, mods, roadmap (goal set 2026-11-08)
 
-Branch: parity-1to1 (everything still uncommitted). Goal from the user (2026-11-07): "the UI as well and window,
-XP-like UI, 1:1, everything the same just again, optimized and no bugs."
+Goal (user, verbatim): "make sure our repo is properly arranged, good to contirbute to / featureset wise and also
+maintianing the original code or 1:1 rebuild code separate? and modularized/hotswappable to teh improvements like
+how lua can just add onto the orignal code easily, hotswappable modes/modificaitons/improvements/removements, etc.
+and also possible mobile/web support in the future again will be a rebuild but should be in our roadmap
+and fully improve the /sync-docs of this app, i want everything to be readable by human and workable by others,
+proper contributor docs, and setup fo teh repo overall"
 
-## Decisions (user, 2026-11-07)
-0. **Frame = two child webviews, not an iframe** (user chose this over the goal's "same-origin iframe" wording,
-   2026-11-07): native print prints the top document, and an iframe would clip multi-page forms.
-1. Serve BIR's real main screen (`BIRForms.hta`) through the host + shim, not a React re-skin.
-2. Keep our fixes. The look is 1:1; the behaviour is optimized. Security holes stay fixed.
-3. Faux-XP title bar.
+## Plan
+1. **Mod system** (`mod/`): every serve-time change to BIR's pages is one JSON file, kind = folder
+   (fix / compat / security / speed / remove). Both hosts read the SAME files, ending the TS + Rust duplicate.
+   - TS engine `host/mod.ts`; Rust engine `src-tauri/src/bir_mod.rs`; Rust embeds `mod/` via build.rs.
+   - Hot-swap: user mods in `<data>/mod/`, on/off in `<data>/mod.json`, re-read on every page load.
+   - `inject` rule lets a mod add its own script to BIR's pages (the "Lua" hook).
+   - `host/form-patch.ts` keeps its exported names as thin wrappers so tests keep working.
+   - `GET /__mod` lists mods (both hosts).
+2. Docs: CONTRIBUTING.md, docs/architecture.md (three layers: BIR original / mods + shim / 1:1 rebuild),
+   mod/README.md, .github issue + PR templates, development.md + README + AGENTS.md synced, plain language.
+3. ROADMAP: mobile + web rebuild tier; mod settings screen; shim split into mods.
+4. Gate: `npm run gate` + `npm run gate:rust` exit 0.
 
-## DONE (gate exit 0: 614 passed / 85 skipped; Rust 28 passed / 2 ignored)
-1. **Faux-XP frame + entry.** `src-tauri/src/lib.rs`: a frameless window with a `caption` child webview
-   (`caption.html`, `src/caption/`) and a `content` child webview, both resized on `Resized`, maximized after
-   attach. Print targets `content`; `/__close` closes the window.
-   - Not an iframe: native print prints the top document only.
-   - `src/App.tsx` is now just the import screen plus `location.replace('/legacy/BIRForms.hta')`.
-   - The dead launcher, submit and settings code was removed.
-2. **Submit → dispatcher.** In `public/legacy-shim.js`:
-   - The `conService` and `checkNetConnection` replacements trigger the dispatch op after the confirm.
-   - `RenameAndSendFile` calls the send op, and confirms before re-pinning a changed host key.
-   - Host ops are in `src-tauri/src/host.rs`. The Node host returns mode "0".
-3. **Saved-returns sort.** `fixSavedReturnSort` (TS + Rust) keys on `dtCreated` rearranged to yyyy/mm/dd.
-   - Do not use `ts`: BIR has reused it by that line.
-   - Also fixed Delete: shim File/Folder `toString` returns `Path`.
-4. **XP polish + playtest.** A Luna control theme in the shim. A WebKit playtest on the headless Rust host
-   (`cargo run --example host -- dist vendor/original <data> <port>`) ran the full Submit against a stand-in
-   dispatcher and docker `atmoz/sftp`. Details are in the git history.
+## Status
+- [x] mod system, docs, roadmap, gate, /sync-docs run + repo skill (.claude/skills/sync-docs), doc check (`npm run check:doc`), newcomer review fixed. Fresh-copy run 2026-11-09 (CONTRIBUTING steps verbatim): install, BIR zip download + extract (468 file), dev server, worked mod example on and off in 0605, gate 826 passed / 89 skipped, Rust 30 passed, check:doc 5 passed.
+  Gate 828 passed / 87 skipped; Rust 30 passed. 1601F open re-measured 2026-11-09: 1.14-1.20 s on, 1.37-1.53 s off.
+  Uncommitted, awaiting the user.
 
-5. **Print + save sweep (2026-11-07, goal "finish the Mac app").** `fixRestoreAfterPrint` (TS + Rust) — long
-   forms print every page (1702Qv2018C 2 → 5 pages in the real sheet). `test/save-sweep.test.ts` (`EBF_SAVE=1`)
-   84/84 on Node + Rust hosts.
-
-## OPEN (needs the user)
-- **Signing/notarization:** needs an Apple "Developer ID Application" certificate + notary credentials; this Mac
-  only has "DRIA Dev" and "bygelo".
-- **Native forms are no longer reachable from the UI.** BIR's Fill-up opens BIR's legacy page. Routing the main
-  screen's Fill-up/View to the 82 native forms is a decision: they are 1:1, so it is a speed/robustness win, not a
-  visible one.
-- **Proxy has no UI** (`data/settings/submit.json` by hand). The manual SFTP-settings path is gone.
-- Caption controls pass the real-window self-test (`EBF_SELFTEST=1 npm run tauri dev`). The one gap is a physical
-  mouse drag.
-- **Live filing** to BIR with a real TIN: never done, irreversible, the user's call.
-- 1700/1701 legacy native rewrites (XL).
+## Older open items (from the 1:1 shell task, still true)
+- Signing/notarization needs an Apple Developer ID certificate.
+- Native forms are not reachable from BIR's main screen (Fill-up opens BIR's page).
+- Proxy has no UI. Live filing to BIR never done (the user's call).
 
 ## Gotchas
 - Reap the browser lane and kill dev servers before gating:
   `node ~/.agents/skills/test-browser/scripts/reap.mjs --kill`.
-- When running the 0605 e2e against the Rust host (`EBIRFORMS_HOST_URL`), start that host with
-  `EBF_DISPATCH_HOST=127.0.0.1:9`. Otherwise Submit asks BIR's real dispatcher.
-- Never screenshot the whole screen while the user works. Capture the app window by ID
-  (`screencapture -l <CGWindowID>`).
+- Rust e2e against BIR's Submit: start the host with `EBF_DISPATCH_HOST=127.0.0.1:9`.

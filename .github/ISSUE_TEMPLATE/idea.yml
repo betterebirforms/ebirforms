@@ -1,0 +1,28 @@
+name: Idea or improvement
+description: Something new, or a better way to do something. Improvements are added as switchable mods or options.
+labels: [idea]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check [ROADMAP.md](https://github.com/betterebirforms/ebirforms/blob/main/ROADMAP.md) and
+        [the rejected ideas](https://github.com/betterebirforms/ebirforms/blob/main/docs/roadmap-rejected.md) first.
+        The desktop app stays the same as BIR's by default, so most improvements are a
+        [mod](https://github.com/betterebirforms/ebirforms/blob/main/mod/README.md) you can switch on.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What is hard, slow or missing today?
+    validations: { required: true }
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+    validations: { required: true }
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help build it?
+      options:
+        - label: I'd like to work on this

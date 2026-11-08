@@ -42,12 +42,12 @@ Get the file for your computer from the **[latest release](https://github.com/be
 
 | Item | Supported |
 |---|---|
-| BIR package | v7.9.6.2.1 (RMC No. 104-2026): all 84 forms, including 0605's MC350/MC351 and tax type MA |
+| BIR package | v7.9.6.2.1 (BIR Revenue Memorandum Circular No. 104-2026): all 84 forms, including the new 0605 codes for micro taxpayers |
 | macOS | 12 Monterey or later |
 | Windows | 10 or 11, 64-bit |
 | Linux | Ubuntu 22.04 or later, or equivalent |
 | Savefiles | Same format as BIR's Windows app, so a file opens in either |
-| Online Submit | Not in the download build |
+| Online Submit (sending the return to BIR from inside the app) | Not in the download build |
 | Status | Beta |
 
 ## Install
@@ -65,8 +65,11 @@ Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the sam
 
 - Problems or questions: [Issues](https://github.com/betterebirforms/ebirforms/issues)
 - What changed: [CHANGELOG.md](CHANGELOG.md)
-- Building from source: [docs/development.md](docs/development.md)
+- Help build it: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, how the repo is laid out, the rules)
+- Change how a form behaves, or switch our fixes off: [mods](mod/README.md)
+- What's planned, including mobile and web: [ROADMAP.md](ROADMAP.md)
+- How it works: [docs/architecture.md](docs/architecture.md)
 
-BIR's forms are works of the Philippine Government (RA 8293 §176.1). The logo is adapted from BIR's seal.
+BIR's forms are works of the Philippine Government (the Intellectual Property Code, RA 8293 §176.1). The logo is adapted from BIR's seal.
 
 Code: [MIT License](LICENSE). BIR's forms and artwork are not covered by it; see [NOTICE.md](NOTICE.md).

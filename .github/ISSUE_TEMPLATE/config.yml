@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions about your taxes
+    url: https://www.bir.gov.ph/contact-us
+    about: This project is not BIR. For tax questions, ask BIR or your RDO.

@@ -9,7 +9,7 @@ Collections are singular too. `form: FormDef[]`, not `forms`; `file`, not `files
 The noun names the *kind of thing held*, not the count. If a name needs to say "many", the type already does.
 
 Exception: we never rename BIR's own identifiers (form ids, XML element names, savefile keys, folder names
-like `savefile/`). Those are an external format we must stay byte-compatible with — quote them, don't "fix" them.
+like `savefile/`). Those are an external format we must stay byte-compatible with: quote them, don't "fix" them.
 
 ## Shape
 

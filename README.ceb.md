@@ -42,7 +42,7 @@ Kuhaa ang file para sa imong computer sa **[pinakabag-ong release](https://githu
 
 | Bahin | Gisuportahan |
 |---|---|
-| BIR package | v7.9.6.2.1 (RMC No. 104-2026): tanan nga 84 ka form, lakip ang MC350/MC351 ug tax type MA sa 0605 |
+| BIR package | v7.9.6.2.1 (BIR Revenue Memorandum Circular No. 104-2026): tanan nga 84 ka form, lakip ang bag-ong mga code sa 0605 para sa micro taxpayers |
 | macOS | 12 Monterey o mas bag-o |
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bag-o, o susama |
@@ -66,8 +66,11 @@ Human niana, sulati ang imong profile, pagpili og form, i-click ang **Fill-up**,
 
 - Problema o pangutana: [Issues](https://github.com/betterebirforms/ebirforms/issues)
 - Mga kausaban: [CHANGELOG.md](CHANGELOG.md)
-- Pag-build gikan sa source: [docs/development.md](docs/development.md)
+- Tabang sa paghimo: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, han-ay sa repo, mga lagda)
+- Usba ang lihok sa usa ka form, o patya ang among mga ayo: [mods](mod/README.md)
+- Mga plano, apil ang mobile ug web: [ROADMAP.md](ROADMAP.md)
+- Unsaon kini paglihok: [docs/architecture.md](docs/architecture.md)
 
-Ang mga form sa BIR mga buhat sa Gobyerno sa Pilipinas (RA 8293 §176.1). Ang logo gibase sa selyo sa BIR.
+Ang mga form sa BIR mga buhat sa Gobyerno sa Pilipinas (ang Intellectual Property Code, RA 8293 §176.1). Ang logo gibase sa selyo sa BIR.
 
 Code: [MIT License](LICENSE). Dili apil niini ang mga form ug artwork sa BIR; tan-awa ang [NOTICE.md](NOTICE.md).

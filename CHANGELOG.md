@@ -5,6 +5,10 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Every change we make to BIR's forms is now a separate file you can read, and switch off to get BIR's original
+  behaviour back. You can also add your own changes without rebuilding the app (see the mods guide in the repo).
+- New guide for contributors, with setup steps, how the project is laid out, and the rules.
+- The roadmap is rewritten in plain words, and now plans the mobile and web versions.
 - New GitHub profile picture: the "e" from BIR's eBIRForms logo, in a blue, red and gold gradient. The app icon is still the eagle.
 - The README now opens with a picture of eBIRForms running on a Mac, a Windows PC and a Linux laptop.
 

@@ -42,7 +42,7 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 
 | Bahagi | Suportado |
 |---|---|
-| BIR package | v7.9.6.2.1 (RMC No. 104-2026): lahat ng 84 na form, kasama ang MC350/MC351 at tax type MA ng 0605 |
+| BIR package | v7.9.6.2.1 (BIR Revenue Memorandum Circular Blg. 104-2026): lahat ng 84 na form, kasama ang mga bagong code ng 0605 para sa micro taxpayers |
 | macOS | 12 Monterey o mas bago |
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bago, o katumbas |
@@ -66,8 +66,11 @@ Pagkatapos, punan ang iyong profile, pumili ng form, i-click ang **Fill-up**, at
 
 - Problema o tanong: [Issues](https://github.com/betterebirforms/ebirforms/issues)
 - Mga pagbabago: [CHANGELOG.md](CHANGELOG.md)
-- Pag-build mula sa source: [docs/development.md](docs/development.md)
+- Tumulong sa pagbuo: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, ayos ng repo, mga patakaran)
+- Baguhin ang kilos ng isang form, o patayin ang aming mga ayos: [mods](mod/README.md)
+- Mga plano, kasama ang mobile at web: [ROADMAP.md](ROADMAP.md)
+- Paano ito gumagana: [docs/architecture.md](docs/architecture.md)
 
-Ang mga form ng BIR ay gawa ng Pamahalaan ng Pilipinas (RA 8293 §176.1). Ang logo ay hango sa selyo ng BIR.
+Ang mga form ng BIR ay gawa ng Pamahalaan ng Pilipinas (ang Intellectual Property Code, RA 8293 §176.1). Ang logo ay hango sa selyo ng BIR.
 
 Code: [MIT License](LICENSE). Hindi sakop nito ang mga form at artwork ng BIR; tingnan ang [NOTICE.md](NOTICE.md).
