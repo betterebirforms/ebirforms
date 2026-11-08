@@ -77,7 +77,8 @@ The macOS download opens on a window that shows how to install and first open th
 side picture and banner come from `asset/brand/installer/`; redraw them with `npm run asset:nsis`.
 
 The release page text (install steps for each system) is `.github/release-note.md`. CI puts it on every release. Its Windows pictures
-(`asset/brand/release/`) are real SmartScreen screenshots from GitHub's Windows Server 2025 runner.
+(`asset/brand/release/`) are real SmartScreen screenshots from GitHub's Windows Server 2025 runner, and its Linux one is Ubuntu 24.04's
+Files app.
 
 The macOS package is signed, notarized and stapled when `APPLE_SIGNING_IDENTITY` names a Developer ID Application
 certificate and `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID` (or `APPLE_API_KEY` / `APPLE_API_ISSUER` /

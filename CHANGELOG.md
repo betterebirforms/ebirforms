@@ -5,7 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
-- The download page now explains how to install on Windows, Mac and Linux, with pictures for the Mac steps.
+- Linux: the title bar is its normal height again. Before, it filled the top half of the window and pushed BIR's main screen down.
+- The download page now explains how to install on Windows, Mac and Linux, with pictures of each step.
 - The Windows installer shows the eBIRForms name and logo.
 - The Mac download now shows, in its own window, how to install the app and how to open it the first time,
   since macOS asks you to confirm an app that Apple has not signed.

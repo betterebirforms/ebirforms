@@ -42,8 +42,10 @@ You only do this once. On macOS 12 to 14, you can instead right-click eBIRForms 
 - **`.deb`** (Ubuntu, Debian, Mint): in a terminal, in the folder you downloaded it to, run
   `sudo apt install ./Offline_eBIRForms_Package_*_Linux_amd64.deb`. Then open eBIRForms from your app list.
 - **`.AppImage`** (any distribution): right-click the file and open **Properties**. Turn on **Executable as
-  Program** (Ubuntu 24.04 and later) or **Allow executing file as program** (Ubuntu 22.04), or run `chmod +x` on
-  it. Then double-click it.
+  Program** (Ubuntu 24.04 and later). On Ubuntu 22.04, open the **Permissions** tab and tick **Allow executing file
+  as program**. Or run `chmod +x` on it. Then double-click it.
+
+  <img src="https://raw.githubusercontent.com/betterebirforms/ebirforms/main/asset/brand/release/linux-1.png" width="240" alt="The AppImage's Properties on Ubuntu 24.04, with Executable as Program turned on">
 
 ## After installing
 

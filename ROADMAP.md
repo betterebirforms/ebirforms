@@ -28,7 +28,7 @@ Each part of the plan below says which layer it touches.
 | Item | Why | Layer | Done when |
 |---|---|---|---|
 | Signed macOS app | macOS warns on every first open | app | The `.dmg` opens with no warning. Needs an Apple Developer ID (owner) |
-| Try the Windows and Linux packages on real machines | On GitHub's test machines the Windows installer gets past SmartScreen, installs and opens BIR's main screen, and the Linux `.deb` and AppImage open it on Ubuntu 22.04 and 24.04. No one has filled a return in them yet | app | A return is filled, saved, printed and reopened on Windows 11 and Ubuntu 22.04 |
+| Try the Windows and Linux packages on real machines | On GitHub's test machines the Windows installer gets past SmartScreen, installs and opens BIR's main screen, and the Linux `.deb` and AppImage (made runnable in the Files app) open it on Ubuntu 22.04 and 24.04. No one has filled a return in them yet | app | A return is filled, saved, printed and reopened on Windows 11 and Ubuntu 22.04 |
 | Block BIR's pages from going online | Any mod's script can send page data to any website today, because BIR's pages run with no content security policy | app + mods | BIR's pages can reach only the app's own server, and a mod that needs the internet says so with a `network` key that the user has to approve |
 | Send BIR our list of bugs in its package | We offered BIR a list of the bugs we found, and private notes on the security ones | none | Sent to BIR. The security notes go to BIR only, never in this repo |
 | Hear back from BIR | We have asked BIR how it wants this app released | none | BIR replies. No public beta or web launch before that |
