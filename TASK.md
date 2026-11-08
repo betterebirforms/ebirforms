@@ -26,7 +26,7 @@ XP-like UI, 1:1, everything the same just again, optimized and no bugs."
    - Also fixed Delete: shim File/Folder `toString` returns `Path`.
 4. **XP polish + playtest.** A Luna control theme in the shim. A WebKit playtest on the headless Rust host
    (`cargo run --example host -- dist vendor/original <data> <port>`) ran the full Submit against a stand-in
-   dispatcher and docker `atmoz/sftp`. Details are in CHANGELOG.
+   dispatcher and docker `atmoz/sftp`. Details are in the git history.
 
 5. **Print + save sweep (2026-11-07, goal "finish the Mac app").** `fixRestoreAfterPrint` (TS + Rust) — long
    forms print every page (1702Qv2018C 2 → 5 pages in the real sheet). `test/save-sweep.test.ts` (`EBF_SAVE=1`)

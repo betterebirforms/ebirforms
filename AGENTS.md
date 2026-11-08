@@ -43,7 +43,7 @@ We keep the forms' computations and the savefile format compatible, and replace 
   (`EBF_PARITY=<CODE>` equal == key, 0 page error) — method and bar in `docs/rewrite-playbook.md`.
 - A serve-time compat fix for BIR's pages goes in `public/legacy-shim.js` (every form) or BOTH `host/form-patch.ts`
   and `src-tauri/src/codec.rs` with a Rust test — the dev and packaged hosts must serve identical pages.
-- Docs: `README.md` and this file are STATE (replace in place). `CHANGELOG.md` is LOG (append, latest first).
+- Docs: `README.md` and this file are STATE (replace in place). `CHANGELOG.md` is LOG (append, latest first), written for users: plain words, short bullets, no em dashes, no file paths or internal names; technical detail goes in the commit message.
   `ROADMAP.md` is the tiered plan; killed ideas go to `docs/roadmap-rejected.md`.
 
 ## Commands
