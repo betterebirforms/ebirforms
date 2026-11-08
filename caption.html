@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>caption</title>
+    <link rel="stylesheet" href="/src/caption/caption.css" />
+  </head>
+  <body>
+    <!-- Luna caption for the frameless window (src-tauri/src/lib.rs): BIRForms.hta's title + icon -->
+    <header id="caption" data-tauri-drag-region>
+      <img class="icon" src="/legacy/img/bir_icon.ico" alt="" data-tauri-drag-region />
+      <span class="title" data-tauri-drag-region>Offline eBIRForms Package v7.9.6.2</span>
+      <nav>
+        <button type="button" class="minimize" aria-label="Minimize"></button>
+        <button type="button" class="maximize" aria-label="Maximize"></button>
+        <button type="button" class="close" aria-label="Close"></button>
+      </nav>
+    </header>
+    <script type="module" src="/src/caption/caption.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,438 @@
+[
+ {
+  "id": "frm2550m:RtnYear",
+  "kind": "select"
+ },
+ {
+  "id": "frm2550m:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:OptAmendedYN1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550m:OptAmendedYN2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550m:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtRDOCode",
+  "kind": "select"
+ },
+ {
+  "id": "frm2550m:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550m:txtTaxPayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550m:txtTelephoneNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550m:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550m:OptSpecialTax2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550m:lstSpecialTax",
+  "kind": "select"
+ },
+ {
+  "id": "frm2550m:txtTax12A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax12B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax13A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax13B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax14",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax15",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax16A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax16B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax17F",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18F",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18G",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18H",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18I",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18J",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18K",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18L",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18M",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18N",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18O",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax18P",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax19",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax20F",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax21",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax22",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23F",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax23G",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax24",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax25A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax25B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax25C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax25D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550m:txtTax26",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550M:txtmodaltxtTotal12A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550M:txtmodaltxtTotal12B",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalAmt",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalAmountSched3",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalInputTaxSched3",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalBalanceSched3A",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalBalanceSched3B",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalInputTax20ASched3",
+  "kind": "text"
+ },
+ {
+  "id": "txtinputtaxSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtTaxableSaleSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtInputTaxnotDirectSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalInputTaxnotDirectSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalSaleSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalInputSaletoGovernmentSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtlessStdTaxSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotal20BSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtinputtaxSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotSaleSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountInputnotDirectSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtProductnotDirectSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtSumTotalSaleSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotal20CSched5",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotal23A",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalSched6AppliedCurrent",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotal23B",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalSched7AppliedCurrent",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotal23C",
+  "kind": "text"
+ },
+ {
+  "id": "txtmodalTotalSched8AppliedCurrent",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

@@ -1,0 +1,105 @@
+{
+ "summary": [
+  {
+   "form_code": "1707A",
+   "key": 127,
+   "equal": 126,
+   "bir_defect": 1,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1800v2018",
+   "key": 168,
+   "equal": 168,
+   "bir_defect": 0,
+   "bir_defect_error": 4,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1602Qv2018",
+   "key": 110,
+   "equal": 110,
+   "bir_defect": 0,
+   "bir_defect_error": 1,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1702RT",
+   "key": 581,
+   "equal": 580,
+   "bir_defect": 1,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1707A",
+   "key_count": 127,
+   "equal_count": 126,
+   "missing": [],
+   "extra": [],
+   "diff": [
+    {
+     "key": "frm1707A:rdoI19TaxCreditCertificate",
+     "native": "true",
+     "legacy": "false"
+    }
+   ],
+   "page_error": []
+  },
+  {
+   "form_code": "1800v2018",
+   "key_count": 168,
+   "equal_count": 168,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": [
+    "Maximum call stack size exceeded.",
+    "Maximum call stack size exceeded.",
+    "Maximum call stack size exceeded.",
+    "Maximum call stack size exceeded."
+   ]
+  },
+  {
+   "form_code": "1602Qv2018",
+   "key_count": 110,
+   "equal_count": 110,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": [
+    "null is not an object (evaluating 'd.getElementById(rate).value')"
+   ]
+  },
+  {
+   "form_code": "1702RT",
+   "key_count": 581,
+   "equal_count": 580,
+   "missing": [],
+   "extra": [],
+   "diff": [
+    {
+     "key": "frm1702RT:txtCurrentPage",
+     "native": "1",
+     "legacy": "3"
+    }
+   ],
+   "page_error": []
+  }
+ ]
+}

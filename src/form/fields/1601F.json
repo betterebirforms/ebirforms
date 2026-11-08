@@ -1,0 +1,178 @@
+[
+ {
+  "id": "frm1601F:j_id201",
+  "kind": "select"
+ },
+ {
+  "id": "frm1601F:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:AmendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:AmendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:TaxWithheld_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:TaxWithheld_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601F:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601F:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601F:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601F:CatAgent_P",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:CatAgent_G",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:SpecialTax_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:SpecialTax_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601F:drpSpecialTax",
+  "kind": "select"
+ },
+ {
+  "id": "frm1601F:txtTax14",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax15",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax16",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax17",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax18",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax19A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax19B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax19C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax19D",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601F:txtTax20",
+  "kind": "money"
+ },
+ {
+  "id": "txtDvTotalSchedI",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

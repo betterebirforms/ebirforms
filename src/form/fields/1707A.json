@@ -1,0 +1,542 @@
+[
+ {
+  "id": "frm1707A:rdoI1Calendar",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:rdoI1Fiscal",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtI1YearEndMonth",
+  "kind": "select"
+ },
+ {
+  "id": "frm1707A:txtI1YearEndDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI1YearEndYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:rdoI2AmemdedYes",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:rdoI2AmemdedNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtI3Sheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:rdoI4ATCII030",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtI4TCII030",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:rdoI4ATCIC110",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtI4ATCIC110",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI5TIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI5TIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI5TIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI5BranchMask",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:hdnI5TIN4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:hdnRDO",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI7TelNo",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI8RegisteredName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707A:txtLineOfBusiness",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707A:txtI9RegisteredAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707A:txtI10ZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:rdoI11TaxTreatyYes",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:rdoI11TaxTreatyNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtI11ASpecify",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI12TotalCapitalGains",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI13TotalCapitalLoss",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI14NetCapitalGainLoss",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI15TaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI16ATotalTaxPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI16BTotalTaxPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI16CTotalTaxPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI17TaxStillPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707A:txtI18ASurcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707A:txtI18BInterest",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707A:txtI18CCompromise",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707A:txtI18DPenalties",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtI19TotalAmountPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707A:rdoI19Refund",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:rdoI19TaxCreditCertificate",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C1DateOfTransactionI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C2NameOfCorporateStockI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C3SellingPriceI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C4CostI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C5CapitalGainsI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1C6TaxPaidI7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1I20TotalSellingPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1I20TotalCost",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1I20TotalCapitalGains",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1I20TotalTaxPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C1DateOfTransactionI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C2NameOfCorporateStockI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C3SellingPriceI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C4CostI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C5CapitalLossI1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C1DateOfTransactionI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C2NameOfCorporateStockI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C3SellingPriceI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C4CostI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C5CapitalLossI2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C1DateOfTransactionI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C2NameOfCorporateStockI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C3SellingPriceI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C4CostI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C5CapitalLossI3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C1DateOfTransactionI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C2NameOfCorporateStockI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C3SellingPriceI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C4CostI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2C5CapitalLossI4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2I21TotalSellingPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2I21TotalCost",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2I21TotalCapitalLoss",
+  "kind": "text"
+ },
+ {
+  "id": "ModalSched1Length",
+  "kind": "text"
+ },
+ {
+  "id": "ModalSched2Length",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1ModalTotalSellingPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1ModalTotalCost",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1ModalTotalCapitalGains",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS1ModalTotalTaxPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2ModalTotalSellingPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2ModalTotalCost",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707A:txtS2ModalTotalCapitalLoss",
+  "kind": "text"
+ },
+ {
+  "id": "sched1files",
+  "kind": "text"
+ },
+ {
+  "id": "sched2files",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "btnAgree",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm1707A:rdoI6RDO",
+  "kind": "select"
+ },
+ {
+  "id": "frm1702EX:rdoPg1Pt1I7RDO",
+  "kind": "select"
+ }
+]

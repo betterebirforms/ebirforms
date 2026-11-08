@@ -1,0 +1,5 @@
+vendor/
+dist/
+src-tauri/target/
+package-lock.json
+docs/analysis/

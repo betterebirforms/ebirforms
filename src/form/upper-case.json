@@ -1,0 +1,148 @@
+{
+ "1600": "all",
+ "1602": "all",
+ "1603": "all",
+ "1606": "all",
+ "1700": [
+  "frm1700:txtPg1Pt2I32GovID",
+  "frm1700:txtPg1Pt2I35PlaceofIssue",
+  "frm1700:txtPg1Pt2I36DraweeBank"
+ ],
+ "1701": [
+  "frm1701:txtPg1Pt1I8TaxFiler",
+  "frm1701:txtPg1Pt1I8TaxFilerFirstName",
+  "frm1701:txtPg1Pt1I8TaxFilerMiddleName",
+  "frm1701:txtPg1Pt1I9TradeName",
+  "frm1701:txtPg1Pt1I17Business",
+  "frm1701:txtPg1Pt1I18PSIC",
+  "frm1701:txtPg1Pt1I19PSOC",
+  "frm1701:txtPg1Pt2I36PlaceOfIssue",
+  "frm1701:txtPg1Pt3I38CashDrawee",
+  "frm1701:txtPg1Pt3I39CheckDrawee",
+  "frm1701:txtPg1Pt3I40OtherDetailName",
+  "frm1701:txtPg1Pt3I40OtherDrawee"
+ ],
+ "1704": "all",
+ "1706": "all",
+ "1707": "all",
+ "1800": "all",
+ "1801": "all",
+ "2000": "all",
+ "2551": "all",
+ "2552": "all",
+ "2553": "all",
+ "0605": "all",
+ "1600WP": "all",
+ "1601C": "all",
+ "1601Cv2018": "all",
+ "1601E": "all",
+ "1601F": "all",
+ "1601FQ": "all",
+ "1603Qv2018": "all",
+ "1604C": "all",
+ "1604CF": "all",
+ "1604E": "all",
+ "1604F": "all",
+ "1700v2018": "all",
+ "1701Q": "all",
+ "1701Qv2018": "all",
+ "1701v2018": "all",
+ "1702EX": [
+  "frm1702EX:txtPg1Pt1I9RegisteredName",
+  "frm1702EX:txtPg1Pt1I10RegisteredAddress",
+  "frm1702EX:txtPg1Pt1I13MainLine",
+  "frm1702EX:txtPg1Pt1I14PSICCode",
+  "frm1702EX:txtPg1Pt1I16LegalBasis",
+  "frm1702EX:txtPg1Pt1I17Investment",
+  "frm1702EX:txtPg1Pt1I18RegisteredActivity",
+  "frm1702EX:txtPg1Pt2I23CommunityTax",
+  "frm1702EX:txtPg1Pt1I25PlaceofIssue",
+  "frm1702EX:txtPg1Pt3I27CashC1",
+  "frm1702EX:txtPg1Pt3I28CheckC1",
+  "frm1702EX:txtPg1Pt3I30OthersC1",
+  "frm1702EX:txtPg1Pt3I30OthersC2"
+ ],
+ "1702EXv2018": [
+  "frm1702EX:txtPg1Pt1I14LegalBasis",
+  "frm1702EX:txtPg1Pt1I15Investment",
+  "frm1702EX:txtPg1Pt1I16RegisteredActivity"
+ ],
+ "1702EXv2018C": [
+  "frm1702EX:txtPg1Pt1I14LegalBasis",
+  "frm1702EX:txtPg1Pt1I15Investment",
+  "frm1702EX:txtPg1Pt1I16RegisteredActivity"
+ ],
+ "1702MX": [
+  "frm1702MX:txtPg1Pt1I9RegisteredName",
+  "frm1702MX:txtPg1Pt1I10RegisteredAddress",
+  "frm1702MX:txtPg1Pt1I13MainLine",
+  "frm1702MX:txtPg1Pt1I14PSICCode",
+  "frm1702MX:txtPg1Pt2I22",
+  "frm1702MX:txtPg1Pt2I24PlaceofIssue",
+  "frm1702MX:txtPg1Pt1I26CashC1",
+  "frm1702MX:txtPg1Pt1I27CheckC1",
+  "frm1702MX:txtPg1Pt1I29Others",
+  "frm1702MX:txtPg1Pt1I29OthersC1"
+ ],
+ "1702MXv2018": [
+  "frm1702MX:txtPg1Pt1I9RegisteredName",
+  "frm1702MX:txtPg1Pt1I10RegisteredAddress"
+ ],
+ "1702MXv2018C": [
+  "frm1702MX:txtPg1Pt1I9RegisteredName",
+  "frm1702MX:txtPg1Pt1I10RegisteredAddress"
+ ],
+ "1702MXv2018Cxx": [
+  "frm1702MX:txtPg1Pt1I9RegisteredName",
+  "frm1702MX:txtPg1Pt1I10RegisteredAddress"
+ ],
+ "1702Q": "all",
+ "1702Qv2008C": "all",
+ "1702RT": "all",
+ "1702RTv2018": "all",
+ "1702RTv2018C": "all",
+ "1707A": [
+  "frm1707A:txtI8RegisteredName",
+  "frm1707A:txtI9RegisteredAddress",
+  "frm1707A:txtS1C2NameOfCorporateStockI1",
+  "frm1707A:txtS1C2NameOfCorporateStockI2",
+  "frm1707A:txtS1C2NameOfCorporateStockI3",
+  "frm1707A:txtS1C2NameOfCorporateStockI4",
+  "frm1707A:txtS1C2NameOfCorporateStockI5",
+  "frm1707A:txtS1C2NameOfCorporateStockI6",
+  "frm1707A:txtS1C2NameOfCorporateStockI7",
+  "frm1707A:txtS2C2NameOfCorporateStockI1",
+  "frm1707A:txtS2C2NameOfCorporateStockI2",
+  "frm1707A:txtS2C2NameOfCorporateStockI3",
+  "frm1707A:txtS2C2NameOfCorporateStockI4"
+ ],
+ "1707Av2021": [
+  "frm1707Av2021:txtI8RegisteredName",
+  "frm1707Av2021:txtI9RegisteredAddress"
+ ],
+ "1707v2018": [
+  "frm1707:txtPg1I6SellerName0",
+  "frm1707:txtPg1I6SellerAddr0",
+  "frm1707:txtPg1I7BuyerName0",
+  "frm1707:txtPg1I7BuyerAddr0"
+ ],
+ "1707v2021": [
+  "frm1707:txtPg1I6SellerName0",
+  "frm1707:txtPg1I6SellerAddr0",
+  "frm1707:txtPg1I7BuyerName0",
+  "frm1707:txtPg1I7BuyerAddr0"
+ ],
+ "1800v2018": "all",
+ "1801v2018": "all",
+ "2000OT": "all",
+ "2000OTv2018": "all",
+ "2200AN": "all",
+ "2200M": "all",
+ "2200P": "all",
+ "2550DS": "all",
+ "2550DS-old": "all",
+ "2550M": "all",
+ "2550Q": "all",
+ "2550Qv2024": "all",
+ "2551M": "all"
+}

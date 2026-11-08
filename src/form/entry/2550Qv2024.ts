@@ -1,0 +1,70 @@
+import type { NativeForm } from "../registry.ts";
+import { FORM_2550QV2024, validate2550Qv2024 } from "../form2550qv2024.ts";
+
+const P = "frm2550qv2024:";
+
+const entry: NativeForm = {
+  schema: FORM_2550QV2024,
+  validate: validate2550Qv2024,
+  label: {
+    [`${P}calendarNo1`]: "Calendar", [`${P}fiscalNo1`]: "Fiscal",
+    [`${P}selectedMonthNo2`]: "2 — Year ended (month)", [`${P}txtYearNo2`]: "2 — Year ended (YYYY)",
+    [`${P}OptQuarter1`]: "1st", [`${P}OptQuarter2`]: "2nd", [`${P}OptQuarter3`]: "3rd", [`${P}OptQuarter4`]: "4th",
+    [`${P}RtnPeriodFromNo4`]: "4 — Return period from (short period only)", [`${P}RtnPeriodToNo4`]: "4 — Return period to (short period only)",
+    [`${P}amendedReturnYesNo5`]: "Yes", [`${P}amendedReturnNo5`]: "No", [`${P}OptShortPrd1`]: "Yes", [`${P}OptShortPrd2`]: "No",
+    [`${P}branchCode`]: "Branch code", [`${P}txtRDOCode`]: "8 — RDO code", [`${P}taxpayerName`]: "9 — Taxpayer name",
+    [`${P}taxpayerAddress`]: "10 — Registered address", [`${P}taxpayerZip`]: "ZIP", [`${P}taxpayerContactNumber`]: "11 — Contact number",
+    [`${P}taxpayerEmailAddress`]: "12 — Email address",
+    [`${P}taxPayerClassification1`]: "Micro", [`${P}taxPayerClassification2`]: "Small", [`${P}taxPayerClassification3`]: "Medium", [`${P}taxPayerClassification4`]: "Large",
+    [`${P}internationalTreatyYn`]: "International tax treaty", [`${P}specialRateYn`]: "Special law / none", [`${P}specifyInternationalTreaty`]: "14 — Specify treaty / law",
+    [`${P}excessInputTax`]: "15 — Net VAT payable / (excess input tax) (item 61)",
+    [`${P}creditableVat`]: "16 — Creditable VAT withheld (Schedule 3)", [`${P}advVatPayment`]: "17 — Advance VAT payments (Schedule 4)",
+    [`${P}vatPaidReturn`]: "18 — VAT paid in return previously filed (amended only)", [`${P}otherCreditsNo19`]: "19 — Other credits / payments",
+    [`${P}totalTaxCredits`]: "20 — Total tax credits / payments", [`${P}excessCredits`]: "21 — Tax still payable / (excess credits)",
+    [`${P}surcharge`]: "22 — Surcharge", [`${P}interest`]: "23 — Interest", [`${P}compromise`]: "24 — Compromise",
+    [`${P}penalties`]: "25 — Total penalties", [`${P}totalPayable`]: "26 — Total amount payable / (overpayment)",
+    [`${P}vatableSales`]: "31A — VATable sales", [`${P}outputVatSales`]: "31B — Output tax", [`${P}zeroRatedSales`]: "32 — Zero-rated sales",
+    [`${P}exemptSales`]: "33 — Exempt sales", [`${P}totalSales`]: "34A — Total sales", [`${P}outputTaxDue`]: "34B — Total output tax due",
+    [`${P}lessOutputVat`]: "35 — Less: output VAT on uncollected receivables", [`${P}addOutputVat`]: "36 — Add: output VAT on recovered receivables",
+    [`${P}totalAdjOutput`]: "37 — Total adjusted output tax due",
+    [`${P}inputTaxCarried`]: "38 — Input tax carried over from previous quarter", [`${P}inputTaxDeferred`]: "39 — Deferred input tax on capital goods (Schedule 1)",
+    [`${P}transitionalInputTax`]: "40 — Transitional input tax", [`${P}presumptiveInputTax`]: "41 — Presumptive input tax",
+    [`${P}otherSpecify42`]: "42 — Others", [`${P}total43`]: "43 — Total",
+    [`${P}domesticPurchase`]: "44A — Domestic purchases", [`${P}domesticInputTax`]: "44B — Input tax",
+    [`${P}servicesPurchase`]: "45A — Services by non-residents", [`${P}serviceInputTax`]: "45B — Input tax",
+    [`${P}importPurchase`]: "46A — Importations", [`${P}importInputTax`]: "46B — Input tax",
+    [`${P}otherSpecify47`]: "47A — Others", otherSpecify47B: "47B — Input tax",
+    [`${P}domesticPurchaseNoTax`]: "48 — Domestic purchases with no input tax", [`${P}vatExemptImports`]: "49 — VAT-exempt importations",
+    [`${P}totalCurPurchase`]: "50A — Total current purchases", [`${P}totalCurInputTax`]: "50B — Total current input tax",
+    [`${P}totalAvailInputTax`]: "51 — Total available input tax",
+    [`${P}importCapitalInputTax`]: "52 — Input tax on capital goods deferred (Schedule 1)", [`${P}inputTaxAttr`]: "53 — Input tax attributable to exempt sales (Schedule 2)",
+    [`${P}vatRefund`]: "54 — VAT refund / TCC claimed", [`${P}inputVatUnpaid`]: "55 — Input VAT on unpaid payables",
+    [`${P}otherSpecify56`]: "56 — Others", [`${P}totalDeductions`]: "57 — Total deductions",
+    [`${P}addInputVat`]: "58 — Add: input VAT on settled unpaid payables", [`${P}adjDeductions`]: "59 — Adjusted deductions",
+    [`${P}totalAllowInputTax`]: "60 — Total allowable input tax", [`${P}netVatPayable`]: "61 — Net VAT payable / (excess input tax)",
+    [`${P}sched2InputTaxDirect`]: "Sched 2 — Input tax directly attributable to exempt sales", [`${P}sched2VatExemptSale`]: "Sched 2 — VAT-exempt sales",
+    [`${P}sched2AmountInputTax`]: "Sched 2 — Input tax not directly attributable", [`${P}sched2TotalSales`]: "Sched 2 — Total sales",
+    [`${P}sched2TotalRatable`]: "Sched 2 — Ratable portion", [`${P}sched2TotalAttr`]: "Sched 2 — Total input tax attributable to exempt sales",
+    txtDatePurchase1: "Date purchased", txtSourceCode1: "Source (D/I)", txtDescription1: "Description", txtAmountPurchase1: "Amount (net of VAT)",
+    txtInputTax1: "Input tax", txtEstimatedLife1: "Est. life (months)", txtRecognizedLife1: "Recognized life (months)",
+    txtAllowedInputTax1: "Allowable input tax", txtBalanceInputTax1: "Balance to carry",
+    txtDateCovered3: "Period from", txtDateCovered3To: "Period to", txtNameWithHoldingAgent3: "Withholding agent",
+    txtIncomePayment3: "Income payment", txtTotalTaxWithHeld3: "Tax withheld",
+    txtDate4: "Date from", txtDate4To: "Date to", txtNameOfMiller4: "Sugar mill", txtNameOfTaxpayer4: "Taxpayer",
+    txtOfficialReceiptNumber4: "OR number", txtAmountPaid4: "Amount paid",
+    [`${P}totalTaxPayableNo19Description`]: "Item 19 — description", [`${P}totalTaxPayableNo19Amount`]: "Amount",
+    [`${P}totalTaxPayableNo42Description`]: "Item 42 — description", [`${P}totalTaxPayableNo42Amount`]: "Amount",
+    [`${P}totalTaxPayableNo47Description`]: "Item 47 — description", [`${P}totalTaxPayableNo47Amount`]: "Amount",
+    [`${P}totalTaxPayableNo56Description`]: "Item 56 — description", [`${P}totalTaxPayableNo56Amount`]: "Amount",
+  },
+  // createXMLFileName: month + year + quarter, e.g. "122026Q3"
+  periodName: (s) =>
+    `${s[`${P}selectedMonthNo2`] ?? "12"}${s[`${P}txtYearNo2`] ?? ""}${[1, 2, 3, 4].map((q) => (s[`${P}OptQuarter${q}`] === "true" ? `Q${q}` : "")).join("")}`,
+  // loadBGData; the email is left out because BIR's capital() uppercases it on the first capital-blur
+  prefill: {
+    [`${P}txtTIN1`]: "tin1", [`${P}txtTIN2`]: "tin2", [`${P}txtTIN3`]: "tin3", [`${P}branchCode`]: "tin4",
+    [`${P}txtRDOCode`]: "rdo", [`${P}taxpayerName`]: "fn", [`${P}taxpayerAddress`]: "regAddr",
+    [`${P}taxpayerZip`]: "zip", [`${P}taxpayerContactNumber`]: "telNo",
+  },
+};
+export default entry;

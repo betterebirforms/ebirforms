@@ -1,0 +1,317 @@
+[
+ {
+  "id": "frm2000_OT:txtDateMonth",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000_OT:txtDateDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000_OT:txtDateYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:AmendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:AmendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtATC",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000OT:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000OT:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:NatureOfTrans_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:NatureOfTrans_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:NatureOfTrans_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txtSeller",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtBuyer",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTINS",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTINB",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:opt12_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txtLRP",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtRDOLP",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_5",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_7",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProptxt",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:ClassRealProp_6",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txt12B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12F",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:opt12_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txt12G",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12H",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12I",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12J",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12K",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txt12L",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTax13",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax14",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax15",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax16",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtLess",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtTax19A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax19B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax19C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax19D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:txtTax20",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000OT:opt21:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:opt21:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000OT:txtSched1A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched1B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched1C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched2A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched2B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched2C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched3A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched4A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000OT:txtSched5A",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

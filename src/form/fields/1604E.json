@@ -1,0 +1,614 @@
+[
+ {
+  "id": "frm1604e:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:j_id217:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1604e:j_id217:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1604e:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1604e:txtAgentname",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1604e:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1604e:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:j_id392:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1604e:j_id392:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1604e:txtSched1Date1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Date12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1BankVal12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheld12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Pen12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TotalAmt12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1TaxWheldTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1PenTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched1Total",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt5",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt6",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt7",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt9",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt10",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt11",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Date12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2BankVal12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheld12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Pen12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TotalAmt12",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2TaxWheldTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2PenTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1604e:txtSched2Total",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

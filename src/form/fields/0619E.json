@@ -1,0 +1,255 @@
+[
+ {
+  "id": "frm0619E:txtMonth",
+  "kind": "select"
+ },
+ {
+  "id": "frm0619E:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtDueMonth",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtDueDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtDueYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:optAmend:Y",
+  "kind": "radio"
+ },
+ {
+  "id": "frm0619E:optAmend:N",
+  "kind": "radio"
+ },
+ {
+  "id": "frm0619E:optWithheld:Y",
+  "kind": "radio"
+ },
+ {
+  "id": "frm0619E:optWithheld:N",
+  "kind": "radio"
+ },
+ {
+  "id": "frm0619E:txtAtc",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTaxTypeCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm0619E:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm0619E:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm0619E:txtAddress2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm0619E:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:optCategory:P",
+  "kind": "radio"
+ },
+ {
+  "id": "frm0619E:optCategory:G",
+  "kind": "radio"
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "frm0619E:txtTax14",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax15",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax16",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax17D",
+  "kind": "money"
+ },
+ {
+  "id": "frm0619E:txtTax18",
+  "kind": "money"
+ },
+ {
+  "id": "txtTaxAgentNo",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateIssue",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateExpiry",
+  "kind": "text"
+ },
+ {
+  "id": "txtAgency19",
+  "kind": "text"
+ },
+ {
+  "id": "txtNumber19",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate19",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmount19",
+  "kind": "money"
+ },
+ {
+  "id": "txtAgency20",
+  "kind": "text"
+ },
+ {
+  "id": "txtNumber20",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate20",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmount20",
+  "kind": "money"
+ },
+ {
+  "id": "txtAgency21",
+  "kind": "text"
+ },
+ {
+  "id": "txtNumber21",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate21",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmount21",
+  "kind": "money"
+ },
+ {
+  "id": "txtParticular22",
+  "kind": "text"
+ },
+ {
+  "id": "txtAgency22",
+  "kind": "text"
+ },
+ {
+  "id": "txtNumber22",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate22",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmount22",
+  "kind": "money"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm0619E:txtRDOCode",
+  "kind": "select"
+ }
+]

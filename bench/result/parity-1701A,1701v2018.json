@@ -1,0 +1,46 @@
+{
+ "summary": [
+  {
+   "form_code": "1701A",
+   "key": 195,
+   "equal": 195,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1701v2018",
+   "key": 838,
+   "equal": 838,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1701A",
+   "key_count": 195,
+   "equal_count": 195,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1701v2018",
+   "key_count": 838,
+   "equal_count": 838,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  }
+ ]
+}

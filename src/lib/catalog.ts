@@ -1,0 +1,97 @@
+// The forms BIR's main menu offers (BIRForms.hta formType select), with editions superseded by later laws
+// (docs/analysis/web-layer.md §4.4 — inferred from BIR revisions; superseded forms stay openable for old returns).
+// Generated once from v7.9.6.2's menu, then maintained by hand.
+
+export interface FormEntry {
+  form_code: string;
+  title: string;
+  /** The edition that replaced this one; absent = current. */
+  superseded_by?: string;
+}
+
+export const CATALOG: readonly FormEntry[] = [
+  { form_code: "0605", title: "Payment Form" },
+  { form_code: "0619E", title: "Monthly Remittance Form for Creditable Income Taxes Withheld (Expanded)" },
+  { form_code: "0619F", title: "Monthly Remittance Form for Final Income Taxes Withheld" },
+  { form_code: "1600", title: "Monthly Remittance Return of Value-Added Tax and Other Percentage Taxes Withheld", superseded_by: "1600VTv2018" },
+  { form_code: "1600PTv2018", title: "Monthly Remittance Return of Other Percentage Taxes Withheld" },
+  { form_code: "1600VTv2018", title: "Monthly Remittance Return of Value-Added Tax Withheld" },
+  { form_code: "1600WP", title: "Remittance Return of Percentage Tax on Winnings and Prizes" },
+  { form_code: "1601C", title: "Monthly Remittance Return of Income Taxes Withheld on Compensation", superseded_by: "1601Cv2018" },
+  { form_code: "1601Cv2018", title: "Monthly Remittance Return of Income Taxes Withheld on Compensation" },
+  { form_code: "1601E", title: "Monthly Remittance Return of Creditable Income Taxes Withheld (Expanded)", superseded_by: "1601EQ" },
+  { form_code: "1601EQ", title: "Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)" },
+  { form_code: "1601F", title: "Monthly Remittance Return of Final Income Tax Withheld", superseded_by: "1601FQ" },
+  { form_code: "1601FQ", title: "Quarterly Remittance Return of Final Income Tax Withheld" },
+  { form_code: "1602", title: "Monthly Remittance Return of Final Income Taxes Withheld", superseded_by: "1602Qv2018" },
+  { form_code: "1602Qv2018", title: "Quarterly Remittance Return of Final Taxes Withheld on Interest Paid on Deposits Substitutes/Trusts/Etc." },
+  { form_code: "1603", title: "Quarterly Remittance Return of Final Income Taxes Withheld", superseded_by: "1603Qv2018" },
+  { form_code: "1603Qv2018", title: "Quarterly Remittance Return of Final Income Taxes Withheld on Fringe Benefits Paid to Employees Other Than Rank and File" },
+  { form_code: "1604C", title: "Annual Information Return of Income Taxes Withheld on Compensation" },
+  { form_code: "1604CF", title: "Annual Information Return of Income Taxes Withheld on Compensation", superseded_by: "1604C" },
+  { form_code: "1604F", title: "Annual Information Return of Income Payments Subjected to Final Withholding Taxes" },
+  { form_code: "1604E", title: "Annual Information Return of Creditable Income Taxes Withheld", superseded_by: "1604Ev2018" },
+  { form_code: "1604Ev2018", title: "Annual Information Return of Creditable Income Taxes Withheld" },
+  { form_code: "1606", title: "ONETT Withholding Tax Return" },
+  { form_code: "1700", title: "Annual Income Tax Return", superseded_by: "1700v2018" },
+  { form_code: "1700v2018", title: "Annual Income Tax Return" },
+  { form_code: "1701", title: "Annual Income Tax Return", superseded_by: "1701v2018" },
+  { form_code: "1701A", title: "Annual Income Tax Return" },
+  { form_code: "1701MS", title: "Annual Income Tax Return For Individuals Classified as MICRO or SMALL Taxpayers" },
+  { form_code: "1701v2018", title: "Annual Income Tax Return" },
+  { form_code: "1701Q", title: "Quarterly Income Tax Return For Self-Employed Individuals, Estates and Trusts", superseded_by: "1701Qv2018" },
+  { form_code: "1701Qv2018", title: "Quarterly Income Tax Return For Self-Employed Individuals, Estates and Trusts" },
+  { form_code: "1702EX", title: "Annual Income Tax Return (EXEMPT)", superseded_by: "1702EXv2018C" },
+  { form_code: "1702EXv2018", title: "Annual Income Tax Return (EXEMPT)", superseded_by: "1702EXv2018C" },
+  { form_code: "1702EXv2018C", title: "Annual Income Tax Return (EXEMPT)" },
+  { form_code: "1702MX", title: "Annual Income Tax Return (MIXED)", superseded_by: "1702MXv2018C" },
+  { form_code: "1702MXv2018", title: "Annual Income Tax Return (MIXED)", superseded_by: "1702MXv2018C" },
+  { form_code: "1702MXv2018C", title: "Annual Income Tax Return (MIXED)" },
+  { form_code: "1702RT", title: "Annual Income Tax Return (REGULAR)", superseded_by: "1702RTv2018C" },
+  { form_code: "1702RTv2018", title: "Annual Income Tax Return (REGULAR)", superseded_by: "1702RTv2018C" },
+  { form_code: "1702RTv2018C", title: "Annual Income Tax Return (REGULAR)" },
+  { form_code: "1702Q", title: "Quarterly income Tax Return", superseded_by: "1702Qv2018C" },
+  { form_code: "1702Qv2008C", title: "Quarterly income Tax Return", superseded_by: "1702Qv2018C" },
+  { form_code: "1702Qv2018C", title: "Quarterly income Tax Return" },
+  { form_code: "1704", title: "Improperly Accumulated Earnings Tax Return" },
+  { form_code: "1706", title: "ONETT Capital Gains Tax Return (Capital Asset)" },
+  { form_code: "1707", title: "ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)", superseded_by: "1707v2021" },
+  { form_code: "1707v2018", title: "ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)", superseded_by: "1707v2021" },
+  { form_code: "1707v2021", title: "ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)" },
+  { form_code: "1707A", title: "Annual Capital Gains Tax Return(For Onerous Transfer of Shares of Stocks Not Traded Through the Local Stock Exchange)", superseded_by: "1707Av2021" },
+  { form_code: "1707Av2021", title: "Annual Capital Gains Tax Return(For Onerous Transfer of Shares of Stocks Not Traded Through the Local Stock Exchange)" },
+  { form_code: "1800", title: "ONETT Donor's Tax Return", superseded_by: "1800v2018" },
+  { form_code: "1800v2018", title: "Donor's Tax Return" },
+  { form_code: "1801", title: "ONETT Estate Tax Return", superseded_by: "1801v2018" },
+  { form_code: "1801v2018", title: "ONETT Estate Tax Return" },
+  { form_code: "2000", title: "Documentary Stamp Tax Declaration/Return", superseded_by: "2000v2018" },
+  { form_code: "2000v2018", title: "Monthly Documentary Stamp Tax Declaration/Return" },
+  { form_code: "2000OT", title: "Documentary Stamp Tax Declaration/Return (one-time transactions)", superseded_by: "2000OTv2018" },
+  { form_code: "2000OTv2018", title: "Documentary Stamp Tax Declaration/Return (One-Time Transactions)" },
+  { form_code: "2200A", title: "Excise Tax Return for Alcohol Products", superseded_by: "2200Av2020" },
+  { form_code: "2200Av2020", title: "Excise Tax Return for Alcohol Products" },
+  { form_code: "2200AN", title: "Excise Tax Return for Automobiles and Non-Essential Goods", superseded_by: "2200ANv2018" },
+  { form_code: "2200ANv2018", title: "Excise Tax Return for Automobiles and Non-Essential Goods" },
+  { form_code: "2200Cv2018", title: "Excise Tax Return for Cosmetic Procedures" },
+  { form_code: "2200M", title: "Excise Tax Return for Mineral Products", superseded_by: "2200Mv2018" },
+  { form_code: "2200Mv2018", title: "Excise Tax Return for Mineral Products" },
+  { form_code: "2200P", title: "Excise Tax Return for Petroleum Products", superseded_by: "2200Pv2020" },
+  { form_code: "2200Pv2020", title: "Excise Tax Return for Petroleum Products" },
+  { form_code: "2200S", title: "Excise Tax Return for Sweetened Beverages" },
+  { form_code: "2200T", title: "Excise Tax Return for Tobacco Products", superseded_by: "2200Tv2020" },
+  { form_code: "2200Tv2020", title: "Excise Tax Return for Tobacco Products" },
+  { form_code: "2550M", title: "Monthly Value-Added Tax Declaration" },
+  { form_code: "2550Q", title: "Quarterly Value-Added Tax Return", superseded_by: "2550Qv2024" },
+  { form_code: "2550Qv2024", title: "Quarterly Value-Added (VAT) Tax Return" },
+  { form_code: "2551", title: "Quarterly Percentage Tax Return", superseded_by: "2551Qv2018" },
+  { form_code: "2551Qv2018", title: "Quarterly Percentage Tax Return" },
+  { form_code: "2551M", title: "Monthly Percentage Tax Return" },
+  { form_code: "2552", title: "Percentage Tax Return on Stocks", superseded_by: "2552v2018" },
+  { form_code: "2552v2018", title: "Percentage Tax Return on Stocks" },
+  { form_code: "2553", title: "Percentage Tax Payable Under Special Laws" },
+];
+
+/** The HTA file a form code opens (the menu's "2551" opens BIR-Form2551.hta, labelled 2551Q). */
+export const formPage = (form_code: string) => `forms/BIR-Form${form_code}.hta`;
+
+export const isCurrent = (e: FormEntry) => !e.superseded_by;

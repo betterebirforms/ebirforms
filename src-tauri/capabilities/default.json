@@ -1,0 +1,15 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "The faux-XP caption strip: window controls only. BIR's pages (the content webview) get no IPC.",
+  "webviews": ["caption"],
+  "remote": { "urls": ["http://127.0.0.1:*"] },
+  "permissions": [
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-is-maximized",
+    "core:window:allow-close",
+    "core:window:allow-start-dragging",
+    "core:event:default"
+  ]
+}

@@ -1,0 +1,613 @@
+[
+ {
+  "id": "frm2000:txtMonth",
+  "kind": "select"
+ },
+ {
+  "id": "frm2000:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:AmendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:AmendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000:txtAddress2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:optParty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:optParty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:optParty_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:txtOtherName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000:txtOtherName2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2000:txtOtherTIN",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:optMode_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:optMode_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:optMode_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:txtTax14",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax15A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax15B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax15C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax15D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax16",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax17D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax18",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtTax19",
+  "kind": "money"
+ },
+ {
+  "id": "txtTaxAgentNo",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateIssue",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateExpiry",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAgency20",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtNumber20",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtDate20",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAmount20",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtAgency21",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtNumber21",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtDate21",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAmount21",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtAgency22",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtNumber22",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtDate22",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAmount22",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtParticular36",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAgency23",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtNumber23",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtDate23",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtAmount23",
+  "kind": "money"
+ },
+ {
+  "id": "frm2000:txtPg2TIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtPg2TIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtPg2TIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtPg2BranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtPg2TaxpayerName",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule1Delete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "drpATCCode0",
+  "kind": "select"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxBase0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxRate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxDue0",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule1Delete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "drpATCCode1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxBase1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxRate1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxDue1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule1Delete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "drpATCCode2",
+  "kind": "select"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxBase2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxRate2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTaxDue2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched1:txtTotalDue1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule2Delete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched2:txtPaymentDate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtReceipt0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtAmountPaid0",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule2Delete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched2:txtPaymentDate1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtReceipt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtAmountPaid1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule2Delete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched2:txtPaymentDate2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtReceipt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtAmountPaid2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched2:txtTotalPayment1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule3Delete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched3:txtPaymentDate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtReceipt0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtAmountPaid0",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule3Delete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched3:txtPaymentDate1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtReceipt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtAmountPaid1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule3Delete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched3:txtPaymentDate2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtReceipt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtAmountPaid2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched3:txtTotalPayment1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule4Delete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched4:txtRCOCode0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtRemittanceDate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtBank0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtAmountRemitted0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberFrom0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberTo0",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule4Delete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched4:txtRCOCode1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtRemittanceDate1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtBank1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtAmountRemitted1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberFrom1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberTo1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSchedule4Delete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2000:sched4:txtRCOCode2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtRemittanceDate2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtBank2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtAmountRemitted2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberFrom2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtNumberTo2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:sched4:txtTotalRemittance1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtCurrentPage",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtMaxPage",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:modLabel",
+  "kind": "text"
+ },
+ {
+  "id": "ds106modYes",
+  "kind": "radio"
+ },
+ {
+  "id": "ds106modNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:numOfDays",
+  "kind": "text"
+ },
+ {
+  "id": "ds130modYes",
+  "kind": "radio"
+ },
+ {
+  "id": "ds130modNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:numOfMonths",
+  "kind": "text"
+ },
+ {
+  "id": "ds131modYes",
+  "kind": "radio"
+ },
+ {
+  "id": "ds131modNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:numOfMonths131",
+  "kind": "text"
+ },
+ {
+  "id": "ds132modYes",
+  "kind": "radio"
+ },
+ {
+  "id": "ds132modNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2000:numOfMonths132",
+  "kind": "text"
+ },
+ {
+  "id": "frm2000:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm2000:txtRDOCode",
+  "kind": "select"
+ }
+]

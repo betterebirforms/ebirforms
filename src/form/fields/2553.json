@@ -1,0 +1,290 @@
+[
+ {
+  "id": "frm2553:itemFiscalStartMonth:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:itemFiscalStartMonth:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:itemYearEndMonth",
+  "kind": "select"
+ },
+ {
+  "id": "frm2553:txtYearEnded",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:optQtr:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optQtr:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optQtr:_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optQtr:_4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optAmended_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optAmended_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtRDOCode",
+  "kind": "select"
+ },
+ {
+  "id": "frm2553:txtDescription",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2553:txtTPName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2553:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2553:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:optTreaty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:optTreaty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:lstTaxTreaty",
+  "kind": "select"
+ },
+ {
+  "id": "frm2553:txt14A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt14B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt14C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt14D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt14E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt15A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt15B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt15C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt15D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt15E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt16A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt16B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt16C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt16D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt16E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt17A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt17B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt17C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt17D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt17E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt18A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt18B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt18C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt18D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt18E",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt19",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt20A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt20B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt20C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt21",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt22A",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt22B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt22C",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt22D",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:txt23",
+  "kind": "text"
+ },
+ {
+  "id": "frm2553:ifoverpay_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2553:ifoverpay_2",
+  "kind": "radio"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

@@ -1,0 +1,653 @@
+[
+ {
+  "id": "frm2550qv2024:calendarNo1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:fiscalNo1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:selectedMonthNo2",
+  "kind": "select"
+ },
+ {
+  "id": "frm2550qv2024:txtYearNo2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:OptQuarter1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:OptQuarter2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:OptQuarter3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:OptQuarter4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:RtnPeriodFromNo4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:RtnPeriodToNo4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:amendedReturnYesNo5",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:amendedReturnNo5",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:OptShortPrd1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:OptShortPrd2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:branchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:taxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550qv2024:taxpayerAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550qv2024:taxpayerZip",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:taxpayerContactNumber",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:taxpayerEmailAddress",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:taxPayerClassification1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:taxPayerClassification2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:taxPayerClassification3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:taxPayerClassification4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:internationalTreatyYn",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:specialRateYn",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550qv2024:specifyInternationalTreaty",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:excessInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:creditableVat",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:advVatPayment",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:vatPaidReturn",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addSpecifyNo19",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:otherCreditsNo19",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalTaxCredits",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:excessCredits",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:surcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550qv2024:interest",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550qv2024:compromise",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550qv2024:penalties",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550qv2024:txtPg2TIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtPg2TIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtPg2TIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtPg2BranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:Pg2TaxPayer",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:vatableSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:outputVatSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:zeroRatedSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:exemptSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:outputTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:lessOutputVat",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addOutputVat",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalAdjOutput",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:inputTaxCarried",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:inputTaxDeferred",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:transitionalInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:presumptiveInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addSpecifyNo42",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:otherSpecify42",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:total43",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:domesticPurchase",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:domesticInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:servicesPurchase",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:serviceInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:importPurchase",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:importInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addSpecifyNo47",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:otherSpecify47",
+  "kind": "text"
+ },
+ {
+  "id": "otherSpecify47B",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:domesticPurchaseNoTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:vatExemptImports",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalCurPurchase",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalCurInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalAvailInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:importCapitalInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:inputTaxAttr",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:vatRefund",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:inputVatUnpaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addSpecifyNo56",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:otherSpecify56",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalDeductions",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:addInputVat",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:adjDeductions",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:totalAllowInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:netVatPayable",
+  "kind": "money"
+ },
+ {
+  "id": "txtDatePurchase10",
+  "kind": "text"
+ },
+ {
+  "id": "txtSourceCode10",
+  "kind": "text"
+ },
+ {
+  "id": "txtDescription10",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountPurchase10",
+  "kind": "text"
+ },
+ {
+  "id": "txtInputTax10",
+  "kind": "text"
+ },
+ {
+  "id": "txtEstimatedLife10",
+  "kind": "text"
+ },
+ {
+  "id": "txtRecognizedLife10",
+  "kind": "text"
+ },
+ {
+  "id": "txtAllowedInputTax10",
+  "kind": "text"
+ },
+ {
+  "id": "txtBalanceInputTax10",
+  "kind": "text"
+ },
+ {
+  "id": "txtDatePurchase11",
+  "kind": "text"
+ },
+ {
+  "id": "txtSourceCode11",
+  "kind": "text"
+ },
+ {
+  "id": "txtDescription11",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountPurchase11",
+  "kind": "text"
+ },
+ {
+  "id": "txtInputTax11",
+  "kind": "text"
+ },
+ {
+  "id": "txtEstimatedLife11",
+  "kind": "text"
+ },
+ {
+  "id": "txtRecognizedLife11",
+  "kind": "text"
+ },
+ {
+  "id": "txtAllowedInputTax11",
+  "kind": "text"
+ },
+ {
+  "id": "txtBalanceInputTax11",
+  "kind": "text"
+ },
+ {
+  "id": "sched1TotalBalPrev",
+  "kind": "text"
+ },
+ {
+  "id": "sched1TotalBalNext",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2InputTaxDirect",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2VatExemptSale",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2AmountInputTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2TotalSales",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2TotalRatable",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:sched2TotalAttr",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateCovered30",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateCovered3To0",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameWithHoldingAgent30",
+  "kind": "text"
+ },
+ {
+  "id": "txtIncomePayment30",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalTaxWithHeld30",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateCovered31",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateCovered3To1",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameWithHoldingAgent31",
+  "kind": "text"
+ },
+ {
+  "id": "txtIncomePayment31",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalTaxWithHeld31",
+  "kind": "text"
+ },
+ {
+  "id": "sched3TotalIncome",
+  "kind": "text"
+ },
+ {
+  "id": "sched3TotalTax",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate40",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate4To0",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameOfMiller40",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameOfTaxpayer40",
+  "kind": "text"
+ },
+ {
+  "id": "txtOfficialReceiptNumber40",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountPaid40",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate41",
+  "kind": "text"
+ },
+ {
+  "id": "txtDate4To1",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameOfMiller41",
+  "kind": "text"
+ },
+ {
+  "id": "txtNameOfTaxpayer41",
+  "kind": "text"
+ },
+ {
+  "id": "txtOfficialReceiptNumber41",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountPaid41",
+  "kind": "text"
+ },
+ {
+  "id": "sched4AmountPaid",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtCurrentPage",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550qv2024:txtMaxPage",
+  "kind": "text"
+ },
+ {
+  "id": "resultOtherCreditsNo19",
+  "kind": "text"
+ },
+ {
+  "id": "resultOtherCreditsNo42",
+  "kind": "text"
+ },
+ {
+  "id": "resultOtherCreditsNo47",
+  "kind": "text"
+ },
+ {
+  "id": "resultOtherCreditsNo56",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalAmountOfBalanceofInputTaxFromPrevious",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalAmountOfBalanceofInputTaxToBeCarried",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalAmountofIncomePayment",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalAmoungOfTaxWithHeld",
+  "kind": "text"
+ },
+ {
+  "id": "txtAmountPaidSched4",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

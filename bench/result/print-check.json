@@ -1,0 +1,60 @@
+{
+ "date": "2026-11-08",
+ "engine": "chromium page.pdf (proxy for the macOS print sheet)",
+ "result": [
+  {
+   "form": "1701Qv2018",
+   "paper": "A4",
+   "page_size_pt": "595.92x841.92",
+   "page_count": 2,
+   "clipped_page": 0,
+   "overflow_px": 171,
+   "fit_scale": 0.81
+  },
+  {
+   "form": "1701Qv2018",
+   "paper": "Legal",
+   "page_size_pt": "612x1008",
+   "page_count": 1,
+   "clipped_page": 0,
+   "overflow_px": 148,
+   "fit_scale": 0.83
+  },
+  {
+   "form": "1701Qv2018",
+   "paper": "Long bond",
+   "page_size_pt": "612x936",
+   "page_count": 1,
+   "clipped_page": 0,
+   "overflow_px": 148,
+   "fit_scale": 0.83
+  },
+  {
+   "form": "2551Qv2018",
+   "paper": "A4",
+   "page_size_pt": "595.92x841.92",
+   "page_count": 1,
+   "clipped_page": 0,
+   "overflow_px": 149,
+   "fit_scale": 0.83
+  },
+  {
+   "form": "2551Qv2018",
+   "paper": "Legal",
+   "page_size_pt": "612x1008",
+   "page_count": 1,
+   "clipped_page": 0,
+   "overflow_px": 127,
+   "fit_scale": 0.85
+  },
+  {
+   "form": "2551Qv2018",
+   "paper": "Long bond",
+   "page_size_pt": "612x936",
+   "page_count": 1,
+   "clipped_page": 0,
+   "overflow_px": 127,
+   "fit_scale": 0.85
+  }
+ ]
+}

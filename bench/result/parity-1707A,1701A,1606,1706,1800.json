@@ -1,0 +1,102 @@
+{
+ "summary": [
+  {
+   "form_code": "1606",
+   "key": 99,
+   "equal": 99,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1706",
+   "key": 122,
+   "equal": 122,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1800",
+   "key": 85,
+   "equal": 85,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1707A",
+   "key": 127,
+   "equal": 126,
+   "missing": 0,
+   "extra": 0,
+   "diff": 1,
+   "page_error": 0
+  },
+  {
+   "form_code": "1701A",
+   "key": 195,
+   "equal": 195,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1606",
+   "key_count": 99,
+   "equal_count": 99,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1706",
+   "key_count": 122,
+   "equal_count": 122,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1800",
+   "key_count": 85,
+   "equal_count": 85,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1707A",
+   "key_count": 127,
+   "equal_count": 126,
+   "missing": [],
+   "extra": [],
+   "diff": [
+    {
+     "key": "frm1707A:rdoI19TaxCreditCertificate",
+     "native": "true",
+     "legacy": "false"
+    }
+   ],
+   "page_error": []
+  },
+  {
+   "form_code": "1701A",
+   "key_count": 195,
+   "equal_count": 195,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  }
+ ]
+}

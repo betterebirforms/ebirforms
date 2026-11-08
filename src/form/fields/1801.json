@@ -1,0 +1,423 @@
+[
+ {
+  "id": "frm1801:txtDateMonth",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtDateDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtDateYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:amendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:amendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txt4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtRDOCode",
+  "kind": "select"
+ },
+ {
+  "id": "frm1801:txtTINE1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTINE2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTINE3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtBranchCodeE",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTaxpayer",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1801:txtExecutor",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1801:txtResidence",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1801:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1801:txtZip",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtTelephone",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtRAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1801:optTreaty:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:optTreaty:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:lstTaxTreaty",
+  "kind": "select"
+ },
+ {
+  "id": "frm1801:Notice:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:Notice:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:Judicially:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:Judicially:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:Return:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:Return:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:PayTax:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:PayTax:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1801:txt17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt18A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt18B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt18C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt19A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt19B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt19C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt20A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt20B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt20C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt21A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt21B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt21C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt22A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt22B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt22C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt23A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt23B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt23C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt24",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt25",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt26",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtOthers27a",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txt27A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtOthers27b",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txt27B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt28",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt29",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt30",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt31",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt32A",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt32B",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt32C",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt33",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSurcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtCompromise",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtInterest",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtTotalPenalties",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txt35",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch1AmountConj",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch1AmountExc",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch1XAmountConj",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch1XAmountExc",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch2AmountConj",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch2AmountExc",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch3AmountExc",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch3AmountConj",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch4AmountExc",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:totalSch4AmountConj",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal1",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive1",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal2",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive2",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal3",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive3",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal4",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive4",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal5",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive5",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal6",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive6",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal7",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive7",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Desc8",
+  "kind": "text"
+ },
+ {
+  "id": "frm1801:txtSc5Conjugal8",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5Exclusive8",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5TotalConjugal",
+  "kind": "money"
+ },
+ {
+  "id": "frm1801:txtSc5TotalExclusive",
+  "kind": "money"
+ }
+]

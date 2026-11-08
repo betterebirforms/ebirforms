@@ -1,0 +1,43 @@
+[package]
+name = "ebirforms"
+version = "0.1.0"
+description = "Cross-platform rebuild of the BIR Offline eBIRForms Package"
+edition = "2021"
+rust-version = "1.80"
+
+[lib]
+name = "ebirforms_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["unstable"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tiny_http = "0.12"
+lzma-rs = "0.3"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+regex = "1"
+getrandom = "0.2"
+aes = { version = "0.8", optional = true }
+cbc = { version = "0.1", optional = true, features = ["alloc"] }
+sha2 = { version = "0.10", optional = true }
+sha1 = { version = "0.10", optional = true }
+hmac = { version = "0.12", optional = true }
+pbkdf2 = { version = "0.12", optional = true, default-features = false, features = ["hmac"] }
+base64 = { version = "0.22", optional = true }
+flate2 = { version = "1", optional = true }
+russh = { version = "0.64.1", optional = true, default-features = false, features = ["ring", "flate2", "rsa"] }
+russh-sftp = { version = "3.0.1", optional = true }
+tokio = { version = "1.53.3", optional = true, features = ["rt", "net", "io-util", "time", "macros"] }
+
+[features]
+# BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload.
+# The shareable build (`--no-default-features`) has none of it — see ROADMAP P4.
+default = ["bir-submit"]
+bir-submit = ["dep:aes", "dep:cbc", "dep:sha2", "dep:sha1", "dep:hmac", "dep:pbkdf2", "dep:base64", "dep:flate2", "dep:russh", "dep:russh-sftp", "dep:tokio"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "time"] }

@@ -1,0 +1,26 @@
+{
+ "summary": [
+  {
+   "form_code": "1700",
+   "key": 311,
+   "equal": 311,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1700",
+   "key_count": 311,
+   "equal_count": 311,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  }
+ ]
+}

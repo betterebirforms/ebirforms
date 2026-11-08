@@ -1,0 +1,418 @@
+[
+ {
+  "id": "frm2551Qv2018:forThe_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:forThe_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:rtnMonth",
+  "kind": "select",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:txtYear",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:qtr_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:qtr_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:qtr_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:qtr_4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:amendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:amendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:txtSheets",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:txtTIN1",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:txtTIN2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:txtTIN3",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:txtBranchCode",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:registeredName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:registeredAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:zipCode",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551Qv2018:telNo",
+  "kind": "text"
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:taxTreaty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:taxTreaty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:txtTaxReliefSpecify",
+  "kind": "select"
+ },
+ {
+  "id": "frm2551Qv2018:taxRate1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:taxRate2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:txt14",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt15",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt16",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt17Specify",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt17",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt18",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt19",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt20",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt21",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt22",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt23",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txt24",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:overPayment1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551Qv2018:overPayment2",
+  "kind": "radio"
+ },
+ {
+  "id": "txtTaxAgentNo",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateIssue",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateExpiry",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAgency25",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtNumber25",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtDate25",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAmount25",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551Qv2018:txtAgency26",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtNumber26",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtDate26",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAmount26",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551Qv2018:txtAgency27",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtNumber27",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtDate27",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAmount27",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551Qv2018:txtParticular28",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAgency28",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtNumber28",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtDate28",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtAmount28",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551Qv2018:txtPg2TIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtPg2TIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtPg2TIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtPg2BranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtPg2TaxpayerName",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC1",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt1",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate1",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue1",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC2",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt2",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate2",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue2",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC3",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt3",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate3",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue3",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC4",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt4",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate4",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue4",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC5",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt5",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate5",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue5",
+  "kind": "text"
+ },
+ {
+  "id": "drpATC6",
+  "kind": "select"
+ },
+ {
+  "id": "txtATCAmt6",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCRate6",
+  "kind": "text"
+ },
+ {
+  "id": "txtATCDue6",
+  "kind": "text"
+ },
+ {
+  "id": "txtTotalSched1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtCurrentPage",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551Qv2018:txtMaxPage",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm2551Qv2018:txtRDOCode",
+  "kind": "select",
+  "escaped": true
+ }
+]

@@ -1,0 +1,29 @@
+node_modules/
+dist/
+dist-web/
+.env
+.env.*.local
+# extractor output (BIR's full tree incl. native helpers with embedded secrets) — copy usable assets to asset/bir/
+vendor/original/
+src-tauri/target/
+src-tauri/gen/
+*.log
+.DS_Store
+.data/
+bench/result/*.log
+
+# SFTP integration + e2e upload fixtures are derived by hand during a session
+test/fixture/uploaded.*
+
+# private correspondence for BIR (security disclosure) — never committed
+docs/bir/private/
+src-tauri/package-bir/
+dist-package/
+
+# kept local + in the private archive, never in the public repo: BIR correspondence, plans, security write-ups
+docs/bir/
+docs/brainstorm/
+docs/analysis/web-layer.md
+docs/analysis/native-layer.md
+docs/analysis/audit-status.md
+bench/_jq*.mjs

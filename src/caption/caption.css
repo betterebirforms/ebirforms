@@ -1,0 +1,159 @@
+/* Windows XP "Luna" (blue) caption, drawn in CSS: 30 px tall, Trebuchet bold title, three 21 px buttons. */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0054e3;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+#caption {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 5px 0 6px;
+  box-sizing: border-box;
+  background: linear-gradient(
+    to bottom,
+    #0058ee 0%,
+    #3593ff 4%,
+    #288eff 6%,
+    #127dff 8%,
+    #036ffc 10%,
+    #0262ee 14%,
+    #0057e5 20%,
+    #0054e3 24%,
+    #0055eb 56%,
+    #005bf5 66%,
+    #026afe 76%,
+    #0062ef 86%,
+    #0052d6 92%,
+    #0040ab 94%,
+    #003092 100%
+  );
+  border-radius: 8px 8px 0 0;
+}
+#caption.maximized {
+  border-radius: 0;
+}
+#caption.inactive {
+  background: linear-gradient(
+    to bottom,
+    #7a96df 0%,
+    #a5bbf0 4%,
+    #9db5ee 8%,
+    #8aa6e8 14%,
+    #7f9de3 24%,
+    #7e9be2 56%,
+    #819ee4 76%,
+    #7894dd 92%,
+    #6a82c9 100%
+  );
+}
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  flex: none;
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: bold 13px "Trebuchet MS", Tahoma, sans-serif;
+  color: #fff;
+  text-shadow: 1px 1px #0f1089;
+  letter-spacing: 0;
+}
+#caption.inactive .title {
+  color: #d8e4f8;
+  text-shadow: none;
+}
+nav {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+button {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  padding: 0;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background: radial-gradient(circle at 90% 90%, #0054e9 0%, #2263d5 55%, #4483ef 85%, #6c9bf5 100%);
+  box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.25);
+}
+button:hover {
+  filter: brightness(1.18);
+}
+button:active {
+  filter: brightness(0.85);
+}
+#caption.inactive button {
+  opacity: 0.75;
+}
+button.close {
+  margin-left: 2px;
+  background: radial-gradient(circle at 90% 90%, #cc4600 0%, #dc6527 55%, #cd7546 85%, #f3b391 100%);
+}
+/* glyphs */
+button::before,
+button::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+button.minimize::before {
+  left: 4px;
+  bottom: 4px;
+  width: 7px;
+  height: 3px;
+}
+button.minimize::after {
+  display: none;
+}
+button.maximize::before {
+  left: 4px;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  background: transparent;
+  border: 1px solid #fff;
+  border-top-width: 3px;
+}
+button.maximize::after {
+  display: none;
+}
+#caption.maximized button.maximize::before {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
+  border-top-width: 2px;
+}
+#caption.maximized button.maximize::after {
+  display: block;
+  left: 3px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  background: #2263d5;
+  border: 1px solid #fff;
+  border-top-width: 2px;
+}
+button.close::before,
+button.close::after {
+  left: 9px;
+  top: 3px;
+  width: 2px;
+  height: 13px;
+  transform: rotate(45deg);
+}
+button.close::after {
+  transform: rotate(-45deg);
+}

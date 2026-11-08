@@ -1,0 +1,558 @@
+[
+ {
+  "id": "frm2200A:txtMonth1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txtDate",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtForYr",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:amendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:amendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtTaxPayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200A:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200A:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtContactNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200A:txtPSIC",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtEmailAddress",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txt12optRegion",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txt12optProvince",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txt12optCity",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txt13optRegion1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txt13optProvince1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txt13optCity1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:optTreaty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:optTreaty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:lstTaxTreaty",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:chkPymntManner_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:chkPymntManner_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200A:chkPymntManner_3",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2200A:txt17OthMannerofPymnt",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtTax18",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax19A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax19B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax19C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax20",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax21",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax22",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax23A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax23B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax23C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax23D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax24",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax25A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:chkPenalties",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2200A:txtTax25B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax25C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:txtTax26",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200A:xa1_exempt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa1_taxable1",
+  "kind": "text"
+ },
+ {
+  "id": "CalcSubTotalXA035",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa1_exciseTaxDue1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa1_exempt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa1_taxable2",
+  "kind": "text"
+ },
+ {
+  "id": "CalcSubTotalXA036",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa1_exciseTaxDue2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exempt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_taxable1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exciseTaxDue1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exempt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_taxable2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exciseTaxDue2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exempt3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_taxable3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exciseTaxDue3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exempt4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_taxable4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exciseTaxDue4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_rate5",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exempt5",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_taxable5",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa2_exciseTaxDue5",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exempt1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_taxable1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exciseTaxDue1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exempt2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_taxable2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exciseTaxDue2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exempt3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_taxable3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:xa3_exciseTaxDue3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1Chk0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2200A:sched1Atc0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1Desc0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1TaxBracket0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1AppRate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1Exempt0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1Taxable0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:sched1ExciseTaxDue0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:totalTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA035Bottle",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA035Bottle",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA035Bulk",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA035Bulk",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA036Bottle",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA036Bottle",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA036Bulk",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA036Bulk",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA061",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA061",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA062",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA062",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA070",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA070",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA080",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA080",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA055",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA055",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA0552",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA0552",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA056",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA056",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA0562",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA0562",
+  "kind": "text"
+ },
+ {
+  "id": "CalcCheckXA057",
+  "kind": "checkbox"
+ },
+ {
+  "id": "CalcSubTotalXA057",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA035Bottle",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA035Bulk",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA036Bottle",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA036Bulk",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA061",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA062",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA070",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA080",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA055",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA0552",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA056",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA0562",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtCtrmodalCalculatorXA057",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200A:txtRDOCode",
+  "kind": "select"
+ }
+]

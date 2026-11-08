@@ -1,0 +1,643 @@
+[
+ {
+  "id": "frm1707:txtPg1I1Month",
+  "kind": "select"
+ },
+ {
+  "id": "frm1707:txtPg1I1Day",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I1Year",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoPg1I2AmendedYes",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I2AmendedNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I3ATCIndiv",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtPg1I3Indiv",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoPg1I3ATCCorp",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtPg1I3Corp",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I4NoOfSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1TIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1TIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1TIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1TIN4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:ProfileName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:ProfileAddress1",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:ProfileAddress2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:ProfileZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:ProfileContactNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:ProfileEmailAddr",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "chkSellerDelete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerName0",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerAddr0",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerTIN0",
+  "kind": "text"
+ },
+ {
+  "id": "chkSellerDelete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerName1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerAddr1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "chkSellerDelete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerName2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerAddr2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I6SellerTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "chkBuyerDelete0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerName0",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerAddr0",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerTIN0",
+  "kind": "text"
+ },
+ {
+  "id": "chkBuyerDelete1",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerName1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerAddr1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "chkBuyerDelete2",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerName2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerAddr2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1I7BuyerTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoPg1I8TaxReliefYes",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I8TaxReliefNo",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtPg1I8TaxReliefSpec",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoPg1I9TransDescCash",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I9TransDescInstallment",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I9TransDescForeclosure",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoPg1I9TransDescOthers",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtPg1I9TransDescSpec",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I10TaxBase",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I11AllowExpnse",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I12NetCptalChnged",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I13TaxDueForTrans",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I14TaxDuePmtPriod",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I15TaxPaidInPrevRtrn",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I16TaxPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtPg1P2I17Surcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtPg1P2I17Interest",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtPg1P2I17Compromise",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtPg1P2I17TotPenalties",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1P2I18TotAmtPyable",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt4Indiv",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt4NonIndiv",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt2TitleofSignatory",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt2TINofSignatory",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt2TitleofSignatory2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt2TINofSignatory2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt4TaxAcredNo",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt4DateOfIssue",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt4DateOfExpiry",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I28CashC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I28CashC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I28Date",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I28CashC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29CheckC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29CheckC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29DateC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29DateC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29DateC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29Date",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I29CheckC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30TaxDebitC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30TaxDebitC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30DateC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30DateC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30DateC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30Date",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I30TaxDebitC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31OthersC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31OthersC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31OthersC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31DateC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31DateC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31DateC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31Date",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg1Pt3I31OthersC4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2TinC1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2TinC2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2TinC3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2TinC4",
+  "kind": "text"
+ },
+ {
+  "id": "BrachMask2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2RegisteredName",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I1SellPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I2CostExpense",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I3AssumMortgage",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I4NumInstallments",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I5InstallmentAmt",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I6ApplcRate",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I7PeriodTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I8DateCollection",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch1I9TotCollection",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NameOfCorpStock1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NameOfCorpStock2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NameOfCorpStock3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NameOfCorpStock4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NoOfShares1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2StockCertNo1",
+  "kind": "text"
+ },
+ {
+  "id": "txtPg2P4Sch2TaxBaseSellPrice1:test",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NoOfShares2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2StockCertNo2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2TaxBaseSellPrice2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NoOfShares3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2StockCertNo3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2TaxBaseSellPrice3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2NoOfShares4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2StockCertNo4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2TaxBaseSellPrice4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch2TotAmount",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Particulars1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Amount1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Particulars2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Amount2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Particulars3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Amount3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Particulars4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3Amount4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtPg2P4Sch3TotAmount",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtLOB",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtCurrentPage",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtMaxPage",
+  "kind": "text"
+ },
+ {
+  "id": "Pg2Pt4S2SubTotal",
+  "kind": "text"
+ },
+ {
+  "id": "Pg2Pt4S3SubTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoCorpoDomestic",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:rdoCorpoForeign",
+  "kind": "radio"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "Pg2Pt4S2PopLength",
+  "kind": "text"
+ },
+ {
+  "id": "Pg2Pt4S3PopLength",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:rdoPg1Pt1I5RDO",
+  "kind": "select"
+ }
+]

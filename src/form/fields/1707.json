@@ -1,0 +1,278 @@
+[
+ {
+  "id": "frm1707:txtDateMonth",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtDateDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtDateYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:j_id217:_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:j_id217:_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt4",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:opt4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txt4C",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:opt4C",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTINB1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTINB2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTINB3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtBranchCodeB",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtRDOCodeB",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtSellerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:txtBuyerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:txtSellerAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1707:txtBuyerAddress",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtSellerZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtBuyerZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:TaxRelief_Y",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:TaxRelief_N",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txtSpecify",
+  "kind": "select"
+ },
+ {
+  "id": "frm1707:TaxRelief_CS",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:TaxRelief_IS",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:TaxRelief_FS",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:TaxRelief_O",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1707:txt16Specify",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17SellingPrice",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17Cost",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17Mortgage",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17NumberInstallment",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17Amount",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17DateMonth",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17DateDay",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17DateYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt17Total",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtLess",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtNetCap",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTaxDue2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txt22CompTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtLess2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTaxPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtSurcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtInterest",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtCompromise",
+  "kind": "money"
+ },
+ {
+  "id": "frm1707:txtTotalPenalties",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:txtTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:totalAmount1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1707:totalAmount",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

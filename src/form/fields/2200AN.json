@@ -1,0 +1,274 @@
+[
+ {
+  "id": "frm2200AN:txtMonth1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200AN:txtDate",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtForYr",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:amendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:amendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtRDOCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200AN:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200AN:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2200AN:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200ANoptRegion",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200ANoptProvince",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200ANoptCity",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200AN:txtPlaceofProd",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200ANoptRegion1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200ANoptProvince1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200ANoptCity1",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200AN:txtPlaceofRem",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:optTreaty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:optTreaty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:lstTaxTreaty",
+  "kind": "select"
+ },
+ {
+  "id": "frm2200AN:chkPymntManner_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:chkPymntManner_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2200AN:txtOthMannerofPymnt",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:txtTax16",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax18",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax19",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax20",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax21A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax21B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax21C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax21D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax22",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax23A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:PayPenalties",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2200AN:txtTax23B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax23C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:txtTax24",
+  "kind": "money"
+ },
+ {
+  "id": "frm2200AN:sched1Chk0",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm2200AN:sched1Atc0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1Other0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1TaxRate0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1ExemptA0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1TaxableA0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1ExemptB0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1TaxableB0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:sched1ExciseTaxDue0",
+  "kind": "text"
+ },
+ {
+  "id": "frm2200AN:totalTaxDue",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

@@ -1,0 +1,16 @@
+{
+ "state": {
+  "frm0605:txtReturnPeriodMonth": "10",
+  "frm0605:txtReturnPeriodDay": "15",
+  "frm0605:txtReturnPeriodYear": "2026",
+  "frm0605:txtTIN1": "846",
+  "frm0605:txtTIN2": "532",
+  "frm0605:txtTIN3": "107",
+  "frm0605:txtBranchCode": "00000",
+  "frm0605:txtRDOCode": "043",
+  "frm0605:txtTaxPayerName": "DELA CRUZ, JUAN",
+  "frm0605:txtTax19": "1000",
+  "frm0605:txtTax20A": "25.50"
+ },
+ "kind": {}
+}

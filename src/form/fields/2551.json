@@ -1,0 +1,290 @@
+[
+ {
+  "id": "frm2551:forThe_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:forThe_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:rtnMonth",
+  "kind": "select"
+ },
+ {
+  "id": "frm2551:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:qtr_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:qtr_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:qtr_3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:qtr_4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:amendedRtn_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:amendedRtn_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:txtSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:txtRDOCode",
+  "kind": "select"
+ },
+ {
+  "id": "frm2551:txtLineofBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551:registeredName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551:telNo",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:registeredAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2551:zipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2551:taxTreaty_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:taxTreaty_2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:txtTaxReliefSpecify",
+  "kind": "select"
+ },
+ {
+  "id": "frm2551:txtTax14A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax14B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax14C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax14D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax14E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax15A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax15B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax15C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax15D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax15E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax16A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax16B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax16C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax16D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax16E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax17A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax17B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax17C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax17D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax17E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax18A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax18B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax18C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax18D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax18E",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax19",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax20A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax20B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax20C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax21",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax22A",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax22B",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax22C",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax22D",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:txtTax23",
+  "kind": "money"
+ },
+ {
+  "id": "frm2551:opt23_1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2551:opt23_2",
+  "kind": "radio"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

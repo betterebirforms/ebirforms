@@ -1,0 +1,90 @@
+{
+ "summary": [
+  {
+   "form_code": "1601FQ",
+   "key": 175,
+   "equal": 135,
+   "missing": 34,
+   "extra": 0,
+   "diff": 6,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1601FQ",
+   "key_count": 175,
+   "equal_count": 135,
+   "missing": [
+    "frm1601FQ:j_id217",
+    "frm1601FQ:j_id252",
+    "frm1601FQ:j_id392",
+    "frm1601FQ:j_id398",
+    "frm1601FQ:txtAtcCode1",
+    "frm1601FQ:txtTaxBase1",
+    "frm1601FQ:txtTaxRate1",
+    "frm1601FQ:txtTaxbeWithHeld1",
+    "frm1601FQ:txtAtcCode2",
+    "frm1601FQ:txtTaxBase2",
+    "frm1601FQ:txtTaxRate2",
+    "frm1601FQ:txtTaxbeWithHeld2",
+    "frm1601FQ:txtAtcCode3",
+    "frm1601FQ:txtTaxBase3",
+    "frm1601FQ:txtTaxRate3",
+    "frm1601FQ:txtTaxbeWithHeld3",
+    "frm1601FQ:txtAtcCode4",
+    "frm1601FQ:txtTaxBase4",
+    "frm1601FQ:txtTaxRate4",
+    "frm1601FQ:txtTaxbeWithHeld4",
+    "frm1601FQ:txtAtcCode5",
+    "frm1601FQ:txtTaxBase5",
+    "frm1601FQ:txtTaxRate5",
+    "frm1601FQ:txtTaxbeWithHeld5",
+    "frm1601FQ:txtAtcCode6",
+    "frm1601FQ:txtTaxBase6",
+    "frm1601FQ:txtTaxRate6",
+    "frm1601FQ:txtTaxbeWithHeld6",
+    "ebirOnlineConfirmUsername",
+    "ebirOnlineConfirmPassword",
+    "ebirOnlineUsername",
+    "ebirOnlinePassword",
+    "ebirOnlineSecret",
+    "responsetext"
+   ],
+   "extra": [],
+   "diff": [
+    {
+     "key": "frm1601FQ:CatAgent_P",
+     "native": "true",
+     "legacy": "false"
+    },
+    {
+     "key": "txtNatIncPayment0",
+     "native": "",
+     "legacy": "-"
+    },
+    {
+     "key": "txtNatIncPayment1",
+     "native": "",
+     "legacy": "-"
+    },
+    {
+     "key": "txtNatIncPayment2",
+     "native": "",
+     "legacy": "-"
+    },
+    {
+     "key": "txtNatIncPayment3",
+     "native": "",
+     "legacy": "-"
+    },
+    {
+     "key": "txtNatIncPayment4",
+     "native": "",
+     "legacy": "-"
+    }
+   ],
+   "page_error": []
+  }
+ ]
+}

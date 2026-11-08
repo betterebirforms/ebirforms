@@ -1,0 +1,86 @@
+{
+ "summary": [
+  {
+   "form_code": "1702MX",
+   "key": 1040,
+   "equal": 1040,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1702MXv2018",
+   "key": 588,
+   "equal": 588,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1702MXv2018C",
+   "key": 588,
+   "equal": 588,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  },
+  {
+   "form_code": "1702MXv2018Cxx",
+   "key": 588,
+   "equal": 588,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1702MX",
+   "key_count": 1040,
+   "equal_count": 1040,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1702MXv2018",
+   "key_count": 588,
+   "equal_count": 588,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1702MXv2018C",
+   "key_count": 588,
+   "equal_count": 588,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  },
+  {
+   "form_code": "1702MXv2018Cxx",
+   "key_count": 588,
+   "equal_count": 588,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  }
+ ]
+}

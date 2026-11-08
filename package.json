@@ -1,0 +1,52 @@
+{
+  "name": "ebirforms",
+  "version": "0.1.0",
+  "description": "Cross-platform (macOS-first) rebuild of the BIR Offline eBIRForms Package",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "extract": "node tool/extract.mjs",
+    "asset": "node tool/asset-extract.mjs",
+    "tauri": "tauri",
+    "gate": "npm run typecheck && npm test",
+    "doctor": "node bin/ebf-doctor.mjs",
+    "bench:sweep": "node bench/seed-profile.ts && node bench/sweep-forms.mjs webkit > bench/result/sweep-webkit.json",
+    "bench:probe": "node bench/probe-form.mjs",
+    "gate:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "gate:all": "npm run gate && npm run gate:rust",
+    "bench:open": "node bench/seed-profile.ts && node bench/form-open.mjs",
+    "build:web": "tsc --noEmit && vite build --mode web",
+    "build:share": "tauri build -- --no-default-features",
+    "check:share": "node bench/shareable-check.mjs",
+    "bundle:review": "node tool/bundle-review.mjs",
+    "package": "node tool/package.mjs",
+    "check:roundtrip": "npm run build:web && vitest run test/web-roundtrip.test.ts"
+  },
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "playwright": "^1.64.1",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "private": true
+}

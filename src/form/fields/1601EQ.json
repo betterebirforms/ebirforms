@@ -1,0 +1,291 @@
+[
+ {
+  "id": "frm1601EQ:txtYear",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:optQuarter:1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optQuarter:2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optQuarter:3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optQuarter:4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optAmend:Y",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optAmend:N",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optWithheld:Y",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optWithheld:N",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:txtNoSheets",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtBranchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTaxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601EQ:txtLineBus",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601EQ:txtAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601EQ:txtAddress2",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm1601EQ:txtZipCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTelNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:optCategory:P",
+  "kind": "radio"
+ },
+ {
+  "id": "frm1601EQ:optCategory:G",
+  "kind": "radio"
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTotalOtherTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtTax19",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax20",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax21",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax22",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax23",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax24",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax25",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax26",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax27",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax28",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax29",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtTax30",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:ifRefund",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1601EQ:ifIssueCert",
+  "kind": "checkbox"
+ },
+ {
+  "id": "frm1601EQ:ifCarriedOver",
+  "kind": "checkbox"
+ },
+ {
+  "id": "txtTaxAgentNo",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateIssue",
+  "kind": "text"
+ },
+ {
+  "id": "txtDateExpiry",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAgency33",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtNumber33",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtDate33",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAmount33",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtAgency34",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtNumber34",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtDate34",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAmount34",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtAgency35",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtNumber35",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtDate35",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAmount35",
+  "kind": "money"
+ },
+ {
+  "id": "frm1601EQ:txtParticular36",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAgency36",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtNumber36",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtDate36",
+  "kind": "text"
+ },
+ {
+  "id": "frm1601EQ:txtAmount36",
+  "kind": "money"
+ },
+ {
+  "id": "hPartIITableSize",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "btnAgree",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ },
+ {
+  "id": "frm1601EQ:txtRDOCode",
+  "kind": "select"
+ }
+]

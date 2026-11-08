@@ -1,0 +1,804 @@
+{
+ "engine": "webkit",
+ "at": "2026-10-17T05:19:26.555Z",
+ "result": [
+  {
+   "code": "0605",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2624,
+   "input_count": 125,
+   "name_prefilled": true
+  },
+  {
+   "code": "0619E",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2634,
+   "input_count": 86,
+   "name_prefilled": true
+  },
+  {
+   "code": "0619F",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2621,
+   "input_count": 87,
+   "name_prefilled": true
+  },
+  {
+   "code": "0620",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2633,
+   "input_count": 84,
+   "name_prefilled": true
+  },
+  {
+   "code": "1600",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2625,
+   "input_count": 140,
+   "name_prefilled": true
+  },
+  {
+   "code": "1600PTv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2638,
+   "input_count": 163,
+   "name_prefilled": true
+  },
+  {
+   "code": "1600VTv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2650,
+   "input_count": 165,
+   "name_prefilled": true
+  },
+  {
+   "code": "1600WP",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2625,
+   "input_count": 139,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601C",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2628,
+   "input_count": 109,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601Cv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2648,
+   "input_count": 137,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601E",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2610,
+   "input_count": 68,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601EQ",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/json3.min.js",
+    "404 /legacy/js/formatter/SoapFormat/1601EQ-SoapFormat.js",
+    "404 /legacy/js/formatter/forms/1601EQ.js",
+    "404 /legacy/js/formatter/string-util2014.js",
+    "404 /legacy/js/api-environment.js"
+   ],
+   "dialog": [],
+   "load_ms": 2644,
+   "input_count": 122,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601F",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2634,
+   "input_count": 71,
+   "name_prefilled": true
+  },
+  {
+   "code": "1601FQ",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2681,
+   "input_count": 161,
+   "name_prefilled": true
+  },
+  {
+   "code": "1602",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2655,
+   "input_count": 210,
+   "name_prefilled": true
+  },
+  {
+   "code": "1602Qv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2675,
+   "input_count": 138,
+   "name_prefilled": true
+  },
+  {
+   "code": "1603",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2633,
+   "input_count": 88,
+   "name_prefilled": true
+  },
+  {
+   "code": "1603Qv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2779,
+   "input_count": 116,
+   "name_prefilled": true
+  },
+  {
+   "code": "1604C",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2758,
+   "input_count": 146,
+   "name_prefilled": true
+  },
+  {
+   "code": "1604CF",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2782,
+   "input_count": 281,
+   "name_prefilled": true
+  },
+  {
+   "code": "1604E",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2839,
+   "input_count": 175,
+   "name_prefilled": true
+  },
+  {
+   "code": "1604Ev2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2761,
+   "input_count": 164,
+   "name_prefilled": true
+  },
+  {
+   "code": "1604F",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2886,
+   "input_count": 134,
+   "name_prefilled": true
+  },
+  {
+   "code": "1606",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2859,
+   "input_count": 125,
+   "name_prefilled": true
+  },
+  {
+   "code": "1621",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2850,
+   "input_count": 128,
+   "name_prefilled": true
+  },
+  {
+   "code": "1700",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2979,
+   "input_count": 386,
+   "name_prefilled": true
+  },
+  {
+   "code": "1700v2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2948,
+   "input_count": 220,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 4132,
+   "input_count": 1578,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701A",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 3295,
+   "input_count": 238,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701MS",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 3129,
+   "input_count": 299,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701Q",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2957,
+   "input_count": 136,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701Qv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 3060,
+   "input_count": 201,
+   "name_prefilled": true
+  },
+  {
+   "code": "1701v2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 3337,
+   "input_count": 892,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702EX",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2846,
+   "input_count": 606,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702EXv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2791,
+   "input_count": 253,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702EXv2018C",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2751,
+   "input_count": 253,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702MX",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2951,
+   "input_count": 1368,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702MXv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2847,
+   "input_count": 840,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702MXv2018C",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2824,
+   "input_count": 840,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702MXv2018Cxx",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2814,
+   "input_count": 840,
+   "name_prefilled": false
+  },
+  {
+   "code": "1702Q",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2663,
+   "input_count": 136,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702Qv2008C",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2651,
+   "input_count": 136,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702Qv2018C",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2692,
+   "input_count": 148,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702RT",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2841,
+   "input_count": 706,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702RTv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2820,
+   "input_count": 327,
+   "name_prefilled": true
+  },
+  {
+   "code": "1702RTv2018C",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/gserializer.js"
+   ],
+   "dialog": [],
+   "load_ms": 2750,
+   "input_count": 327,
+   "name_prefilled": true
+  },
+  {
+   "code": "1704",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2709,
+   "input_count": 151,
+   "name_prefilled": true
+  },
+  {
+   "code": "1706",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2675,
+   "input_count": 150,
+   "name_prefilled": true
+  },
+  {
+   "code": "1707",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2650,
+   "input_count": 97,
+   "name_prefilled": true
+  },
+  {
+   "code": "1707A",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2675,
+   "input_count": 178,
+   "name_prefilled": true
+  },
+  {
+   "code": "1707Av2021",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/img/for_printing/BIR%20Form%201707Av2021_1.png"
+   ],
+   "dialog": [],
+   "load_ms": 2771,
+   "input_count": 193,
+   "name_prefilled": true
+  },
+  {
+   "code": "1707v2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2662,
+   "input_count": 191,
+   "name_prefilled": true
+  },
+  {
+   "code": "1707v2021",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2717,
+   "input_count": 194,
+   "name_prefilled": true
+  },
+  {
+   "code": "1800",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2627,
+   "input_count": 121,
+   "name_prefilled": true
+  },
+  {
+   "code": "1800v2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2784,
+   "input_count": 211,
+   "name_prefilled": true
+  },
+  {
+   "code": "1801",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2660,
+   "input_count": 156,
+   "name_prefilled": true
+  },
+  {
+   "code": "1801v2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2675,
+   "input_count": 268,
+   "name_prefilled": true
+  },
+  {
+   "code": "2000",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2635,
+   "input_count": 487,
+   "name_prefilled": true
+  },
+  {
+   "code": "2000OT",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2616,
+   "input_count": 127,
+   "name_prefilled": true
+  },
+  {
+   "code": "2000OTv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2660,
+   "input_count": 164,
+   "name_prefilled": true
+  },
+  {
+   "code": "2000v2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2648,
+   "input_count": 196,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200A",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2709,
+   "input_count": 257,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200AN",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2668,
+   "input_count": 239,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200ANv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2674,
+   "input_count": 246,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200Av2020",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2699,
+   "input_count": 315,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200Cv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2724,
+   "input_count": 212,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200M",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2645,
+   "input_count": 169,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200Mv2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2713,
+   "input_count": 284,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200P",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2655,
+   "input_count": 386,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200Pv2020",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2736,
+   "input_count": 497,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200S",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2667,
+   "input_count": 163,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200T",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2725,
+   "input_count": 208,
+   "name_prefilled": true
+  },
+  {
+   "code": "2200Tv2020",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2715,
+   "input_count": 307,
+   "name_prefilled": true
+  },
+  {
+   "code": "2550DS-old",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2685,
+   "input_count": 90,
+   "name_prefilled": false
+  },
+  {
+   "code": "2550DS",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2665,
+   "input_count": 90,
+   "name_prefilled": true
+  },
+  {
+   "code": "2550M",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2652,
+   "input_count": 205,
+   "name_prefilled": true
+  },
+  {
+   "code": "2550Q",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2658,
+   "input_count": 224,
+   "name_prefilled": true
+  },
+  {
+   "code": "2550Qv2024",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2706,
+   "input_count": 218,
+   "name_prefilled": true
+  },
+  {
+   "code": "2551",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2634,
+   "input_count": 96,
+   "name_prefilled": true
+  },
+  {
+   "code": "2551M",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2605,
+   "input_count": 87,
+   "name_prefilled": true
+  },
+  {
+   "code": "2551Qv2018",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2621,
+   "input_count": 124,
+   "name_prefilled": true
+  },
+  {
+   "code": "2552",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2613,
+   "input_count": 96,
+   "name_prefilled": true
+  },
+  {
+   "code": "2552v2018",
+   "error": [],
+   "failed_request": [
+    "404 /legacy/js/lib/2200C.js"
+   ],
+   "dialog": [],
+   "load_ms": 2677,
+   "input_count": 290,
+   "name_prefilled": true
+  },
+  {
+   "code": "2553",
+   "error": [],
+   "failed_request": [],
+   "dialog": [],
+   "load_ms": 2656,
+   "input_count": 97,
+   "name_prefilled": true
+  }
+ ]
+}

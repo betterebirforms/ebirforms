@@ -1,0 +1,250 @@
+[
+ {
+  "id": "frm2550ds:paymentValueAddedTax",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:paymentAdvanceDeposit",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:txtATC",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:calendarNo1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:fiscalNo1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:selectedMonthNo2",
+  "kind": "select"
+ },
+ {
+  "id": "frm2550ds:txtYearNo2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:OptQuarter1",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:OptQuarter2",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:OptQuarter3",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:OptQuarter4",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:RtnPeriodFromNo4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:RtnPeriodToNo4",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:amendedReturnYesNo5",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:amendedReturnNo5",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:txtTIN1",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:txtTIN2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:txtTIN3",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:branchCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:rdoCode",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:taxpayerName",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550ds:address",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550ds:emailAddress",
+  "kind": "text",
+  "escaped": true
+ },
+ {
+  "id": "frm2550ds:taxpayerName_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:txtTIN1_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:txtTIN2_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:txtTIN3_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:branchCode_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:telephoneNum",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:emailAddress_2",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:grossSaleForTheQuarter",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:lessGrossSaleSubjectedToWithHoldingTax",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:balanceSubjectToVAT",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:vatRate",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:vatPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550ds:vatPaidInReturn",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:excessPaymentCarriedOver",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:advancePaymentOrDepositMadeThisQuarter",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:otherPaymentCreditSpecify",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:otherPaymentCreditAmount",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:totalPaymentsCredits",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:vatStillPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550ds:addPenaltiesSurcharge",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550ds:addPenaltiesInterest",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550ds:addPenaltiesTotal",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:totalAmountPayable",
+  "kind": "money"
+ },
+ {
+  "id": "frm2550ds:advancePaymentDeposit",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:agree",
+  "kind": "radio"
+ },
+ {
+  "id": "frm2550ds:printedNameTaxpayer",
+  "kind": "text"
+ },
+ {
+  "id": "frm2550ds:tinThirdPartyProvider",
+  "kind": "text"
+ },
+ {
+  "id": "resultOtherCreditsNo22D",
+  "kind": "text"
+ },
+ {
+  "id": "txtFinalFlag",
+  "kind": "text"
+ },
+ {
+  "id": "txtEnroll",
+  "kind": "text"
+ },
+ {
+  "id": "ebirOnlineConfirmUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineConfirmPassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineUsername",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlinePassword",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "ebirOnlineSecret",
+  "kind": "text",
+  "secret": true
+ },
+ {
+  "id": "txtEmail",
+  "kind": "text"
+ },
+ {
+  "id": "driveSelectTPExport",
+  "kind": "select"
+ }
+]

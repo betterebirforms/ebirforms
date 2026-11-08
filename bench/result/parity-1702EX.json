@@ -1,0 +1,32 @@
+{
+ "summary": [
+  {
+   "form_code": "1702EX",
+   "key": 484,
+   "equal": 483,
+   "bir_defect": 1,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1702EX",
+   "key_count": 484,
+   "equal_count": 483,
+   "missing": [],
+   "extra": [],
+   "diff": [
+    {
+     "key": "frm1702EX:txtCurrentPage",
+     "native": "1",
+     "legacy": "3"
+    }
+   ],
+   "page_error": []
+  }
+ ]
+}

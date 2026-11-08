@@ -1,0 +1,26 @@
+{
+ "summary": [
+  {
+   "form_code": "1702MX",
+   "key": 1040,
+   "equal": 1040,
+   "bir_defect": 0,
+   "bir_defect_error": 0,
+   "missing": 0,
+   "extra": 0,
+   "diff": 0,
+   "page_error": 0
+  }
+ ],
+ "result": [
+  {
+   "form_code": "1702MX",
+   "key_count": 1040,
+   "equal_count": 1040,
+   "missing": [],
+   "extra": [],
+   "diff": [],
+   "page_error": []
+  }
+ ]
+}
