@@ -33,7 +33,9 @@ jobs:
       - run: curl -fsSL -A "Mozilla/5.0" -o "$(basename "$BIR_ZIP_URL")" "$BIR_ZIP_URL"
       - run: npm run extract -- "$(basename "$BIR_ZIP_URL")"
       - run: node tool/stage-package.mjs
-      - run: grep -qF "\"bir_version\": \"$(basename "$BIR_ZIP_URL" | sed -E 's/.*_v(.*)\.zip/\1/')\"" src-tauri/package-bir/_package.json
+      - run: |
+          want=$(basename "$BIR_ZIP_URL" | sed -E 's/.*_v(.*)\.zip/\1/')
+          grep -qF "\"bir_version\": \"$want\"" src-tauri/package-bir/_package.json
       - uses: actions/upload-artifact@v4
         with: { name: package-bir, path: src-tauri/package-bir, include-hidden-files: true }
 
