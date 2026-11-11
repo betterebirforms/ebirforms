@@ -41,7 +41,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { sparse-checkout: .github/script }
-      - run: bash .github/script/apt-install.sh libfuse2 xvfb xdotool
+      # a desktop has these; the bare runner does not (the AppImage needs libEGL.so.1 from the system)
+      - run: bash .github/script/apt-install.sh libfuse2 xvfb xdotool libegl1 libgl1 libgles2 libgl1-mesa-dri
       - name: Run the old AppImage, accept the update
         env: { FROM: "${{ inputs.from }}", GH_TOKEN: "${{ github.token }}" }
         run: |
