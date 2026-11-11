@@ -5,6 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
+- BIR's pop-up messages work again on every computer. In version 0.1.2, the part we added for update messages took over BIR's pop-ups: questions answered "yes" by themselves, and messages may not have shown. Please update.
+- We now test BIR's pop-ups on Windows and Linux machines, not just on the Mac.
+
 ## v0.1.2 (11 November 2026)
 
 - Mac: BIR's pop-up messages show again. Before, Submit / Final Copy did nothing, and validation errors and "saved" messages were hidden.

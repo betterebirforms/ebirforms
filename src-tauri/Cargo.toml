@@ -34,7 +34,9 @@ russh = { version = "0.64.1", optional = true, default-features = false, feature
 russh-sftp = { version = "3.0.1", optional = true }
 tokio = { version = "1.53.3", optional = true, features = ["rt", "net", "io-util", "time", "macros"] }
 tauri-plugin-updater = "2"
-tauri-plugin-dialog = "2"
+# the update prompt (update.rs). Not tauri-plugin-dialog: its init script replaces window.alert/confirm in EVERY
+# webview with async IPC versions, so BIR's confirm() returned a Promise (always "yes") and alert() went silent (v0.1.2)
+rfd = { version = "0.17", default-features = false, features = ["gtk3", "common-controls-v6"] }
 
 
 # The caption webview's packing in the window's GtkBox (lib.rs); the same gtk 0.18 tauri already links

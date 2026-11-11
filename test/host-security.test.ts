@@ -25,3 +25,13 @@ describe("local host security", () => {
     expect(rust_csp).toBe(PAGE_CSP);
   });
 });
+
+describe("BIR's pages keep the browser's own alert() and confirm()", () => {
+  // tauri-plugin-dialog injects a script into every webview that makes confirm() async (a Promise, always "yes")
+  // and alert() an IPC call BIR's pages may not make. v0.1.2 shipped it; .github/workflows/dialog.yml checks the window.
+  it("the desktop app does not use tauri-plugin-dialog", () => {
+    const cargo = readFileSync("src-tauri/Cargo.toml", "utf8").replace(/#.*$/gm, "");
+    expect(cargo).not.toMatch(/tauri-plugin-dialog/);
+    expect(readFileSync("src-tauri/src/lib.rs", "utf8")).not.toMatch(/tauri_plugin_dialog/);
+  });
+});

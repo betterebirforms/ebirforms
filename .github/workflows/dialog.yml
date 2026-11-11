@@ -1,0 +1,40 @@
+# BIR's alert() and confirm() must show as real dialogs in the app window, on every platform (issue #1, and v0.1.2,
+# where a plugin replaced them in every page). Runs the debug app's EBF_DIALOGTEST: confirm() must still be waiting
+# 4 s later (a dialog is up), then Return answers it. macOS is checked locally (GitHub's arm64 runners are short).
+name: dialog
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["src-tauri/**", "public/legacy-shim.js", ".github/workflows/dialog.yml"]
+
+jobs:
+  dialog:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with: { workspaces: src-tauri }
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xvfb xdotool
+      - run: npm ci
+      - if: runner.os == 'Linux'
+        run: |
+          EBF_DIALOGTEST=1 timeout 1500 xvfb-run -a npm run tauri dev 2>&1 | tee dialog.log || true
+          grep -q "DIALOGTEST shown=true" dialog.log
+      - if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          EBF_DIALOGTEST=1 timeout 1500 npm run tauri dev 2>&1 | tee dialog.log || true
+          grep -q "DIALOGTEST shown=true" dialog.log
+      - if: always()
+        shell: bash
+        run: grep "DIALOGTEST" dialog.log || echo "no DIALOGTEST line"

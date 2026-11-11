@@ -198,28 +198,41 @@ fn final_selftest(handle: tauri::AppHandle, data: std::path::PathBuf) {
     });
 }
 
-/// Debug-only (`EBF_DIALOGTEST=1`, with `EBF_RUST_HOST`): call `confirm()` in the real content webview, press Return
-/// (System Events), and print what the page got back and how long it waited. Before the macOS fix (issue #1)
-/// this read `confirm=false` after ~1 ms with no dialog; fixed, it reads `confirm=true` after the key press.
+/// Debug-only (`EBF_DIALOGTEST=1 npm run tauri dev`, any OS): call `confirm()` then `alert()` in the real content
+/// webview, look 4 s later whether `confirm()` is still waiting (a dialog is up), press Return twice, and print
+/// `DIALOGTEST shown=<bool> confirm=<answer>&ms=<wait>&alert=closed`. Before the macOS fix (issue #1) it read
+/// `shown=false confirm=false&ms=1`. CI runs it on Windows and Linux (.github/workflows/dialog.yml).
 fn dialog_selftest(handle: tauri::AppHandle) {
+    // Return on whatever window has focus: the dialog, if one is showing
+    fn press_return() {
+        let _ = if cfg!(target_os = "macos") {
+            std::process::Command::new("osascript").args(["-e", "tell application \"System Events\" to key code 36"]).status()
+        } else if cfg!(windows) {
+            std::process::Command::new("powershell")
+                .args(["-NoProfile", "-Command", "(New-Object -ComObject WScript.Shell).SendKeys('{ENTER}')"])
+                .status()
+        } else {
+            std::process::Command::new("xdotool").args(["key", "Return"]).status()
+        };
+    }
     std::thread::spawn(move || {
         let pause = |ms| std::thread::sleep(std::time::Duration::from_millis(ms));
         let Some(content) = handle.get_webview("content") else { return };
+        let hash = |c: &tauri::Webview| c.url().map(|u| u.fragment().unwrap_or("").to_string()).unwrap_or_default();
         pause(5000);
         let _ = content.eval(
             "setTimeout(() => { const t = performance.now(); const c = confirm('EBF_DIALOGTEST: press OK'); \
-             alert('EBF_DIALOGTEST: alert'); \
-             location.hash = 'confirm=' + c + '&ms=' + Math.round(performance.now() - t); }, 50)",
+             location.hash = 'confirm=' + c + '&ms=' + Math.round(performance.now() - t); \
+             alert('EBF_DIALOGTEST: alert'); location.hash += '&alert=closed'; }, 50)",
         );
+        // a dialog blocks confirm() until it is answered; with no dialog it returns false at once (issue #1: 1 ms)
+        pause(4000);
+        let shown = !hash(&content).contains("confirm=");
         for _ in 0..2 {
+            press_return();
             pause(2500);
-            let _ = std::process::Command::new("osascript")
-                .args(["-e", "tell application \"System Events\" to key code 36"])
-                .status();
         }
-        pause(1500);
-        let url = content.url().map(|u| u.to_string()).unwrap_or_default();
-        println!("DIALOGTEST {}", url.split_once('#').map(|x| x.1).unwrap_or("no result (no dialog answered)"));
+        println!("DIALOGTEST shown={shown} {}", hash(&content));
         handle.exit(0);
     });
 }
@@ -244,9 +257,9 @@ fn print_selftest(handle: tauri::AppHandle, spec: String) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        // used from Rust only (update.rs): no webview is granted the updater's or the dialog's commands
+        // used from Rust only (update.rs): no webview is granted the updater's commands. No dialog plugin: it rewrites
+        // window.alert/confirm in every page (update.rs uses rfd instead)
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             // debug + EBF_RUST_HOST=<data dir>: the packaged Rust host (native print, Submit) over dist/ + vendor/original
             let rust_host_data = std::env::var("EBF_RUST_HOST").ok().filter(|_| cfg!(debug_assertions));

@@ -12,7 +12,6 @@
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 use tauri::AppHandle;
-use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 use tauri_plugin_updater::UpdaterExt;
 
 fn settings_path(data: &Path) -> PathBuf {
@@ -78,16 +77,7 @@ pub fn check(app: AppHandle, data: PathBuf, manual: bool) {
             update.current_version,
             notes.trim()
         );
-        let (app2, msg) = (app.clone(), message.clone());
-        let install = tauri::async_runtime::spawn_blocking(move || {
-            app2.dialog()
-                .message(msg)
-                .title("Update available")
-                .buttons(MessageDialogButtons::OkCancelCustom("Install and Restart".into(), "Skip This Version".into()))
-                .blocking_show()
-        })
-        .await
-        .unwrap_or(false);
+        let install = ask(&app, "Update available", &message, Some(("Install and Restart", "Skip This Version"))).await;
         if !install {
             s["skip"] = json!(update.version);
             save(&data, &s);
@@ -101,7 +91,35 @@ pub fn check(app: AppHandle, data: PathBuf, manual: bool) {
 }
 
 fn say(app: &AppHandle, title: &str, text: &str) {
-    app.dialog().message(text).title(title).kind(MessageDialogKind::Info).show(|_| {});
+    let (app, title, text) = (app.clone(), title.to_string(), text.to_string());
+    tauri::async_runtime::spawn(async move { ask(&app, &title, &text, None).await });
+}
+
+/// A native message box (rfd), built on the main thread as macOS and GTK need, answered off it. `choice`: the two
+/// button labels (true = the first); None = a plain OK. Shown by Rust, so no page script is involved.
+async fn ask(app: &AppHandle, title: &str, text: &str, choice: Option<(&str, &str)>) -> bool {
+    use rfd::{AsyncMessageDialog, MessageButtons, MessageDialogResult, MessageLevel};
+    let (tx, rx) = std::sync::mpsc::channel();
+    let (title, text) = (title.to_string(), text.to_string());
+    let choice = choice.map(|(a, b)| (a.to_string(), b.to_string()));
+    let ok = choice.as_ref().map(|c| c.0.clone());
+    let _ = app.run_on_main_thread(move || {
+        let buttons = match choice {
+            Some((a, b)) => MessageButtons::OkCancelCustom(a, b),
+            None => MessageButtons::Ok,
+        };
+        let shown = AsyncMessageDialog::new().set_title(&title).set_description(&text).set_level(MessageLevel::Info).set_buttons(buttons).show();
+        std::thread::spawn(move || {
+            let _ = tx.send(tauri::async_runtime::block_on(shown));
+        });
+    });
+    let answer = tauri::async_runtime::spawn_blocking(move || rx.recv().ok()).await.ok().flatten();
+    // GTK answers Ok for the first custom button; macOS and Windows answer Custom(<label>)
+    match answer {
+        Some(MessageDialogResult::Ok) | Some(MessageDialogResult::Yes) => true,
+        Some(MessageDialogResult::Custom(label)) => Some(label) == ok,
+        _ => false,
+    }
 }
 
 /// Debug-only (`EBF_UPDATETEST=1`, run with the version set below the latest release): check the real endpoint,
