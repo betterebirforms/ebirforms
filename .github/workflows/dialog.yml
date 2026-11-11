@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["src-tauri/**", "public/legacy-shim.js", ".github/workflows/dialog.yml"]
+    paths: ["src-tauri/**", "public/legacy-shim.js", ".github/workflows/dialog.yml", ".github/script/**"]
 
 jobs:
   dialog:
