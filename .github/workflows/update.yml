@@ -1,0 +1,64 @@
+# Installs an older release on a real Windows and Ubuntu machine, opens it, answers its update prompt with
+# Return ("Install and Restart") and checks the installed app is now the latest release. Manual: run it after a
+# release, from the version before. The .deb is not covered: its update asks for a password (pkexec).
+name: update
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: "Release to start from, e.g. 0.1.3"
+        required: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Install the old release, open it, accept the update
+        shell: pwsh
+        env: { FROM: "${{ inputs.from }}", GH_TOKEN: "${{ github.token }}" }
+        run: |
+          $latest = (gh release view -R $env:GITHUB_REPOSITORY --json tagName -q .tagName).TrimStart('v')
+          gh release download "v$env:FROM" -R $env:GITHUB_REPOSITORY -p "*_Windows_x64_setup.exe" -O setup.exe
+          Start-Process .\setup.exe -ArgumentList "/S" -Wait
+          $exe = Get-ChildItem "$env:LOCALAPPDATA", "$env:ProgramFiles" -Recurse -Filter "ebirforms.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $exe) { throw "ebirforms.exe not found after install" }
+          $before = (Get-Item $exe.FullName).VersionInfo.ProductVersion
+          Write-Output "installed $before at $($exe.FullName); latest release $latest"
+          Start-Process $exe.FullName
+          $shell = New-Object -ComObject WScript.Shell
+          $asked = $false
+          foreach ($i in 1..36) { Start-Sleep 5; if ($shell.AppActivate("Update available")) { Start-Sleep 1; $shell.SendKeys("{ENTER}"); $asked = $true; break } }
+          Write-Output "prompt answered: $asked"
+          Start-Sleep 150
+          $after = (Get-Item $exe.FullName).VersionInfo.ProductVersion
+          Write-Output "UPDATE windows from=$before after=$after latest=$latest"
+          if (-not ($after -like "$latest*")) { exit 1 }
+
+  linux:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: .github/script }
+      - run: bash .github/script/apt-install.sh libfuse2 xvfb xdotool
+      - name: Run the old AppImage, accept the update
+        env: { FROM: "${{ inputs.from }}", GH_TOKEN: "${{ github.token }}" }
+        run: |
+          latest=$(gh release view -R "$GITHUB_REPOSITORY" --json tagName -q .tagName)
+          mkdir -p app new && cd app
+          gh release download "v$FROM" -R "$GITHUB_REPOSITORY" -p "*_Linux_x86_64.AppImage" -O ebirforms.AppImage
+          gh release download "$latest" -R "$GITHUB_REPOSITORY" -p "*_Linux_x86_64.AppImage" -O ../new/latest.AppImage
+          chmod +x ebirforms.AppImage
+          before=$(sha256sum < ebirforms.AppImage | cut -c1-16)
+          want=$(sha256sum < ../new/latest.AppImage | cut -c1-16)
+          xvfb-run -a bash -c '
+            ./ebirforms.AppImage > ../app.log 2>&1 &
+            for i in $(seq 1 36); do sleep 5; w=$(xdotool search --name "Update available" | head -1); [ -n "$w" ] && break; done
+            echo "prompt window: ${w:-none}"
+            [ -n "$w" ] && xdotool windowfocus --sync "$w" key Return
+            sleep 150'
+          after=$(sha256sum < ebirforms.AppImage | cut -c1-16)
+          echo "UPDATE linux from=v$FROM before=$before after=$after latest=$latest want=$want"
+          tail -5 ../app.log || true
+          [ "$after" = "$want" ]

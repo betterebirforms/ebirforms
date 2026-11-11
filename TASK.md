@@ -1,36 +1,30 @@
-# TASK: repo arranged for contributors, mods, roadmap (goal set 2026-11-08)
+# TASK (session state)
 
-Goal (user, verbatim): "make sure our repo is properly arranged, good to contirbute to / featureset wise and also
-maintianing the original code or 1:1 rebuild code separate? and modularized/hotswappable to teh improvements like
-how lua can just add onto the orignal code easily, hotswappable modes/modificaitons/improvements/removements, etc.
-and also possible mobile/web support in the future again will be a rebuild but should be in our roadmap
-and fully improve the /sync-docs of this app, i want everything to be readable by human and workable by others,
-proper contributor docs, and setup fo teh repo overall"
+Goal (2026-11-11, user /goal): fix current issues (issue #1 Mac pop-ups), apply email+reddit feedback, in-app updater
+(Sparkle-like), more mod capabilities w/ harness+docs, foundations of an API/MCP interface for agents, security
+hardening, all platforms, foundations for a web version on GitHub Pages.
 
-## Plan
-1. **Mod system** (`mod/`): every serve-time change to BIR's pages is one JSON file, kind = folder
-   (fix / compat / security / speed / remove). Both hosts read the SAME files, ending the TS + Rust duplicate.
-   - TS engine `host/mod.ts`; Rust engine `src-tauri/src/bir_mod.rs`; Rust embeds `mod/` via build.rs.
-   - Hot-swap: user mods in `<data>/mod/`, on/off in `<data>/mod.json`, re-read on every page load.
-   - `inject` rule lets a mod add its own script to BIR's pages (the "Lua" hook).
-   - `host/form-patch.ts` keeps its exported names as thin wrappers so tests keep working.
-   - `GET /__mod` lists mods (both hosts).
-2. Docs: CONTRIBUTING.md, docs/architecture.md (three layers: BIR original / mods + shim / 1:1 rebuild),
-   mod/README.md, .github issue + PR templates, development.md + README + AGENTS.md synced, plain language.
-3. ROADMAP: mobile + web rebuild tier; mod settings screen; shim split into mods.
-4. Gate: `npm run gate` + `npm run gate:rust` exit 0.
+Already done: issue #1 commented; replies sent to the three people who emailed (promised a fix).
+Root cause #1: wry 0.57 macOS UI delegate lacks runJavaScriptAlert/Confirm/TextInputPanel -> alert no-op,
+confirm()=false in 1 ms (measured with scratchpad/wk.swift). Every BIR alert/confirm silent on Mac.
 
-## Status
-- [x] mod system, docs, roadmap, gate, /sync-docs run + repo skill (.claude/skills/sync-docs), doc check (`npm run check:doc`), newcomer review fixed. Fresh-copy run 2026-11-09 (CONTRIBUTING steps verbatim): install, BIR zip download + extract (468 file), dev server, worked mod example on and off in 0605, gate 826 passed / 89 skipped, Rust 30 passed, check:doc 5 passed.
-  Gate 828 passed / 87 skipped; Rust 30 passed. 1601F open re-measured 2026-11-09: 1.14-1.20 s on, 1.37-1.53 s off.
-  Uncommitted, awaiting the user.
+Feedback to apply: legal-size print + PDF right-edge cropping (Reddit); Submit must say plainly it does NOT
+file with BIR (one emailer thought they had filed); Linux users want web version (Reddit).
 
-## Older open items (from the 1:1 shell task, still true)
-- Signing/notarization needs an Apple Developer ID certificate.
-- Native forms are not reachable from BIR's main screen (Fill-up opens BIR's page).
-- Proxy has no UI. Live filing to BIR never done (the user's call).
+| # | Workstream | Status |
+|---|---|---|
+| A | Mac JS dialogs: src-tauri/src/mac_dialog.rs + EBF_DIALOGTEST selftest (measured confirm=true ms=6411) | done |
+| B | Updater: update.rs + menu "Check for Updates…", package.mjs signs, tool/latest-json.mjs, CI secrets TODO, key ~/.tauri/ebirforms-updater.key | done (secrets set; not yet exercised in a real release) |
+| C | Security: Host allow-list (rebinding) + PAGE_CSP both hosts, tests; sweep 84/0 errors same as before | done |
+| D | Mods: Go > Mods screen (src/ModScreen.tsx), POST /__mod both hosts + tests, npm run mod:check harness + test, README | done |
+| E | MCP: mcp/tool.ts + mcp/main.ts (hand-rolled stdio), npm run build:mcp, test/mcp.test.ts, docs/agent.md | done |
+| F | Feedback: legal print, PDF crop, Submit notice wording | done (Submit wording + test; print measured 0 clipped pages on A4/Legal/long bond in a Chromium proxy, not the real macOS print sheet) |
+| G | Web on GitHub Pages: base path, workflow (manual deploy; roadmap gate = BIR reply) | done (EBF_WEB_BASE, per-form index pages, pages.yml manual, bench/web-pages.mjs 6/6) |
+| H | Docs (README x3/CHANGELOG/ROADMAP/AGENTS/architecture/release-note), gate + gate:rust, release v0.1.2 (ask) | done; v0.1.2 released (run 43032200921, mac on macos-15-intel after arm64 capacity cancels), live EBF_UPDATETEST found=0.1.2 bytes=30151543 verified=true; issue #1 closed; emailer follow-ups sent. gate 0 (839 pass), gate:rust 0 (34 pass), host-parity 169/169, mod:check 0/0 |
 
-## Gotchas
-- Reap the browser lane and kill dev servers before gating:
-  `node ~/.agents/skills/test-browser/scripts/reap.mjs --kill`.
-- Rust e2e against BIR's Submit: start the host with `EBF_DISPATCH_HOST=127.0.0.1:9`.
+## 2026-11-12 follow-up
+- v0.1.2 regression: tauri-plugin-dialog's init script replaced window.confirm/alert in every webview (confirm returned a Promise). Fixed in v0.1.3 (rfd, plugin removed, test guards it).
+- DIALOGTEST shown=true confirm=true: macOS local 4051 ms, Windows CI 6033 ms, Ubuntu 22.04/24.04 CI 3958/3964 ms, Ubuntu 24.04 Docker 3975 ms.
+- Update install measured on Mac: released v0.1.2 -> v0.1.3, bundle replaced, relaunched. Windows/Linux install untested.
+- CI: mac on macos-15-intel; apt via .github/script/apt-install.sh (DNS fallback).
+- Corrections sent: issue #1 comment, emailer emails. Reddit Linux-link reply: user to post.

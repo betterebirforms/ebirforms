@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.4 (12 November 2026)
+
 - The app shows one update message at a time. Before, opening the app and choosing Check for Updates could show two, and one could stay on screen after the update.
 
 ## v0.1.3 (12 November 2026)
