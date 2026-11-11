@@ -241,15 +241,22 @@ pub fn installer_payload(setup: &[u8]) -> Result<Payload, String> {
     })
 }
 
+/// BIR's installer is about 100 MB; anything past this is not it.
+const MAX_INSTALLER: u64 = 512 * 1024 * 1024;
+
 /// The official download (zip), the installer, or BIRForms.exe itself → the form tree.
 pub fn import(input: &[u8]) -> Result<Tree, String> {
     if input.starts_with(b"PK\x03\x04") {
         let mut archive = zip::ZipArchive::new(Cursor::new(input)).map_err(|e| format!("zip: {e}"))?;
         for i in 0..archive.len() {
             let mut f = archive.by_index(i).map_err(|e| format!("zip: {e}"))?;
-            if f.name().to_ascii_lowercase().ends_with(".exe") {
-                let mut exe = Vec::with_capacity(f.size() as usize);
-                f.read_to_end(&mut exe).map_err(|e| format!("zip: {e}"))?;
+            if f.name().map(|n| n.to_ascii_lowercase().ends_with(".exe")).unwrap_or(false) {
+                // the size in the zip header is the archive's claim, not a fact: cap what we read
+                let mut exe = Vec::new();
+                (&mut f).take(MAX_INSTALLER + 1).read_to_end(&mut exe).map_err(|e| format!("zip: {e}"))?;
+                if exe.len() as u64 > MAX_INSTALLER {
+                    return Err("the installer inside the zip is too large".into());
+                }
                 return import(&exe);
             }
         }

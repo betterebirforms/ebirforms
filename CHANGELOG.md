@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Safer import of BIR's download: a damaged or fake zip can no longer make the app reserve huge amounts of memory. Updated the zip and encryption libraries to versions with known security problems fixed.
+
 ## v0.1.4 (12 November 2026)
 
 - The app shows one update message at a time. Before, opening the app and choosing Check for Updates could show two, and one could stay on screen after the update.
