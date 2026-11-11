@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import { IS_WEB, hostStatus, importPackage, listFolder, readText, removeFile } from "@/lib/vfs";
 import { webExport, webImport, webPersist } from "@/lib/web-store.ts";
 import { FormView } from "@/form/FormView.tsx";
+import { ModScreen } from "./ModScreen.tsx";
 import { NATIVE_FORM } from "@/form/registry.ts";
 import { parseSavefile, profileFromSavefile, type Profile } from "@/lib/savefile.ts";
 import { reopenSavefile, type FormState, type GroupState } from "@/form/schema.ts";
+
+/** Where the app is served from: "/" on the desktop, "/ebirforms/" on GitHub Pages (vite `base`). */
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+/** An app path under the base, e.g. at("/form") → "/ebirforms/form" on GitHub Pages. */
+export const at = (path: string) => `${BASE}${path}`;
+/** The current path without the base, for routing. */
+const routePath = () => window.location.pathname.slice(BASE.length) || "/";
 
 /** BIR's own main screen, served 1:1 through the host + shim. */
 const MAIN_SCREEN = "/legacy/BIRForms.hta";
@@ -14,8 +22,9 @@ const MAIN_SCREEN = "/legacy/BIRForms.hta";
  * show. After that it hands straight over to BIR's `BIRForms.hta`.
  */
 export function App() {
-  const route = /^\/form(?:\/([^/?#]+))?\/?$/.exec(window.location.pathname);
+  const route = /^\/form(?:\/([^/?#]+))?\/?$/.exec(routePath());
   if (route) return <NativeScreen form_code={route[1] ? decodeURIComponent(route[1]) : null} />;
+  if (!IS_WEB && /^\/mod\/?$/.test(routePath())) return <ModScreen />;
   // the web version never shows BIR's own pages: its home is the native form list
   if (IS_WEB) return <NativeScreen form_code={null} />;
   return <LegacyScreen />;
@@ -33,7 +42,7 @@ const query = () => new URLSearchParams(window.location.hash.slice(1));
 /** `#profile=<file>&file=<savefile>` carried between the list and a form. */
 const formHref = (code: string, extra: Record<string, string> = {}) => {
   const q = new URLSearchParams({ ...(query().get("profile") ? { profile: query().get("profile")! } : {}), ...extra }).toString();
-  return `/form/${encodeURIComponent(code)}${q ? `#${q}` : ""}`;
+  return at(`/form/${encodeURIComponent(code)}${q ? `#${q}` : ""}`);
 };
 
 /** The form code inside a savefile name `<TIN>-<CODE>-<period>.xml` (codes may hold a dash, e.g. 2550DS-old). */
@@ -88,7 +97,7 @@ function NativeScreen({ form_code }: { form_code: string | null }) {
           form_code={form_code}
           profile={profile}
           initial={initial === "none" ? undefined : initial}
-          onClose={() => window.location.assign(profile_name ? `/form#profile=${encodeURIComponent(profile_name)}` : "/form")}
+          onClose={() => window.location.assign(at(profile_name ? `/form#profile=${encodeURIComponent(profile_name)}` : "/form"))}
           onSaved={() => {}}
         />
       </>
@@ -131,7 +140,7 @@ function ProfilePick() {
       Taxpayer{" "}
       <select
         value={query().get("profile") ?? ""}
-        onChange={(e) => window.location.assign(e.target.value ? `/form#profile=${encodeURIComponent(e.target.value)}` : "/form")}
+        onChange={(e) => window.location.assign(at(e.target.value ? `/form#profile=${encodeURIComponent(e.target.value)}` : "/form"))}
       >
         <option value="">None (type it on the form)</option>
         {name.map((n) => (

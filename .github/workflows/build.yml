@@ -66,7 +66,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: package-bir, path: src-tauri/package-bir }
       - run: cargo test --manifest-path src-tauri/Cargo.toml --no-default-features
+      # signs the in-app update files (update.rs); absent on forks and pull requests, which then build without them
       - run: node tool/package.mjs --no-stage
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
       - uses: actions/upload-artifact@v4
         with: { name: "dist-${{ runner.os }}", path: dist-package/* }
 
@@ -78,10 +82,18 @@ jobs:
     permissions: { contents: write }
     steps:
       - uses: actions/checkout@v4
-        with: { sparse-checkout: .github/release-note.md, sparse-checkout-cone-mode: false }
+        with:
+          sparse-checkout: |
+            .github/release-note.md
+            CHANGELOG.md
+            src-tauri/tauri.conf.json
+            tool/latest-json.mjs
+          sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v4
         with: { pattern: "dist-*", path: out, merge-multiple: true }
       - run: ls -la out
+      # the in-app updater's manifest (releases/latest/download/latest.json); fails if a platform is unsigned
+      - run: node tool/latest-json.mjs out
       - uses: softprops/action-gh-release@v2
         with:
           draft: false

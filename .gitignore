@@ -29,3 +29,4 @@ docs/analysis/web-layer.md
 docs/analysis/native-layer.md
 docs/analysis/audit-status.md
 bench/_jq*.mjs
+dist-mcp/

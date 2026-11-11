@@ -47,7 +47,8 @@ Kuhaa ang file para sa imong computer sa **[pinakabag-ong release](https://githu
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bag-o, o susama |
 | Mga savefile | Parehas nga format sa Windows app sa BIR, mao nga maablihan ang file sa bisan asa |
-| Online Submit | Wala sa download build |
+| Online Submit | Wala sa download build. Ang Submit naghimo ra og final copy sa imong computer, ug moingon kini nga walay napadala. I-file sa eBIRForms online o sa app sa BIR |
+| Updates | Mosusi ang app og bag-ong bersyon inig abli (sukad v0.1.2). **Updates > Check for Updates** aron mosusi karon |
 | Status | Beta |
 
 ## Pag-install
@@ -69,7 +70,8 @@ Human niana, sulati ang imong profile, pagpili og form, i-click ang **Fill-up**,
 - Problema o pangutana: [Issues](https://github.com/betterebirforms/ebirforms/issues)
 - Mga kausaban: [CHANGELOG.md](CHANGELOG.md)
 - Tabang sa paghimo: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, han-ay sa repo, mga lagda)
-- Usba ang lihok sa usa ka form, o patya ang among mga ayo: [mods](mod/README.md)
+- Usba ang lihok sa usa ka form, o patya ang among mga ayo: [mods](mod/README.md), o **Go > Mods** sa app
+- Tugoti ang usa ka AI agent (Claude, Codex) nga mopuno ug mo-save og draft: [docs/agent.md](docs/agent.md)
 - Mga plano, apil ang mobile ug web: [ROADMAP.md](ROADMAP.md)
 - Unsaon kini paglihok: [docs/architecture.md](docs/architecture.md)
 

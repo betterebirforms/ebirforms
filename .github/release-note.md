@@ -49,5 +49,11 @@ You only do this once. On macOS 12 to 14, you can instead right-click eBIRForms 
 
 ## After installing
 
-Fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app. Found a problem?
+Fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
+
+This app does **not** file returns with BIR. Submit makes a final copy on your computer. File it through
+eBIRForms online or BIR's own app.
+
+From v0.1.2 on, the app checks for updates when it opens, and **Updates > Check for Updates** checks now. You
+don't need to come back here for new versions. Found a problem?
 [Open an issue](https://github.com/betterebirforms/ebirforms/issues/new/choose).

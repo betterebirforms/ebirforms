@@ -21,6 +21,6 @@
     "types": ["node", "vite/client"],
     "paths": { "@/*": ["./src/*"] }
   },
-  "include": ["src", "test", "tool", "host", "vite.config.ts"],
+  "include": ["src", "test", "tool", "host", "mcp", "vite.config.ts", "vite.mcp.config.ts"],
   "exclude": ["vendor", "dist", "src-tauri"]
 }

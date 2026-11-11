@@ -47,7 +47,8 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bago, o katumbas |
 | Mga savefile | Parehong format ng Windows app ng BIR, kaya nabubuksan ang file sa alinman |
-| Online Submit | Wala sa download build |
+| Online Submit | Wala sa download build. Ang Submit ay gumagawa lang ng final copy sa computer mo, at sinasabi nitong walang naipadala. I-file sa eBIRForms online o sa app ng BIR |
+| Updates | Tumitingin ang app ng bagong bersyon pagbukas (mula v0.1.2). **Updates > Check for Updates** para tumingin ngayon |
 | Status | Beta |
 
 ## Pag-install
@@ -69,7 +70,8 @@ Pagkatapos, punan ang iyong profile, pumili ng form, i-click ang **Fill-up**, at
 - Problema o tanong: [Issues](https://github.com/betterebirforms/ebirforms/issues)
 - Mga pagbabago: [CHANGELOG.md](CHANGELOG.md)
 - Tumulong sa pagbuo: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, ayos ng repo, mga patakaran)
-- Baguhin ang kilos ng isang form, o patayin ang aming mga ayos: [mods](mod/README.md)
+- Baguhin ang kilos ng isang form, o patayin ang aming mga ayos: [mods](mod/README.md), o **Go > Mods** sa app
+- Hayaang mag-fill at mag-save ng draft ang isang AI agent (Claude, Codex): [docs/agent.md](docs/agent.md)
 - Mga plano, kasama ang mobile at web: [ROADMAP.md](ROADMAP.md)
 - Paano ito gumagana: [docs/architecture.md](docs/architecture.md)
 

@@ -2,6 +2,8 @@ import { defineConfig, type Plugin } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { randomBytes } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { createLegacyHost } from "./host/legacy-server.ts";
 
 // port block 10900–10999 (~/Code/PORTS.md); Tauri devUrl points here
@@ -29,21 +31,41 @@ function legacyHost(): Plugin {
 }
 
 /** Web build only: the Home Screen install metadata (Safari keeps a Home Screen app's storage past 7 days). */
+/** The web build's base path: "/" by default, "/ebirforms/" for GitHub Pages (`EBF_WEB_BASE`, set by the Pages workflow). */
+const base = process.env.EBF_WEB_BASE ?? "/";
+
 const webManifest = (): Plugin => ({
   name: "ebirforms-web-manifest",
   // the service worker (public-web/sw.js) precaches every built file listed here, so the app works offline
   generateBundle(_, bundle) {
-    this.emitFile({ type: "asset", fileName: "sw-asset.json", source: JSON.stringify(Object.keys(bundle).map((f) => `/${f}`)) });
+    this.emitFile({ type: "asset", fileName: "sw-asset.json", source: JSON.stringify(Object.keys(bundle)) }); // relative to the base
+  },
+  // a static host has no rewrites: /form must exist as a file, and 404.html carries every other route
+  // (GitHub Pages serves it for /form/<CODE>); both are the same index.html
+  writeBundle(option) {
+    const dir = option.dir ?? "dist-web";
+    const index = readFileSync(join(dir, "index.html"));
+    writeFileSync(join(dir, "404.html"), index);
+    // GitHub Pages has no rewrites: give /form and every /form/<code> a real page (200), not the 404.html fallback.
+    // The codes are the registry's literal keys plus src/form/entry/<CODE>.ts (bench/web-pages.mjs checks all 84).
+    const registry = readFileSync("src/form/registry.ts", "utf8");
+    const code = [...registry.matchAll(/^  "([^"]+)": \{/gm)].map((m) => m[1]!);
+    code.push(...readdirSync("src/form/entry").filter((n) => n.endsWith(".ts")).map((n) => n.slice(0, -3)));
+    for (const c of ["", ...code]) {
+      mkdirSync(join(dir, "form", c), { recursive: true });
+      writeFileSync(join(dir, "form", c, "index.html"), index);
+    }
   },
   transformIndexHtml: (html) =>
     html.replace(
       "</head>",
-      `<link rel="manifest" href="/manifest.webmanifest" /><link rel="apple-touch-icon" href="/apple-touch-icon.png" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>`,
+      `<link rel="manifest" href="${base}manifest.webmanifest" /><link rel="apple-touch-icon" href="${base}apple-touch-icon.png" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>`,
     ),
 });
 
 export default defineConfig(({ mode }) => ({
   plugins: [react(), ...(mode === "web" ? [webManifest()] : [legacyHost()])],
+  base: mode === "web" ? base : "/",
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   clearScreen: false,
   server: { port, strictPort: true, host: "127.0.0.1" },

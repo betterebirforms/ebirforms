@@ -75,6 +75,30 @@ fn bytes(status: u16, content_type: &str, body: Vec<u8>) -> Reply {
         .with_header(header("cache-control", "no-store"))
 }
 
+/// What BIR's pages may load and reach: only this host. BIR's own scripts are inline and use eval, so those stay;
+/// everything that could carry a return off the machine (fetch/XHR, form posts, frames, plugins) is limited to
+/// 'self'. The shim already redirects BIR's XHR to /__offline; this also covers fetch, <img>, <form> and any mod.
+pub const PAGE_CSP: &str = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; \
+img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob: data:; object-src 'none'; \
+base-uri 'self'; form-action 'self'";
+
+/// The page headers every BIR page gets (both hosts send the same; test/host-security.test.ts and the Rust test).
+fn page(body: Vec<u8>, content_type: &str) -> Reply {
+    bytes(200, content_type, body)
+        .with_header(header("content-security-policy", PAGE_CSP))
+        .with_header(header("x-content-type-options", "nosniff"))
+        .with_header(header("referrer-policy", "no-referrer"))
+}
+
+/// DNS rebinding guard: a request is served only if it names this machine (`127.0.0.1`, `localhost` or `[::1]`,
+/// any port). Without it, a website whose name points at 127.0.0.1 could read the token from `/` and then the
+/// user's profiles and returns, since its pages would count as same-origin.
+pub fn local_host(value: Option<&str>) -> bool {
+    let Some(v) = value else { return false };
+    let name = if v.starts_with('[') { v.split(']').next().map(|h| format!("{h}]")).unwrap_or_default() } else { v.split(':').next().unwrap_or("").to_string() };
+    matches!(name.to_ascii_lowercase().as_str(), "127.0.0.1" | "localhost" | "[::1]")
+}
+
 fn json_reply(v: Value) -> Reply {
     bytes(200, "application/json", v.to_string().into_bytes())
 }
@@ -470,7 +494,7 @@ impl Host {
     /// offline final-copy path, as when online filing is closed.
     #[cfg(not(feature = "bir-submit"))]
     fn dispatch_op(&self, _tin: &str, _form_code: &str) -> Value {
-        json!({ "ok": true, "mode": "0", "note": NO_SUBMIT })
+        json!({ "ok": true, "mode": "0", "available": false, "note": NO_SUBMIT })
     }
 
     #[cfg(not(feature = "bir-submit"))]
@@ -508,6 +532,10 @@ impl Host {
         let url = req.url().to_string();
         let path = url.split('?').next().unwrap_or("/").to_string();
         let token_ok = req.headers().iter().any(|h| h.field.equiv("x-ebf-token") && h.value.as_str() == self.token);
+        let host = req.headers().iter().find(|h| h.field.equiv("host")).map(|h| h.value.as_str().to_string());
+        if !local_host(host.as_deref()) {
+            return bytes(421, "text/plain", b"this server only answers to 127.0.0.1".to_vec());
+        }
         let mut body = Vec::new();
         if *req.method() == Method::Post {
             let _ = req.as_reader().read_to_end(&mut body);
@@ -526,6 +554,15 @@ impl Host {
             (Method::Post, "/__repin") => {
                 let reply = serde_json::from_slice::<Value>(&body).map_err(|e| e.to_string()).and_then(|r| self.repin(&r)).unwrap_or_else(|e| json!({ "ok": false, "error": e }));
                 json_reply(reply)
+            }
+            (Method::Post, "/__mod") => {
+                // the Mods screen's on/off switch: writes mod.json in the user's mod folder
+                let v: Value = serde_json::from_slice(&body).unwrap_or(Value::Null);
+                let reply = match (self.mod_dir.as_deref(), v["id"].as_str(), v["on"].as_bool()) {
+                    (Some(dir), Some(id), Some(on)) => bir_mod::set_switch(dir, id, on).map(|_| json!({ "ok": true })),
+                    _ => Err("no such mod, or no mod folder".to_string()),
+                };
+                json_reply(reply.unwrap_or_else(|e| json!({ "ok": false, "error": e })))
             }
             (Method::Post, "/__print") => json_reply(match (self.print)() {
                 Ok(()) => json!({ "ok": true }),
@@ -569,7 +606,8 @@ impl Host {
         if ext == "hta" {
             let html = String::from_utf8_lossy(&data).trim_start_matches('\u{feff}').to_string();
             let html = bir_mod::apply(&bir_mod::mod_list(self.mod_dir.as_deref()), &rel_str, html, "");
-            let tag = format!(r#"<script src="/legacy-shim.js" data-token="{}"></script>"#, self.token);
+            // data-submit: whether this build can send a return to BIR at all (the downloads can't)
+            let tag = format!(r#"<script src="/legacy-shim.js" data-token="{}" data-submit="{}"></script>"#, self.token, if cfg!(feature = "bir-submit") { 1 } else { 0 });
             let html = match html.to_ascii_lowercase().find("<head") {
                 Some(at) => {
                     let end = html[at..].find('>').map(|e| at + e + 1).unwrap_or(at);
@@ -577,7 +615,7 @@ impl Host {
                 }
                 None => format!("{tag}{html}"),
             };
-            return bytes(200, mime("hta"), html.into_bytes());
+            return page(html.into_bytes(), mime("hta"));
         }
         if ext == "js" {
             // replace BIR's vulnerable jQuery/jQuery-UI with vendored patched versions (WL bug 7)
@@ -603,7 +641,7 @@ impl Host {
         };
         if is_index || rel == "index.html" {
             let html = String::from_utf8_lossy(&data).replacen("<head>", &format!(r#"<head><meta name="ebf-token" content="{}" />"#, self.token), 1);
-            return bytes(200, mime("html"), html.into_bytes());
+            return page(html.into_bytes(), mime("html"));
         }
         bytes(200, &mime_type, data)
     }
@@ -689,6 +727,26 @@ pub fn random_token() -> String {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn answers_only_to_this_machine() {
+        for ok in ["127.0.0.1:10907", "localhost:10907", "LOCALHOST", "[::1]:10907", "127.0.0.1"] {
+            assert!(local_host(Some(ok)), "{ok}");
+        }
+        // a rebinding attacker's name, a lookalike, a LAN name, and no Host header at all
+        for bad in ["evil.example:10907", "127.0.0.1.evil.example", "localhost.evil.example:10907", "192.168.1.5:10907", ""] {
+            assert!(!local_host(Some(bad)), "{bad}");
+        }
+        assert!(!local_host(None));
+    }
+
+    #[test]
+    fn bir_pages_cannot_reach_the_network() {
+        assert!(PAGE_CSP.contains("connect-src 'self'"));
+        assert!(PAGE_CSP.contains("form-action 'self'"));
+        assert!(PAGE_CSP.contains("object-src 'none'"));
+        assert!(!PAGE_CSP.contains("http"), "no outside origin is allowed");
+    }
 
     #[test]
     fn clean_refuses_escapes() {

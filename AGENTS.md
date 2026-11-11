@@ -25,6 +25,8 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
 | `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one) |
 | `src/form/export.ts` | Export adapters: the eBIRForms savefile (name + records, BIR's own) and the TSP slot (refuses until BIR issues a layout) |
 | `src/form/template/`, `upper-case.json` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, and what BIR upper-cases |
+| `mcp/` | The agent server (MCP over stdio): `tool.ts` is what an agent may do (drafts only, never a final copy or a submit), `main.ts` serves it. `npm run build:mcp` → `dist-mcp/`; setup in `docs/agent.md` |
+| `src-tauri/src/update.rs`, `mac_dialog.rs` | In-app updates (signed `latest.json` from GitHub releases, Rust-only) and the macOS `alert`/`confirm`/`prompt` panels wry lacks |
 | `test/` | vitest, the gate. `test/parity.ts` is the 1:1 check; `test/parity.test.ts` the scoreboard + BIR-defect ledger |
 | `docs/` | `architecture.md` (how it fits), `development.md` (commands), `rewrite-playbook.md` (the 1:1 method). `docs/analysis/` web/native-layer findings and `docs/bir/` are private (gitignored); `form-triage.md` is public |
 
@@ -38,6 +40,8 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
   `Encrypt.exe`) may be run as a **test oracle** to generate golden vectors (`test/fixture/`). Never `BIRForms.exe`,
   the HTA, or anything that touches the network.
 - Never print credentials found in BIR's binaries: reference them by file:offset and kind only.
+- The updater's signing key lives outside the repo (`~/.tauri/`, and the `TAURI_SIGNING_*` secrets). Never commit or print it.
+- Both hosts answer only `127.0.0.1`/`localhost`/`[::1]` and serve BIR's pages under one CSP (`PAGE_CSP`, kept equal by `test/host-security.test.ts`). Change both or neither.
 - Naming follows `docs/CONVENTIONS.md` (singular everywhere). BIR's own identifiers and file formats are
   external: keep them verbatim.
 - Peso arithmetic never uses binary floats (see CONVENTIONS "Money").
@@ -63,6 +67,9 @@ npm run gate         # typecheck + tests
 npm run gate:rust    # cargo test (also checks every built-in mod parses and compiles)
 node bench/host-parity.mjs   # Node and Rust hosts serve all 169 pages/scripts identically (both running)
 npm run build:web    # the web version (native forms only, OPFS, offline) → dist-web/; not published
+EBF_WEB_BASE=/ebirforms/ npm run build:web && node bench/web-pages.mjs   # the GitHub Pages build, checked as Pages serves it
+npm run mod:check    # every mod: valid, portable to the Rust engine, dry-run against BIR's tree
+npm run build:mcp    # the agent server → dist-mcp/ebirforms-mcp.mjs
 npm run package      # this platform's package (macOS DMG / Windows setup.exe / Linux AppImage+deb) with BIR's forms → dist-package/
 npm run check:roundtrip   # web savefile → BIR's own form page, field by field
 EBF_NAME=1 npx vitest run test/export-name.test.ts   # every native savefile name == BIR's createXMLFileName

@@ -162,8 +162,10 @@ describe.skipIf(!has_original)("legacy form 0605 in WebKit", () => {
 
     expect(error).toEqual([]);
     // BIR's own prompt, then the dispatcher (the dev host never contacts BIR: mode "0") → BIR's offline branch
-    expect(dialog.some((m) => m.startsWith("Please ensure that you have INTERNET access"))).toBe(true);
-    expect(dialog.some((m) => m.startsWith("BIR's submission server could not be reached"))).toBe(true);
+    // a build that can't submit says so plainly, before and after (issue #1: a user thought Submit had filed)
+    expect(dialog.some((m) => m.startsWith("Make a FINAL COPY of this return?") && m.includes("does NOT file returns with BIR"))).toBe(true);
+    expect(dialog.some((m) => m.startsWith("This version of eBIRForms does NOT file returns with BIR. Nothing was sent."))).toBe(true);
+    expect(dialog.some((m) => m.startsWith("BIR's submission server could not be reached"))).toBe(false);
     expect(dialog.some((m) => m.startsWith("Final copy saved."))).toBe(true);
     const saved = readdirSync(join(data_dir, "savefile")).filter((f) => f.endsWith(".xml"));
     expect(saved).toHaveLength(1);

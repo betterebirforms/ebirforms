@@ -33,11 +33,19 @@ flate2 = { version = "1", optional = true }
 russh = { version = "0.64.1", optional = true, default-features = false, features = ["ring", "flate2", "rsa"] }
 russh-sftp = { version = "3.0.1", optional = true }
 tokio = { version = "1.53.3", optional = true, features = ["rt", "net", "io-util", "time", "macros"] }
+tauri-plugin-updater = "2"
+tauri-plugin-dialog = "2"
 
 
 # The caption webview's packing in the window's GtkBox (lib.rs); the same gtk 0.18 tauri already links
 [target.'cfg(target_os = "linux")'.dependencies]
 gtk = "0.18"
+
+# BIR's alert/confirm/prompt as native dialogs (mac_dialog.rs); the same objc2 crates wry already links
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+objc2-foundation = { version = "0.3", features = ["NSString", "NSGeometry"] }
+block2 = "0.6"
 
 [features]
 # BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload.

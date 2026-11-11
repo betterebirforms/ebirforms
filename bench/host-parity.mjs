@@ -7,7 +7,7 @@ import { readdirSync } from "node:fs";
 const node = process.env.EBIRFORMS_URL ?? "http://127.0.0.1:10900";
 const rust = process.env.EBIRFORMS_HOST_URL ?? "http://127.0.0.1:10907";
 const root = "vendor/original";
-const norm = (t) => t.replace(/data-token="[0-9a-f]+"/, 'data-token="X"');
+const norm = (t) => t.replace(/data-token="[0-9a-f]+"/, 'data-token="X"').replace(/data-submit="[01]"/, 'data-submit="X"'); // the full build says 1
 const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(`${d}/${e.name}`) : [`${d}/${e.name}`]));
 const file = walk(root)
   .map((p) => p.slice(root.length + 1))

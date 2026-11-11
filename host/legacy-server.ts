@@ -15,7 +15,7 @@ import { validateTin } from "../src/lib/tin.ts";
 import { decodeCp1252, encodeCp1252 } from "../src/lib/cp1252.ts";
 import { parseSavefile, serializeSavefile, withoutSecret } from "../src/lib/savefile.ts";
 import { patchedJqueryFor, patchForm, patchScript } from "./form-patch.ts";
-import { modList, modSummary } from "./mod.ts";
+import { modList, modSummary, setModSwitch } from "./mod.ts";
 
 export interface LegacyHostOption {
   original_dir: string;
@@ -196,13 +196,14 @@ export function createLegacyHost(option: LegacyHostOption) {
       // BIR's dispatcher + SFTP upload are native (src-tauri/src/dispatch.rs, host.rs send_op). The dev server never
       // contacts BIR: mode "0" sends every Submit down BIR's own offline final-copy branch.
       case "dispatch":
-        return { ok: true, mode: "0", note: "online submission runs in the packaged desktop app, not the dev server" };
+        return { ok: true, mode: "0", available: false, note: "online submission runs in the packaged desktop app, not the dev server" };
       case "send":
         return { ok: true, exit_code: 1, note: "online submission runs in the packaged desktop app, not the dev server" };
     }
   };
 
-  const shimTag = `<script src="${option.shim_url}" data-token="${option.token}"></script>`;
+  // data-submit="0": the dev server never sends a return to BIR (the Rust host says 1 only in the full build)
+  const shimTag = `<script src="${option.shim_url}" data-token="${option.token}" data-submit="0"></script>`;
   const injectShim = (html: string) => {
     // must run before any page script; put it right after <head> (or at the very top)
     const at = html.search(/<head[^>]*>/i);
@@ -213,7 +214,25 @@ export function createLegacyHost(option: LegacyHostOption) {
 
   return async function handle(req: IncomingMessage, res: ServerResponse, next?: () => void): Promise<void> {
     const url = new URL(req.url ?? "/", "http://host");
+    // DNS rebinding guard, as in src-tauri/src/host.rs local_host()
+    if (!localHost(req.headers.host)) {
+      res.writeHead(421, { "content-type": "text/plain" }).end("this server only answers to 127.0.0.1");
+      return;
+    }
     try {
+      if (url.pathname === "/__mod" && req.method === "POST") {
+        // the Mods screen's on/off switch: writes mod.json in the user's mod folder
+        if (req.headers["x-ebf-token"] !== option.token) {
+          res.writeHead(403).end();
+          return;
+        }
+        const chunk: Buffer[] = [];
+        for await (const c of req) chunk.push(c as Buffer);
+        const body = JSON.parse(Buffer.concat(chunk).toString("utf8")) as { id?: string; on?: boolean };
+        const ok = Boolean(option.mod_dir && typeof body.id === "string" && typeof body.on === "boolean" && setModSwitch(option.mod_dir, body.id, body.on));
+        res.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" }).end(JSON.stringify(ok ? { ok } : { ok, error: "no such mod, or no mod folder" }));
+        return;
+      }
       if (url.pathname === "/__vfs" && req.method === "POST") {
         if (req.headers["x-ebf-token"] !== option.token) {
           res.writeHead(403).end();
@@ -297,7 +316,7 @@ export function createLegacyHost(option: LegacyHostOption) {
         if (ext === "hta" || ext === "html" || ext === "htm") {
           const html = byte.toString("utf8").replace(/^﻿/, "");
           // only top-level .hta pages get the shim; .html files are fragments forms pull in with $.load()
-          res.writeHead(200, { "content-type": MIME.hta!, "cache-control": "no-store" }).end(ext === "hta" ? injectShim(patchForm(rel, html, option.mod_dir)) : html);
+          res.writeHead(200, { "content-type": MIME.hta!, "cache-control": "no-store", ...(ext === "hta" ? PAGE_HEADER : {}) }).end(ext === "hta" ? injectShim(patchForm(rel, html, option.mod_dir)) : html);
           return;
         }
         if (ext === "js") {
@@ -317,4 +336,22 @@ export function createLegacyHost(option: LegacyHostOption) {
     if (next) next();
     else res.writeHead(404).end();
   };
+}
+
+/** What BIR's pages may load and reach: only this host. Same string as PAGE_CSP in src-tauri/src/host.rs. */
+export const PAGE_CSP =
+  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob: data:; object-src 'none'; " +
+  "base-uri 'self'; form-action 'self'";
+export const PAGE_HEADER = {
+  "content-security-policy": PAGE_CSP,
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "no-referrer",
+};
+
+/** Serve only requests that name this machine (127.0.0.1, localhost or [::1], any port): see host.rs local_host(). */
+export function localHost(value: string | undefined): boolean {
+  if (!value) return false;
+  const name = value.startsWith("[") ? value.slice(0, value.indexOf("]") + 1) : (value.split(":")[0] ?? "");
+  return ["127.0.0.1", "localhost", "[::1]"].includes(name.toLowerCase());
 }

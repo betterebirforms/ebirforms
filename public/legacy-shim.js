@@ -11,6 +11,8 @@
   if (window.__ebfShim) return;
   var script = document.currentScript;
   var TOKEN = script && script.getAttribute("data-token");
+  // whether this build can send a return to BIR at all (host.rs data-submit; the downloads and the dev server say 0)
+  var CAN_SUBMIT = !!script && script.getAttribute("data-submit") === "1";
   if (!TOKEN) return;
   window.__ebfShim = true;
   /** The install root the forms believe they run from (they call GetAbsolutePathName('cFTPSend.exe')). */
@@ -421,17 +423,19 @@
   // asks the dispatcher (no eval; the login never reaches the page), only after the user confirms "Are you
   // sure you want to submit?". Mode "0" (no answer, or online filing closed) takes BIR's offline branch.
   // canSendToEFPS stays false: BIR commented out its eFPS (Rollbase) branch in every form.
-  var submitTarget = { tin: "", form_code: "", mode: null };
+  var submitTarget = { tin: "", form_code: "", mode: null, available: true };
   function dispatchNow() {
     var r = null;
     try { r = vfs({ op: "dispatch", tin: submitTarget.tin, form_code: submitTarget.form_code }); } catch (e) { r = null; }
     submitTarget.mode = r && r.mode ? String(r.mode) : "0";
+    // the download build has no online submission at all: say so, never "try again when online" (issue #1)
+    submitTarget.available = !(r && r.available === false);
     if (r && r.note) console.warn("[ebirforms] dispatcher: " + r.note);
     return submitTarget.mode;
   }
   var shimConService = {
     initConConfig: function (tin, form_code) {
-      submitTarget = { tin: String(tin || ""), form_code: String(form_code || ""), mode: null };
+      submitTarget = { tin: String(tin || ""), form_code: String(form_code || ""), mode: null, available: true };
     },
     getConConfig: function () {
       return { mode: submitTarget.mode === null ? undefined : submitTarget.mode, srv: "", sslport: "", port: "", usr: "", pass: "" };
@@ -449,20 +453,33 @@
     "BIR's submission server could not be reached, or online filing is not open for this return.\n\n" +
     "Your return will be saved as a FINAL COPY (locked for editing). Open it again and click Submit to " +
     "send it once you are online, or Print it to file on paper.";
+  var NOT_FILED_NOTICE =
+    "This version of eBIRForms does NOT file returns with BIR. Nothing was sent.\n\n" +
+    "Your return is saved here as a FINAL COPY (locked for editing). To file it, use BIR's eBIRForms online " +
+    "(ebirforms.bir.gov.ph), eFPS, or BIR's Offline eBIRForms Package on Windows (your saved file opens there), " +
+    "or Print it and file the paper return.";
   var nativeAlert = window.alert.bind(window);
   var nativeConfirm = window.confirm.bind(window);
   window.confirm = function (message) {
     var m = String(message);
+    if (!CAN_SUBMIT && m.indexOf("Please ensure that you have INTERNET access") === 0) {
+      // BIR's Submit asks this before sending; this build sends nothing, so ask the honest question
+      return nativeConfirm(
+        "Make a FINAL COPY of this return?\n\n" +
+          "This version of eBIRForms does NOT file returns with BIR. The return is locked for editing and saved here; " +
+          "you file it yourself through BIR (eBIRForms online, eFPS, or BIR's own app), or on paper."
+      );
+    }
     if (m.indexOf("File saved and encrypted.") === 0) {
       // no USB/CD export: the copy lives in the app's data folder
-      nativeAlert("Final copy saved. It is now read-only — use Print for the paper return.");
+      nativeAlert("Final copy saved. It is now read-only. Use Print for the paper return.");
       return false;
     }
     return nativeConfirm(message);
   };
   window.alert = function (message) {
     var m = String(message);
-    if (m.indexOf("The system detected that you have no internet connection") === 0) return nativeAlert(OFFLINE_NOTICE);
+    if (m.indexOf("The system detected that you have no internet connection") === 0) return nativeAlert(submitTarget.available ? OFFLINE_NOTICE : NOT_FILED_NOTICE);
     return nativeAlert(message);
   };
 

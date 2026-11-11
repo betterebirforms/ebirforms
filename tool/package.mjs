@@ -11,7 +11,8 @@
 // APPLE_ID + APPLE_PASSWORD (app-specific) + APPLE_TEAM_ID, or APPLE_API_KEY + APPLE_API_ISSUER + APPLE_API_KEY_PATH —
 // Tauri notarizes the app, and this script notarizes and staples the DMG so Gatekeeper opens it without a warning.
 import { execFileSync } from "node:child_process";
-import { copyFileSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 
 const shell = process.platform === "win32";
@@ -30,7 +31,21 @@ const PLATFORM = {
 }[process.platform];
 if (!PLATFORM) throw new Error(`no package for ${process.platform}`);
 
-const build = ["tauri", "build", "--target", PLATFORM.target, "--bundles", PLATFORM.bundle, "--config", "src-tauri/tauri.package.conf.json", "--", "--no-default-features"];
+// In-app updates: tauri.package.conf.json asks for signed updater files, which needs the update-signing key
+// (TAURI_SIGNING_PRIVATE_KEY [+ _PASSWORD]; CI has them as secrets). Locally it falls back to ~/.tauri/ebirforms-updater.key;
+// with no key at all the package is built without updater files (it still updates itself from later releases).
+const key_file = join(homedir(), ".tauri", "ebirforms-updater.key");
+if (!process.env.TAURI_SIGNING_PRIVATE_KEY && existsSync(key_file)) {
+  process.env.TAURI_SIGNING_PRIVATE_KEY = readFileSync(key_file, "utf8");
+  if (existsSync(`${key_file}.password`)) process.env.TAURI_SIGNING_PRIVATE_KEY_PASSWORD = readFileSync(`${key_file}.password`, "utf8");
+}
+const signed = Boolean(process.env.TAURI_SIGNING_PRIVATE_KEY);
+if (!signed) console.warn("no update-signing key: building without updater files");
+const no_updater_conf = join(tmpdir(), "ebirforms-no-updater.conf.json");
+if (!signed) writeFileSync(no_updater_conf, JSON.stringify({ bundle: { createUpdaterArtifacts: false } }));
+const no_updater = signed ? [] : ["--config", no_updater_conf];
+
+const build = ["tauri", "build", "--target", PLATFORM.target, "--bundles", PLATFORM.bundle, "--config", "src-tauri/tauri.package.conf.json", ...no_updater, "--", "--no-default-features"];
 // macOS: bundle_dmg.sh lays the window out through Finder/AppleScript, which fails now and then on a busy machine;
 // the second run reuses the compiled app, so a retry costs seconds
 try { run("npx", build); } catch { console.error("tauri build failed once — retrying"); run("npx", build); }
@@ -43,6 +58,17 @@ for (const [dir, ext, suffix] of PLATFORM.out) {
   if (!file) throw new Error(`no ${ext} in ${bundle_dir}`);
   const out = join("dist-package", `Offline_eBIRForms_Package_v${bir_version}_${suffix}`);
   copyFileSync(join(bundle_dir, file), out);
+  made.push(out);
+  // Windows and Linux update from the installer itself; its signature sits beside it
+  if (signed && dir !== "dmg") copyFileSync(join(bundle_dir, `${file}.sig`), `${out}.sig`);
+}
+// macOS updates from a tarball of the .app (the DMG is only for the first install)
+if (signed && process.platform === "darwin") {
+  const app_dir = `src-tauri/target/${PLATFORM.target}/release/bundle/macos`;
+  const tar = readdirSync(app_dir).find((n) => n.endsWith(".app.tar.gz"));
+  const out = join("dist-package", `Offline_eBIRForms_Package_v${bir_version}_macOS_universal.app.tar.gz`);
+  copyFileSync(join(app_dir, tar), out);
+  copyFileSync(join(app_dir, `${tar}.sig`), `${out}.sig`);
   made.push(out);
 }
 

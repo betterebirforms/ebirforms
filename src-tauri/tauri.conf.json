@@ -33,5 +33,16 @@
     "macOS": {
       "minimumSystemVersion": "12.0"
     }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDFGN0UwQ0RDNEI3QzQwNDkKUldSSlFIeEwzQXgrSDZ4d3gxSkh0bVZzUXlwT0E1VkJWUmVNc3Y1UjI1VFMvb2xvZGJlM1RCNEwK",
+      "endpoints": [
+        "https://github.com/betterebirforms/ebirforms/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }

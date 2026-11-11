@@ -99,15 +99,38 @@ valid JSON is skipped with a warning in the console, so a broken mod can't stop 
 
 A mod you add runs inside BIR's pages with full access to them. Only add mods you have read.
 
+### Check a mod before you use it
+
+```sh
+npm run mod:check                      # the built-in mods, then .mod/
+npm run mod:check -- path/to/my-mods   # a folder of your own
+```
+
+It checks every file (valid JSON, the required keys, plain-words `about`), every rule (one action each, a regular
+expression both engines accept, an `inject` script that exists), and then does a dry run on BIR's real pages: which
+files the mod applies to and how many each rule changed. A rule that changes nothing is flagged, because it usually
+means the pattern is off. It needs BIR's forms for the dry run (`npm run extract`, or `--bir <folder>`).
+
+### What a mod can't do
+
+BIR's pages are served with a content security policy: they, and every mod in them, can load and send data only
+to the app itself. A mod can't send a return to a website or load a script from the internet. Put everything a mod
+needs in its own folder and `inject` it.
+
 ## Switch mods on and off
 
-Put a `mod.json` in your mod folder (`.mod/mod.json` in development):
+In the desktop app, open **Go > Mods**. Every mod is listed by kind with its plain-words description and an on/off
+switch. A change applies the next time a form opens.
+
+The switches are saved in a `mod.json` in your mod folder. You can also write it by hand (`.mod/mod.json` in development):
 
 ```json
 { "off": ["fix/print-button-hide"], "on": ["improve/something-shipped-off"] }
 ```
 
 `GET /__mod` lists every mod in effect, with its title, kind, source (built-in or user) and whether it is on.
+`POST /__mod` with `{"id": "fix/print-button-hide", "on": false}` and the page token switches one; it is what the
+Mods screen calls.
 
 ## Add a built-in mod (a pull request)
 

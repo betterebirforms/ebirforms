@@ -5,9 +5,12 @@ mod crypto;
 #[cfg(feature = "bir-submit")]
 mod dispatch;
 mod host;
+#[cfg(target_os = "macos")]
+mod mac_dialog;
 mod package;
 #[cfg(feature = "bir-submit")]
 mod submit;
+mod update;
 
 use tauri::webview::WebviewBuilder;
 use tauri::window::WindowBuilder;
@@ -120,6 +123,7 @@ fn go_to(app: &tauri::AppHandle, id: &str) {
     let page = match id {
         "go_main" => "/legacy/BIRForms.hta",
         "go_form" => "/form",
+        "go_mod" => "/mod",
         _ => return,
     };
     if let Some(content) = app.get_webview("content") {
@@ -194,6 +198,32 @@ fn final_selftest(handle: tauri::AppHandle, data: std::path::PathBuf) {
     });
 }
 
+/// Debug-only (`EBF_DIALOGTEST=1`, with `EBF_RUST_HOST`): call `confirm()` in the real content webview, press Return
+/// (System Events), and print what the page got back and how long it waited. Before the macOS fix (issue #1)
+/// this read `confirm=false` after ~1 ms with no dialog; fixed, it reads `confirm=true` after the key press.
+fn dialog_selftest(handle: tauri::AppHandle) {
+    std::thread::spawn(move || {
+        let pause = |ms| std::thread::sleep(std::time::Duration::from_millis(ms));
+        let Some(content) = handle.get_webview("content") else { return };
+        pause(5000);
+        let _ = content.eval(
+            "setTimeout(() => { const t = performance.now(); const c = confirm('EBF_DIALOGTEST: press OK'); \
+             alert('EBF_DIALOGTEST: alert'); \
+             location.hash = 'confirm=' + c + '&ms=' + Math.round(performance.now() - t); }, 50)",
+        );
+        for _ in 0..2 {
+            pause(2500);
+            let _ = std::process::Command::new("osascript")
+                .args(["-e", "tell application \"System Events\" to key code 36"])
+                .status();
+        }
+        pause(1500);
+        let url = content.url().map(|u| u.to_string()).unwrap_or_default();
+        println!("DIALOGTEST {}", url.split_once('#').map(|x| x.1).unwrap_or("no result (no dialog answered)"));
+        handle.exit(0);
+    });
+}
+
 /// Debug-only (`EBF_PRINTTEST='forms/<page>.hta|<js>' npm run tauri dev`): open a BIR page in the content webview,
 /// run `<js>` (e.g. the form's own print function). The print sheet is left open for the caller to read (page count)
 /// and cancel.
@@ -214,6 +244,9 @@ fn print_selftest(handle: tauri::AppHandle, spec: String) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        // used from Rust only (update.rs): no webview is granted the updater's or the dialog's commands
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             // debug + EBF_RUST_HOST=<data dir>: the packaged Rust host (native print, Submit) over dist/ + vendor/original
             let rust_host_data = std::env::var("EBF_RUST_HOST").ok().filter(|_| cfg!(debug_assertions));
@@ -298,6 +331,11 @@ pub fn run() {
                 LogicalPosition::new(0.0, CAPTION_HEIGHT),
                 LogicalSize::new(width, height - CAPTION_HEIGHT),
             )?;
+            // macOS: wry's webview shows no alert/confirm/prompt (issue #1); add them before BIR's page can ask
+            #[cfg(target_os = "macos")]
+            for view in [&caption, &content] {
+                mac_dialog::install(view)?;
+            }
             let w = window.clone();
             window.on_window_event(move |event| {
                 if let WindowEvent::Resized(size) = event {
@@ -314,17 +352,40 @@ pub fn run() {
             // Go menu: BIR's own main screen (the 1:1 default) or the native forms (`/form`, ROADMAP P4). Kept in
             // the OS menu bar, not the faux-XP caption, so BIR's window still looks like BIR's.
             {
-                use tauri::menu::{Menu, MenuItemBuilder, SubmenuBuilder};
+                use tauri::menu::{CheckMenuItemBuilder, Menu, MenuItemBuilder, SubmenuBuilder};
                 let main = MenuItemBuilder::with_id("go_main", "BIR Main Screen").accelerator("CmdOrCtrl+Shift+M").build(app)?;
                 let native = MenuItemBuilder::with_id("go_form", "Native Forms").accelerator("CmdOrCtrl+Shift+F").build(app)?;
-                let go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).build()?;
+                let mods = MenuItemBuilder::with_id("go_mod", "Mods").build(app)?;
+                let go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).build()?;
+                let data = app.path().app_data_dir()?.join("data");
+                let check = MenuItemBuilder::with_id("check_update", "Check for Updates…").build(app)?;
+                let auto = CheckMenuItemBuilder::with_id("auto_update", "Check Automatically")
+                    .checked(update::auto_check_enabled(&data))
+                    .build(app)?;
+                let help = SubmenuBuilder::new(app, "Updates").item(&check).item(&auto).build()?;
                 let menu = Menu::default(app.handle())?;
                 menu.append(&go)?;
+                menu.append(&help)?;
                 app.set_menu(menu)?;
-                app.on_menu_event(|app, event| go_to(app, event.id().as_ref()));
+                app.on_menu_event(move |app, event| match event.id().as_ref() {
+                    "check_update" => update::check(app.clone(), data.clone(), true),
+                    // the menu toggles the tick itself; save what it now shows
+                    "auto_update" => update::set_auto_check(&data, auto.is_checked().unwrap_or(true)),
+                    id => go_to(app, id),
+                });
+            }
+            // a packaged build checks GitHub for a newer signed release once at start-up (update.rs)
+            if !cfg!(debug_assertions) {
+                let data = app.path().app_data_dir()?.join("data");
+                if update::auto_check_enabled(&data) {
+                    update::check(app.handle().clone(), data, false);
+                }
             }
             if let (true, Ok(_), Some(d)) = (cfg!(debug_assertions), std::env::var("EBF_FINALTEST"), rust_host_data.clone()) {
                 final_selftest(app.handle().clone(), std::path::PathBuf::from(d));
+            }
+            if cfg!(debug_assertions) && std::env::var("EBF_DIALOGTEST").is_ok() {
+                dialog_selftest(app.handle().clone());
             }
             if cfg!(debug_assertions) && std::env::var("EBF_GOTEST").is_ok() {
                 go_selftest(app.handle().clone());

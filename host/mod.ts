@@ -1,7 +1,7 @@
 // The mod engine (Node side). A mod is one JSON file under mod/<kind>/ that changes BIR's pages as they are
 // served; BIR's files on disk are never edited. src-tauri/src/bir_mod.rs is the Rust twin and must give the
 // same output for the same mod. The file format is documented in mod/README.md.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -103,6 +103,22 @@ export function modList(user_dir?: string): Mod[] {
     for (const id of sw.off) if (byId.has(id)) byId.get(id)!.on = false;
   }
   return [...byId.values()].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+}
+
+/**
+ * Switch one mod on or off by writing `user_dir/mod.json` (the Mods screen, `POST /__mod`). The mod's own file is
+ * never touched. Returns false if no mod has that id. Identical in the Rust engine (`set_switch`).
+ */
+export function setModSwitch(user_dir: string, id: string, on: boolean): boolean {
+  if (!modList(user_dir).some((m) => m.id === id)) return false;
+  const sw = readSwitch(user_dir);
+  const next = { on: sw.on.filter((x) => x !== id), off: sw.off.filter((x) => x !== id) };
+  (on ? next.on : next.off).push(id);
+  next.on.sort();
+  next.off.sort();
+  mkdirSync(user_dir, { recursive: true });
+  writeFileSync(join(user_dir, "mod.json"), JSON.stringify(next, null, 2) + "\n");
+  return true;
 }
 
 /** `$1`–`$9` → group, `$$` → `$`, any other `$` stays. Identical in the Rust engine. */

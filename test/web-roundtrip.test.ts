@@ -27,15 +27,18 @@ describe.skipIf(!ready)("web savefile → BIR's eBIRForms page", () => {
   let server: Server, base: string, context: BrowserContext, oracle: Oracle & { stop: () => Promise<void> }, profile_dir: string;
 
   beforeAll(async () => {
-    // dist-web as the static host would serve it: a file if it exists, else the app shell
+    // dist-web as the static host would serve it: a file if it exists, else the app shell. The build may sit under a
+    // path (EBF_WEB_BASE=/ebirforms/ for GitHub Pages): read it from the shell's asset links and serve under it.
+    const prefix = /src="(\/[^"]*?)assets\//.exec(readFileSync(join(WEB, "index.html"), "utf8"))?.[1] ?? "/";
     server = createServer((req, res) => {
-      const path = decodeURIComponent((req.url ?? "/").split(/[?#]/)[0]!);
+      const url = decodeURIComponent((req.url ?? "/").split(/[?#]/)[0]!);
+      const path = url.startsWith(prefix) ? `/${url.slice(prefix.length)}` : url;
       const file = join(WEB, path);
       const hit = path !== "/" && existsSync(file) && extname(file) ? file : join(WEB, "index.html");
       res.writeHead(200, { "content-type": MIME[extname(hit)] ?? "application/octet-stream" }).end(readFileSync(hit));
     });
     await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
-    base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    base = `http://127.0.0.1:${(server.address() as AddressInfo).port}${prefix.replace(/\/$/, "")}`;
     // OPFS needs a persistent WebKit context (an ephemeral one throws UnknownError)
     profile_dir = mkdtempSync(join(tmpdir(), "ebf-web-rt-"));
     context = await webkit.launchPersistentContext(profile_dir);

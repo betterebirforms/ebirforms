@@ -33,11 +33,18 @@ local web server on 127.0.0.1         src-tauri/src/host.rs   (in development: h
    ├─ /                    first-run import screen (src/App.tsx), then BIR's main screen
    ├─ /legacy/<page>       BIR's page  ──►  mods applied  ──►  shim added  ──►  your webview
    ├─ /__vfs               file access for the shim: your data folder over BIR's tree
-   ├─ /__mod               the mods in effect
+   ├─ /__mod               the mods in effect; POST (with the page token) flips one switch for the Mods screen
    ├─ /__import            unpacks BIR's official zip (src-tauri/src/package.rs)
    └─ /__print, /__close   native print, and BIR's Exit button closing the window
 ```
 
+- **Only this computer, only this server.** Both servers refuse a request whose `Host` is not `127.0.0.1`,
+  `localhost` or `[::1]` (so a website can't reach them by DNS rebinding), and serve BIR's pages under one
+  content security policy: a page, a mod or the shim can load from and talk to the app's own server only.
+- **Updates** run in Rust (`src-tauri/src/update.rs`), never in a page. The app fetches `latest.json` from the
+  latest GitHub release and installs an update only if its signature matches the public key built into the app.
+- **Agents** use their own process, not the window: `mcp/` reads the rebuilt forms and writes drafts into the same
+  data folder ([docs/agent.md](agent.md)).
 - **Two servers, one behaviour.** The packaged app serves pages from Rust; `npm run dev` serves them from Node.
   Both read the same `mod/` files, and `bench/host-parity.mjs` checks they serve every page and script
   identically.

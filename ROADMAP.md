@@ -11,7 +11,8 @@ Want to take something? Open an issue saying which row, so two people don't buil
 - All 84 of BIR's forms run on macOS, Windows and Linux, inside BIR's own main screen.
 - All 84 are also rebuilt in TypeScript, and each rebuilt form saves the same file as BIR's (1:1, measured).
 - Every change we make to BIR's pages is a separate, switchable [mod](mod/README.md).
-- The downloads have no online submission. A web version is built but not published.
+- The downloads have no online submission, and Submit says so. A web version is built, ready for GitHub Pages, but not published.
+- The app updates itself from signed releases (from v0.1.2). AI agents can fill and save draft returns through a local [agent server](docs/agent.md).
 
 ## How the work is split
 
@@ -29,7 +30,9 @@ Each part of the plan below says which layer it touches.
 |---|---|---|---|
 | Signed macOS app | macOS warns on every first open | app | The `.dmg` opens with no warning. Needs an Apple Developer ID (owner) |
 | Try the Windows and Linux packages on real machines | On GitHub's test machines the Windows installer gets past SmartScreen, installs and opens BIR's main screen, and the Linux `.deb` and AppImage (made runnable and double-clicked in the Files app) open it on Ubuntu 22.04 and 24.04. No one has filled a return in them yet | app | A return is filled, saved, printed and reopened on Windows 11 and Ubuntu 22.04 |
-| Block BIR's pages from going online | Any mod's script can send page data to any website today, because BIR's pages run with no content security policy | app + mods | BIR's pages can reach only the app's own server, and a mod that needs the internet says so with a `network` key that the user has to approve |
+| Let a mod ask for the internet | BIR's pages now reach only the app's own server (a content security policy, in both hosts), so no mod can go online at all | app + mods | A mod that needs the internet says so with a `network` key, and the user approves it on the Mods screen |
+| Ship v0.1.2 and test the updater | v0.1.1 has no updater, so its users download v0.1.2 by hand once | app | v0.1.2 is released with `latest.json`, and a v0.1.2 install updates itself to a test v0.1.3 on macOS, Windows and Linux |
+| Pop-ups on Windows and Linux | The Mac fix was measured in the real window. Windows and Linux show BIR's pop-ups on their own, but no one has clicked Submit there | app | Submit on Windows 11 and Ubuntu shows BIR's question and then the final-copy notice |
 | Send BIR our list of bugs in its package | We offered BIR a list of the bugs we found, and private notes on the security ones | none | Sent to BIR. The security notes go to BIR only, never in this repo |
 | Hear back from BIR | We have asked BIR how it wants this app released | none | BIR replies. No public beta or web launch before that |
 
@@ -37,7 +40,6 @@ Each part of the plan below says which layer it touches.
 
 | Item | Why | Layer | Done when |
 |---|---|---|---|
-| A mods screen | Today mods are switched by editing `mod.json` | app + mods | A settings page lists every mod (from `GET /__mod`) with an on/off switch and its plain-words description |
 | Split the shim into mods | `public/legacy-shim.js` is one 650-line file; contributors can't tell its parts apart or switch one off | mods | Each Internet Explorer feature (file access, VBScript helpers, print) is its own mod, and the 84/84 sweep still passes |
 | The jQuery swap as a mod | It is the one security change that isn't switchable yet | mods | `security/jquery-upgrade` replaces the code in `host/form-patch.ts` and `host.rs` |
 | Open the rebuilt forms from BIR's main screen | The rebuilt forms are 1:1 but only reachable at `/form`; Fill-up still opens BIR's page | rebuild | Fill-up and View open the rebuilt form, with a switch back to BIR's page |
@@ -46,6 +48,7 @@ Each part of the plan below says which layer it touches.
 | Choose where returns are saved | People asked for Google Drive. Saving into a folder that Google Drive, Dropbox, iCloud or OneDrive already syncs covers all of them, with no cloud login inside the app | app | A "Save returns in" setting moves saved returns and profiles to a folder you pick, and BIR's forms save and reopen there |
 | A small API for mods | A mod can't ask the app for anything: no file picker, no profile, no settings | app + mods | A mod can ask for a file picker or the profile, each one only after the user allows it, through one documented call |
 | Proxy setting in the app | Today it is a hand-edited file | app | A setting in the app, saved where the full build reads it |
+| The agent server, part two | Agents can fill and save drafts (`npm run build:mcp`), but must be set up by hand and can't open a form in the app | app | The app ships the agent server, shows how to connect it, and an agent can open a saved draft in the app's window |
 | Keyboard and screen reader | Tab order and labels were never checked | rebuild | The rebuilt 1701Q can be filled with the keyboard only and read by VoiceOver |
 
 ## Next: improvements, kept switchable
@@ -66,7 +69,7 @@ browser. This is a new app around the same forms, not a port of BIR's pages.
 
 | Item | Why | Done when |
 |---|---|---|
-| Publish the web version | People asked for a website (r/taxPH). It is built (`npm run build:web`), works offline and stores returns in the browser | (1) BIR has answered. (2) It is hosted with no server-side storage. (3) A saved file still opens in BIR's own app |
+| Publish the web version | People asked for a website (r/taxPH). It is built, works offline, stores returns in the browser, and runs under GitHub Pages (`pages` workflow, manual only; `bench/web-pages.mjs` checks it) | (1) BIR has answered. (2) It is hosted with no server-side storage. (3) A saved file still opens in BIR's own app |
 | Input screens that fit a phone | BIR's form layouts are made for a wide screen and a mouse | The rebuilt forms render as a one-column, touch-friendly flow on a 375 px wide screen, saving the same file |
 | Mobile app (iOS and Android) | Filing from a phone | A Tauri mobile build (or an installable web app) fills, saves and exports a 1701Q on an iPhone and an Android phone |
 | Save to the user's own storage | Returns should stay with the user, not on our servers | Export and import of savefiles through the phone's Files app or the browser's download, plus an optional folder the user picks |

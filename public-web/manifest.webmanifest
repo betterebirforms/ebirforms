@@ -2,19 +2,19 @@
   "name": "eBIRForms (web, on this device)",
   "short_name": "eBIRForms",
   "description": "BIR forms computed like eBIRForms, kept on this device. Not affiliated with or endorsed by the BIR.",
-  "start_url": "/form",
-  "scope": "/",
+  "start_url": "form",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "/icon-256.png",
+      "src": "icon-256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

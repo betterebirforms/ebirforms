@@ -1,0 +1,35 @@
+# The web version (rebuilt forms only, works offline) on GitHub Pages at /ebirforms/.
+# Manual only: the ROADMAP holds any public web launch until BIR replies. Run it from the Actions tab when that changes.
+name: pages
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency: { group: pages, cancel-in-progress: true }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - run: npm run gate
+      - run: npm run build:web
+        env: { EBF_WEB_BASE: /ebirforms/ }
+      - run: npx playwright install --with-deps chromium && node bench/web-pages.mjs dist-web
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist-web }
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

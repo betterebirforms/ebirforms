@@ -68,6 +68,7 @@ EBF_PARITY=1 npx vitest run test/parity.test.ts            # are the rebuilt for
 npm run package      # this computer's package, with BIR's forms inside → dist-package/
                      #   macOS: universal .dmg, Windows: setup.exe, Linux: .AppImage and .deb
 npm run build:web    # the web version (rebuilt forms only, works offline) → dist-web/; not published
+EBF_WEB_BASE=/ebirforms/ npm run build:web && node bench/web-pages.mjs   # the GitHub Pages build, checked as Pages serves it
 npm run build:share  # the desktop app without online submission
 npm run check:share  # proves that build has no BIR server names or secrets in it
 ```
@@ -122,6 +123,10 @@ Off unless set. The desktop-window ones work only in a debug build (`npm run tau
 | `EBF_GOTEST` | Run the Go menu's two items in the real window |
 | `EBF_PRINTTEST` | `forms/<page>.hta\|<js>`: open a page and run its print in the real window |
 | `EBF_FINALTEST` | With `EBF_RUST_HOST`: click through 0605's Final Copy in the real window |
+| `EBF_WEB_BASE` | `npm run build:web` only: the path the web version is served under, e.g. `/ebirforms/` for GitHub Pages (default `/`). `node bench/web-pages.mjs` checks such a build in Chromium |
+| `EBF_DIALOGTEST` | With `EBF_RUST_HOST`: call `confirm()` in the real window, press Return, print what the page got (macOS dialogs, issue #1) |
+| `EBF_NO_UPDATE` | Packaged app: skip the update check at start-up (the same as `{"check": false}` in `settings/update.json`) |
+| `TAURI_SIGNING_PRIVATE_KEY` / `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Signs the update files in `npm run package` (CI secrets; locally read from `~/.tauri/ebirforms-updater.key`) |
 
 ## Working in parallel
 

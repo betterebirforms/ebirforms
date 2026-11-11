@@ -135,6 +135,23 @@ pub fn mod_list(user_dir: Option<&Path>) -> Vec<Mod> {
     by_id.into_values().collect()
 }
 
+/// Switch one mod on or off by writing `dir/mod.json` (the Mods screen, `POST /__mod`); the mod's own file is never
+/// touched. Err if no mod has that id. Identical to `setModSwitch` in host/mod.ts.
+pub fn set_switch(dir: &Path, id: &str, on: bool) -> Result<(), String> {
+    if !mod_list(Some(dir)).iter().any(|m| m.id == id) {
+        return Err(format!("no mod {id}"));
+    }
+    let mut sw: Switch = std::fs::read_to_string(dir.join("mod.json")).ok().and_then(|t| serde_json::from_str(&t).ok()).unwrap_or_default();
+    sw.on.retain(|x| x != id);
+    sw.off.retain(|x| x != id);
+    if on { sw.on.push(id.to_string()) } else { sw.off.push(id.to_string()) }
+    sw.on.sort();
+    sw.off.sort();
+    std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
+    let text = serde_json::to_string_pretty(&serde_json::json!({ "on": sw.on, "off": sw.off })).map_err(|e| e.to_string())?;
+    std::fs::write(dir.join("mod.json"), text + "\n").map_err(|e| e.to_string())
+}
+
 fn regex(pattern: &str, nocase: bool) -> Option<Regex> {
     static CACHE: OnceLock<Mutex<HashMap<(String, bool), Regex>>> = OnceLock::new();
     let mut cache = CACHE.get_or_init(Default::default).lock().unwrap();
@@ -327,6 +344,18 @@ mod test {
                 }
             }
         }
+    }
+
+    #[test]
+    fn mods_screen_switch_writes_mod_json() {
+        let dir = tmp("switch");
+        let _ = std::fs::remove_dir_all(&dir);
+        assert!(set_switch(&dir, "fix/print-button-hide", false).is_ok());
+        assert!(!mod_list(Some(&dir)).iter().find(|m| m.id == "fix/print-button-hide").unwrap().on);
+        assert!(set_switch(&dir, "fix/print-button-hide", true).is_ok());
+        assert!(mod_list(Some(&dir)).iter().find(|m| m.id == "fix/print-button-hide").unwrap().on);
+        assert!(set_switch(&dir, "fix/no-such-mod", true).is_err());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]

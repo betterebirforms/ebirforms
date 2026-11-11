@@ -5,6 +5,15 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Mac: BIR's pop-up messages show again. Before, Submit / Final Copy did nothing, and validation errors and "saved" messages were hidden.
+- Submit now says plainly that this version does not file returns with BIR. It offers to make the final copy, then tells you nothing was sent.
+- The app updates itself. It checks for a new version when it opens, and the new **Updates** menu checks now. Updates are signed, so only ours install. You can turn the check off or skip a version. This version is the last one you need to download by hand.
+- A new **Mods** screen (**Go > Mods**) lists every change we make to BIR's forms, with a switch for each.
+- Mod makers get a checker that tests a mod against BIR's real forms before you install it.
+- AI agents (like Claude or Codex) can now fill and save returns through a small, local agent server. It only saves drafts. It never makes a final copy, never files, and never changes a final copy.
+- Safer: BIR's pages can no longer send anything to other websites, and the app's local server only answers your own computer.
+- The web version can now be hosted on GitHub Pages and works offline there. It is not published yet.
+
 ## v0.1.1 (9 November 2026)
 
 - Linux: the title bar is its normal height again. Before, it filled the top half of the window and pushed BIR's main screen down.

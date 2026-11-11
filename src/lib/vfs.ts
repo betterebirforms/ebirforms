@@ -40,3 +40,25 @@ export async function importPackage(file: Blob): Promise<number> {
   if (!body.ok) throw new Error(body.error ?? "import failed");
   return body.file_count ?? 0;
 }
+
+/** One mod as `GET /__mod` lists it (host/mod.ts modSummary). */
+export interface ModSummary {
+  id: string;
+  kind: string;
+  title: string;
+  about: string;
+  on: boolean;
+  source: "built-in" | "user";
+}
+
+export async function listMods(): Promise<ModSummary[]> {
+  const res = await fetch("/__mod", { cache: "no-store" });
+  return ((await res.json()) as { mod: ModSummary[] }).mod;
+}
+
+/** Switch a mod on or off (writes mod.json in the user's mod folder); takes effect on the next page load. */
+export async function setMod(id: string, on: boolean): Promise<void> {
+  const res = await fetch("/__mod", { method: "POST", headers: { "content-type": "application/json", "x-ebf-token": token() }, body: JSON.stringify({ id, on }) });
+  const body = (await res.json()) as { ok: boolean; error?: string };
+  if (!body.ok) throw new Error(body.error ?? "could not switch the mod");
+}

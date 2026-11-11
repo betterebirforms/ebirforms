@@ -30,7 +30,9 @@
     "check:doc": "vitest run test/doc.test.ts",
     "check:roundtrip": "npm run build:web && vitest run test/web-roundtrip.test.ts",
     "asset:dmg": "node tool/dmg-background.mjs",
-    "asset:nsis": "node tool/nsis-image.mjs"
+    "asset:nsis": "node tool/nsis-image.mjs",
+    "mod:check": "node tool/mod-check.ts",
+    "build:mcp": "vite build --config vite.mcp.config.ts"
   },
   "license": "MIT",
   "engines": {

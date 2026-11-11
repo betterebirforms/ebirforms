@@ -33,6 +33,7 @@
       }
     },
     "shortDescription": "BIR's Offline eBIRForms Package, rebuilt for Windows, macOS and Linux",
-    "longDescription": "Fill in, save and print BIR tax returns offline. All 84 of BIR's forms, with the same saved files as BIR's own app."
+    "longDescription": "Fill in, save and print BIR tax returns offline. All 84 of BIR's forms, with the same saved files as BIR's own app.",
+    "createUpdaterArtifacts": true
   }
 }
