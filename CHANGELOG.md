@@ -5,6 +5,10 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.6 (12 November 2026)
+
+- Clearer Submit messages. They now say what Submit Final Copy does (checks the return, locks it, saves it on your computer), that nothing is filed, and the ways to file it: on paper, from BIR's own app on Windows, or through eFPS. The old wording pointed to "eBIRForms online", which confused people.
+
 ## v0.1.5 (12 November 2026)
 
 - Safer import of BIR's download: a damaged or fake zip can no longer make the app reserve huge amounts of memory. Updated the zip and encryption libraries to versions with known security problems fixed.

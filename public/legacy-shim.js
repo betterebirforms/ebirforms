@@ -455,9 +455,9 @@
     "send it once you are online, or Print it to file on paper.";
   var NOT_FILED_NOTICE =
     "This version of eBIRForms does NOT file returns with BIR. Nothing was sent.\n\n" +
-    "Your return is saved here as a FINAL COPY (locked for editing). To file it, use BIR's eBIRForms online " +
-    "(ebirforms.bir.gov.ph), eFPS, or BIR's Offline eBIRForms Package on Windows (your saved file opens there), " +
-    "or Print it and file the paper return.";
+    "Submit Final Copy checked the return, locked it so it can't be edited, and saved it on this computer. " +
+    "The return is not filed yet. To file it: print it and file the paper return at your bank or RDO, " +
+    "or file it from BIR's own Offline eBIRForms Package on Windows, or through eFPS if you are enrolled.";
   var nativeAlert = window.alert.bind(window);
   var nativeConfirm = window.confirm.bind(window);
   window.confirm = function (message) {
@@ -466,8 +466,10 @@
       // BIR's Submit asks this before sending; this build sends nothing, so ask the honest question
       return nativeConfirm(
         "Make a FINAL COPY of this return?\n\n" +
-          "This version of eBIRForms does NOT file returns with BIR. The return is locked for editing and saved here; " +
-          "you file it yourself through BIR (eBIRForms online, eFPS, or BIR's own app), or on paper."
+          "This version of eBIRForms does NOT file returns with BIR. A final copy is checked, locked so it can't be " +
+          "edited, and saved on this computer. Nothing is sent. You file it yourself: on paper, from BIR's own " +
+          "Offline eBIRForms Package on Windows, or through eFPS.\n\n" +
+          "If you will file from BIR's Windows app, click Cancel and use Save instead, then submit it there."
       );
     }
     if (m.indexOf("File saved and encrypted.") === 0) {

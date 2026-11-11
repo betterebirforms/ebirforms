@@ -47,7 +47,7 @@ Kuhaa ang file para sa imong computer sa **[pinakabag-ong release](https://githu
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bag-o, o susama |
 | Mga savefile | Parehas nga format sa Windows app sa BIR, mao nga maablihan ang file sa bisan asa |
-| Online Submit | Wala sa download build. Ang Submit naghimo ra og final copy sa imong computer, ug moingon kini nga walay napadala. I-file sa eBIRForms online o sa app sa BIR |
+| Online Submit | Wala sa download build. Ang Submit naghimo ra og final copy sa imong computer, ug moingon kini nga walay napadala. Wala pa kini na-file: i-file sa papel, sa kaugalingong Offline eBIRForms Package sa BIR sa Windows, o sa eFPS |
 | Updates | Mosusi ang app og bag-ong bersyon inig abli (sukad v0.1.2). **Updates > Check for Updates** aron mosusi karon |
 | Status | Beta |
 

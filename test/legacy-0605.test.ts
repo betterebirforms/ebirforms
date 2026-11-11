@@ -165,6 +165,9 @@ describe.skipIf(!has_original)("legacy form 0605 in WebKit", () => {
     // a build that can't submit says so plainly, before and after (issue #1: a user thought Submit had filed)
     expect(dialog.some((m) => m.startsWith("Make a FINAL COPY of this return?") && m.includes("does NOT file returns with BIR"))).toBe(true);
     expect(dialog.some((m) => m.startsWith("This version of eBIRForms does NOT file returns with BIR. Nothing was sent."))).toBe(true);
+    // a user read "eBIRForms online" as a feature of this app (2026-11-12): name only ways BIR actually files
+    expect(dialog.some((m) => /eBIRForms online/i.test(m))).toBe(false);
+    expect(dialog.some((m) => m.includes("not filed yet") && m.includes("paper") && m.includes("eFPS"))).toBe(true);
     expect(dialog.some((m) => m.startsWith("BIR's submission server could not be reached"))).toBe(false);
     expect(dialog.some((m) => m.startsWith("Final copy saved."))).toBe(true);
     const saved = readdirSync(join(data_dir, "savefile")).filter((f) => f.endsWith(".xml"));
