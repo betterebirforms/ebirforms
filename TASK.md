@@ -28,5 +28,5 @@ file with BIR (one emailer thought they had filed); Linux users want web version
 - Update install measured on Mac: released v0.1.2 -> v0.1.3, bundle replaced, relaunched. Windows/Linux install untested.
 - CI: mac on macos-15-intel; apt via .github/script/apt-install.sh (DNS fallback).
 - Corrections sent: issue #1 comment, emailer emails. Reddit Linux-link reply: user to post.
-- v0.1.4 released (one prompt at a time). update.yml from v0.1.3: Windows after=0.1.4, Linux AppImage sha == v0.1.4 and relaunched. Mac v0.1.2->v0.1.3 measured locally. .deb update untested (pkexec).
+- v0.1.4 released (one prompt at a time). update.yml from v0.1.3: Windows after=0.1.4, Linux AppImage sha == v0.1.4 and relaunched. Mac v0.1.2->v0.1.3 measured locally. .deb v0.1.3->v0.1.4 measured in the update workflow (pkexec approved by a CI-only polkit rule; a real user types their password).
 - Real macOS print sheet, 1701Q, Destination Paper Size US Legal, Save as PDF: 612x1008 pt pages, right edge (barcode, borders) intact.
