@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.2 (11 November 2026)
+
 - Mac: BIR's pop-up messages show again. Before, Submit / Final Copy did nothing, and validation errors and "saved" messages were hidden.
 - Submit now says plainly that this version does not file returns with BIR. It offers to make the final copy, then tells you nothing was sent.
 - The app updates itself. It checks for a new version when it opens, and the new **Updates** menu checks now. Updates are signed, so only ours install. You can turn the check off or skip a version. This version is the last one you need to download by hand.
