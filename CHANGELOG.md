@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.5 (12 November 2026)
+
 - Safer import of BIR's download: a damaged or fake zip can no longer make the app reserve huge amounts of memory. Updated the zip and encryption libraries to versions with known security problems fixed.
 
 ## v0.1.4 (12 November 2026)
