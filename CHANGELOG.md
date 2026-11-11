@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- The app shows one update message at a time. Before, opening the app and choosing Check for Updates could show two, and one could stay on screen after the update.
+
 ## v0.1.3 (12 November 2026)
 
 - BIR's pop-up messages work again on every computer. In version 0.1.2, the part we added for update messages took over BIR's pop-ups: questions answered "yes" by themselves, and messages may not have shown. Please update.

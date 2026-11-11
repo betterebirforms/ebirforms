@@ -12,6 +12,7 @@
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 use tauri::AppHandle;
+use std::sync::atomic::{AtomicBool, Ordering};
 use tauri_plugin_updater::UpdaterExt;
 
 fn settings_path(data: &Path) -> PathBuf {
@@ -43,10 +44,26 @@ pub fn set_auto_check(data: &Path, on: bool) {
     save(data, &s);
 }
 
+static BUSY: AtomicBool = AtomicBool::new(false);
+
+/// Clears BUSY when a check ends, however it ends.
+struct Done;
+impl Drop for Done {
+    fn drop(&mut self) {
+        BUSY.store(false, Ordering::SeqCst);
+    }
+}
+
 /// Check once. `manual`: the user chose "Check for Updates…", so say so when there is nothing new or the check
 /// failed, and ignore a skipped version.
 pub fn check(app: AppHandle, data: PathBuf, manual: bool) {
+    // one check at a time: the start-up check and a menu click could each show a prompt (measured on v0.1.2: two
+    // prompts, and the second outlived the restart because macOS shows it from another process)
+    if BUSY.swap(true, Ordering::SeqCst) {
+        return;
+    }
     tauri::async_runtime::spawn(async move {
+        let _done = Done;
         let found = match app.updater() {
             Ok(u) => u.check().await.map_err(|e| e.to_string()),
             Err(e) => Err(e.to_string()),
