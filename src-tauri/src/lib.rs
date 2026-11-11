@@ -384,6 +384,9 @@ pub fn run() {
             if let (true, Ok(_), Some(d)) = (cfg!(debug_assertions), std::env::var("EBF_FINALTEST"), rust_host_data.clone()) {
                 final_selftest(app.handle().clone(), std::path::PathBuf::from(d));
             }
+            if cfg!(debug_assertions) && std::env::var("EBF_UPDATETEST").is_ok() {
+                update::selftest(app.handle().clone());
+            }
             if cfg!(debug_assertions) && std::env::var("EBF_DIALOGTEST").is_ok() {
                 dialog_selftest(app.handle().clone());
             }

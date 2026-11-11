@@ -45,7 +45,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
+          # Intel: GitHub's Apple Silicon runners went unassigned for 15 min twice (capacity, 2026-11-11). The build is
+          # universal, both slices cross-compile from either chip
+          - os: macos-15-intel
             rust_target: aarch64-apple-darwin,x86_64-apple-darwin
           - os: windows-latest
             rust_target: x86_64-pc-windows-msvc

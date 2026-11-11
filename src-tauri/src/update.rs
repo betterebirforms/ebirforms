@@ -104,6 +104,28 @@ fn say(app: &AppHandle, title: &str, text: &str) {
     app.dialog().message(text).title(title).kind(MessageDialogKind::Info).show(|_| {});
 }
 
+/// Debug-only (`EBF_UPDATETEST=1`, run with the version set below the latest release): check the real endpoint,
+/// download the update and let the updater verify its signature against the built-in key, then exit without
+/// installing. Prints `UPDATETEST found=<v> bytes=<n> verified=true`, or what failed.
+pub fn selftest(app: AppHandle) {
+    tauri::async_runtime::spawn(async move {
+        let line = match app.updater() {
+            Err(e) => format!("updater error: {e}"),
+            Ok(u) => match u.check().await {
+                Err(e) => format!("check failed: {e}"),
+                Ok(None) => format!("no update for v{}", app.package_info().version),
+                // download() refuses a file whose signature doesn't match the pubkey in tauri.conf.json
+                Ok(Some(update)) => match update.download(|_, _| {}, || {}).await {
+                    Ok(byte) => format!("found={} target={} bytes={} verified=true", update.version, update.target, byte.len()),
+                    Err(e) => format!("found={} download/verify failed: {e}", update.version),
+                },
+            },
+        };
+        println!("UPDATETEST {line}");
+        app.exit(0);
+    });
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
