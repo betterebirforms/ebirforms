@@ -1,6 +1,7 @@
 # Installs an older release on a real Windows and Ubuntu machine, opens it, answers its update prompt with
 # Return ("Install and Restart") and checks the installed app is now the latest release. Manual: run it after a
-# release, from the version before. The .deb is not covered: its update asks for a password (pkexec).
+# release, from the version before. The .deb job answers its password prompt (pkexec) with a polkit rule that
+# allows everything, which is only acceptable on a throwaway CI machine.
 name: update
 on:
   workflow_dispatch:
@@ -63,3 +64,36 @@ jobs:
           echo "UPDATE linux from=v$FROM before=$before after=$after latest=$latest want=$want"
           tail -5 ../app.log || true
           [ "$after" = "$want" ]
+
+  deb:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: .github/script }
+      - run: bash .github/script/apt-install.sh xvfb xdotool policykit-1 libegl1 libgl1 libgles2 libgl1-mesa-dri
+      # stands in for the user typing their password at pkexec's prompt (throwaway machine only)
+      - run: |
+          sudo mkdir -p /etc/polkit-1/localauthority/50-local.d /etc/polkit-1/rules.d
+          printf '[ci]\nIdentity=unix-user:*\nAction=*\nResultAny=yes\nResultInactive=yes\nResultActive=yes\n' | sudo tee /etc/polkit-1/localauthority/50-local.d/ci.pkla
+          echo 'polkit.addRule(function () { return polkit.Result.YES; });' | sudo tee /etc/polkit-1/rules.d/00-ci.rules
+          sudo systemctl restart polkit || true
+      - name: Install the old .deb, open it, accept the update
+        env: { FROM: "${{ inputs.from }}", GH_TOKEN: "${{ github.token }}" }
+        run: |
+          latest=$(gh release view -R "$GITHUB_REPOSITORY" --json tagName -q .tagName)
+          gh release download "v$FROM" -R "$GITHUB_REPOSITORY" -p "*_Linux_amd64.deb" -O old.deb
+          sudo apt-get install -y ./old.deb
+          pkg=$(dpkg-deb -f old.deb Package); bin=$(dpkg -L "$pkg" | grep '/usr/bin/' | head -1)
+          before=$(dpkg-query -W -f '${Version}' "$pkg")
+          echo "installed $pkg $before ($bin); latest $latest"
+          xvfb-run -a bash -c "
+            $bin > app.log 2>&1 &
+            for i in \$(seq 1 36); do sleep 5; w=\$(xdotool search --name 'Update available' | head -1); [ -n \"\$w\" ] && break; done
+            echo \"prompt window: \${w:-none}\"
+            [ -n \"\$w\" ] && xdotool windowfocus --sync \"\$w\" key Return
+            sleep 150"
+          after=$(dpkg-query -W -f '${Version}' "$pkg")
+          echo "UPDATE deb from=$before after=$after latest=$latest"
+          tail -5 app.log || true
+          [ "v$after" = "$latest" ]
