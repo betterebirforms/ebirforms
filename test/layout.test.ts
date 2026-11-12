@@ -2,10 +2,15 @@
 // are committed and served on GitHub Pages, so: nothing in them may run, every image they name must be bundled,
 // and every field the native engine drives must be on the page under BIR's own id (where BIR's page has it).
 import { describe, expect, it } from "vitest";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { NATIVE_FORM } from "../src/form/registry.ts";
 
 const DIR = "asset/bir/layout";
+// save keys with no box on BIR's own page, per form (checked against BIR's source whenever its tree is at hand;
+// EBF_LAYOUT_ABSENT=1 rewrites the list from it)
+const ABSENT_FILE = `${DIR}/absent.json`;
+const absent: Record<string, string[]> = existsSync(ABSENT_FILE) ? JSON.parse(readFileSync(ABSENT_FILE, "utf8")) : {};
+const found: Record<string, string[]> = {};
 const layout = existsSync(DIR) ? readdirSync(DIR).filter((f) => f.endsWith(".html")) : [];
 
 describe("captured BIR layouts", () => {
@@ -44,7 +49,14 @@ describe("captured BIR layouts", () => {
         if (existsSync(source)) {
           const live = readFileSync(source, "latin1").replace(/<!--[\s\S]*?-->/g, "");
           expect(missing.filter((i) => live.includes(`id="${i}"`))).toEqual([]);
-        } else expect(missing.length).toBeLessThan(def!.schema.field.length / 10);
+          if (missing.length) found[code] = missing;
+        }
+        // without BIR's tree (CI): exactly the ids already proven absent from BIR's page
+        if (!process.env.EBF_LAYOUT_ABSENT) expect(missing).toEqual(absent[code] ?? []);
       });
   }
+
+  it.skipIf(!process.env.EBF_LAYOUT_ABSENT)("writes the absent list", () => {
+    writeFileSync(ABSENT_FILE, `${JSON.stringify(Object.fromEntries(Object.entries(found).sort()), null, 1)}\n`);
+  });
 });

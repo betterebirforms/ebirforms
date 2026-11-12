@@ -1,0 +1,110 @@
+{
+ "1603": [
+  "frm1603:txtPercent",
+  "frm1603:txtTaxRate",
+  "frm1603:Citizen1",
+  "frm1603:Citizen2",
+  "frm1603:Alien1",
+  "frm1603:Alien2",
+  "frm1603:Alien3"
+ ],
+ "2000": [
+  "frm2000:optSectionC"
+ ],
+ "1603Qv2018": [
+  "frm1603:Citizen1",
+  "frm1603:Citizen2",
+  "frm1603:Alien1",
+  "frm1603:Alien2",
+  "frm1603:Alien3"
+ ],
+ "1604Ev2018": [
+  "frm1602Q:txtYear",
+  "frm2000:txtRDOCode"
+ ],
+ "1604F": [
+  "frm1604f:description",
+  "frm1604f:select13",
+  "frm1604f:registeredAddress",
+  "frm1604f:txtRefMonth",
+  "frm1604f:txtRefDate",
+  "frm1604f:txtRefYear"
+ ],
+ "1702Qv2018C": [
+  "frm1702RT:txtPg1I2Month"
+ ],
+ "1707A": [
+  "frm1702EX:rdoPg1Pt1I7RDO"
+ ],
+ "1707Av2021": [
+  "frm1707Av2021:rdoI19Refund",
+  "frm1707Av2021:rdoI19TaxCreditCertificate",
+  "frm1702EX:rdoPg1Pt1I7RDO"
+ ],
+ "1800v2018": [
+  "AAAAAAAAAA_1",
+  "AAAAAAAAAA_2",
+  "AAAAAAAAAA_3",
+  "frm1800v2018:TaxCredit"
+ ],
+ "2200A": [
+  "frm2200A:xa3_exemptXA0552",
+  "frm2200A:xa3_taxableXA0552",
+  "frm2200A:xa3_exciseTaxDueXA0552",
+  "frm2200A:xa3_exemptXA0562",
+  "frm2200A:xa3_taxableXA0562",
+  "frm2200A:xa3_exciseTaxDueXA0562"
+ ],
+ "2200ANv2018": [
+  "frm2200ANv2018:qtr_1",
+  "frm2200ANv2018:qtr_2",
+  "frm2200ANv2018:qtr_3",
+  "frm2200ANv2018:qtr_4",
+  "frm2200ANv2018:OptTaxWithheld1",
+  "frm2200ANv2018:OptTaxWithheld2"
+ ],
+ "2200Cv2018": [
+  "BranchMask",
+  "frm2200C:txtPg1Pt2TitleofSignatory",
+  "frm2200C:txtPg1Pt2TINofSignatory",
+  "frm2200C:txtPg1Pt2TitleofSignatory2",
+  "frm2200C:txtPg1Pt2TINofSignatory2",
+  "frm2200C:txtPg1Pt3I26DateC1",
+  "frm2200C:txtPg1Pt3I26DateC2",
+  "frm2200C:txtPg1Pt3I26DateC3",
+  "frm2200C:txtPg1Pt3I27TaxDebitC1",
+  "frm2200C:txtPg1Pt3I27DateC1",
+  "frm2200C:txtPg1Pt3I27DateC2",
+  "frm2200C:txtPg1Pt3I27DateC3",
+  "frm2200C:txtPg1Pt3I28DateC1",
+  "frm2200C:txtPg1Pt3I28DateC2",
+  "frm2200C:txtPg1Pt3I28DateC3",
+  "BrachMask2"
+ ],
+ "2200Mv2018": [
+  "BranchMask",
+  "frm2200M:txtPg1Pt2TitleofSignatory",
+  "frm2200M:txtPg1Pt2TINofSignatory",
+  "frm2200M:txtPg1Pt2TitleofSignatory2",
+  "frm2200M:txtPg1Pt2TINofSignatory2",
+  "frm2200M:txtPg1Pt3I26DateC1",
+  "frm2200M:txtPg1Pt3I26DateC2",
+  "frm2200M:txtPg1Pt3I26DateC3",
+  "frm2200M:txtPg1Pt4I27TaxDebitC1",
+  "frm2200M:txtPg1Pt3I27DateC1",
+  "frm2200M:txtPg1Pt3I27DateC2",
+  "frm2200M:txtPg1Pt3I27DateC3",
+  "frm2200M:txtPg1Pt3I28DateC1",
+  "frm2200M:txtPg1Pt3I28DateC2",
+  "frm2200M:txtPg1Pt3I28DateC3",
+  "BrachMask2"
+ ],
+ "2200Pv2020": [
+  "BranchMask",
+  "frm2200P:txtPg1Pt2TitleofSignatory",
+  "frm2200P:txtPg1Pt2TINofSignatory",
+  "frm2200P:txtPg1Pt2TitleofSignatory2",
+  "frm2200P:txtPg1Pt2TINofSignatory2",
+  "BrachMask2"
+ ]
+}

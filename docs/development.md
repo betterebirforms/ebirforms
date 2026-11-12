@@ -105,6 +105,7 @@ A `v*` tag builds all three platforms in CI (`.github/workflows/build.yml`) and 
 | `EBF_PARITY_STRICT` | (none) | Treat an empty box and `0.00` as different, as BIR's Validate does |
 | `EBF_CAPTURE` / `EBF_CAPTURE_UPPER` | (none) | Re-capture each form's blank save / upper-casing from BIR's forms |
 | `EBF_CAPTURE_CLOCK` | (none) | Open each blank form under six fixed dates and record which boxes BIR fills from today's date, each named by one rule, into `src/form/template-clock.json`. Any other value checks without writing |
+| `EBF_LAYOUT_ABSENT` | (none) | With BIR's tree present, rewrite `asset/bir/layout/absent.json`: the save keys each form's page has no box for, proven commented out in BIR's source. CI checks against this list |
 | `EBF_CAPTURE_LAYOUT` | (none) | Capture BIR's page layouts for the web version into `asset/bir/layout/`: a list of form codes plus `main` for the main screen, or `1` for all. Scripts, handlers and `javascript:` links are removed; images are copied into `img/` |
 
 ### Test and debug switches
