@@ -35,3 +35,4 @@ file with BIR (one emailer thought they had filed); Linux users want web version
 - 2026-11-12 v0.1.6 then v0.1.7: Submit is now one question + one plain answer (nothing sent, NOT filed, file on paper or copy into C:\eBIRForms\savefile and Submit in BIR's Windows app); Go > Show Saved Returns. BIR's guard skips final flag 3, so such a copy should be submittable there (unverified on Windows). v0.1.5 -> v0.1.6 updates measured on Windows, AppImage, .deb.
 - 2026-11-12 Web version live: https://betterebirforms.github.io/ebirforms/ (pages workflow; bench 6/6 on the live site via EBF_PAGES_ORIGIN).
 - 2026-11-12 Emailed the second emailer: what Submit Final Copy does and how to file. Reddit Linux-link reply: user to post (no browser access to their Reddit login).
+- 2026-11-12 Update v0.1.6 -> v0.1.7 measured in CI: Windows 0.1.7, AppImage sha f5e40042936fc53f == v0.1.7, .deb 0.1.7.
