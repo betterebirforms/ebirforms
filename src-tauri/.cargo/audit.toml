@@ -1,0 +1,6 @@
+# RUSTSEC-2023-0071 (rsa, Marvin attack): recovers an RSA PRIVATE key by timing private-key operations. This app
+# holds no RSA private key: the bir-submit SFTP client logs in with a password and only verifies the server's
+# public key. The patched rsa 0.10.0 is out, but russh 0.65.1 pins rsa =0.10.0-rc.18. Remove this entry when a
+# russh release takes rsa >= 0.10.0 (`cargo tree -i rsa`).
+[advisories]
+ignore = ["RUSTSEC-2023-0071"]
