@@ -2,6 +2,7 @@
 // index files, 404.html for every other path), driven in Chromium: the form list, a deep link, the service worker,
 // and the list again offline. Build it first: EBF_WEB_BASE=/ebirforms/ npm run build:web
 // Run it in a pinned browser lane (CLAUDE.md "Browser"). Exit 1 on any failed check.
+// EBF_PAGES_ORIGIN=https://betterebirforms.github.io runs the same checks against the live site instead.
 import { createServer } from "node:http";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
@@ -24,8 +25,9 @@ const server = createServer((req, res) => {
   if (!existsSync(path)) return res.writeHead(404, { "content-type": "text/html" }).end(readFileSync(join(root, "404.html")));
   res.writeHead(200, { "content-type": TYPE[extname(path)] ?? "application/octet-stream" }).end(readFileSync(path));
 });
-await new Promise((r) => server.listen(0, "127.0.0.1", r));
-const origin = `http://127.0.0.1:${server.address().port}`;
+const live = process.env.EBF_PAGES_ORIGIN?.replace(/\/$/, "");
+if (!live) await new Promise((r) => server.listen(0, "127.0.0.1", r));
+const origin = live ?? `http://127.0.0.1:${server.address().port}`;
 
 const result = [];
 const check = (name, ok, detail = "") => result.push({ name, ok: Boolean(ok), detail });
@@ -69,6 +71,6 @@ try {
 check("no page errors or failed requests", error.length === 0, error.slice(0, 5).join("; "));
 
 await browser.close();
-server.close();
+if (!live) server.close();
 for (const r of result) console.log(`${r.ok ? "✓" : "✗"} ${r.name}${r.detail ? `: ${r.detail}` : ""}`);
 process.exit(result.every((r) => r.ok) ? 0 : 1);

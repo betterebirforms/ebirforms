@@ -71,6 +71,7 @@ Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the sam
 - Help build it: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, how the repo is laid out, the rules)
 - Change how a form behaves, or switch our fixes off: [mods](mod/README.md), or **Go > Mods** in the app
 - Let an AI agent (Claude, Codex) fill and save draft returns: [docs/agent.md](docs/agent.md)
+- Web version (no install; our own forms, works offline, returns stay in your browser): https://betterebirforms.github.io/ebirforms/
 - What's planned, including mobile and web: [ROADMAP.md](ROADMAP.md)
 - How it works: [docs/architecture.md](docs/architecture.md)
 

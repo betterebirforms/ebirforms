@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- A web version you can open without installing anything: https://betterebirforms.github.io/ebirforms/. It has the forms we rebuilt, works offline, and keeps your returns in your browser.
+
 ## v0.1.7 (12 November 2026)
 
 - Submit now shows two short messages instead of three long ones: a question, then one plain answer. It says nothing was sent to BIR, the return is not filed yet, and the two ways to file it.

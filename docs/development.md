@@ -69,6 +69,7 @@ npm run package      # this computer's package, with BIR's forms inside → dist
                      #   macOS: universal .dmg, Windows: setup.exe, Linux: .AppImage and .deb
 npm run build:web    # the web version (rebuilt forms only, works offline) → dist-web/; not published
 EBF_WEB_BASE=/ebirforms/ npm run build:web && node bench/web-pages.mjs   # the GitHub Pages build, checked as Pages serves it
+EBF_PAGES_ORIGIN=https://betterebirforms.github.io node bench/web-pages.mjs   # the same checks on the live site
 npm run build:share  # the desktop app without online submission
 npm run check:share  # proves that build has no BIR server names or secrets in it
 ```
@@ -124,6 +125,7 @@ Off unless set. The desktop-window ones work only in a debug build (`npm run tau
 | `EBF_PRINTTEST` | `forms/<page>.hta\|<js>`: open a page and run its print in the real window |
 | `EBF_FINALTEST` | With `EBF_RUST_HOST`: click through 0605's Final Copy in the real window |
 | `EBF_WEB_BASE` | `npm run build:web` only: the path the web version is served under, e.g. `/ebirforms/` for GitHub Pages (default `/`). `node bench/web-pages.mjs` checks such a build in Chromium |
+| `EBF_PAGES_ORIGIN` | `node bench/web-pages.mjs` only: run its checks against the live GitHub Pages site (e.g. `https://betterebirforms.github.io`) instead of a local build |
 | `EBF_UPDATETEST` | Debug window only: check the real update feed, download the update and verify its signature with the built-in key, print `UPDATETEST ...` and exit (nothing installed). Run it with the version set lower: `npm run tauri dev -- --config '{"version":"0.0.1"}'` |
 | `EBF_DIALOGTEST` | Debug window: call `confirm()` and `alert()` in the real window, check a dialog is up, press Return, print `DIALOGTEST shown=... confirm=...` and exit (issue #1). Runs on macOS, Windows and Linux (needs `xdotool` there); the `dialog` workflow runs it in CI |
 | `EBF_NO_UPDATE` | Packaged app: skip the update check at start-up (the same as `{"check": false}` in `settings/update.json`) |

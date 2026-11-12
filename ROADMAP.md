@@ -11,7 +11,7 @@ Want to take something? Open an issue saying which row, so two people don't buil
 - All 84 of BIR's forms run on macOS, Windows and Linux, inside BIR's own main screen.
 - All 84 are also rebuilt in TypeScript, and each rebuilt form saves the same file as BIR's (1:1, measured).
 - Every change we make to BIR's pages is a separate, switchable [mod](mod/README.md).
-- The downloads have no online submission, and Submit says so. A web version is built, ready for GitHub Pages, but not published.
+- The downloads have no online submission, and Submit says so. A web version is live at https://betterebirforms.github.io/ebirforms/ (our own forms only, offline, returns stay in the browser).
 - The app updates itself from signed releases (from v0.1.2). AI agents can fill and save draft returns through a local [agent server](docs/agent.md).
 
 ## How the work is split
@@ -67,7 +67,6 @@ browser. This is a new app around the same forms, not a port of BIR's pages.
 
 | Item | Why | Done when |
 |---|---|---|
-| Publish the web version | People asked for a website (r/taxPH). It is built, works offline, stores returns in the browser, and runs under GitHub Pages (`pages` workflow, manual only; `bench/web-pages.mjs` checks it) | (1) BIR has answered. (2) It is hosted with no server-side storage. (3) A saved file still opens in BIR's own app |
 | Input screens that fit a phone | BIR's form layouts are made for a wide screen and a mouse | The rebuilt forms render as a one-column, touch-friendly flow on a 375 px wide screen, saving the same file |
 | Mobile app (iOS and Android) | Filing from a phone | A Tauri mobile build (or an installable web app) fills, saves and exports a 1701Q on an iPhone and an Android phone |
 | Save to the user's own storage | Returns should stay with the user, not on our servers | Export and import of savefiles through the phone's Files app or the browser's download, plus an optional folder the user picks |
