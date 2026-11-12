@@ -251,9 +251,17 @@ fn dialog_selftest(handle: tauri::AppHandle) {
              alert('{tell}'); location.hash += '&alert=closed'; }}, 50)"
         );
         // BIR's pages get the shim from the host; CI has no BIR tree, so load it into whatever page is up, the way a
-        // download build loads it (no data-submit: this build can't submit)
+        // download build loads it: the page's token (the dev shell carries it in a meta tag), no data-submit. Then
+        // BIR's own Submit steps: conService.initConConfig, and checkNetConnection, which asks the host's dispatcher
+        // (the dev host answers "not available", as a download build does), so the alert is the one users read.
         let _ = content.eval(if submit {
-            format!("(() => {{ const s = document.createElement('script'); s.src = '/legacy-shim.js'; s.onload = () => {run}; document.head.appendChild(s); }})()")
+            format!(
+                "(() => {{ const s = document.createElement('script'); s.src = '/legacy-shim.js'; \
+                 s.dataset.token = document.querySelector('meta[name=ebf-token]')?.content || ''; \
+                 s.onload = () => {{ document.dispatchEvent(new Event('DOMContentLoaded')); \
+                 conService.initConConfig('000000000', '0605'); checkNetConnection(); {run}; }}; \
+                 document.head.appendChild(s); }})()"
+            )
         } else {
             run
         });
