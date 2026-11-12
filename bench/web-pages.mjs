@@ -136,6 +136,39 @@ try {
   check("a page link goes to its page", by_id === 2, `1601-C page 1 -> ${by_id}`);
   const by_name = await jump("1702MXv2018", 3, "(To Part IV-Schedule 2 Item 8)");
   check("a schedule note goes to that schedule's page", by_name === 2, `1702-MX page 3 -> ${by_name}`);
+
+  // BIR's schedule pop-up (1702-MX Schedule 3, "Add more…"): add a row, its sums reach the page, and Save keeps it
+  await tab.goto(`${origin}${BASE}form/1702MXv2018#profile=12345678800000.xml`, { waitUntil: "networkidle" });
+  await tab.waitForFunction(() => document.querySelector(".bir-layout")?.shadowRoot?.getElementById("frm1702MX:btnModalPg2Sc3"), null, { timeout: 10_000 });
+  await tab.evaluate(() => document.querySelector(".bir-layout").shadowRoot.getElementById("frm1702MX:btnModalPg2Sc3").click());
+  const dialog = L(".schedule-modal");
+  await dialog.waitFor({ timeout: 5_000 });
+  const title = await dialog.locator("h3").textContent();
+  await dialog.locator("button", { hasText: "Add row" }).click();
+  const cell = dialog.locator("tbody tr").first().locator("input");
+  for (const [i, v] of [[0, "BIR"], [1, "1000"], [2, "200"]]) {
+    await cell.nth(i).fill(v);
+    await cell.nth(i).blur();
+  }
+  await dialog.locator(":scope > button", { hasText: "Done" }).click();
+  const P = (id) => tab.evaluate((id) => document.querySelector(".bir-layout").shadowRoot.getElementById(`frm1702MX:${id}`)?.value, id);
+  const shown = [await P("txtPg2Sc3It31D"), await P("txtPg2Sc3_SubTotalCD")];
+  check("a schedule pop-up adds a row and its sums reach the page", /Schedule 3/.test(title ?? "") && shown[0] === "1,200", `${title}: item 31D ${shown[0]}, subtotal ${shown[1]}`);
+  // BIR asks for a method of deduction (item 13), and what to do with the overpayment the credit makes (item 21)
+  await tab.evaluate(() => {
+    for (const id of ["rdoPg1Pt1I13MethodOfDeducItemized", "rdoPg1Pt2I21CarriedOver"]) {
+      const r = document.querySelector(".bir-layout").shadowRoot.getElementById(`frm1702MX:${id}`);
+      r.checked = true;
+      r.dispatchEvent(new Event("change"));
+    }
+  });
+  await tab.waitForTimeout(200);
+  const kept = tab.waitForEvent("download", { timeout: 10_000 }).catch(() => null);
+  said.length = 0;
+  await tab.evaluate(() => document.querySelector(".bir-layout").shadowRoot.querySelector("#btnSave, input[type=button][value=Save]")?.click());
+  const got = await kept;
+  const text = got ? readFileSync(await got.path(), "latin1") : `no download: ${said.join(" | ")}`;
+  check("Save keeps the pop-up's row", text.includes("frm1702MX:txtPg2Sc3_1Col2=1,000frm1702MX:txtPg2Sc3_1Col2=") && text.includes("frm1702MX:txtCtrmodalPg7Sc8=1frm1702MX:txtCtrmodalPg7Sc8="), got?.suggestedFilename() ?? text.slice(0, 200));
   await flow.close();
 
   // a phone: BIR's 800 px page shrinks to the screen instead of running off its right side

@@ -31,7 +31,7 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1702MX", frozen as Array<[string, string, string?]>);
 import { atcPickList } from "./atc.ts";
-import { BirDom, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
+import { BirDom, addCommas1702MXValue, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney } from "./money.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
@@ -1660,7 +1660,7 @@ export const FORM_1702MX: FormSchema = (() => {
     const f = field.find((x) => x.id === `${P}${id}`);
     if (f) f.required = true;
   }
-  return { form_code: "1702MX", title: "Annual Income Tax — Corporations (Mixed Income, 2013 layout)", field, group: MODAL_GROUP, extra_record: (state, groups) => derivedRecordOld(state, groups, json) };
+  return { form_code: "1702MX", title: "Annual Income Tax — Corporations (Mixed Income, 2013 layout)", field, group: MODAL_GROUP, extra_record: (state, groups) => derivedRecordOld(state, groups, json), typed: addCommas1702MXValue };
 })();
 
 export function validate1702MXOld(state: FormState, groups: GroupState = {}): Problem[] {

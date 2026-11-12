@@ -54,3 +54,4 @@ under 6 clocks (EBF_CAPTURE_CLOCK -> src/form/template-clock.json), applied by l
 schema.ts and the 12 forms that walk their own template; test/clock.test.ts; parity on the touched forms 9/9.
 User chose to publish all 84 (2026-11-12). Left: ATC / tax type pickers (0605's schema has no ATC fields at all);
 schedules; the layout is 800 px wide (no phone fit); XP caption bar not added.
+- 2026-11-12 Web pop-ups (user: start now): LayoutView edits schedule rows (groups were read-only on the web), "Add more"/btnModal<X> opens the row editor (BIR's heading, column labels from its table), on-page row boxes are live, locked boxes show the saved value. FormSchema.typed: 1702-MX family keeps typed amounts as addCommas1702MX ("1,000"), from BIR's source. Links: 260 page, 38 pop-up, 130 nothing (mostly notes pointing at their own page; about 15 pop-ups of schedules the engine does not model). bench/web-pages 20/20, web-roundtrip 2/2, gate exit 0.

@@ -5,7 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
-- On the web version's form pages, the "To Schedule" and "From Part" notes and the page links now take you to that page. The "Add more" schedule pop-ups do not open on the web yet.
+- On the web version's form pages, the "To Schedule" and "From Part" notes and the page links now take you to that page.
+- On the web version's form pages, "Add more" opens the schedule so you can add, change and remove its lines, and the totals on the page update. This works on the 1702-MX forms and 2550-Q (2024) so far.
+- On the 1702-MX forms, an amount you type is kept in whole pesos (1,000), as BIR's own form keeps it, instead of 1,000.00.
 - On a phone, the web version shrinks BIR's pages to fit the screen instead of cutting off their right side.
 - A new form now starts on today's month and year, as BIR's own forms do. Before, some forms opened on October 2026 whatever the date (60 forms, including 1601-C, 0619-E, 2550M and the annual returns).
 - The web version now looks like eBIRForms: BIR's main screen with your profile, the List of BIR Forms, Fill-up and your saved returns. Every form also shows BIR's own form page, filled and computed by our engine.

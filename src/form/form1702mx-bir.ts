@@ -8,6 +8,8 @@
 export const NumWithParenthesis = (num: string): string => num.replace("(", "-").replace(")", "");
 /** NumWithComma: parseFloat with the commas removed (NaN for "" or text). */
 export const NumWithComma = (num: string): number => parseFloat(String(num).replace(/,/g, ""));
+/** BIR's addCommas1702MX(elem) on a typed value: what a 1702-MX amount box holds after the user leaves it. */
+export const addCommas1702MXValue = (value: string): string => NegativeValue(formatCurrencyWOC(NumWithComma(NumWithParenthesis(value))));
 /** WholeNumWithComma: parseInt with the commas removed. */
 export const WholeNumWithComma = (num: string): number => parseInt(String(num).replace(/,/g, ""), 10);
 /** addCommas: groups a bare digit run that ends the string ("1234" → "1,234"; "1,234.50" is left alone). */

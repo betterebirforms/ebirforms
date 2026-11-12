@@ -408,3 +408,8 @@ a {
 .mod-screen li p { margin: 4px 0 2px 26px; color: #333; }
 .mod-screen li code { margin-left: 26px; color: #778; font-size: 12px; }
 .mod-screen label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.schedule-modal {
+  width: min(56rem, 96vw);
+  max-height: 90vh;
+  overflow: auto;
+}

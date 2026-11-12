@@ -2,7 +2,7 @@
 // real validation, and a save that writes a file byte-compatible with the legacy form and BIR.
 import { useMemo, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
-import { computeForm, computeGroupRows, groupAggs, isGateOpen, radioGroupName, type FieldSpec, type FormState, type GroupRow, type GroupState, type GroupSpec } from "./schema.ts";
+import { computeForm, computeGroupRows, typedMoney, groupAggs, isGateOpen, radioGroupName, type FieldSpec, type FormState, type GroupRow, type GroupState, type GroupSpec } from "./schema.ts";
 import { formatMoney, parseMoney } from "./money.ts";
 import type { Profile } from "@/lib/savefile.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
@@ -74,7 +74,7 @@ export function FormView({ form_code, profile, initial, onClose, onSaved }: { fo
           readOnly={ro}
           value={ro ? computed[f.id] : (state[f.id] ?? (f.is_editable ? computed[f.id] : ""))}
           onChange={(e) => set(f.id, e.target.value)}
-          onBlur={f.kind === "money" && !ro ? (e) => set(f.id, formatMoney(parseMoney(e.target.value))) : undefined}
+          onBlur={f.kind === "money" && !ro ? (e) => set(f.id, typedMoney(schema, e.target.value)) : undefined}
         />
       </label>
     );
@@ -140,7 +140,7 @@ export function FormView({ form_code, profile, initial, onClose, onSaved }: { fo
       )}
 
       {(schema.group ?? []).map((g) => (
-        <ScheduleTable key={g.name} group={g} rows={groups[g.name]!} form={state} label={label} onSet={setRow} onAdd={addRow} onRemove={removeRow} />
+        <ScheduleTable key={g.name} typed={(raw) => typedMoney(schema, raw)} group={g} rows={groups[g.name]!} form={state} label={label} onSet={setRow} onAdd={addRow} onRemove={removeRow} />
       ))}
 
       <div className="money-grid">{moneyField.map((f) => render(f))}</div>
@@ -162,7 +162,8 @@ export function FormView({ form_code, profile, initial, onClose, onSaved }: { fo
   );
 }
 
-function ScheduleTable({
+/** One schedule's rows (a BIR "Add more…" table): add, edit, remove. Also the web version's pop-up editor. */
+export function ScheduleTable({
   group,
   rows,
   form,
@@ -170,7 +171,12 @@ function ScheduleTable({
   onSet,
   onAdd,
   onRemove,
+  title = "Schedule",
+  typed = (raw) => formatMoney(parseMoney(raw)),
 }: {
+  title?: string;
+  /** What BIR's page leaves in an amount box after typing (FormSchema.typed). */
+  typed?: (raw: string) => string;
   group: GroupSpec;
   rows: GroupRow[];
   form: FormState;
@@ -183,13 +189,13 @@ function ScheduleTable({
   return (
     <div className="schedule">
       <div className="schedule-head">
-        <h3>Schedule</h3>
+        <h3>{title}</h3>
         <button className="ghost" onClick={() => onAdd(group.name)}>
           + Add row
         </button>
       </div>
       {rows.length === 0 ? (
-        <p className="muted">No rows yet. Add one for each payee.</p>
+        <p className="muted">No rows yet. Add one for each line.</p>
       ) : (
         <table>
           <thead>
@@ -211,7 +217,7 @@ function ScheduleTable({
                       className={sub.kind === "money" ? "money" : ""}
                       value={sub.row_compute || sub.derive ? (computed[i]![sub.id] ?? "") : (row[sub.id] ?? "")}
                       onChange={(e) => onSet(group.name, i, sub.id, e.target.value)}
-                      onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, formatMoney(parseMoney(e.target.value))) : undefined}
+                      onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, typed(e.target.value)) : undefined}
                     />
                   </td>
                 ))}

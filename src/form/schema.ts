@@ -97,6 +97,9 @@ export interface FormSchema {
   /** Money display override. Default renders like BIR's `formatCurrency` (round-half-up, "-" sign). The 1707
    *  family uses accounting parentheses for negatives (`formatMoneyParen`). Rounding is identical either way. */
   format?: (cents: Centavo) => string;
+  /** What BIR's own code leaves in an amount box the user typed into, once they leave it (its onblur). Default: BIR's
+   *  formatCurrency ("1,000.00"). The 1702-MX family runs addCommas1702MX instead ("1,000"). */
+  typed?: (raw: string) => string;
   /** Records DERIVED from the filled form that are neither fields nor schedule rows, appended after the groups.
    *  1601FQ's ATC picker serializes one `AtcCd<i>` checkbox per pick-list entry; the legacy reload rebuilds
    *  Part II from those, so they follow from the rows' (code, rate) rather than being entered. */
@@ -300,6 +303,9 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
   }
   return record;
 }
+
+/** An amount as BIR's page leaves it after the user types it and moves on (FormSchema.typed). */
+export const typedMoney = (schema: FormSchema, raw: string): string => (schema.typed ? schema.typed(raw) : money(parseMoney(raw)));
 
 /** Whether a form has a captured BIR save template. */
 export const hasTemplate = (form_code: string): boolean => form_code in TEMPLATE;

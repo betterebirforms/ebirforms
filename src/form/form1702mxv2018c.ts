@@ -37,7 +37,7 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1702MXv2018C", frozen as Array<[string, string, string?]>);
 import { atcPickList } from "./atc.ts";
-import { BirDom, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
+import { BirDom, addCommas1702MXValue, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney } from "./money.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
@@ -1164,6 +1164,7 @@ export function make1702MX2018(code: string, edition: Edition, record: TemplateR
     field,
     group: MODAL_GROUP,
     extra_record: (state, groups) => derivedRecord(state, groups, edition, json),
+    typed: addCommas1702MXValue,
   };
 }
 
