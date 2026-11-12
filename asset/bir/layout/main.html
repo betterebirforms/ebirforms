@@ -1,0 +1,902 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+:host, .bir-body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0px; padding: 0px; border: 0px; outline: 0px; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+:focus { outline: 0px; }
+.bir-body { line-height: 1; color: black; background: white; }
+ol, ul { list-style: none; }
+table { border-collapse: separate; border-spacing: 0px; }
+caption, th, td { text-align: left; font-weight: normal; }
+blockquote::before, blockquote::after, q::before, q::after { content: ""; }
+blockquote, q { quotes: "" ""; }
+h1, h2, h3, h4, h5 { margin-bottom: 10px; font-size: 16px; }
+#content ul.front-page { margin-left: 30px; margin-bottom: 10px; }
+#content ul.front-page li { list-style: square; }
+dl { margin: 0px 1.5em; }
+dt { font-weight: bold; }
+dd { margin-bottom: 1.5em; }
+strong { font-weight: bold; }
+cite, em, i { font-style: italic; }
+blockquote em, blockquote i, blockquote cite { font-style: normal; }
+pre { font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 11px; font-family: Monaco, monospace; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; line-height: 1.5; margin-bottom: 1.5em; }
+code { font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 11px; line-height: normal; font-family: Monaco, monospace; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }
+abbr, acronym { border-bottom: 1px dotted rgb(102, 102, 102); cursor: help; }
+ins { text-decoration: none; }
+sup, sub { height: 0px; line-height: 1; vertical-align: baseline; position: relative; }
+sup { bottom: 1ex; }
+sub { top: 0.5ex; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+a:link { text-decoration: none; }
+a:hover { text-decoration: underline; }
+input { font-size: 14px; }
+input:hover, select:hover, input:focus, #middle input:hover, #middle select:hover { background: rgb(255, 255, 204); text-decoration: underline; }
+select:focus { background: rgb(255, 255, 204); }
+.light { height: 500px; position: absolute; top: 0px; padding: 30px; }
+.border { height: 5px; background: rgb(102, 102, 102); border-bottom: 1px solid rgb(68, 68, 68); }
+#all_content { position: relative; float: none; clear: both; z-index: 6; margin: 29px auto 0px; overflow: hidden; height: 790px; width: 800px; padding: 40px 80px; background: url("{{base}}img/fd859cfcb7e3aa67.png") repeat; }
+.mainLabel { color: rgb(17, 17, 17); font-weight: bold; font-size: 0.85em; line-height: 1.5em; margin-bottom: 5px; display: block; }
+.break { display: block; width: 100%; clear: both; position: relative; float: left; margin: 0px auto 15px; }
+input { padding: 3px 0px; }
+.inline { float: left; display: block; }
+.inputs { width: auto; padding-left: 2%; clear: both; white-space: nowrap; }
+.first {  }
+.middle {  }
+.last { clear: right; float: right; padding-right: 3px; }
+.max { width: 784px; }
+.LOB { width: 350px; }
+.RDO { margin-left: 10%; }
+.PNUM { width: 55%; float: right; clear: right; }
+.ZCODE { width: 40%; float: left; text-indent: 3%; }
+.ZCODE span { text-indent: 0px; }
+.PNUM input { width: 100%; }
+.inline label { margin-top: -5px; padding: 0px; }
+.table_head .mainLabel { color: rgb(51, 51, 51); font-size: 1em; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: 2; }
+.formTitle { padding-top: 20px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.modalHeader { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+#l_top { margin-bottom: 15px; width: 100%; }
+#middle { color: rgb(51, 51, 51); font-weight: bold; }
+#middle input { background: rgb(254, 254, 254); border: 1px solid rgb(225, 225, 225); padding: 5px; font-size: 85%; font-family: Tahoma, Geneva, sans-serif; border-radius: 5px; margin-left: 10px; cursor: pointer; width: 9%; }
+#middle select { cursor: pointer; display: block; padding: 5px; border: 1px solid rgb(204, 204, 204); width: 86%; }
+#content { color: rgb(51, 51, 51); background: none; width: 86%; padding: 2%; margin: 2% auto 0px 5%; border: 1px outset rgb(255, 255, 255); }
+#content2 { margin-top: 10px; overflow: hidden scroll; height: 200px; background: none; }
+#content2 table { background: none; }
+#content table { background: none; border-collapse: collapse; width: 100%; border: 1px solid rgb(238, 238, 238); }
+#content table th { padding: 8px; background: url("{{base}}img/5014e6c4e0f3da6f.png") repeat; font-weight: bold; font-size: 13px; }
+#content table td { padding: 8px; font-size: 15px; color: rgb(85, 85, 85); background: url("{{base}}img/5014e6c4e0f3da6f.png") repeat; }
+#content table thead tr { border: medium; }
+#content table tr td { border-bottom: 1px dashed rgb(51, 51, 51); }
+#content table a { font-size: 12px; }
+#footer { text-align: center; position: relative; padding: 7px; color: rgb(51, 51, 51); font-weight: bold; float: left; width: 50%; }
+.action a { color: rgb(0, 0, 153); }
+.table_head { margin-top: 10px; }
+._left { text-indent: 1%; width: 100%; display: block; float: left; color: rgb(51, 51, 51); clear: left; margin-bottom: 3%; }
+._left input { margin: 10px 5px 0px 0px; padding: 5px; border: 1px solid rgb(204, 204, 204); width: 20%; }
+._right { width: 50%; margin-left: 1%; clear: right; float: right; }
+._right input { width: 97%; margin-right: 5px; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+:host ul.topnav li ul.subnav li a:hover { background: url("{{base}}img/0fbc91e1bc582c5d.gif") 10px center no-repeat rgb(255, 255, 204); }
+.Field { color: black; border: 1px solid rgb(255, 255, 255); background-color: rgb(230, 230, 230); }
+.Find { color: blue; font-style: normal; font-variant-caps: normal; font-weight: normal; font-width: normal; font-size: 10px; line-height: normal; font-family: Arial; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; }
+.asubnav { text-indent: 20px; }
+</style>
+<div class="bir-body" topmargin="0" leftmargin="0"><hta:application applicationname="BIR Forms" id="BIRViewOfflineForms" version="7.9.6.2" sysmenu="yes" icon="img/bir_icon.ico" scrollflat="yes" singleinstance="yes" windowstate="maximize" navigable="yes">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+
+
+
+
+
+    
+
+    <ul class="topnav">
+        <li>
+            <a href="#" class="toplevel">File</a>
+            <ul class="subnav">
+                <li><a href="#">Save</a></li>
+                <li><a href="#">View</a></li>
+                
+                
+                <li><a href="#">Exit</a></li>
+            </ul>
+        <span></span></li>
+        <li>
+            <a href="#" class="toplevel">Help</a>
+            
+            <ul class="subnav">
+                <li>
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Documentary Stamp</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help2000.hta">BIR Form 2000</a></li>
+								<li><a href="helpfile/Help2000v2018.hta">BIR Form 2000v2018</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Excise</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help2200A.hta">BIR Form 2200A</a></li>
+                                
+                                <li><a href="helpfile/Help2200P.hta">BIR Form 2200P</a></li>
+                                
+                                <li><a href="helpfile/Help2200S.hta">BIR Form 2200S</a></li>
+                                <li><a href="helpfile/Help2200T.hta">BIR Form 2200T</a></li>
+                                <li><a href="helpfile/Help2200AN.hta">BIR Form 2200AN</a></li>
+                                <li><a href="helpfile/Help2200M.hta">BIR Form 2200M</a></li>
+                                
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Income</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help1700.hta">BIR Form 1700</a></li>
+                                <li><a href="helpfile/Help1701.hta">BIR Form 1701</a></li>
+                                <li><a href="helpfile/Help1701Q.hta">BIR Form 1701Q</a></li>
+								<li><a href="helpfile/Help1701Qv2018.hta">BIR Form 1701Qv2018</a></li>
+                                <li><a href="helpfile/Help1704.hta">BIR Form 1704</a></li>
+                                <li><a href="helpfile/Help1702Q.hta">BIR Form 1702Q</a></li>
+								
+                                <li><a href="helpfile/Help1702EX.hta">BIR Form 1702EX</a></li>
+                                <li><a href="helpfile/Help1702MX.hta">BIR Form 1702MX</a></li>
+                                <li><a href="helpfile/Help1702RT.hta">BIR Form 1702RT</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">ONETT</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help1606.hta">BIR Form 1606</a></li>
+                                <li><a href="helpfile/Help1706.hta">BIR Form 1706</a></li>
+                                <li><a href="helpfile/Help1707.hta">BIR Form 1707</a></li>
+                                <li><a href="helpfile/Help1707v2021.hta">BIR Form 1707v2021</a></li>
+                                <li><a href="helpfile/Help1707A.hta">BIR Form 1707A</a></li>
+                                <li><a href="helpfile/Help1707Av2021.hta">BIR Form 1707Av2021</a></li>
+                                <li><a href="helpfile/Help1800.hta">BIR Form 1800</a></li>
+                                <li><a href="helpfile/Help1801.hta">BIR Form 1801</a></li>
+                                <li><a href="helpfile/Help1801v2018.hta">BIR Form 1801v2018</a></li>
+                                <li><a href="helpfile/Help2000-OT.hta">BIR Form 2000-OT</a></li>
+								<li><a href="helpfile/Help2000-OT.hta">BIR Form 2000-OTv2018</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Payment</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help0605.hta">BIR Form 0605</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Percentage</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help2551.hta">BIR Form 2551</a></li>
+                                <li><a href="helpfile/Help2551Qv2018.hta">BIR Form 2551Qv2018</a></li>
+                                <li><a href="helpfile/Help2551M.hta">BIR Form 2551M</a></li>
+                                <li><a href="helpfile/Help2552.hta">BIR Form 2552</a></li>
+                                <li><a href="helpfile/Help2553.hta">BIR Form 2553</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Value Added Tax</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help2550M.hta">BIR Form 2550M</a></li>
+                                <li><a href="helpfile/Help2550Q.hta">BIR Form 2550Q</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                    <ul class="atopnav">
+                        
+                        <li>
+                            <a href="#" class="atoplevel">Withholding</a>
+                            <ul class="asubnav" style="display:none;">
+                                <li><a href="helpfile/Help0619E.hta">BIR Form 0619E</a></li>
+                                <li><a href="helpfile/Help0619F.hta">BIR Form 0619F</a></li>
+                                <li><a href="helpfile/Help1601C.hta">BIR Form 1601C</a></li>
+								<li><a href="helpfile/Help1601Cv2018.hta">BIR Form 1601Cv2018</a></li>
+                                <li><a href="helpfile/Help1601E.hta">BIR Form 1601E</a></li>
+                                <li><a href="helpfile/Help1601EQ.hta">BIR Form 1601EQ</a></li>
+                                <li><a href="helpfile/Help1601F.hta">BIR Form 1601F</a></li>
+                                <li><a href="helpfile/Help1601FQ.hta">BIR Form 1601FQ</a></li>
+                                <li><a href="helpfile/Help1602.hta">BIR Form 1602</a></li>
+								<li><a href="helpfile/Help1602Q.hta">BIR Form 1602Qv2018</a></li>
+								<li><a href="helpfile/Help1603.hta">BIR Form 1603</a></li>
+                                <li><a href="helpfile/Help1603Q.hta">BIR Form 1603Qv2018</a></li>
+                                <li><a href="helpfile/Help1600.hta">BIR Form 1600</a></li>
+                                <li><a href="helpfile/Help1600WP.hta">BIR Form 1600WP</a></li>
+                                <li><a href="helpfile/Help1604C.hta">BIR Form 1604C</a></li>
+                                <li><a href="helpfile/Help1604CF.hta">BIR Form 1604CF</a></li>
+                                <li><a href="helpfile/Help1604E.hta">BIR Form 1604E</a></li>
+                                <li><a href="helpfile/Help1604Ev2018.hta">BIR Form 1604Ev2018</a></li>
+                                <li><a href="helpfile/Help1604F.hta">BIR Form 1604F</a></li>
+                            </ul>
+                        <span style="display:none;"></span></li>
+                    </ul>
+                    
+                </li>
+            </ul>
+        <span></span></li>
+        
+        
+    </ul>
+    
+    <div style="position:fixed; top:10px; font-size:11px; z-index:1000000000000000; right:5px; width:auto;">Government Property Not For Sale</div>
+
+    
+
+    <div style="display:none;">
+        
+        <input size="50" type="text" id="search" name="search" class="Field" value="1700-333333333333-willierevill.xml">
+        <input size="50" type="hidden" value="savefile/" id="path" name="path" class="Field">
+        <input type="button" value="        Scan          " class="Field">
+    </div>
+    <img id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top">
+    
+    <img id="watermark" src="{{base}}img/27bef654b41b55c5.png" width="800px" align="top">
+    
+
+    <div id="all_content" style="display:block; height: 100%;">
+        
+        <div id="ebirConfirm" style="display:none; position: fixed; top:  32%; left: 30%; width:500px;
+        right: auto; overflow-y: auto; overflow-x: hidden; background: #e2e2e2; padding: 20px; border:2px solid blue;">
+            <div style="position: relative; width: 100%;">
+
+                <span style="font-weight: bold; font-size: largerBold;"></span>
+
+            </div>
+            <div class="modalInner" style="width: 98%;">
+                <table>
+                    <tbody><tr>
+                        <td><font color="red" size="3"><strong>*</strong></font> Confirm Taxpayer Identification Number:
+                        </td>
+                        <td>
+                            <input type="text" size="3" maxlength="3" id="Confirmtin1" name="Confirmtin1" style="width:35px;" value="" class="mainContent">
+                            <span>-</span>
+                            <input type="text" size="3" maxlength="3" id="Confirmtin2" name="Confirmtin2" style="width:35px;" value="" class="mainContent">
+                            <span>-</span>
+                            <input type="text" size="3" maxlength="3" id="Confirmtin3" name="Confirmtin3" style="width:35px;" value="" class="mainContent">
+                            <span>-</span>
+                            <input type="text" size="5" maxlength="5" value="" id="Confirmtin4" name="Confirmtin4" style="width:45px;" class="mainContent">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><font color="red" size="3"><strong>*</strong></font> Confirm Email:
+                        </td>
+                        <td>
+                            <input id="txtConfirmEmail" name="txtConfirmEmail" type="text" maxlength="100" style="width: 300px;" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="button" id="ebirConfirmSubmit" value="Submit">
+                            <input type="button" id="ebirConfirmCancel" value="Cancel">
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        </div>
+        <div id="sub_content" style="display:block;">
+            
+            <div class="modalHeader">Profile</div>
+
+            <div class="break">
+                
+                <div class="inline first">
+                    <span class="mainLabel"><font color="red" size="3"><strong>*</strong></font>Taxpayer Identification Number:</span>
+                    <div class="inputs chkTin">
+                        <input type="text" size="3" maxlength="3" id="tin1" name="tin1" style="width:35px;" value="" class="mainContent">
+                        <label for="tin2">-</label>
+                        <input type="text" size="3" maxlength="3" id="tin2" name="tin2" style="width:35px;" value="" class="mainContent">
+                        <label for="tin3">-</label>
+                        <input type="text" size="3" maxlength="3" id="tin3" name="tin3" style="width:35px;" value="" class="mainContent">
+                        <label for="tin4">-</label>
+                        <input type="text" size="5" maxlength="5" value="" id="tin4" name="tin4" style="width:45px;" class="mainContent">
+                    </div>
+                </div>
+
+                <div class="inline RDO">
+                    <span class="mainLabel">RDO Code:</span>
+                    <div class="inputs">
+                        
+                        <select class="iceSelOneMnu" id="rdo" name="rdo" size="1" readonly=""><option value="000" selected="">(Select RDO)</option><option value="001">001</option><option value="002">002</option><option value="003">003</option><option value="004">004</option><option value="005">005</option><option value="006">006</option><option value="007">007</option><option value="008">008</option><option value="009">009</option><option value="010">010</option><option value="011">011</option><option value="012">012</option><option value="013">013</option><option value="014">014</option><option value="015">015</option><option value="016">016</option><option value="17A">17A</option><option value="17B">17B</option><option value="018">018</option><option value="019">019</option><option value="020">020</option><option value="21A">21A</option><option value="21B">21B</option><option value="21C">21C</option><option value="022">022</option><option value="23A">23A</option><option value="23B">23B</option><option value="024">024</option><option value="25A">25A</option><option value="25B">25B</option><option value="026">026</option><option value="027">027</option><option value="028">028</option><option value="029">029</option><option value="030">030</option><option value="031">031</option><option value="032">032</option><option value="033">033</option><option value="034">034</option><option value="035">035</option><option value="036">036</option><option value="037">037</option><option value="038">038</option><option value="039">039</option><option value="040">040</option><option value="041">041</option><option value="042">042</option><option value="043">043</option><option value="43A">43A</option><option value="43B">43B</option><option value="044">044</option><option value="045">045</option><option value="046">046</option><option value="047">047</option><option value="048">048</option><option value="049">049</option><option value="050">050</option><option value="051">051</option><option value="052">052</option><option value="53A">53A</option><option value="53B">53B</option><option value="54A">54A</option><option value="54B">54B</option><option value="055">055</option><option value="056">056</option><option value="057">057</option><option value="058">058</option><option value="059">059</option><option value="060">060</option><option value="061">061</option><option value="062">062</option><option value="063">063</option><option value="064">064</option><option value="065">065</option><option value="066">066</option><option value="067">067</option><option value="068">068</option><option value="069">069</option><option value="070">070</option><option value="071">071</option><option value="072">072</option><option value="073">073</option><option value="074">074</option><option value="075">075</option><option value="076">076</option><option value="077">077</option><option value="078">078</option><option value="079">079</option><option value="080">080</option><option value="081">081</option><option value="082">082</option><option value="083">083</option><option value="084">084</option><option value="085">085</option><option value="086">086</option><option value="087">087</option><option value="088">088</option><option value="089">089</option><option value="090">090</option><option value="091">091</option><option value="092">092</option><option value="93A">93A</option><option value="93B">93B</option><option value="094">094</option><option value="095">095</option><option value="096">096</option><option value="097">097</option><option value="098">098</option><option value="099">099</option><option value="100">100</option><option value="101">101</option><option value="102">102</option><option value="103">103</option><option value="104">104</option><option value="105">105</option><option value="106">106</option><option value="107">107</option><option value="108">108</option><option value="109">109</option><option value="110">110</option><option value="111">111</option><option value="112">112</option><option value="113">113</option><option value="114">114</option><option value="115">115</option><option value="116">116</option><option value="117">117</option><option value="118">118</option><option value="119">119</option><option value="120">120</option><option value="121">121</option><option value="122">122</option><option value="123">123</option><option value="124">124</option><option value="125">125</option><option value="126">126</option><option value="127">127</option><option value="132">132</option></select>
+                        
+                    </div>
+                </div>
+
+                <div class="inline middle last">
+                    <span class="mainLabel">Line of Business:</span>
+                    <div class="inputs">
+                        <input type="text" id="lob" name="lob" value="" class="mainContent LOB" style="text-transform:uppercase;">
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="break">
+                
+                <span class="mainLabel">Taxpayer's Name (Last Name, First Name, Middle Name For Individual)<br>
+                    Registered Name (For Non-Individual) :
+                </span>
+                <div class="inputs">
+                    <input type="text" id="fn" name="fn" value="" class="max" style="text-transform:uppercase;">
+                </div>
+            </div>
+            
+
+            <div class="break">
+                
+                <span class="mainLabel">Registered Address:</span>
+                <div class="inputs">
+                    <input type="text" id="regAddr" name="regAddr" value="" class="max" style="text-transform:uppercase;">
+                </div>
+            </div>
+            
+
+            <div class="break">
+                
+                <div class="inline middle ZCODE">
+                    <span class="mainLabel">Zip Code:</span>
+                    <div class="inputs">
+                        <input type="text" size="4" maxlength="4" id="zip" name="zip" style="width:35px;" value="">
+                    </div>
+                </div>
+
+                <div class="inline middle PNUM">
+                    <span class="mainLabel">Telephone Number:</span>
+                    <div class="inputs">
+                        <input type="text" id="telNo" name="telNo" value="" class="mainContent" maxlength="15">
+                    </div>
+                </div>
+            </div>
+            <div class="break">
+                
+                <div class="inline middle ZCODE">
+                    <span class="mainLabel">Email Address:</span>
+                    <div class="inputs">
+                        <input id="txtEmail" name="txtEmail" type="text" maxlength="100" style="width: 98%;" value="">
+                    </div>
+                </div>
+
+
+            </div>
+           
+            <div class="break">
+                
+                <div>
+                    <p>
+                        <span class="mainLabel">IMPORTANT!</span>
+                    </p>
+                    <p style="text-indent:25px; text-align: justify;">
+                        The designation of official e-mail address of the taxpayer is mandatory. It shall be used as an additional manner of 
+                    </p>
+                    <p style="text-align: justify;">
+                        serving BIR orders, notices, letters, communications and other processes to the taxpayer. Service through this official
+                    </p>
+                    <p style="text-align: justify;">
+                        e-mail address shall be presumed valid unless the taxpayer promptly informs BIR by updating his/her/its registration information with the Bureau.
+                            
+                    </p>
+                    
+                    
+                </div>
+
+            </div>
+            <br>
+            <span class="mainLabel"><span class="formTitle">List of BIR Forms:</span></span>
+            <div class="break" id="middle" align="center">
+                
+                <div style="clear:both;"></div>
+                <div class="inputs">
+                    <select id="formType" name="formType" style="display:inline;" class="mainContent" readonly="">
+                        <option value="0" selected=""><i>{Please Select}...</i></option>
+                        <option value="0605">BIR Form 0605 - Payment Form</option>
+                        <option value="0619E">BIR Form 0619E - Monthly Remittance Form for Creditable Income Taxes Withheld (Expanded)</option>
+                        <option value="0619F">BIR Form 0619F - Monthly Remittance Form for Final Income Taxes Withheld</option>
+                        
+                        <option value="1600">BIR Form 1600 - Monthly Remittance Return of Value-Added Tax and Other Percentage Taxes Withheld</option>
+				    	<option value="1600PTv2018">BIR Form 1600PTv2018 - Monthly Remittance Return of Other Percentage Taxes Withheld</option>
+						<option value="1600VTv2018">BIR Form 1600VTv2018 - Monthly Remittance Return of Value-Added Tax Withheld</option> 
+                        <option value="1600WP">BIR Form 1600WP - Remittance Return of Percentage Tax on Winnings and Prizes...</option>
+                        <option value="1601C">BIR Form 1601C - Monthly Remittance Return of Income Taxes Withheld on Compensation</option>
+						<option value="1601Cv2018">BIR Form 1601Cv2018 - Monthly Remittance Return of Income Taxes Withheld on Compensation (NEW)</option>
+                        <option value="1601E">BIR Form 1601E - Monthly Remittance Return of Creditable Income Taxes Withheld (Expanded)</option>
+                        <option value="1601EQ">BIR Form 1601EQ - Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)</option>
+                        <option value="1601F">BIR Form 1601F - Monthly Remittance Return of Final Income Tax Withheld</option>
+                        <option value="1601FQ">BIR Form 1601FQ - Quarterly Remittance Return of Final Income Tax Withheld</option>
+                        <option value="1602">BIR Form 1602 - Monthly Remittance Return of Final Income Taxes Withheld</option>
+                        <option value="1602Qv2018">BIR Form 1602Qv2018 - Quarterly Remittance Return of Final Taxes Withheld on Interest Paid on Deposits Substitutes/Trusts/Etc. (NEW)</option>
+						<option value="1603">BIR Form 1603 - Quarterly Remittance Return of Final Income Taxes Withheld</option>
+                        <option value="1603Qv2018">BIR Form 1603Qv2018 - Quarterly Remittance Return of Final Income Taxes Withheld on Fringe Benefits Paid to Employees Other Than Rank and File (NEW)</option>
+                        <option value="1604C">BIR Form 1604C - Annual Information Return of Income Taxes Withheld on Compensation</option>
+						<option value="1604CF">BIR Form 1604CF - Annual Information Return of Income Taxes Withheld on Compensation</option>
+						<option value="1604F">BIR Form 1604F - Annual Information Return of Income Payments Subjected to Final Withholding Taxes</option>
+                        <option value="1604E">BIR Form 1604E - Annual Information Return of Creditable Income Taxes Withheld</option>  
+						<option value="1604Ev2018">BIR Form 1604Ev2018 - Annual Information Return of Creditable Income Taxes Withheld (NEW)</option>
+                        <option value="1606">BIR Form 1606 - ONETT Withholding Tax Return</option>
+                        
+                        <option value="1700">BIR Form 1700 - Annual Income Tax Return</option>
+                        <option value="1700v2018">BIR Form 1700v2018 - Annual Income Tax Return (NEW)</option>
+                        <option value="1701">BIR Form 1701 - Annual Income Tax Return</option>
+						<option value="1701A">BIR Form 1701A - Annual Income Tax Return (NEW)</option>
+                        <option value="1701MS">BIR Form 1701MS - Annual Income Tax Return For Individuals Classified as MICRO or SMALL Taxpayers</option>
+						<option value="1701v2018">BIR Form 1701v2018 - Annual Income Tax Return (NEW)</option>
+                        <option value="1701Q">BIR Form 1701Q - Quarterly Income Tax Return For Self-Employed Individuals, Estates and Trusts</option>
+						<option value="1701Qv2018">BIR Form 1701Qv2018 - Quarterly Income Tax Return For Self-Employed Individuals, Estates and Trusts (NEW)</option>
+                        <option value="1702EX">BIR Form 1702EX - Annual Income Tax Return (EXEMPT)</option>
+						<option value="1702EXv2018">BIR Form 1702EXv2018 - Annual Income Tax Return (EXEMPT)</option>
+						<option value="1702EXv2018C">BIR Form 1702EXv2018C - Annual Income Tax Return (EXEMPT)</option>
+                        <option value="1702MX">BIR Form 1702MX - Annual Income Tax Return (MIXED)</option>
+						<option value="1702MXv2018">BIR Form 1702MXv2018 - Annual Income Tax Return (MIXED)</option>
+						<option value="1702MXv2018C">BIR Form 1702MXv2018C - Annual Income Tax Return (MIXED)</option>
+				        <option value="1702RT">BIR Form 1702RT - Annual Income Tax Return (REGULAR)</option>
+                        <option value="1702RTv2018">BIR Form 1702RTv2018 - Annual Income Tax Return (REGULAR)</option>
+                        <option value="1702RTv2018C">BIR Form 1702RTv2018C - Annual Income Tax Return (REGULAR)</option>
+                        <option value="1702Q">BIR Form 1702Q - Quarterly income Tax Return</option>
+                        <option value="1702Qv2008C">BIR Form 1702Qv2008C - Quarterly income Tax Return</option>
+						<option value="1702Qv2018C">BIR Form 1702Qv2018C - Quarterly income Tax Return</option>
+                        <option value="1704">BIR Form 1704 - Improperly Accumulated Earnings Tax Return</option>
+                        <option value="1706">BIR Form 1706 - ONETT Capital Gains Tax Return (Capital Asset)</option>
+                        <option value="1707">BIR Form 1707 - ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)</option>
+						<option value="1707v2018">BIR Form 1707v2018 - ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)</option>
+                        <option value="1707v2021">BIR Form 1707v2021 - ONETT Capital Gains Tax Return (Shares of Stock Not Traded Through LSE)</option>
+                        <option value="1707A">BIR Form 1707A - Annual Capital Gains Tax Return(For Onerous Transfer of Shares of Stocks Not Traded Through the Local Stock Exchange)</option>
+                        <option value="1707Av2021">BIR Form 1707Av2021 - Annual Capital Gains Tax Return(For Onerous Transfer of Shares of Stocks Not Traded Through the Local Stock Exchange)</option>
+                        
+                        <option value="1800">BIR Form 1800 - ONETT Donor's Tax Return</option>
+                        <option value="1800v2018">BIR Form 1800v2018 - Donor's Tax Return</option>
+                        <option value="1801">BIR Form 1801 - ONETT Estate Tax Return</option>
+                        <option value="1801v2018">BIR Form 1801v2018 - ONETT Estate Tax Return</option>
+                        <option value="2000">BIR Form 2000 - Documentary Stamp Tax Declaration/Return</option>
+						<option value="2000v2018">BIR Form 2000v2018 - Monthly Documentary Stamp Tax Declaration/Return (NEW)</option>
+                        <option value="2000OT">BIR Form 2000OT - Documentary Stamp Tax Declaration/Return (one-time transactions)</option>
+						<option value="2000OTv2018">BIR Form 2000OTv2018 - Documentary Stamp Tax Declaration/Return (One-Time Transactions)</option>
+                        <option value="2200A">BIR Form 2200A - Excise Tax Return for Alcohol Products</option>
+                        <option value="2200Av2020">BIR Form 2200Av2020 - Excise Tax Return for Alcohol Products</option>
+                        <option value="2200AN">BIR Form 2200AN - Excise Tax Return for Automobiles and Non-Essential Goods</option>
+						<option value="2200ANv2018">BIR Form 2200ANv2018 - Excise Tax Return for Automobiles and Non-Essential Goods</option>
+					    <option value="2200Cv2018">BIR Form 2200Cv2018 - Excise Tax Return for Cosmetic Procedures</option>
+                        <option value="2200M">BIR Form 2200M - Excise Tax Return for Mineral Products</option>
+                        <option value="2200Mv2018">BIR Form 2200Mv2018 - Excise Tax Return for Mineral Products</option>
+                        <option value="2200P">BIR Form 2200P - Excise Tax Return for Petroleum Products</option>
+                        <option value="2200Pv2020">BIR Form 2200Pv2020 - Excise Tax Return for Petroleum Products</option>
+                        <option value="2200S">BIR Form 2200S - Excise Tax Return for Sweetened Beverages</option>
+                        <option value="2200T">BIR Form 2200T - Excise Tax Return for Tobacco Products</option>
+						<option value="2200Tv2020">BIR Form 2200Tv2020 - Excise Tax Return for Tobacco Products</option>
+					    
+                        <option value="2550M">BIR Form 2550M - Monthly Value-Added Tax Declaration</option>
+                        <option value="2550Q">BIR Form 2550Q - Quarterly Value-Added Tax Return</option>
+ 		                <option value="2550Qv2024">BIR Form 2550Qv2024 - Quarterly Value-Added (VAT) Tax Return</option>
+                        <option value="2551">BIR Form 2551Q - Quarterly Percentage Tax Return</option>
+                        <option value="2551Qv2018">BIR Form 2551Qv2018 - Quarterly Percentage Tax Return</option>
+                        <option value="2551M">BIR Form 2551M - Monthly Percentage Tax Return</option>
+                        <option value="2552">BIR Form 2552 - Percentage Tax Return on Stocks</option>
+					   	<option value="2552v2018">BIR Form 2552v2018 - Percentage Tax Return on Stocks</option>
+                        <option value="2553">BIR Form 2553 - Percentage Tax Payable Under Special Laws</option>
+                    </select>
+                     <input type="button" value="Fill-up" name="btnFillup" id="btnFillup" style="display:inline; margin-top:1px;">
+                 </div>
+            
+            <div id="msg" style="display:none;"></div>
+        </div>
+
+            <div id="content" class="break">
+                
+                <table class="table_head" cellspacing="0" cellpadding="0" border="0" width="100%" background="none">
+                    <tbody><tr>
+                        <th width="20"><span class="mainLabel">&nbsp;</span></th>
+                        <th width="250"><span class="mainLabel">File Name</span></th>
+                        <th width="125"><span class="mainLabel">Return Period</span></th>
+                        <th width="125"><span class="mainLabel">Date Created</span></th>
+                    </tr>
+                </tbody></table>
+                <div id="content2">
+                    <table id="outPut" width="100%" cellspacing="0" cellpadding="0" border="0" background="none">
+                        
+                    </table>
+                </div>
+                <br>
+                <br>
+                <div align="right" id="listButtonsDiv" style="display:none;">
+                    <input type="button" id="btnListViewRecord" name="btnListViewRecord" class="mainContent" value="View">
+                    <input type="button" id="btnListDelete" name="btnListDelete" class="mainContent" value="Delete">
+                    
+                </div>
+            </div>
+            <br>
+            <div align="center" class="mainLabel">Bureau of Internal Revenue
+                <br>Copyright 2014</div>
+        </div>
+    </div>
+    
+
+    <div style="height:1px; clear:both; width:100%;"></div>
+
+    <div id="modalHaveDisk" style="width:50%; display:none; height:43%; position:fixed; top:3%; left:25%; right:auto; overflow-y:auto; overflow-x:hidden; background:#e2e2e2; z-index:100;" align="center">
+        <br>
+        <br>
+        <table border="0" width="60%" align="right">
+            <tbody><tr class="modalHeader">
+                <td>Have Disk</td>
+            </tr>
+        </tbody></table>
+        <table border="0" cellspacing="3" cellpadding="3" width="60%">
+            <tbody><tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="modalColumnHeader">Make sure that a CD-RW or USB flash drive is already inserted.
+                    <br>Then choose its designated drive name.</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="modalColumnHeader">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Drive:
+                    <select class="driveSelect" id="driveSelect" name="driveSelect" size="1" readonly=""><option value="0" selected=""> - </option></select>
+                </td>
+            </tr>
+        </tbody></table>
+        <div align="center">
+            <br>
+            <br>
+            <input type="button" class="printButtonClass" name="btnOkHaveDisk" id="btnOkHaveDisk" style="width:120px; height:30px;" value="OK">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="printButtonClass" name="btnCancelHaveDisk" id="btnCancelHaveDisk" style="width:120px; height:30px;" value="CANCEL">
+        </div>
+        <br>
+        <br>
+    </div>
+    <div id="modalHaveDiskX" style="width:50%; display:none; height:43%; position:fixed; top:3%; left:25%; right:auto; overflow-y:auto; overflow-x:hidden; background:#e2e2e2; z-index:3000;" align="center">
+        <br>
+        <br>
+        <table border="0" width="60%" align="right">
+            <tbody><tr class="modalHeader">
+                <td>Have Disk</td>
+            </tr>
+        </tbody></table>
+        <table border="0" cellspacing="3" cellpadding="3" width="60%">
+            <tbody><tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="modalColumnHeader">Make sure that a CD-RW or USB flash drive is already inserted.
+                    <br>Then choose its designated drive name.</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="modalColumnHeader">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Drive:
+                    <select class="driveSelectX" id="driveSelectX" name="driveSelectX" size="1" readonly=""><option value="0" selected=""> - </option></select>
+                </td>
+            </tr>
+        </tbody></table>
+        <div align="center">
+            <br>
+            <br>
+            <input type="button" class="printButtonClass" name="btnOkHaveDiskX" id="btnOkHaveDiskX" style="width:120px; height:30px;" value="OK">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" class="printButtonClass" name="btnCancelHaveDiskX" id="btnCancelHaveDiskX" style="width:120px; height:30px;" value="CANCEL">
+        </div>
+        <br>
+        <br>
+    </div>
+    
+    <div style="display:none;">
+        <xmp id="xmlFormat">
+        </xmp>
+        
+        <span id="xmlClose">All Rights Reserved BIR 2014.</span>
+    </div>
+    <div id="responseBG" style="display:none;">
+        
+    </div>
+    <div id="responseProf" style="display:none;">
+        
+    </div>
+    <div id="responseRdo" style="display:none;">	
+			<div>rdoCount=138rdoCount=</div>
+			<div>rdo1:001~001~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo1:</div>
+			<div>rdo2:002~002~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo2:</div>
+			<div>rdo3:003~003~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo3:</div>
+			<div>rdo4:004~004~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo4:</div>
+			<div>rdo5:005~005~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo5:</div>
+			<div>rdo6:006~006~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo6:</div>
+			<div>rdo7:007~007~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo7:</div>
+			<div>rdo8:008~008~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo8:</div>
+			<div>rdo9:009~009~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo9:</div>
+			<div>rdo10:010~010~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo10:</div>
+			<div>rdo11:011~011~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo11:</div>
+			<div>rdo12:012~012~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo12:</div>
+			<div>rdo13:013~013~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo13:</div>
+			<div>rdo14:014~014~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo14:</div>
+			<div>rdo15:015~015~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo15:</div>
+			<div>rdo16:016~016~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo16:</div>
+			<div>rdo17:17A~17A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo17:</div>
+			<div>rdo18:17B~17B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo18:</div>
+			<div>rdo19:018~018~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo19:</div>
+			<div>rdo20:019~019~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo20:</div>
+			<div>rdo21:020~020~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo21:</div>
+			<div>rdo22:21A~21A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo22:</div>
+			<div>rdo23:21B~21B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo23:</div>
+			<div>rdo24:21C~21C~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo24:</div>
+			<div>rdo25:022~022~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo25:</div>
+			<div>rdo26:23A~23A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo26:</div>
+			<div>rdo27:23B~23B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo27:</div>
+			<div>rdo28:024~024~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo28:</div>
+			<div>rdo29:25A~25A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo29:</div>
+			<div>rdo30:25B~25B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo30:</div>
+			<div>rdo31:026~026~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo31:</div>
+			<div>rdo32:027~027~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo32:</div>
+			<div>rdo33:028~028~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo33:</div>
+			<div>rdo34:029~029~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo34:</div>
+			<div>rdo35:030~030~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo35:</div>
+			<div>rdo36:031~031~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo36:</div>
+			<div>rdo37:032~032~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo37:</div>
+			<div>rdo38:033~033~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo38:</div>
+			<div>rdo39:034~034~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo39:</div>
+			<div>rdo40:035~035~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo40:</div>
+			<div>rdo41:036~036~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo41:</div>
+			<div>rdo42:037~037~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo42:</div>
+			<div>rdo43:038~038~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo43:</div>
+			<div>rdo44:039~039~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo44:</div>
+			<div>rdo45:040~040~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo45:</div>
+			<div>rdo46:041~041~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo46:</div>
+			<div>rdo47:042~042~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo47:</div>
+			<div>rdo48:043~043~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo48:</div>
+			<div>rdo49:43A~43A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo49:</div>
+			<div>rdo50:43B~43B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo50:</div>
+			<div>rdo51:044~044~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo51:</div>
+			<div>rdo52:045~045~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo52:</div>
+			<div>rdo53:046~046~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo53:</div>
+			<div>rdo54:047~047~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo54:</div>
+			<div>rdo55:048~048~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo55:</div>
+			<div>rdo56:049~049~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo56:</div>
+			<div>rdo57:050~050~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo57:</div>
+			<div>rdo58:051~051~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo58:</div>
+			<div>rdo59:052~052~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo59:</div>
+			<div>rdo60:53A~53A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo60:</div>
+			<div>rdo61:53B~53B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo61:</div>
+			<div>rdo62:54A~54A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo62:</div>
+			<div>rdo63:54B~54B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo63:</div>
+			<div>rdo64:055~055~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo64:</div>
+			<div>rdo65:056~056~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo65:</div>
+			<div>rdo66:057~057~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo66:</div>
+			<div>rdo67:058~058~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo67:</div>
+			<div>rdo68:059~059~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo68:</div>
+			<div>rdo69:060~060~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo69:</div>
+			<div>rdo70:061~061~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo70:</div>
+			<div>rdo71:062~062~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo71:</div>
+			<div>rdo72:063~063~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo72:</div>
+			<div>rdo73:064~064~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo73:</div>
+			<div>rdo74:065~065~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo74:</div>
+			<div>rdo75:066~066~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo75:</div>
+			<div>rdo76:067~067~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo76:</div>
+			<div>rdo77:068~068~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo77:</div>
+			<div>rdo78:069~069~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo78:</div>
+			<div>rdo79:070~070~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo79:</div>
+			<div>rdo80:071~071~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo80:</div>
+			<div>rdo81:072~072~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo81:</div>
+			<div>rdo82:073~073~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo82:</div>
+			<div>rdo83:074~074~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo83:</div>
+			<div>rdo84:075~075~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo84:</div>
+			<div>rdo85:076~076~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo85:</div>
+			<div>rdo86:077~077~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo86:</div>
+			<div>rdo87:078~078~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo87:</div>
+			<div>rdo88:079~079~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo88:</div>
+			<div>rdo89:080~080~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo89:</div>
+			<div>rdo90:081~081~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo90:</div>
+			<div>rdo91:082~082~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo91:</div>
+			<div>rdo92:083~083~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo92:</div>
+			<div>rdo93:084~084~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo93:</div>
+			<div>rdo94:085~085~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo94:</div>
+			<div>rdo95:086~086~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo95:</div>
+			<div>rdo96:087~087~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo96:</div>
+			<div>rdo97:088~088~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo97:</div>
+			<div>rdo98:089~089~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo98:</div>
+			<div>rdo99:090~090~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo99:</div>
+			<div>rdo100:091~091~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo100:</div>
+			<div>rdo101:092~092~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo101:</div>
+			<div>rdo102:93A~93A~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo102:</div>
+			<div>rdo103:93B~93B~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo103:</div>
+			<div>rdo104:094~094~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo104:</div>
+			<div>rdo105:095~095~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo105:</div>
+			<div>rdo106:096~096~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo106:</div>
+			<div>rdo107:097~097~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo107:</div>
+			<div>rdo108:098~098~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo108:</div>
+			<div>rdo109:099~099~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo109:</div>
+			<div>rdo110:100~100~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo110:</div>
+			<div>rdo111:101~101~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo111:</div>
+			<div>rdo112:102~102~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo112:</div>
+			<div>rdo113:103~103~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo113:</div>
+			<div>rdo114:104~104~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo114:</div>
+			<div>rdo115:105~105~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo115:</div>
+			<div>rdo116:106~106~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo116:</div>
+			<div>rdo117:107~107~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo117:</div>
+			<div>rdo118:108~108~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo118:</div>
+			<div>rdo119:109~109~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo119:</div>
+			<div>rdo120:110~110~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo120:</div>
+			<div>rdo121:111~111~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo121:</div>
+			<div>rdo122:112~112~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo122:</div>
+			<div>rdo123:113~113~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo123:</div>
+			<div>rdo124:114~114~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo124:</div>
+			<div>rdo125:115~115~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo125:</div>
+			<div>rdo126:116~116~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo126:</div>
+			<div>rdo127:117~117~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo127:</div>
+			<div>rdo128:118~118~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo128:</div>
+			<div>rdo129:119~119~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo129:</div>
+			<div>rdo130:120~120~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo130:</div>
+			<div>rdo131:121~121~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo131:</div>
+			<div>rdo132:122~122~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo132:</div>
+			<div>rdo133:123~123~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo133:</div>
+			<div>rdo134:124~124~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo134:</div>
+			<div>rdo135:125~125~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo135:</div>
+			<div>rdo136:126~126~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo136:</div>
+			<div>rdo137:127~127~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo137:</div>
+			<div>rdo138:132~132~Main|0605|0619E|0619F|1600|1600WP|1601C|1601E|1601EQ|1601F|1601FQ|1602|1603|1604CF|1604E|1606|1621|1700|1701Q|1702Q|1702EX|1702MX|1702RT|1704|1706|1707|1707A|1800|1801|2000|2000OT|2200A|2200C|2200AN|2200M|2200P|2200S|2200T|2550M|2550Q|2551Q|2551M|2552|2553rdo138:</div>
+			All Rights Reserved BIR 2012.
+			
+			</div>
+    
+    <div id="versionCheck" style="display:none; width:50%; position: relative; top:25%; left:25%; right:auto; overflow-y:auto; overflow-x:hidden; background:#e2e2e2; z-index:100;">
+      <div id="versionCheckContent" style="margin-top:20px;padding-top:20px;text-align: center;overflow-y:auto; overflow-x:hidden;"></div>
+      <div id="versionCheckFooter" style="padding:10px;position:relative;text-align:right;">
+          <input id="versionChkCloseBtn" type="button" style="width:120px; height:30px;" value="Close">
+      </div>
+    </div>
+    
+    <div id="broadcastMessage" style="display:none; width:50%; position: relative; top:25%; left:25%; right:auto; overflow-y:auto; overflow-x:hidden; background:#e2e2e2; z-index:100;">
+      <div id="broadcastMessageContent" style="margin-top:20px;padding-top:20px;text-align: center;overflow-y:auto; overflow-x:hidden;"></div>
+      <div id="broadcastMessageFooter" style="padding:10px;position:relative;text-align:right;">
+          <input id="broadcastMsgCloseBtn" type="button" style="width:120px; height:30px;" value="Close">
+      </div>
+    </div>
+
+
+</hta:application></div>

@@ -3,7 +3,10 @@
 // recomputed by BIR itself, the special-rate tax 15B picked by rate (10% → 13B, 5% → 7B, 2% or 3B ≥ 7B → 1B, else 7B),
 // Sch 4 items 1–2 derived from 13A/13B and 9A–C × 14C, 33D re-summed from 33A–C, 10C restored under OSD, 9C / 9D
 // zeroed under OSD, Sch 8 cleared when 7B is not a loss, and 14C's onchange throwing (computePg2Sc2It14C is undefined).
-import template from "./template/1702MXv2018.json";
+import frozen from "./template/1702MXv2018.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702MXv2018", frozen as Array<[string, string, string?]>);
 import { make1702MX2018, validate1702MX } from "./form1702mxv2018c.ts";
 import type { FormState, GroupState, Problem } from "./schema.ts";
 

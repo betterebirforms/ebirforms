@@ -16,13 +16,13 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
 | Path | What |
 |---|---|
 | `tool/extract.mjs` | Rebuilds BIR's tree from the user's own installer/zip into `vendor/original/` |
-| `asset/bir/` | **Committed** BIR artwork: banner + per-form page barcodes + `barcode.json` (`npm run asset` regenerates) |
+| `asset/bir/` | **Committed** BIR artwork: banner + per-form page barcodes + `barcode.json` (`npm run asset` regenerates). `layout/`: BIR's page layouts for the web version, captured with no BIR code (`EBF_CAPTURE_LAYOUT`) |
 | `vendor/original/` | **Gitignored.** Recovered BIR code + `_installer/` native payload + `_manifest.json` |
 | `src/` | Vite + React first-run import (strict TS); `caption.html` + `src/caption/` = the faux-XP caption webview |
 | `src-tauri/` | Tauri v2 desktop host (Rust): replaces BIRForms.exe and the helper exes |
 | `mod/` | Every serve-time change to BIR's pages, one JSON file each, kind = folder (`mod/README.md`). Read by `host/mod.ts` and `src-tauri/src/bir_mod.rs` (embedded by `build.rs`) |
 | `public/legacy-shim.js` | What IE gave BIR's pages (ActiveX FSO, VBScript helpers, IE DOM quirks), injected into every page |
-| `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one) |
+| `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one). `LayoutView.tsx` / `MainLayout.tsx`: the web version's BIR-look screens, driven by the engine by BIR's field ids |
 | `src/form/export.ts` | Export adapters: the eBIRForms savefile (name + records, BIR's own) and the TSP slot (refuses until BIR issues a layout) |
 | `src/form/template/`, `upper-case.json` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, and what BIR upper-cases |
 | `mcp/` | The agent server (MCP over stdio): `tool.ts` is what an agent may do (drafts only, never a final copy or a submit), `main.ts` serves it. `npm run build:mcp` → `dist-mcp/`; setup in `docs/agent.md` |

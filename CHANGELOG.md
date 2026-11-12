@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- A new form now starts on today's month and year, as BIR's own forms do. Before, some forms opened on October 2026 whatever the date (60 forms, including 1601-C, 0619-E, 2550M and the annual returns).
+- The web version now looks like eBIRForms: BIR's main screen with your profile, the List of BIR Forms, Fill-up and your saved returns. Every form also shows BIR's own form page, filled and computed by our engine.
 - A web version you can open without installing anything: https://betterebirforms.github.io/ebirforms/. It has the forms we rebuilt, works offline, and keeps your returns in your browser.
 
 ## v0.1.7 (12 November 2026)

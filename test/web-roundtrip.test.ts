@@ -2,6 +2,8 @@
 // only a shell around BIR's HTA pages; it is those pages' loader (loadXML) that reads a savefile, and the legacy host
 // serves exactly those pages to WebKit. So: type a return into the built web app (dist-web, real OPFS), take the
 // bytes it stored, put them where eBIRForms keeps savefiles, open BIR's page for that form, and compare every field.
+// A form with a captured layout is typed into BIR's own page layout (src/form/LayoutView.tsx), as a web user does;
+// any other into the plain native form.
 // Needs `npm run build:web` and the extracted BIR tree; `npm run check:roundtrip` does both steps. Skips otherwise.
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -12,6 +14,7 @@ import type { AddressInfo } from "node:net";
 import { webkit, type BrowserContext } from "playwright";
 import { startOracle, hasForm, type Oracle } from "./oracle.ts";
 import { parseMoney } from "@/form/money.ts";
+import { NATIVE_FORM } from "@/form/registry.ts";
 import { decodeCp1252 } from "@/lib/cp1252.ts";
 import { parseSavefile, profileToSavefile, writeSavefile } from "@/lib/savefile.ts";
 
@@ -19,7 +22,7 @@ const WEB = "dist-web";
 const CASE = ["0605", "1701Qv2018"].filter((c) => hasForm(c) && existsSync(`test/fixture/web-roundtrip/${c}.json`));
 const ready = existsSync(`${WEB}/index.html`) && CASE.length > 0;
 
-const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".webmanifest": "application/manifest+json", ".svg": "image/svg+xml" };
+const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".gif": "image/gif", ".jpg": "image/jpeg", ".webmanifest": "application/manifest+json", ".svg": "image/svg+xml" };
 const MONEY = /^\(?-?[\d,]*\.\d{1,2}\)?$/;
 const same = (a: string, b: string) => a.trim() === b.trim() || ((MONEY.test(a.trim()) || !a.trim()) && (MONEY.test(b.trim()) || !b.trim()) && parseMoney(a.trim()) === parseMoney(b.trim()));
 
@@ -60,23 +63,99 @@ describe.skipIf(!ready)("web savefile → BIR's eBIRForms page", () => {
     const page = await context.newPage();
     const page_error: string[] = [];
     page.on("pageerror", (e) => page_error.push(e.message));
-    await page.goto(`${base}/form/${code}`);
-    await page.locator("[data-id]").first().waitFor();
-    const entry = Object.entries(state);
-    for (const [id, v] of entry) if (kind[id] === "radio" && v === "true") await page.locator(`[data-id="${id}"]`).check();
-    for (const [id, v] of entry) {
-      if (kind[id] === "radio") continue;
-      const input = page.locator(`[data-id="${id}"]`);
-      if (!(await input.isEditable())) continue;
-      await input.fill(v);
-      await input.blur();
+    const layout = existsSync(`asset/bir/layout/${code}.html`);
+    let profile_hash = "";
+    if (layout) {
+      // on BIR's layout the taxpayer's details come from the profile, as on BIR's main screen (Fill-up), and some
+      // of them (1701Q's line of business and telephone) have no box of their own: store the profile first
+      const def = NATIVE_FORM[code]!;
+      const profile = { fn: "", tin1: "", tin2: "", tin3: "", tin4: "", rdo: "", lob: "", regAddr: "", zip: "", telNo: "", email: "", formType: code };
+      for (const [id, key] of Object.entries(def.prefill)) if (state[id]) profile[key] = state[id]!;
+      const name = `${profile.tin1}${profile.tin2}${profile.tin3}${profile.tin4}.xml`;
+      await page.goto(`${base}/`);
+      await page.evaluate(
+        async ([n, b]) => {
+          const dir = await (await navigator.storage.getDirectory()).getDirectoryHandle("profile", { create: true });
+          const w = await (await dir.getFileHandle(n, { create: true })).createWritable();
+          await w.write(new Uint8Array(b));
+          await w.close();
+        },
+        [name, [...writeSavefile(profileToSavefile(profile))]] as const,
+      );
+      profile_hash = `#profile=${encodeURIComponent(name)}`;
     }
-    await page.getByRole("button", { name: /^save/i }).click();
-    const saved = (await page.locator(".ok-text").innerText()).match(/Saved as (\S+\.xml)/)?.[1];
+    await page.goto(`${base}/form/${code}${profile_hash}`);
+    const entry = Object.entries(state);
+    let saved: string | undefined;
+    if (layout) {
+      // BIR's page layout: fields by BIR's own id (locators reach into the shadow root), one page at a time
+      const field = (id: string) => page.locator(`.bir-layout [id="${id}"]`);
+      await field(entry[0]![0]).waitFor({ state: "attached" });
+      const pageOf = (id: string) =>
+        page.evaluate((i) => {
+          const box = document.querySelector(".bir-layout")!.shadowRoot!.getElementById(i)?.closest("[id^=Page][id$=Content]");
+          return box ? Number(box.id.slice("Page".length, -"Content".length)) : 0;
+        }, id);
+      const show = async (id: string) => {
+        const n = await pageOf(id);
+        if (n === 0 || (await field(id).isVisible())) return;
+        const box = page.locator(".bir-layout input[id$=':txtCurrentPage']").first();
+        await box.fill(String(n));
+        await box.dispatchEvent("change");
+      };
+      for (const [id, v] of entry)
+        if (kind[id] === "radio" && v === "true") {
+          await show(id);
+          await field(id).check();
+        }
+      for (const [id, v] of entry) {
+        if (kind[id] === "radio") continue;
+        await show(id);
+        const input = field(id);
+        // a field BIR keeps hidden (1701Q's line of business, filled from the profile) can't be typed into
+        // (BIR marks its lists readonly, which a browser ignores on a <select>: a list only needs to be enabled)
+        const is_list = (await input.evaluate((e) => e.tagName)) === "SELECT";
+        if (!(await input.isVisible()) || !(await (is_list ? input.isEnabled() : input.isEditable()))) continue;
+        if (is_list) await input.selectOption(v);
+        else {
+          await input.fill(v);
+          await input.blur();
+        }
+      }
+      const told = page.waitForEvent("dialog").then(async (d) => (await d.accept(), d.message()));
+      await page.locator(".bir-layout input[type=button][value=Save] >> visible=true").last().click();
+      const message = await told;
+      // back to page 1, where BIR's page opens, so the page-number box compares like for like
+      const box = page.locator(".bir-layout input[id$=':txtCurrentPage']").first();
+      if (await box.count()) {
+        await box.fill("1");
+        await box.dispatchEvent("change");
+      }
+      saved = message.match(/savefile\/(\S+\.xml)/)?.[1];
+      expect(saved, `Save said: ${message}`).toBeTruthy();
+    } else {
+      await page.locator("[data-id]").first().waitFor();
+      for (const [id, v] of entry) if (kind[id] === "radio" && v === "true") await page.locator(`[data-id="${id}"]`).check();
+      for (const [id, v] of entry) {
+        if (kind[id] === "radio") continue;
+        const input = page.locator(`[data-id="${id}"]`);
+        if (!(await input.isEditable())) continue;
+        await input.fill(v);
+        await input.blur();
+      }
+      await page.getByRole("button", { name: /^save/i }).click();
+      saved = (await page.locator(".ok-text").innerText()).match(/Saved as (\S+\.xml)/)?.[1];
+    }
     expect(saved, "the web app reports the savefile name").toBeTruthy();
-    // what the web app shows, per field — the reference BIR's page must reproduce
-    const shown: Record<string, string> = await page.evaluate(() =>
-      Object.fromEntries([...document.querySelectorAll<HTMLInputElement>("input[data-id]")].filter((e) => e.type !== "radio" && e.type !== "checkbox").map((e) => [e.dataset.id!, e.value])),
+    // what the web app shows, per field the engine drives: the reference BIR's page must reproduce
+    const text_id = NATIVE_FORM[code]!.schema.field.filter((f) => !f.secret && f.kind !== "radio" && f.kind !== "checkbox").map((f) => f.id);
+    const shown: Record<string, string> = await page.evaluate(
+      ([id, is_layout]) => {
+        const root: ParentNode = is_layout ? document.querySelector(".bir-layout")!.shadowRoot! : document;
+        const find = (i: string) => (is_layout ? (root as ShadowRoot).getElementById(i) : root.querySelector(`[data-id="${CSS.escape(i)}"]`)) as HTMLInputElement | null;
+        return Object.fromEntries(id.flatMap((i) => (find(i) ? [[i, find(i)!.value]] : [])));
+      },
+      [text_id, layout] as const,
     );
 
     // 2. the exact bytes the web app stored in OPFS

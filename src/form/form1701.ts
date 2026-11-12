@@ -17,7 +17,10 @@
 // whole pesos, saved bare like BIR's saveXML ("1234", "-1234"). The add-more modals and the Part IX attachments
 // are not modelled (their counters stay 0).
 
-import template from "./template/1701.json";
+import frozen from "./template/1701.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1701", frozen as Array<[string, string, string?]>);
 import dom from "./page/1701.json";
 import { ESCAPED, PFX, simulate, type SimResult } from "./form1701-sim.ts";
 import { parseMoney } from "./money.ts";

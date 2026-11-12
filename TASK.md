@@ -36,3 +36,21 @@ file with BIR (one emailer thought they had filed); Linux users want web version
 - 2026-11-12 Web version live: https://betterebirforms.github.io/ebirforms/ (pages workflow; bench 6/6 on the live site via EBF_PAGES_ORIGIN).
 - 2026-11-12 Emailed the second emailer: what Submit Final Copy does and how to file. Reddit Linux-link reply: user to post (no browser access to their Reddit login).
 - 2026-11-12 Update v0.1.6 -> v0.1.7 measured in CI: Windows 0.1.7, AppImage sha f5e40042936fc53f == v0.1.7, .deb 0.1.7.
+
+## 2026-11-12 Web version looks like the desktop app (user chose "Screens + forms")
+Goal: betterebirforms.github.io/ebirforms looks like the actual app. (1) Main screen = BIR's main screen (XP caption,
+File/Help, seal background, Profile, List of BIR Forms + Fill-up, saved-returns table). (2) Each form shown in BIR's own
+page layout (layout only, never BIR's scripts), our native engine bound to the same field ids. Reverses ROADMAP
+rejected item "Serving BIR's own pages from the web" for layout only (user decision 2026-11-12). Few forms first, user checks.
+Done: dialog.yml submit-mode screenshots (run 43136063700, c17a4b9): Windows and Ubuntu 22.04 both show "Make a final copy of this return?" then "Nothing was sent to BIR. Your return is NOT filed yet." in the real window.
+Done: capture (test/capture-layout.test.ts: all sheets incl. @import and
+script-inserted rules, body/html mapped into the shadow root, url() made absolute per sheet), layouts for main, 0605,
+1701Qv2018; LayoutView (fields, pages, File menu, Validate/Save; profile fields greyed when filled); MainLayout (profile,
+List of BIR Forms + the 5 native forms BIR's list lacks = 84, Fill-up with BIR's checks, saved list, View/Delete/Download,
+Add a savefile). All 85 layouts captured locally (37 MB; only main's are precached, 3.4 MB; a form's layout is cached
+on first open); test/layout.test.ts 255/255. bench/web-pages 13/13; web-roundtrip 2/2; gate exit 0.
+Date defaults: BIR's init() fills 128 keys in 60 forms from today's date; the templates had frozen Oct 2026. Measured
+under 6 clocks (EBF_CAPTURE_CLOCK -> src/form/template-clock.json), applied by liveTemplate (src/form/clock.ts) in
+schema.ts and the 12 forms that walk their own template; test/clock.test.ts; parity on the touched forms 9/9.
+User chose to publish all 84 (2026-11-12). Left: ATC / tax type pickers (0605's schema has no ATC fields at all);
+schedules; the layout is 800 px wide (no phone fit); XP caption bar not added.

@@ -37,7 +37,10 @@
 // rows, then fills them by id). With rows, the item's own line shows their subtotal (C1 "OTHERS" from 2 rows up).
 // The Sch IIIA row-7 modal is not modelled: it has no CtrModal, so BIR can neither save its count nor reload it.
 
-import template from "./template/1702RTv2018C.json";
+import frozen from "./template/1702RTv2018C.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702RTv2018C", frozen as Array<[string, string, string?]>);
 import { parseMoney, type Centavo } from "./money.ts";
 import {
   validate as validateRequired,

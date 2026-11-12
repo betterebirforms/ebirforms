@@ -59,6 +59,8 @@ npm run extract -- ~/Downloads/<new package>.zip
 npm run asset                                              # BIR's banner and barcodes → asset/bir/
 EBF_CAPTURE=1 npx vitest run test/capture-template.test.ts      # each form's blank save
 EBF_CAPTURE_UPPER=1 npx vitest run test/capture-template.test.ts  # which fields BIR upper-cases
+EBF_CAPTURE_CLOCK=1 npx vitest run test/capture-template.test.ts  # which blank-form boxes BIR fills from today's date
+EBF_CAPTURE_LAYOUT=0605,1701Qv2018,main npx vitest run test/capture-layout.test.ts  # BIR's page layouts for the web version
 EBF_PARITY=1 npx vitest run test/parity.test.ts            # are the rebuilt forms still 1:1?
 ```
 
@@ -68,7 +70,7 @@ EBF_PARITY=1 npx vitest run test/parity.test.ts            # are the rebuilt for
 npm run package      # this computer's package, with BIR's forms inside → dist-package/
                      #   macOS: universal .dmg, Windows: setup.exe, Linux: .AppImage and .deb
 npm run build:web    # the web version (rebuilt forms only, works offline) → dist-web/; not published
-EBF_WEB_BASE=/ebirforms/ npm run build:web && node bench/web-pages.mjs   # the GitHub Pages build, checked as Pages serves it
+EBF_WEB_BASE=/ebirforms/ npm run build:web && node bench/web-pages.mjs   # the GitHub Pages build, checked as Pages serves it (incl. one return filed start to finish)
 EBF_PAGES_ORIGIN=https://betterebirforms.github.io node bench/web-pages.mjs   # the same checks on the live site
 npm run build:share  # the desktop app without online submission
 npm run check:share  # proves that build has no BIR server names or secrets in it
@@ -102,6 +104,8 @@ A `v*` tag builds all three platforms in CI (`.github/workflows/build.yml`) and 
 | `EBF_PARITY` | (none) | Run the 1:1 scoreboard: `1` for every form, or a list of form codes |
 | `EBF_PARITY_STRICT` | (none) | Treat an empty box and `0.00` as different, as BIR's Validate does |
 | `EBF_CAPTURE` / `EBF_CAPTURE_UPPER` | (none) | Re-capture each form's blank save / upper-casing from BIR's forms |
+| `EBF_CAPTURE_CLOCK` | (none) | Open each blank form under six fixed dates and record which boxes BIR fills from today's date, each named by one rule, into `src/form/template-clock.json`. Any other value checks without writing |
+| `EBF_CAPTURE_LAYOUT` | (none) | Capture BIR's page layouts for the web version into `asset/bir/layout/`: a list of form codes plus `main` for the main screen, or `1` for all. Scripts, handlers and `javascript:` links are removed; images are copied into `img/` |
 
 ### Test and debug switches
 

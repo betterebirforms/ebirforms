@@ -28,7 +28,10 @@
 //   • item 47 (tax paid in a return previously filed) is set to the literal 0 by checkFilingYear unless amended.
 // The year-end, date-of-incorporation and effectivity-date checks read the clock, as BIR's do.
 
-import template from "./template/1702EXv2018C.json";
+import frozen from "./template/1702EXv2018C.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702EXv2018C", frozen as Array<[string, string, string?]>);
 import { parseMoney, type Centavo } from "./money.ts";
 import {
   validate as validateRequired,

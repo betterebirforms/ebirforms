@@ -11,7 +11,7 @@ Want to take something? Open an issue saying which row, so two people don't buil
 - All 84 of BIR's forms run on macOS, Windows and Linux, inside BIR's own main screen.
 - All 84 are also rebuilt in TypeScript, and each rebuilt form saves the same file as BIR's (1:1, measured).
 - Every change we make to BIR's pages is a separate, switchable [mod](mod/README.md).
-- The downloads have no online submission, and Submit says so. A web version is live at https://betterebirforms.github.io/ebirforms/ (our own forms only, offline, returns stay in the browser).
+- The downloads have no online submission, and Submit says so. A web version is live at https://betterebirforms.github.io/ebirforms/ (offline, returns stay in the browser). It looks like BIR's app: BIR's main screen and BIR's page for every form, filled by our rebuilt forms with none of BIR's code running.
 - The app updates itself from signed releases (from v0.1.2). AI agents can fill and save draft returns through a local [agent server](docs/agent.md).
 
 ## How the work is split
@@ -32,6 +32,7 @@ Each part of the plan below says which layer it touches.
 | Try the Windows and Linux packages on real machines | On GitHub's test machines the Windows installer gets past SmartScreen, installs and opens BIR's main screen, and the Linux `.deb` and AppImage (made runnable and double-clicked in the Files app) open it on Ubuntu 22.04 and 24.04. No one has filled a return in them yet | app | A return is filled, saved, printed and reopened on Windows 11 and Ubuntu 22.04 |
 | Let a mod ask for the internet | BIR's pages now reach only the app's own server (a content security policy, in both hosts), so no mod can go online at all | app + mods | A mod that needs the internet says so with a `network` key, and the user approves it on the Mods screen |
 | Send BIR our list of bugs in its package | We offered BIR a list of the bugs we found, and private notes on the security ones | none | Sent to BIR. The security notes go to BIR only, never in this repo |
+| BIR's pickers and schedules work on the web | All 84 forms show BIR's page on the web, but the ATC and tax type pickers and the schedule pop-ups do nothing there yet | rebuild | On every form page, each picker and schedule BIR's page has opens and fills the form, checked by `bench/web-pages.mjs` |
 | Hear back from BIR | We have asked BIR how it wants this app released | none | BIR replies. No public beta or web launch before that |
 
 ## Next: the desktop app
@@ -61,9 +62,10 @@ rebuilt forms, each one off or on by choice, so the 1:1 version is always one sw
 
 ## Later: mobile and web (a rebuild)
 
-BIR's pages need a desktop browser engine and file access, so they can't run on a phone or a public website.
-Mobile and web are built on **the rebuilt forms only** (layer 3), which are plain TypeScript and already run in a
-browser. This is a new app around the same forms, not a port of BIR's pages.
+BIR's page code needs a desktop browser engine and file access, so it can't run on a phone or a public website.
+Mobile and web are built on **the rebuilt forms** (layer 3), which are plain TypeScript and already run in a
+browser. The web version shows BIR's page layouts (a copy of how each page looks, with no BIR code in it) and our
+rebuilt forms do the work behind them.
 
 | Item | Why | Done when |
 |---|---|---|
@@ -86,5 +88,5 @@ browser. This is a new app around the same forms, not a port of BIR's pages.
   BIR offices, an old upload tool, and two unused code libraries.
 - Storing or sending the user's eBIRForms Online password.
 - Changing the desktop app's screens away from 1:1 by default. A different look is an option you switch on.
-- Serving BIR's own pages from the web or mobile version.
+- Running BIR's own page code (its scripts) in the web or mobile version. The web version shows BIR's layouts only.
 - A public beta or web launch date before BIR answers.

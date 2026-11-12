@@ -16,7 +16,10 @@
 // Not modelled (they keep BIR's blank defaults): the Sch 12 II–IV / Sch 13 I–II pop-up tables, the Sch 6A row-7 and
 // Sch 12 item-4 modals, and Part III payment details are inputs only.
 
-import template from "./template/1702RT.json";
+import frozen from "./template/1702RT.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702RT", frozen as Array<[string, string, string?]>);
 import { parseMoney, type Centavo } from "./money.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { domPeso, formatPeso, nolcoRows, numWithParenthesis, out, product, validIncorporationDate, wholeNum } from "./form1702rtv2018c.ts";

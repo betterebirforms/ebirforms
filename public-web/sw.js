@@ -1,6 +1,6 @@
 // Offline support for the web version: after one visit the app works with no network. It caches only this
 // site's own files (the app); returns live in the browser's OPFS and never pass through here.
-const CACHE = "ebirforms-web-v3";
+const CACHE = "ebirforms-web-v4";
 // the app's base: "/" on its own domain, "/ebirforms/" on GitHub Pages (the worker sits at the base)
 const BASE = new URL("./", self.location.href).pathname;
 const SHELL = ["", "form", "manifest.webmanifest", "icon-256.png", "icon-512.png", "apple-touch-icon.png"].map((p) => BASE + p);

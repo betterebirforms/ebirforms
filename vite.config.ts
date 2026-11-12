@@ -36,9 +36,19 @@ const base = process.env.EBF_WEB_BASE ?? "/";
 
 const webManifest = (): Plugin => ({
   name: "ebirforms-web-manifest",
-  // the service worker (public-web/sw.js) precaches every built file listed here, so the app works offline
+  // the service worker (public-web/sw.js) precaches every built file listed here, so the app works offline. BIR's
+  // form layouts (asset/bir/layout/, ~27 MB for 84 forms) are left out except the main screen's: each form's layout
+  // and images are cached the first time that form is opened, so the first visit stays small.
   generateBundle(_, bundle) {
-    this.emitFile({ type: "asset", fileName: "sw-asset.json", source: JSON.stringify(Object.keys(bundle)) }); // relative to the base
+    const layout = (id: string | null | undefined) => Boolean(id && /asset\/bir\/layout\//.test(id) && !/layout\/main\.html/.test(id));
+    const main = Object.values(bundle).find((b) => b.type === "chunk" && /layout\/main\.html/.test(b.facadeModuleId ?? ""));
+    const mainCode = main && main.type === "chunk" ? main.code : "";
+    const lazy = (b: (typeof bundle)[string]) =>
+      b.type === "chunk"
+        ? layout(b.facadeModuleId)
+        : (b.originalFileNames ?? []).some((n) => /asset\/bir\/layout\/img\//.test(n)) && !(b.originalFileNames ?? []).some((n) => mainCode.includes(n.split("/").pop()!));
+    const precache = Object.entries(bundle).filter(([, b]) => !lazy(b)).map(([name]) => name);
+    this.emitFile({ type: "asset", fileName: "sw-asset.json", source: JSON.stringify(precache) }); // relative to the base
   },
   // a static host has no rewrites: /form must exist as a file, and 404.html carries every other route
   // (GitHub Pages serves it for /form/<CODE>); both are the same index.html

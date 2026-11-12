@@ -1,7 +1,10 @@
 // BIR Form 1702-RT, 2018 layout, superseded edition (1702RTv2018). Same 258 save keys and DOM order as the current
 // 1702RTv2018C, so it is the shared builder with edition "2018" (see form1702rtv2018c.ts): a fixed 30% rate (item 40
 // is "30%", not editable), 41 = 39 × 30%, 42 = 33 × 2% while IC055 is ticked, 57 = 35 × 30%, and Sch IV C8 clamped at 0.
-import template from "./template/1702RTv2018.json";
+import frozen from "./template/1702RTv2018.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702RTv2018", frozen as Array<[string, string, string?]>);
 import { make1702RT2018, validate1702RT } from "./form1702rtv2018c.ts";
 import type { FormState, GroupState, Problem } from "./schema.ts";
 

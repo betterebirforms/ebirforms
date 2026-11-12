@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { IS_WEB, hostStatus, importPackage, listFolder, readText, removeFile } from "@/lib/vfs";
 import { webExport, webImport, webPersist } from "@/lib/web-store.ts";
 import { FormView } from "@/form/FormView.tsx";
+import { LayoutView, hasLayout } from "@/form/LayoutView.tsx";
+import { MainLayout } from "@/form/MainLayout.tsx";
 import { ModScreen } from "./ModScreen.tsx";
 import { NATIVE_FORM } from "@/form/registry.ts";
 import { parseSavefile, profileFromSavefile, type Profile } from "@/lib/savefile.ts";
@@ -93,16 +95,29 @@ function NativeScreen({ form_code }: { form_code: string | null }) {
             {error}
           </p>
         )}
-        <FormView
-          form_code={form_code}
-          profile={profile}
-          initial={initial === "none" ? undefined : initial}
-          onClose={() => window.location.assign(at(profile_name ? `/form#profile=${encodeURIComponent(profile_name)}` : "/form"))}
-          onSaved={() => {}}
-        />
+        {/* the web version shows BIR's own page layout where it was captured, driven by the same engine */}
+        {IS_WEB && hasLayout(form_code) ? (
+          <LayoutView
+            form_code={form_code}
+            profile={profile}
+            initial={initial === "none" ? undefined : initial}
+            onClose={() => window.location.assign(at(profile_name ? `/form#profile=${encodeURIComponent(profile_name)}` : "/form"))}
+            onSaved={() => {}}
+          />
+        ) : (
+          <FormView
+            form_code={form_code}
+            profile={profile}
+            initial={initial === "none" ? undefined : initial}
+            onClose={() => window.location.assign(at(profile_name ? `/form#profile=${encodeURIComponent(profile_name)}` : "/form"))}
+            onSaved={() => {}}
+          />
+        )}
       </>
     );
   }
+  // the web version's home is BIR's own main screen layout, when it was captured
+  if (IS_WEB && hasLayout("main") && !form_code) return <MainLayout profile_name={profile_name} formHref={formHref} codeOfSavefile={codeOfSavefile} />;
   const code = Object.keys(NATIVE_FORM).sort();
   return (
     <section className="panel">

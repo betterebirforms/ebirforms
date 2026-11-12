@@ -2,6 +2,7 @@
 // instead of 3 MB of inline IE JavaScript. A rewritten form stays byte-compatible with BIR by emitting the
 // same savefile record keys (docs/analysis/web-layer.md §2.2); the legacy form is the compatibility oracle.
 
+import { liveTemplate } from "./clock.ts";
 import { parseMoney, type Centavo } from "./money.ts";
 import upperCaseJson from "./upper-case.json";
 import { getValue, legacyEscape, legacyUnescape, type SaveRecord, type Savefile } from "@/lib/savefile.ts";
@@ -248,11 +249,14 @@ export function computeForm(schema: FormSchema, state: FormState, groups: GroupS
 /** BIR's save template per form: what its saveXML writes for the blank form, in DOM order, with defaults
  *  (test/capture-template.test.ts). Includes runtime-built keys and the eBIRForms-Online fields saved EMPTY. */
 type TemplateRecord = [key: string, value: string, radio_name?: string];
-const TEMPLATE: Record<string, TemplateRecord[]> = Object.fromEntries(
+const FROZEN: Record<string, TemplateRecord[]> = Object.fromEntries(
   Object.entries(import.meta.glob("./template/*.json", { eager: true, import: "default" }) as Record<string, TemplateRecord[]>).map(
     ([path, record]) => [path.slice("./template/".length, -".json".length), record],
   ),
 );
+/** The template as BIR's blank page would save it today: the keys BIR's init() fills from the date (src/form/clock.ts)
+ *  take today's value, not the capture day's. Read on every call, so a page left open past midnight moves on too. */
+const TEMPLATE: Record<string, TemplateRecord[]> = Object.fromEntries(Object.entries(FROZEN).map(([code, record]) => [code, liveTemplate(code, record)]));
 
 /** The full savefile record list. With a captured template (every BIR form has one), the native values overlay
  *  BIR's own blank save: keys BIR writes but the schema doesn't model keep BIR's default, scalar keys BIR never

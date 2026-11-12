@@ -26,7 +26,10 @@
 // the six Schedule 13 / 14 "Add more" lists (their rows are div copies BIR's own reload rebuilds from the HTML, not
 // from the saved values); their counters stay 0 and the main-line items 13 / 14 are entered directly.
 
-import template from "./template/1702MX.json";
+import frozen from "./template/1702MX.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702MX", frozen as Array<[string, string, string?]>);
 import { atcPickList } from "./atc.ts";
 import { BirDom, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney } from "./money.ts";

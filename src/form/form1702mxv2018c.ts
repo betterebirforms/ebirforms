@@ -32,7 +32,10 @@
 // special activity, whose Schedules A–I roll up into columns A and B). The native form fills the columns directly
 // (instruction A); BIR's attachment pages keep their blank defaults.
 
-import template from "./template/1702MXv2018C.json";
+import frozen from "./template/1702MXv2018C.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702MXv2018C", frozen as Array<[string, string, string?]>);
 import { atcPickList } from "./atc.ts";
 import { BirDom, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney } from "./money.ts";

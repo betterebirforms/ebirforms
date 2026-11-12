@@ -35,7 +35,10 @@
 //   descriptions/rates (no totals). The schedule's I7-I20 iterates are modal-fed only.
 // The computeRegularIncomeTax bands (computePt4I14): 0 ≤ 10k 5%; 30k 10%+500; 70k 15%+2500; 140k 20%+8500;
 //   250k 25%+22500; 500k 30%+50000; else 32%+125000 — with ≤ 0 → 0.
-import template from "./template/1700.json";
+import frozen from "./template/1700.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1700", frozen as Array<[string, string, string?]>);
 import { NegativeValue, NumWithComma, NumWithParenthesis, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney, type Centavo } from "./money.ts";
 import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";

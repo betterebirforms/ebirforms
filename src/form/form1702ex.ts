@@ -26,7 +26,10 @@
 // The Sch 9 II–IV and Sch 10 I–II pop-ups are DIV pairs: each div holds two sales/items, columns C_3/C_4, C_5/C_6 …
 // Here each column is a row (first index 3), and the div count (PopLength) is derived as ⌈rows ÷ 2⌉.
 
-import template from "./template/1702EX.json";
+import frozen from "./template/1702EX.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702EX", frozen as Array<[string, string, string?]>);
 import type { Centavo } from "./money.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";

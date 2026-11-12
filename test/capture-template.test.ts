@@ -97,3 +97,67 @@ describe.runIf(wantUpper)("capture which text BIR upper-cases", () => {
     }, 60_000);
   }
 });
+
+// Which blank-form defaults BIR takes from today's date (its init() sets "For the Month", "Year Ended", due dates…).
+// A template captured on one day freezes that day's values, so they are measured instead: the blank form is opened
+// under six fixed clocks, every saved key whose value moves with the clock is fitted to one rule (this month,
+// last month, next month, their years…) that explains all six (exactly one rule must). The engine applies the rule to today's date
+// (src/form/clock.ts). A key no rule explains fails the capture, so nothing date-driven is left frozen silently.
+//   EBF_CAPTURE_CLOCK=1 npx vitest run test/capture-template.test.ts   → src/form/template-clock.json
+const wantClock = process.env.EBF_CAPTURE_CLOCK;
+describe.runIf(wantClock)("capture which defaults BIR takes from the date", () => {
+  let oracle: Awaited<ReturnType<typeof startOracle>>;
+  const found: Record<string, Record<string, string>> = {};
+  const unfit: string[] = [];
+  // three years and every quarter: mid-January (last month is last year), March, April, end of June, August, New
+  // Year's Eve (next month is next year)
+  const CLOCK = [new Date(2024, 0, 15, 10), new Date(2026, 2, 3, 10), new Date(2025, 3, 10, 10), new Date(2025, 5, 30, 10), new Date(2024, 7, 20, 10), new Date(2026, 11, 31, 10)];
+  beforeAll(async () => {
+    oracle = await startOracle();
+  }, 120_000);
+  afterAll(async () => {
+    await oracle?.stop();
+    const sorted = Object.fromEntries(Object.keys(found).sort().map((k) => [k, found[k]]));
+    if (want === "1" || wantClock === "1") writeFileSync("src/form/template-clock.json", JSON.stringify(sorted, null, 1) + "\n");
+    else console.log(JSON.stringify(sorted, null, 1));
+    if (unfit.length) console.log("UNFIT\n" + unfit.join("\n"));
+  });
+  const all = existsSync(`${ORIGINAL}/forms`)
+    ? readdirSync(`${ORIGINAL}/forms`)
+        .filter((f) => /^BIR-Form.+\.hta$/.test(f))
+        .map((f) => f.slice("BIR-Form".length, -".hta".length))
+        .filter((c) => wantClock === "1" || wantClock?.split(",").includes(c))
+    : [];
+  for (const c of all) {
+    it(`clock ${c}`, async () => {
+      const sample: Array<Map<string, string>> = [];
+      for (const t of CLOCK) {
+        const page = await oracle.browser.newPage();
+        await page.clock.setFixedTime(t);
+        page.on("dialog", (d) => void d.accept());
+        await page.goto(`${oracle.base}/legacy/forms/BIR-Form${c}.hta`);
+        await page.waitForTimeout(2500);
+        const record: Array<[string, string]> = await page.evaluate(() => {
+          const form = document.getElementById("frmMain") as HTMLFormElement | null;
+          const out: Array<[string, string]> = [];
+          for (const el of form ? (Array.from(form.elements) as HTMLInputElement[]) : []) {
+            if (!el.id || !["text", "select-one", "radio", "checkbox"].includes(el.type)) continue;
+            out.push([el.id, el.type === "radio" || el.type === "checkbox" ? String(el.checked) : el.value]);
+          }
+          return out;
+        });
+        await page.close();
+        sample.push(new Map(record));
+      }
+      const { CLOCK_RULE } = await import("../src/form/clock.ts");
+      for (const key of sample[0]!.keys()) {
+        const v = sample.map((s) => s.get(key) ?? "");
+        if (v.every((x) => x === v[0])) continue;
+        const rule = Object.keys(CLOCK_RULE).filter((r) => CLOCK.every((t, i) => CLOCK_RULE[r]!(t) === v[i]));
+        if (rule.length === 1) (found[c] ??= {})[key] = rule[0]!;
+        else unfit.push(`${c} ${key}: ${v.join(" | ")}${rule.length ? ` (fits ${rule.join(", ")})` : ""}`);
+      }
+    }, 120_000);
+  }
+  it("every date-driven default fits a rule", () => expect(unfit).toEqual([]));
+});

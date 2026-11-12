@@ -2,7 +2,10 @@
 // reachable compute functions, onchange / onblur wiring and save keys are identical to v2018C's (diffed function by
 // function and element by element), so it is the same model. BIR's own Cxx form names its savefiles
 // "-1702MXv2018C-" (createXMLFileName), not "-1702MXv2018Cxx-".
-import template from "./template/1702MXv2018Cxx.json";
+import frozen from "./template/1702MXv2018Cxx.json";
+import { liveTemplate } from "./clock.ts";
+
+const template = liveTemplate("1702MXv2018Cxx", frozen as Array<[string, string, string?]>);
 import { make1702MX2018, validate1702MX } from "./form1702mxv2018c.ts";
 import type { FormState, GroupState, Problem } from "./schema.ts";
 
