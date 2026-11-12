@@ -133,7 +133,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     }
 
     // pages: BIR shows one #Page<n>Content at a time, with Prev / Next and a page-number box
-    const pageCount = root.querySelectorAll("[id^=Page][id$=Content]").length;
+    // (the form's own pages only: Page<n>AttMContent and the like are attachment pages, not in the Prev / Next run)
+    let pageCount = 0;
+    while (root.getElementById(`Page${pageCount + 1}Content`)) pageCount++;
     let current = 1;
     const showPage = (n: number) => {
       if (n < 1 || n > pageCount) return;
@@ -185,8 +187,44 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     wireMenu(root, on, { "Main Screen": onClose, Save: () => void save() }, ["Print Preview", "Exit"]);
     const pageBox = root.querySelector("input[id$=':txtCurrentPage']") as HTMLInputElement | null;
     if (pageBox) on(pageBox, "change", () => showPage(Number(pageBox.value)));
-    // every other javascript: link (pickers, help) does nothing yet rather than navigating
-    for (const a of Array.from(root.querySelectorAll("[data-js]"))) on(a, "click", (e) => e.preventDefault());
+    // BIR's page-jump links: "btnNavigatePage<N>_…" goes to page N, Next / Prev page by one, and a "(To / From …
+    // Schedule X …)" note goes to the other page that holds Schedule X (or Part X)
+    const pageOf = (el: Element) => {
+      for (let p = el.parentElement; p; p = p.parentElement) {
+        const n = p.id.match(/^Page(\d+)Content$/)?.[1];
+        if (n) return Number(n);
+      }
+      return 0;
+    };
+    // a page's own text, without the other jump links' labels (they name schedules that live elsewhere)
+    const pageText = Array.from({ length: pageCount }, (_, i) => {
+      const p = root.getElementById(`Page${i + 1}Content`)?.cloneNode(true) as HTMLElement | undefined;
+      p?.querySelectorAll("[data-js]").forEach((a) => a.remove());
+      return (p?.textContent ?? "").replace(/\s+/g, " ").replace(/\bSched\.?(?=\s)/gi, "Schedule").replace(/\s*-\s*/g, " ").toLowerCase();
+    });
+    const jumpTarget = (a: Element): number | null => {
+      const id = a.id;
+      const n = id.match(/^btnNavigatePage(\d+)/)?.[1];
+      if (n) return Number(n);
+      if (/btnNextPage$/.test(id)) return current + 1;
+      if (/btnPrevPage$/.test(id)) return current - 1;
+      const text = (a.textContent ?? "").replace(/\s+/g, " ").replace(/\bSched\.?(?=\s)/gi, "Schedule");
+      if (!/\b(to|from)\b/i.test(text)) return null;
+      const target = (text.match(/Schedule\s+[\w.]+?(?=[\s,)]|$)/i) ?? text.match(/Part\s+[IVX]+\b/))?.[0].toLowerCase().replace(/\s+/g, " ");
+      if (!target) return null;
+      const here = pageOf(a);
+      const hit = pageText.findIndex((t, i) => i + 1 !== here && t.includes(target));
+      return hit < 0 ? null : hit + 1;
+    };
+    for (const a of Array.from(root.querySelectorAll("[data-js]"))) {
+      // every other javascript: link (pickers, pop-ups, help) does nothing yet rather than navigating
+      on(a, "click", (e) => {
+        e.preventDefault();
+        if (pageCount < 2) return;
+        const to = jumpTarget(a);
+        if (to !== null) showPage(to);
+      });
+    }
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]);
 

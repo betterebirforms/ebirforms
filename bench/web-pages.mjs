@@ -117,6 +117,25 @@ try {
   await F("txtTax19").waitFor();
   await tab.waitForFunction(() => document.querySelector(".bir-layout")?.shadowRoot?.getElementById("frm0605:txtTax21")?.value === "1,600.00", null, { timeout: 10_000 }).catch(() => {});
   check("View reopens it with its values", (await F("txtTax21").inputValue()) === "1,600.00", await F("txtTax21").inputValue());
+
+  // BIR's page-jump links: by id (1601-C's "From Part IV-Schedule 1") and by the schedule they name (1702-MX)
+  const jump = async (code, from, pick) => {
+    await tab.goto(`${origin}${BASE}form/${code}`, { waitUntil: "networkidle" });
+    await tab.waitForFunction(() => document.querySelector(".bir-layout")?.shadowRoot?.querySelector("[id^=Page][id$=Content]"), null, { timeout: 10_000 });
+    return tab.evaluate(([from, pick]) => {
+      const s = document.querySelector(".bir-layout").shadowRoot;
+      const box = s.querySelector("input[id$=':txtCurrentPage']");
+      box.value = String(from);
+      box.dispatchEvent(new Event("change"));
+      const a = Array.from(s.querySelectorAll(`#Page${from}Content [data-js]`)).find((x) => x.id === pick || x.textContent.replace(/\s+/g, " ").trim() === pick);
+      a?.click();
+      return Array.from(s.querySelectorAll("[id^=Page][id$=Content]")).findIndex((p) => p.style.display !== "none") + 1;
+    }, [from, pick]);
+  };
+  const by_id = await jump("1601Cv2018", 1, "btnNavigatePage2_1");
+  check("a page link goes to its page", by_id === 2, `1601-C page 1 -> ${by_id}`);
+  const by_name = await jump("1702MXv2018", 3, "(To Part IV-Schedule 2 Item 8)");
+  check("a schedule note goes to that schedule's page", by_name === 2, `1702-MX page 3 -> ${by_name}`);
   await flow.close();
 
   // a phone: BIR's 800 px page shrinks to the screen instead of running off its right side
