@@ -38,3 +38,52 @@ jobs:
       - if: always()
         shell: bash
         run: grep "DIALOGTEST" dialog.log || echo "no DIALOGTEST line"
+
+  # What a user reads on Submit in the download build (no BIR submission): BIR's own messages, rewritten by the shim,
+  # in the real window. Screenshots are uploaded as the "submit-<os>" artifact.
+  submit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with: { workspaces: src-tauri }
+      - if: runner.os == 'Linux'
+        run: bash .github/script/apt-install.sh libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xvfb xdotool imagemagick
+      - run: npm ci
+      - run: mkdir shot
+      - if: runner.os == 'Linux'
+        run: |
+          EBF_DIALOGTEST=submit timeout 1500 xvfb-run -a -s "-screen 0 1280x800x24" bash -c '
+            (until pgrep -f "target/debug/ebirforms" >/dev/null; do sleep 2; done
+             for i in $(seq -w 1 20); do sleep 4; import -window root shot/$i.png; done) &
+            npm run tauri dev -- -- --no-default-features' 2>&1 | tee dialog.log || true
+          grep -q "DIALOGTEST shown=true" dialog.log
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $shooter = Start-Job -ScriptBlock {
+            Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+            while (-not (Get-Process ebirforms -ErrorAction SilentlyContinue)) { Start-Sleep 2 }
+            foreach ($i in 1..20) {
+              Start-Sleep 4
+              $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+              $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+              [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+              $bmp.Save("$using:PWD\shot\{0:D2}.png" -f $i)
+            }
+          }
+          $env:EBF_DIALOGTEST = "submit"
+          npm run tauri dev -- -- --no-default-features 2>&1 | Tee-Object dialog.log
+          Receive-Job $shooter -Wait -ErrorAction SilentlyContinue
+          if (-not (Select-String -Path dialog.log -Pattern "DIALOGTEST shown=true" -Quiet)) { exit 1 }
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: "submit-${{ matrix.os }}", path: shot/ }

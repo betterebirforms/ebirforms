@@ -233,17 +233,29 @@ fn dialog_selftest(handle: tauri::AppHandle) {
         let Some(content) = handle.get_webview("content") else { return };
         let hash = |c: &tauri::Webview| c.url().map(|u| u.fragment().unwrap_or("").to_string()).unwrap_or_default();
         pause(5000);
-        let _ = content.eval(
-            "setTimeout(() => { const t = performance.now(); const c = confirm('EBF_DIALOGTEST: press OK'); \
+        // EBF_DIALOGTEST=submit: BIR's own Submit messages (the shim rewrites them in a build that can't submit), each
+        // left up 15 s so CI can screenshot what a user reads
+        let submit = std::env::var("EBF_DIALOGTEST").as_deref() == Ok("submit");
+        let (ask, tell, wait) = if submit {
+            (
+                "Please ensure that you have INTERNET access and a VALID email address is indicated in your tax return.\\n\\nAre you sure you want to submit?",
+                "The system detected that you have no internet connection.\\nPlease contact your internet service provider.",
+                15000,
+            )
+        } else {
+            ("EBF_DIALOGTEST: press OK", "EBF_DIALOGTEST: alert", 4000)
+        };
+        let _ = content.eval(format!(
+            "setTimeout(() => {{ const t = performance.now(); const c = confirm('{ask}'); \
              location.hash = 'confirm=' + c + '&ms=' + Math.round(performance.now() - t); \
-             alert('EBF_DIALOGTEST: alert'); location.hash += '&alert=closed'; }, 50)",
-        );
+             alert('{tell}'); location.hash += '&alert=closed'; }}, 50)"
+        ));
         // a dialog blocks confirm() until it is answered; with no dialog it returns false at once (issue #1: 1 ms)
-        pause(4000);
+        pause(wait);
         let shown = !hash(&content).contains("confirm=");
         for _ in 0..2 {
             press_return();
-            pause(2500);
+            pause(if submit { wait } else { 2500 });
         }
         println!("DIALOGTEST shown={shown} {}", hash(&content));
         handle.exit(0);
