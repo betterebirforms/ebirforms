@@ -41,6 +41,24 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
       live = false;
     };
   }, [name]);
+  // BIR's pages are laid out for an 800 px window: on a narrower screen (a phone) shrink the whole page to fit,
+  // as a browser's "zoom out" would, instead of cutting off its right side
+  useEffect(() => {
+    const el = host.current;
+    if (!root || !el) return;
+    const body = root.querySelector(".bir-body") as HTMLElement | null;
+    if (!body) return;
+    const fit = () => {
+      body.style.zoom = "";
+      const need = body.scrollWidth;
+      const have = el.clientWidth;
+      body.style.zoom = need > have && have > 0 ? String(have / need) : "";
+    };
+    fit();
+    const watch = new ResizeObserver(fit);
+    watch.observe(el);
+    return () => watch.disconnect();
+  }, [root]);
   return [host, root];
 }
 

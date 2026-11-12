@@ -118,6 +118,19 @@ try {
   await tab.waitForFunction(() => document.querySelector(".bir-layout")?.shadowRoot?.getElementById("frm0605:txtTax21")?.value === "1,600.00", null, { timeout: 10_000 }).catch(() => {});
   check("View reopens it with its values", (await F("txtTax21").inputValue()) === "1,600.00", await F("txtTax21").inputValue());
   await flow.close();
+
+  // a phone: BIR's 800 px page shrinks to the screen instead of running off its right side
+  const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const small = await phone.newPage();
+  for (const path of ["", "form/0605", "form/1702RTv2018C"]) {
+    await small.goto(`${origin}${BASE}${path}`, { waitUntil: "networkidle" });
+    await small.waitForFunction(() => document.querySelector(".bir-layout")?.shadowRoot?.querySelector(".bir-body"), null, { timeout: 10_000 });
+    await small.waitForTimeout(300);
+    const wide = await small.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
+    if (process.argv.includes("--shot")) await small.screenshot({ path: `${process.argv[process.argv.indexOf("--shot") + 1]}/phone-${path.replace(/\W/g, "_") || "main"}.png` });
+    check(`fits a phone: /${path}`, wide[0] <= wide[1] + 1, `page ${wide[0]} px, screen ${wide[1]} px`);
+  }
+  await phone.close();
 } catch (e) {
   check("run", false, e.message);
 }
