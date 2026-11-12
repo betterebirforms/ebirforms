@@ -47,7 +47,7 @@ Get the file for your computer from the **[latest release](https://github.com/be
 | Windows | 10 or 11, 64-bit |
 | Linux | Ubuntu 22.04 or later, or equivalent |
 | Savefiles | Same format as BIR's Windows app, so a file opens in either |
-| Online Submit (sending the return to BIR from inside the app) | Not in the download build. **Submit makes a final copy on your computer and says that nothing was sent.** Nothing is filed until you file it: on paper, from BIR's own Offline eBIRForms Package on Windows, or through eFPS |
+| Online Submit (sending the return to BIR from inside the app) | Not in the download build. **Submit only locks the return and saves it on your computer. Nothing is sent to BIR.** To file: print it and file on paper, or copy it (Go > Show Saved Returns) to BIR's own eBIRForms app on Windows and submit it there |
 | Updates | The app checks for a new version when it opens (from v0.1.2), and **Updates > Check for Updates** checks now. Each update is signed |
 | Status | Beta |
 

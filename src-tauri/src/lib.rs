@@ -119,6 +119,19 @@ fn caption_selftest(handle: tauri::AppHandle) {
 }
 
 /// The Go menu: point the content webview at BIR's main screen or the native forms.
+/// Opens a folder in Finder / File Explorer / the Linux file manager (made first if it isn't there yet).
+fn show_folder(dir: &std::path::Path) {
+    let _ = std::fs::create_dir_all(dir);
+    let opener = if cfg!(target_os = "macos") {
+        "open"
+    } else if cfg!(windows) {
+        "explorer"
+    } else {
+        "xdg-open"
+    };
+    let _ = std::process::Command::new(opener).arg(dir).spawn();
+}
+
 fn go_to(app: &tauri::AppHandle, id: &str) {
     let page = match id {
         "go_main" => "/legacy/BIRForms.hta",
@@ -369,7 +382,9 @@ pub fn run() {
                 let main = MenuItemBuilder::with_id("go_main", "BIR Main Screen").accelerator("CmdOrCtrl+Shift+M").build(app)?;
                 let native = MenuItemBuilder::with_id("go_form", "Native Forms").accelerator("CmdOrCtrl+Shift+F").build(app)?;
                 let mods = MenuItemBuilder::with_id("go_mod", "Mods").build(app)?;
-                let go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).build()?;
+                // where returns are saved, so a user can copy one to BIR's own app on Windows
+                let saved = MenuItemBuilder::with_id("show_saved", "Show Saved Returns").build(app)?;
+                let go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).item(&saved).build()?;
                 let data = app.path().app_data_dir()?.join("data");
                 let check = MenuItemBuilder::with_id("check_update", "Check for Updates…").build(app)?;
                 let auto = CheckMenuItemBuilder::with_id("auto_update", "Check Automatically")
@@ -384,6 +399,7 @@ pub fn run() {
                     "check_update" => update::check(app.clone(), data.clone(), true),
                     // the menu toggles the tick itself; save what it now shows
                     "auto_update" => update::set_auto_check(&data, auto.is_checked().unwrap_or(true)),
+                    "show_saved" => show_folder(&data.join("savefile")),
                     id => go_to(app, id),
                 });
             }

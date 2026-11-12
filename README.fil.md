@@ -47,7 +47,7 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bago, o katumbas |
 | Mga savefile | Parehong format ng Windows app ng BIR, kaya nabubuksan ang file sa alinman |
-| Online Submit | Wala sa download build. Ang Submit ay gumagawa lang ng final copy sa computer mo, at sinasabi nitong walang naipadala. Hindi pa ito naka-file: i-file sa papel, sa sariling Offline eBIRForms Package ng BIR sa Windows, o sa eFPS |
+| Online Submit | Wala sa download build. **Ang Submit ay nagla-lock at nagse-save lang ng return sa computer mo. Walang naipapadala sa BIR.** Para mag-file: i-print at i-file sa papel, o kopyahin ito (Go > Show Saved Returns) sa sariling eBIRForms app ng BIR sa Windows at i-submit doon |
 | Updates | Tumitingin ang app ng bagong bersyon pagbukas (mula v0.1.2). **Updates > Check for Updates** para tumingin ngayon |
 | Status | Beta |
 

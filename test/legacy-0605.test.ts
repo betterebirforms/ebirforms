@@ -163,13 +163,16 @@ describe.skipIf(!has_original)("legacy form 0605 in WebKit", () => {
     expect(error).toEqual([]);
     // BIR's own prompt, then the dispatcher (the dev host never contacts BIR: mode "0") → BIR's offline branch
     // a build that can't submit says so plainly, before and after (issue #1: a user thought Submit had filed)
-    expect(dialog.some((m) => m.startsWith("Make a FINAL COPY of this return?") && m.includes("does NOT file returns with BIR"))).toBe(true);
-    expect(dialog.some((m) => m.startsWith("This version of eBIRForms does NOT file returns with BIR. Nothing was sent."))).toBe(true);
-    // a user read "eBIRForms online" as a feature of this app (2026-11-12): name only ways BIR actually files
+    // two pop-ups: the question, then one plain answer (a user was confused by three that each said a bit, and by
+    // the old wording's "eBIRForms online", read as part of this app)
+    const after = dialog.slice(dialog.findIndex((m) => m.startsWith("Make a final copy of this return?")));
+    expect(after).toHaveLength(2);
+    expect(after[0]).toContain("This app does NOT send returns to BIR.");
+    expect(after[1]).toMatch(/^Nothing was sent to BIR\. Your return is NOT filed yet\./);
+    expect(after[1]).toContain("Print it");
+    expect(after[1]).toContain("Go > Show Saved Returns");
     expect(dialog.some((m) => /eBIRForms online/i.test(m))).toBe(false);
-    expect(dialog.some((m) => m.includes("not filed yet") && m.includes("paper") && m.includes("eFPS"))).toBe(true);
     expect(dialog.some((m) => m.startsWith("BIR's submission server could not be reached"))).toBe(false);
-    expect(dialog.some((m) => m.startsWith("Final copy saved."))).toBe(true);
     const saved = readdirSync(join(data_dir, "savefile")).filter((f) => f.endsWith(".xml"));
     expect(saved).toHaveLength(1);
     const file = readSavefile(readFileSync(join(data_dir, "savefile", saved[0]!)));

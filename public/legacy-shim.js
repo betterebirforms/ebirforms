@@ -453,11 +453,14 @@
     "BIR's submission server could not be reached, or online filing is not open for this return.\n\n" +
     "Your return will be saved as a FINAL COPY (locked for editing). Open it again and click Submit to " +
     "send it once you are online, or Print it to file on paper.";
+  // one plain answer to "what did Submit do?" (a user read the old wording's "eBIRForms online" as part of this app)
   var NOT_FILED_NOTICE =
-    "This version of eBIRForms does NOT file returns with BIR. Nothing was sent.\n\n" +
-    "Submit Final Copy checked the return, locked it so it can't be edited, and saved it on this computer. " +
-    "The return is not filed yet. To file it: print it and file the paper return at your bank or RDO, " +
-    "or file it from BIR's own Offline eBIRForms Package on Windows, or through eFPS if you are enrolled.";
+    "Nothing was sent to BIR. Your return is NOT filed yet.\n\n" +
+    "It is saved on this computer as a final copy, which can no longer be changed.\n\n" +
+    "To file it, do one of these:\n" +
+    "1. Print it, and file and pay at your bank or RDO.\n" +
+    "2. Use BIR's own eBIRForms app on a Windows computer: copy the saved file (Go > Show Saved Returns) " +
+    "into C:\\eBIRForms\\savefile, open the return there and click Submit.";
   var nativeAlert = window.alert.bind(window);
   var nativeConfirm = window.confirm.bind(window);
   window.confirm = function (message) {
@@ -465,16 +468,12 @@
     if (!CAN_SUBMIT && m.indexOf("Please ensure that you have INTERNET access") === 0) {
       // BIR's Submit asks this before sending; this build sends nothing, so ask the honest question
       return nativeConfirm(
-        "Make a FINAL COPY of this return?\n\n" +
-          "This version of eBIRForms does NOT file returns with BIR. A final copy is checked, locked so it can't be " +
-          "edited, and saved on this computer. Nothing is sent. You file it yourself: on paper, from BIR's own " +
-          "Offline eBIRForms Package on Windows, or through eFPS.\n\n" +
-          "If you will file from BIR's Windows app, click Cancel and use Save instead, then submit it there."
+        "Make a final copy of this return?\n\n" +
+          "This app does NOT send returns to BIR. A final copy is only locked so it can't be changed, and saved on this computer."
       );
     }
     if (m.indexOf("File saved and encrypted.") === 0) {
-      // no USB/CD export: the copy lives in the app's data folder
-      nativeAlert("Final copy saved. It is now read-only. Use Print for the paper return.");
+      // no USB/CD export: the copy lives in the app's data folder, and the notice before this already said so
       return false;
     }
     return nativeConfirm(message);

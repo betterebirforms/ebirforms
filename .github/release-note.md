@@ -51,8 +51,9 @@ You only do this once. On macOS 12 to 14, you can instead right-click eBIRForms 
 
 Fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
 
-This app does **not** file returns with BIR. Submit makes a final copy on your computer. Nothing is filed
-until you file it: on paper, from BIR's own Offline eBIRForms Package on Windows, or through eFPS.
+This app does **not** file returns with BIR. Submit only locks the return and saves it on your computer. To
+file it, print it and file on paper, or copy it (**Go > Show Saved Returns**) into `C:\eBIRForms\savefile` on a
+Windows computer with BIR's own eBIRForms app, open it there and click Submit.
 
 From v0.1.2 on, the app checks for updates when it opens, and **Updates > Check for Updates** checks now. You
 don't need to come back here for new versions. Found a problem?

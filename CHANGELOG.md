@@ -5,6 +5,11 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.7 (12 November 2026)
+
+- Submit now shows two short messages instead of three long ones: a question, then one plain answer. It says nothing was sent to BIR, the return is not filed yet, and the two ways to file it.
+- New menu item: Go > Show Saved Returns opens the folder with your saved returns, so you can copy one to BIR's own app on Windows.
+
 ## v0.1.6 (12 November 2026)
 
 - Clearer Submit messages. They now say what Submit Final Copy does (checks the return, locks it, saves it on your computer), that nothing is filed, and the ways to file it: on paper, from BIR's own app on Windows, or through eFPS. The old wording pointed to "eBIRForms online", which confused people.
