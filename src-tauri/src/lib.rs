@@ -245,11 +245,18 @@ fn dialog_selftest(handle: tauri::AppHandle) {
         } else {
             ("EBF_DIALOGTEST: press OK", "EBF_DIALOGTEST: alert", 4000)
         };
-        let _ = content.eval(format!(
+        let run = format!(
             "setTimeout(() => {{ const t = performance.now(); const c = confirm('{ask}'); \
              location.hash = 'confirm=' + c + '&ms=' + Math.round(performance.now() - t); \
              alert('{tell}'); location.hash += '&alert=closed'; }}, 50)"
-        ));
+        );
+        // BIR's pages get the shim from the host; CI has no BIR tree, so load it into whatever page is up, the way a
+        // download build loads it (no data-submit: this build can't submit)
+        let _ = content.eval(if submit {
+            format!("(() => {{ const s = document.createElement('script'); s.src = '/legacy-shim.js'; s.onload = () => {run}; document.head.appendChild(s); }})()")
+        } else {
+            run
+        });
         // a dialog blocks confirm() until it is answered; with no dialog it returns false at once (issue #1: 1 ms)
         pause(wait);
         let shown = !hash(&content).contains("confirm=");

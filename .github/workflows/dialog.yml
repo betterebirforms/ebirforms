@@ -62,7 +62,7 @@ jobs:
       - if: runner.os == 'Linux'
         run: |
           EBF_DIALOGTEST=submit timeout 1500 xvfb-run -a -s "-screen 0 1280x800x24" bash -c '
-            (until pgrep -f "target/debug/ebirforms" >/dev/null; do sleep 2; done
+            (until pgrep -x ebirforms >/dev/null; do sleep 2; done
              for i in $(seq -w 1 20); do sleep 4; import -window root shot/$i.png; done) &
             npm run tauri dev -- -- --no-default-features' 2>&1 | tee dialog.log || true
           grep -q "DIALOGTEST shown=true" dialog.log
