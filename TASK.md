@@ -71,3 +71,8 @@ hosts; data-submit=1 only when enabled. (2) key fetch: BIR_ZIP_URL bir-cdn.bir.g
 -> keep _installer/{Encrypt,ebfSFTP}.exe under app data; verify by passphrase oracles. (3) Go menu switch + warning.
 (4) after send: "keep BIR's confirmation email; not filed until it arrives". (5) tests both sides; flip release test.
 (6) docs x3, CHANGELOG, ROADMAP, release notes. (7) Done only when one REAL return is accepted (BIR email) - needs a volunteer.
+Progress 2026-11-13: (1)-(6) DONE in e3f3518 + next commit (local; only a245fa6 pushed - pushing e3f3518 before a
+release would make the README describe a menu v0.1.7 lacks). Live: live_host_dispatch (switch on, keys from BIR's zip)
+mode=2; live_fetch from bir-cdn 24.6 s ok. gate 0 (1113), gate:rust 0 (41). NOT verified: the Go menu toggle and its
+dialogs in a real window; an actual upload. Left: user OK to release v0.1.8; first real return (volunteer: Prince/JM)
+-> BIR email -> drop "not confirmed yet" lines; update reply-draft.md for the beta.
