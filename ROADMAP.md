@@ -11,7 +11,7 @@ Want to take something? Open an issue saying which row, so two people don't buil
 - All 84 of BIR's forms run on macOS, Windows and Linux, inside BIR's own main screen.
 - All 84 are also rebuilt in TypeScript, and each rebuilt form saves the same file as BIR's (1:1, measured).
 - Every change we make to BIR's pages is a separate, switchable [mod](mod/README.md).
-- The downloads have no online submission, and Submit says so. A web version is live at https://betterebirforms.github.io/ebirforms/ (offline, returns stay in the browser). It looks like BIR's app: BIR's main screen and BIR's page for every form, filled by our rebuilt forms with none of BIR's code running.
+- The downloads can send a return to BIR (beta, off until the user turns it on in Go > Send Returns to BIR). No return sent by this app has been confirmed by BIR yet. A web version is live at https://betterebirforms.github.io/ebirforms/ (offline, returns stay in the browser). It looks like BIR's app: BIR's main screen and BIR's page for every form, filled by our rebuilt forms with none of BIR's code running.
 - The app updates itself from signed releases (from v0.1.2). AI agents can fill and save draft returns through a local [agent server](docs/agent.md).
 
 ## How the work is split
@@ -34,7 +34,8 @@ Each part of the plan below says which layer it touches.
 | Send BIR our list of bugs in its package | We offered BIR a list of the bugs we found, and private notes on the security ones | none | Sent to BIR. The security notes go to BIR only, never in this repo |
 | BIR's pickers and schedules work on the web | All 84 forms show BIR's page on the web. Page links work (260 of 428 links) and the schedule pop-ups open on the 1702-MX forms and 2550-Q 2024 (38 links), but the pop-ups of forms whose schedules the engine does not model yet (1701-MS item 10/13/20, 1702-MX 2013 schedules 13 and 14, 1700's table) and the attachment pages do nothing there. The 1702-MX attachments (one per exempt or special-rate activity) are not modelled by the engine on any platform, so their pages stay hidden until they are: showing them would offer boxes that are never saved | rebuild | On every form page, each picker and schedule BIR's page has opens and fills the form, checked by `bench/web-pages.mjs` |
 | Prove the filing route on Windows | The app does not file, so the only way to file a return made here is to copy it into BIR's own eBIRForms app on Windows and submit there. The app and the release page tell people to do that, but no one has done it yet. A no-payment return needs BIR's filing receipt (TRRC) as proof, and only that route gets one | none | A return saved on a Mac is copied into `C:\eBIRForms\savefile`, shows in BIR's app, validates there with no change, and is submitted, and BIR's confirmation email arrives |
-| Hear back from BIR | We asked BIR how it wants this app released (ticket 20261107_00563_E). The app went public as open source on 2026-11-09 without waiting, and it sends nothing to BIR | none | BIR replies. Online submission stays off until BIR allows it and a real return has gone through BIR's live server |
+| First return confirmed by BIR | Sending is built (BIR's live dispatcher answered and its upload server was reached on 2026-11-13, with nothing uploaded), but no real return has gone through yet, so the app and README say so | app | One real return is sent from the app, and BIR's confirmation email (TRRC) arrives. Then the "not confirmed yet" lines come out |
+| Hear back from BIR | We asked BIR how it wants this app released (ticket 20261107_00563_E). The app went public as open source on 2026-11-09, and sending to BIR (opt-in beta) was added on 2026-11-13 without waiting | none | BIR replies |
 
 ## Next: the desktop app
 
@@ -80,7 +81,6 @@ rebuilt forms do the work behind them.
 | Item | Why | Done when |
 |---|---|---|
 | BIR's file format for tax software providers (TSPs: companies BIR lets file returns for taxpayers) | BIR certifies third-party filing software (its eTSPCert program) and gives each form's data layout only to enrolled providers | The empty TSP export slot in `src/form/export.ts` is filled from BIR's layout |
-| Online submission in the download | Filing needs BIR's permission and a live test with a real TIN | BIR agrees, and one real return is filed and acknowledged |
 
 ## Not doing
 
@@ -90,4 +90,3 @@ rebuilt forms do the work behind them.
 - Storing or sending the user's eBIRForms Online password.
 - Changing the desktop app's screens away from 1:1 by default. A different look is an option you switch on.
 - Running BIR's own page code (its scripts) in the web or mobile version. The web version shows BIR's layouts only.
-- Online submission to BIR before BIR allows it.

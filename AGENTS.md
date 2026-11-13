@@ -26,6 +26,7 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
 | `src/form/export.ts` | Export adapters: the eBIRForms savefile (name + records, BIR's own) and the TSP slot (refuses until BIR issues a layout) |
 | `src/form/template/`, `upper-case.json` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, and what BIR upper-cases |
 | `mcp/` | The agent server (MCP over stdio): `tool.ts` is what an agent may do (drafts only, never a final copy or a submit), `main.ts` serves it. `npm run build:mcp` → `dist-mcp/`; setup in `docs/agent.md` |
+| `src-tauri/src/submit_menu.rs`, `bir_key.rs`, `submit_setting.rs` | Online submit, opt-in beta: Go > Send Returns to BIR, off by default; on first use fetches BIR's official zip and keeps only `Encrypt.exe` + `ebfSFTP.exe` as data (never run, never shipped) |
 | `src-tauri/src/update.rs`, `mac_dialog.rs` | In-app updates (signed `latest.json` from GitHub releases, Rust-only) and the macOS `alert`/`confirm`/`prompt` panels wry lacks |
 | `test/` | vitest, the gate. `test/parity.ts` is the 1:1 check; `test/parity.test.ts` the scoreboard + BIR-defect ledger |
 | `docs/` | `architecture.md` (how it fits), `development.md` (commands), `rewrite-playbook.md` (the 1:1 method). `docs/analysis/` web/native-layer findings and `docs/bir/` are private (gitignored); `form-triage.md` is public |

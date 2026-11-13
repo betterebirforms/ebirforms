@@ -56,3 +56,18 @@ User chose to publish all 84 (2026-11-12). Left: ATC / tax type pickers (0605's 
 schedules; the layout is 800 px wide (no phone fit); XP caption bar not added.
 - 2026-11-12 Web pop-ups (user: start now): LayoutView edits schedule rows (groups were read-only on the web), "Add more"/btnModal<X> opens the row editor (BIR's heading, column labels from its table), on-page row boxes are live, locked boxes show the saved value. FormSchema.typed: 1702-MX family keeps typed amounts as addCommas1702MX ("1,000"), from BIR's source. Links: 260 page, 38 pop-up, 130 nothing (mostly notes pointing at their own page; about 15 pop-ups of schedules the engine does not model). bench/web-pages 20/20, web-roundtrip 2/2, gate exit 0.
 - 2026-11-12 Next for the pop-ups: 1701-MS "View Details" (part4btn10A/10A1/10B/10B1/13A/13B/20aTP/20bSP) open BIR modals whose rows live only in JS arrays (specifyToCommit10A) and live inputs frm1701MS:sched410A:Description<i>/Amount<i> (first index 0, no counter); closing writes the sum into txtAllowableItemizedDeductionsNo10a via formatCurrencyWithComma. form1701ms.ts models no schedules. First measure with the oracle whether BIR's save writes those row keys and whether its load restores them; then model them as groups at the 1:1 bar. Same method for 1702-MX (2013) schedules 13/14 and 1700's btntablepop.
+
+## 2026-11-13 /goal: no false advertising + a release that actually files (user: "we need to introduce online submit")
+Decisions (user, 2026-11-13): keys come from BIR's official zip downloaded on first Submit (keep only Encrypt.exe +
+ebfSFTP.exe as data, never run, never shipped); opt-in beta, OFF by default; live probe used the owner TIN from
+philforms docs/compliance/owner-packet.md (never print it). Reddit + emails: user posts/sends drafts themselves
+(scratchpad reply-draft.md). Windows copy-route test: not now.
+Done: a245fa6 (roadmap honesty, test/release-no-submit.test.ts), v0.1.0/v0.1.1 release pages "Outdated" banner,
+uncommitted: README x3 + shim + CHANGELOG "route 2 untested" wording.
+LIVE PROBE 2026-11-13 (dispatch.rs `live_dispatch_probe`, #[ignore]): 1701Q -> birgovph.com mode=2, decrypt ok,
+upload host = a .gov.ph name, port 8022, banner SSH-2.0-fzssh_1.2.1_FileZillaProEnterpriseServer_1.12.14. No login, nothing filed.
+Plan: (1) package.mjs builds WITH bir-submit; runtime switch settings/submit.json `enabled` (default false), both
+hosts; data-submit=1 only when enabled. (2) key fetch: BIR_ZIP_URL bir-cdn.bir.gov.ph/.../v7.9.6.2.1.zip -> package::import
+-> keep _installer/{Encrypt,ebfSFTP}.exe under app data; verify by passphrase oracles. (3) Go menu switch + warning.
+(4) after send: "keep BIR's confirmation email; not filed until it arrives". (5) tests both sides; flip release test.
+(6) docs x3, CHANGELOG, ROADMAP, release notes. (7) Done only when one REAL return is accepted (BIR email) - needs a volunteer.

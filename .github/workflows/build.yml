@@ -68,6 +68,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: package-bir, path: src-tauri/package-bir }
       - run: cargo test --manifest-path src-tauri/Cargo.toml --no-default-features
+      # what the packages are built with: online submission compiled in, off until the user turns it on
+      - run: cargo test --manifest-path src-tauri/Cargo.toml
       # signs the in-app update files (update.rs); absent on forks and pull requests, which then build without them
       - run: node tool/package.mjs --no-stage
         env:

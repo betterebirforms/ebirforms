@@ -40,9 +40,8 @@ pub struct Host {
     pub conn: std::sync::Mutex<std::collections::BTreeMap<String, dispatch::Connection>>,
 }
 
-/// What the shareable build says when BIR's Submit button is pressed.
-#[cfg(not(feature = "bir-submit"))]
-const NO_SUBMIT: &str = "Online submission isn't available in this build. Your final copy is saved; file it through BIR's eBIRForms or eFPS.";
+/// What Submit says while sending to BIR is off (the default; Go > Send Returns to BIR turns it on).
+const NO_SUBMIT: &str = "Sending returns to BIR is off, so nothing was sent. Your final copy is saved; file it through BIR's eBIRForms or eFPS, or turn on Go > Send Returns to BIR (beta).";
 
 type Reply = Response<std::io::Cursor<Vec<u8>>>;
 
@@ -325,7 +324,7 @@ impl Host {
         }
         let exe = std::env::var("EBF_SFTP_EXE")
             .map(PathBuf::from)
-            .unwrap_or_else(|_| self.original.join("_installer/ebfSFTP.exe"));
+            .unwrap_or_else(|_| self.key_file("ebfSFTP.exe"));
         let image = fs::read(&exe).map_err(|_| {
             "This copy of the package has no ebfSFTP.exe, so it can't ask BIR where to upload. Re-import from the full official installer (.zip), not BIRForms.exe alone — or set the connection details by hand.".to_string()
         })?;
@@ -345,8 +344,16 @@ impl Host {
     }
 
     #[cfg(feature = "bir-submit")]
+    /// One of BIR's two helpers that hold the keys: an imported package's `_installer/`, else the copy fetched from
+    /// BIR's official zip when the user turned sending on (bir_key.rs). Read as data, never run.
+    fn key_file(&self, name: &str) -> PathBuf {
+        let imported = self.original.join("_installer").join(name);
+        if imported.is_file() { imported } else { crate::bir_key::dir(&self.data).join(name) }
+    }
+
+    #[cfg(feature = "bir-submit")]
     fn encrypt_cipher(&self) -> Result<crypto::EbfCipher, String> {
-        let exe = fs::read(self.original.join("_installer/Encrypt.exe")).map_err(|_| {
+        let exe = fs::read(self.key_file("Encrypt.exe")).map_err(|_| {
             "This copy of the package has no Encrypt.exe. Re-import from the full official installer (.zip), not BIRForms.exe alone.".to_string()
         })?;
         let passphrase = crypto::passphrase_from_encrypt_exe(&exe).ok_or("could not read the encryption passphrase from Encrypt.exe")?;
@@ -355,7 +362,7 @@ impl Host {
 
     #[cfg(feature = "bir-submit")]
     /// What Encrypt.exe does to a final copy in IAF_RDO_Copy: compress + encrypt the file in place.
-    fn encrypt_in_place(&self, raw: &str) -> Result<(), String> {
+    fn encrypt_live(&self, raw: &str) -> Result<(), String> {
         let rel = clean(&Self::rel_of(raw))?;
         let p = self.data.join(&rel);
         let plain = fs::read(&p).map_err(|_| format!("{} not found", rel.display()))?;
@@ -388,7 +395,7 @@ impl Host {
     #[cfg(feature = "bir-submit")]
     /// `conService.initConConfig(tin, form)`: ask BIR's dispatcher where this return goes. The decrypted login stays
     /// here; the page only learns `mode` ("0" = online filing not open → BIR's own offline final-copy path).
-    fn dispatch_op(&self, tin: &str, form_code: &str) -> Value {
+    fn dispatch_live(&self, tin: &str, form_code: &str) -> Value {
         let closed = |note: String| json!({ "ok": true, "mode": "0", "note": note });
         let tin9: String = tin.chars().filter(char::is_ascii_digit).collect();
         if tin9.len() < 9 || form_code.is_empty() || !form_code.chars().all(|c| c.is_ascii_alphanumeric()) {
@@ -427,7 +434,7 @@ impl Host {
     /// `RenameAndSendFile` (eBIRTools.vbs) + ebfSFTP.exe: rename the encrypted copy to `<name>#<email>#.xml` and upload
     /// it to BIR's folder over SFTP with the dispatcher's login. The SSH host key is pinned on first use and a changed
     /// key is refused (ebfSFTP accepted any). exit_code 0 = sent, as the VBS returned.
-    fn send_op(&self, req: &Value) -> Value {
+    fn send_live(&self, req: &Value) -> Value {
         let s = |k: &str| req.get(k).and_then(Value::as_str).unwrap_or("").to_string();
         let fail = |note: String| json!({ "ok": true, "exit_code": 1, "note": note });
         let rel = match clean(&Self::rel_of(&s("path"))) {
@@ -490,33 +497,54 @@ impl Host {
         }
     }
 
-    /// Shareable build (no `bir-submit`): never asks BIR's dispatcher. mode "0" sends BIR's page down its own
-    /// offline final-copy path, as when online filing is closed.
-    #[cfg(not(feature = "bir-submit"))]
-    fn dispatch_op(&self, _tin: &str, _form_code: &str) -> Value {
+    /// Whether Submit may reach BIR: a build with `bir-submit` AND the user's switch (settings/submit.json
+    /// `enabled`, off by default). Off, every op below behaves as the download always did: nothing leaves the machine.
+    pub fn submit_on(&self) -> bool {
+        cfg!(feature = "bir-submit") && crate::submit_setting::enabled(&self.data)
+    }
+
+    /// Off: never asks BIR's dispatcher. mode "0" sends BIR's page down its own offline final-copy path, as when
+    /// online filing is closed.
+    fn dispatch_op(&self, tin: &str, form_code: &str) -> Value {
+        if self.submit_on() {
+            #[cfg(feature = "bir-submit")]
+            return self.dispatch_live(tin, form_code);
+        }
+        let _ = (tin, form_code);
         json!({ "ok": true, "mode": "0", "available": false, "note": NO_SUBMIT })
     }
 
-    #[cfg(not(feature = "bir-submit"))]
-    fn send_op(&self, _req: &Value) -> Value {
+    fn send_op(&self, req: &Value) -> Value {
+        if self.submit_on() {
+            #[cfg(feature = "bir-submit")]
+            return self.send_live(req);
+        }
+        let _ = req;
         json!({ "ok": true, "exit_code": 1, "note": NO_SUBMIT })
     }
 
-    /// Shareable build: the final copy stays a plain, read-only savefile; Encrypt.exe is never read.
-    #[cfg(not(feature = "bir-submit"))]
+    /// Off: the final copy stays a plain, read-only savefile; Encrypt.exe is never read.
     fn encrypt_in_place(&self, raw: &str) -> Result<(), String> {
+        if self.submit_on() {
+            #[cfg(feature = "bir-submit")]
+            return self.encrypt_live(raw);
+        }
         let rel = clean(&Self::rel_of(raw))?;
         if self.data.join(&rel).is_file() { Ok(()) } else { Err(format!("{} not found", rel.display())) }
     }
 
-    #[cfg(not(feature = "bir-submit"))]
-    fn repin(&self, _req: &Value) -> Result<Value, String> {
+    fn repin(&self, req: &Value) -> Result<Value, String> {
+        if self.submit_on() {
+            #[cfg(feature = "bir-submit")]
+            return self.repin_live(req);
+        }
+        let _ = req;
         Err(NO_SUBMIT.into())
     }
 
     #[cfg(feature = "bir-submit")]
     /// Replace the stored pin for a host (the user explicitly accepted a new key).
-    fn repin(&self, req: &Value) -> Result<Value, String> {
+    fn repin_live(&self, req: &Value) -> Result<Value, String> {
         let host = req.get("host").and_then(Value::as_str).unwrap_or("").to_string();
         let fingerprint = req.get("fingerprint").and_then(Value::as_str).unwrap_or("").to_string();
         if host.is_empty() || fingerprint.is_empty() {
@@ -606,8 +634,8 @@ impl Host {
         if ext == "hta" {
             let html = String::from_utf8_lossy(&data).trim_start_matches('\u{feff}').to_string();
             let html = bir_mod::apply(&bir_mod::mod_list(self.mod_dir.as_deref()), &rel_str, html, "");
-            // data-submit: whether this build can send a return to BIR at all (the downloads can't)
-            let tag = format!(r#"<script src="/legacy-shim.js" data-token="{}" data-submit="{}"></script>"#, self.token, if cfg!(feature = "bir-submit") { 1 } else { 0 });
+            // data-submit: whether Submit may send a return to BIR (the build has it AND the user turned it on)
+            let tag = format!(r#"<script src="/legacy-shim.js" data-token="{}" data-submit="{}"></script>"#, self.token, if self.submit_on() { 1 } else { 0 });
             let html = match html.to_ascii_lowercase().find("<head") {
                 Some(at) => {
                     let end = html[at..].find('>').map(|e| at + e + 1).unwrap_or(at);
@@ -764,7 +792,7 @@ mod test {
 }
 
 /// The shareable build answers BIR's Submit without touching the network or BIR's helpers (ROADMAP P4).
-#[cfg(all(test, not(feature = "bir-submit")))]
+#[cfg(test)]
 mod shareable_test {
     use super::*;
 
@@ -790,6 +818,28 @@ mod shareable_test {
         let _ = fs::remove_dir_all(&root);
     }
 
+    /// The switch, not the build, decides: on, the same ops take the live path (here it stops at the missing key,
+    /// before any network), and the page is told it may submit.
+    #[cfg(feature = "bir-submit")]
+    #[test]
+    fn the_switch_opens_the_live_path() {
+        let dir = std::env::temp_dir().join(format!("ebf-switch-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let h = host(dir.clone());
+        assert!(!h.submit_on());
+        crate::submit_setting::set_enabled(&dir, true).unwrap();
+        assert!(h.submit_on());
+        if std::env::var("EBF_SFTP_PASSPHRASE").is_err() && std::env::var("EBF_SFTP_EXE").is_err() {
+            let d = h.dispatch_op("123456789000", "1701Q");
+            assert_eq!(d["mode"], "0");
+            assert!(d["note"].as_str().unwrap().contains("ebfSFTP.exe"), "{d}");
+        }
+        crate::submit_setting::set_enabled(&dir, false).unwrap();
+        assert!(!h.submit_on());
+        let _ = fs::remove_dir_all(dir);
+    }
+
     fn host(data: PathBuf) -> Host {
         Host {
             asset: Box::new(|_| None),
@@ -800,6 +850,8 @@ mod shareable_test {
             token: "t".into(),
             print: Box::new(|| Ok(())),
             close: Box::new(|| Ok(())),
+            #[cfg(feature = "bir-submit")]
+            conn: Default::default(),
         }
     }
 
@@ -811,7 +863,7 @@ mod shareable_test {
         let h = host(dir.clone());
         let d = h.dispatch_op("123456789000", "1701Q");
         assert_eq!(d["mode"], "0");
-        assert!(d["note"].as_str().unwrap().contains("isn't available in this build"));
+        assert!(d["note"].as_str().unwrap().contains("nothing was sent"));
         assert_eq!(h.send_op(&json!({ "path": "IAF_RDO_Copy/r.xml" }))["exit_code"], 1);
         h.encrypt_in_place("C:\\eBIRForms\\IAF_RDO_Copy\\r.xml").unwrap();
         assert_eq!(fs::read(dir.join("IAF_RDO_Copy/r.xml")).unwrap(), b"<div>k=v</div>"); // not encrypted

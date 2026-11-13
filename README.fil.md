@@ -47,7 +47,7 @@ Kunin ang file para sa iyong computer sa **[pinakabagong release](https://github
 | Windows | 10 o 11, 64-bit |
 | Linux | Ubuntu 22.04 o mas bago, o katumbas |
 | Mga savefile | Parehong format ng Windows app ng BIR, kaya nabubuksan ang file sa alinman |
-| Online Submit | Wala sa download build. **Ang Submit ay nagla-lock at nagse-save lang ng return sa computer mo. Walang naipapadala sa BIR.** Para mag-file: i-print at i-file sa papel, o kopyahin ito (Go > Show Saved Returns) sa sariling eBIRForms app ng BIR sa Windows at i-submit doon |
+| Online Submit | **Beta, naka-off sa simula.** I-on sa **Go > Send Returns to BIR (beta)**. Sa unang beses, dina-download ng app ang opisyal na package ng BIR mula sa bir.gov.ph at dalawang file lang ang itinatabi nito. Pagkatapos, ipinapadala ng Submit ang return mo sa BIR gaya ng sariling app ng BIR. **Naka-file lang ang return mo kapag dumating na ang confirmation email ng BIR.** Itabi ito. Wala pang return na ipinadala ng app na ito ang nakumpirma ng BIR. Habang naka-off, nagla-lock at nagse-save lang ang Submit sa computer mo, at walang naipapadala: i-print at i-file sa papel, o kopyahin ito (Go > Show Saved Returns) sa sariling eBIRForms app ng BIR sa Windows at i-submit doon (hindi pa nasusubukan nang buo) |
 | Updates | Tumitingin ang app ng bagong bersyon pagbukas (mula v0.1.2). **Updates > Check for Updates** para tumingin ngayon |
 | Status | Beta |
 

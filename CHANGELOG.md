@@ -5,6 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
+- New, in beta: the app can send your return to BIR. It is off until you turn it on in Go > Send Returns to BIR (beta). The first time, it downloads BIR's official package from BIR's website. Your return is filed only when BIR's confirmation email arrives, so keep that email. No return sent by this app has been confirmed by BIR yet.
+- After a successful Submit, the app reminds you that BIR's confirmation email is your proof of filing.
+- Submit's message and the README now say that opening a saved return in BIR's Windows app and submitting it there has not been tested end to end yet.
 - On the web version's form pages, the "To Schedule" and "From Part" notes and the page links now take you to that page.
 - On the web version's form pages, "Add more" opens the schedule so you can add, change and remove its lines, and the totals on the page update. This works on the 1702-MX forms and 2550-Q (2024) so far.
 - On the 1702-MX forms, an amount you type is kept in whole pesos (1,000), as BIR's own form keeps it, instead of 1,000.00.

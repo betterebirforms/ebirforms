@@ -119,7 +119,8 @@ Off unless set. The desktop-window ones work only in a debug build (`npm run tau
 | `EBF_NAME` | Compare every rebuilt form's savefile name with BIR's |
 | `EBIRFORMS_URL` | Server the benches use (default `http://127.0.0.1:10900`) |
 | `EBIRFORMS_PROFILE` | Profile the form sweep opens forms with (default `profile/84653210700000.xml`) |
-| `EBIRFORMS_PACKAGE` | BIR's zip, for the Rust import test (`cargo test -- --ignored`) |
+| `EBIRFORMS_PACKAGE` | BIR's zip, for the Rust import test (`cargo test -- --ignored`) and the key test in `bir_key.rs` |
+| `EBF_LIVE_TIN` / `EBF_LIVE_FORM` | **Live, reaches BIR.** The opt-in `live_dispatch_probe` (`cargo test -- --ignored live_dispatch_probe`): asks BIR's real dispatcher for this TIN and form (default 1701Q) and reads the upload server's SSH banner. No login, no upload. Prints no TIN, host or login |
 | `EBIRFORMS_SFTP` | `host:port` of a local SFTP server, for the Rust upload test |
 | `EBF_DISPATCH_HOST` | Where the Rust host asks for BIR's upload target. Set `127.0.0.1:9` in tests so nothing reaches BIR |
 | `EBF_SFTP_EXE` / `EBF_SFTP_PASSPHRASE` | Point the full build at a test copy of BIR's SFTP helper, or give its passphrase directly (tests only) |

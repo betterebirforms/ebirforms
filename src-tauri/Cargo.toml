@@ -33,6 +33,10 @@ flate2 = { version = "1", optional = true }
 russh = { version = "0.65.1", optional = true, default-features = false, features = ["ring", "flate2", "rsa"] }
 russh-sftp = { version = "3.0.1", optional = true }
 tokio = { version = "1.53.3", optional = true, features = ["rt", "net", "io-util", "time", "macros"] }
+# fetching BIR's official zip for the two keys when the user turns sending on (bir_key.rs); the same reqwest and
+# rustls (ring) tauri-plugin-updater already links
+reqwest = { version = "0.13", optional = true, default-features = false, features = ["blocking", "rustls-no-provider"] }
+rustls = { version = "0.23", optional = true, default-features = false, features = ["ring"] }
 tauri-plugin-updater = "2"
 # the update prompt (update.rs). Not tauri-plugin-dialog: its init script replaces window.alert/confirm in EVERY
 # webview with async IPC versions, so BIR's confirm() returned a Promise (always "yes") and alert() went silent (v0.1.2)
@@ -50,10 +54,10 @@ objc2-foundation = { version = "0.3", features = ["NSString", "NSGeometry"] }
 block2 = "0.6"
 
 [features]
-# BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload.
-# The shareable build (`--no-default-features`) has none of it; it is what the downloads use.
+# BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload, fetching BIR's zip for the keys.
+# Built into the downloads but OFF until the user turns on Go > Send Returns to BIR (settings/submit.json).
 default = ["bir-submit"]
-bir-submit = ["dep:aes", "dep:cbc", "dep:sha2", "dep:sha1", "dep:hmac", "dep:pbkdf2", "dep:base64", "dep:flate2", "dep:russh", "dep:russh-sftp", "dep:tokio"]
+bir-submit = ["dep:aes", "dep:cbc", "dep:sha2", "dep:sha1", "dep:hmac", "dep:pbkdf2", "dep:base64", "dep:flate2", "dep:russh", "dep:russh-sftp", "dep:tokio", "dep:reqwest", "dep:rustls"]
 
 [dev-dependencies]
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "time"] }

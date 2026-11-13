@@ -67,11 +67,20 @@ Windows and `~/.local/share/ph.advo.ebirforms` on Linux.
 
 ## Online submission
 
-The downloadable app is built without it (`--no-default-features`). The full build (the Rust build option `bir-submit`)
-does what BIR's app does: asks BIR's dispatcher where to upload (`dispatch.rs`), encrypts the final copy the way
-`Encrypt.exe` does (`crypto.rs`), and uploads over SFTP with the server's key pinned (`submit.rs`). The
-passphrases come from the user's own copy of BIR's helpers at runtime and are never in this repo. It has never
-been run against BIR's real server.
+The downloads have it built in (the Rust build option `bir-submit`, on by default) but it is **off until the user
+turns it on** in Go > Send Returns to BIR (beta) (`submit_menu.rs`, saved in `<app data>/data/settings/submit.json`;
+`host.rs` `submit_on()`). Off, every submit operation behaves as before: nothing leaves the machine. On, it does what
+BIR's app does: asks BIR's dispatcher where to upload (`dispatch.rs`), encrypts the final copy the way `Encrypt.exe`
+does (`crypto.rs`), and uploads over SFTP with the server's key pinned (`submit.rs`).
+
+The two passphrases live inside BIR's own helpers (`Encrypt.exe`, `ebfSFTP.exe`), which are never in this repo or a
+package. When the user turns sending on, `bir_key.rs` downloads BIR's official zip from bir-cdn.bir.gov.ph, keeps only
+those two files under `<app data>/data/bir-key/`, checks that each yields its key, and reads them as data. They are
+never run. A test checks that the compiled code carries neither key.
+
+Measured on 2026-11-13: BIR's live dispatcher answered for 1701Q (mode 2), the answer decrypted, and BIR's upload
+server (a .gov.ph host, port 8022) answered with an SSH banner. Nothing was uploaded. No return sent by this app has
+been confirmed by BIR yet.
 
 ## The web version
 

@@ -1,6 +1,8 @@
 mod bir_mod;
 mod codec;
 #[cfg(feature = "bir-submit")]
+mod bir_key;
+#[cfg(feature = "bir-submit")]
 mod crypto;
 #[cfg(feature = "bir-submit")]
 mod dispatch;
@@ -10,6 +12,9 @@ mod mac_dialog;
 mod package;
 #[cfg(feature = "bir-submit")]
 mod submit;
+#[cfg(feature = "bir-submit")]
+mod submit_menu;
+mod submit_setting;
 mod update;
 
 use tauri::webview::WebviewBuilder;
@@ -411,8 +416,17 @@ pub fn run() {
                 let mods = MenuItemBuilder::with_id("go_mod", "Mods").build(app)?;
                 // where returns are saved, so a user can copy one to BIR's own app on Windows
                 let saved = MenuItemBuilder::with_id("show_saved", "Show Saved Returns").build(app)?;
-                let go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).item(&saved).build()?;
                 let data = app.path().app_data_dir()?.join("data");
+                #[allow(unused_mut)]
+                let mut go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).item(&saved);
+                // online submission: off until the user turns it on here (submit_menu.rs)
+                #[cfg(feature = "bir-submit")]
+                let send = CheckMenuItemBuilder::with_id("submit_on", submit_menu::TITLE).checked(submit_setting::enabled(&data)).build(app)?;
+                #[cfg(feature = "bir-submit")]
+                {
+                    go = go.separator().item(&send);
+                }
+                let go = go.build()?;
                 let check = MenuItemBuilder::with_id("check_update", "Check for Updates…").build(app)?;
                 let auto = CheckMenuItemBuilder::with_id("auto_update", "Check Automatically")
                     .checked(update::auto_check_enabled(&data))
@@ -427,6 +441,8 @@ pub fn run() {
                     // the menu toggles the tick itself; save what it now shows
                     "auto_update" => update::set_auto_check(&data, auto.is_checked().unwrap_or(true)),
                     "show_saved" => show_folder(&data.join("savefile")),
+                    #[cfg(feature = "bir-submit")]
+                    "submit_on" => submit_menu::toggle(app.clone(), data.clone(), send.clone()),
                     id => go_to(app, id),
                 });
             }

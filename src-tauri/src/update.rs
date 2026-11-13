@@ -114,7 +114,7 @@ fn say(app: &AppHandle, title: &str, text: &str) {
 
 /// A native message box (rfd), built on the main thread as macOS and GTK need, answered off it. `choice`: the two
 /// button labels (true = the first); None = a plain OK. Shown by Rust, so no page script is involved.
-async fn ask(app: &AppHandle, title: &str, text: &str, choice: Option<(&str, &str)>) -> bool {
+pub(crate) async fn ask(app: &AppHandle, title: &str, text: &str, choice: Option<(&str, &str)>) -> bool {
     use rfd::{AsyncMessageDialog, MessageButtons, MessageDialogResult, MessageLevel};
     let (tx, rx) = std::sync::mpsc::channel();
     let (title, text) = (title.to_string(), text.to_string());

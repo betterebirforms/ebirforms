@@ -449,4 +449,63 @@ mod tests {
         let host = sftp_decrypt(UAT_HOST_BLOB, &pass).unwrap();
         assert!(host.to_ascii_lowercase().ends_with(".birgovph.com"));
     }
+
+    /// LIVE, opt-in: asks BIR's real dispatcher (plain HTTP, the TIN in the query, as BIR's app does), decrypts the
+    /// answer, then opens TCP to the upload host and reads only its SSH banner. No login, no upload, nothing filed.
+    /// Prints the mode, whether the host is a birgovph.com name, the port and the banner; never the host, user or
+    /// password. EBF_LIVE_TIN=<9+ digits> EBF_LIVE_FORM=1701Q cargo test --manifest-path src-tauri/Cargo.toml
+    ///   -- --ignored --nocapture live_dispatch_probe
+    #[test]
+    #[ignore]
+    fn live_dispatch_probe() {
+        use tokio::io::AsyncReadExt;
+        let tin: String = std::env::var("EBF_LIVE_TIN").expect("EBF_LIVE_TIN").chars().filter(char::is_ascii_digit).collect();
+        let form = std::env::var("EBF_LIVE_FORM").unwrap_or_else(|_| "1701Q".into());
+        let exe = std::fs::read("../vendor/original/_installer/ebfSFTP.exe").expect("vendor/original/_installer/ebfSFTP.exe");
+        let pass = passphrase_from_sftp_exe(&exe).expect("passphrase");
+        let rt = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+        rt.block_on(async {
+            let answered = std::rc::Rc::new(std::cell::RefCell::new(Vec::<String>::new()));
+            let got = dispatch(&tin[..9], &form, EBIR_VERSION, &pass, &DISPATCH_HOST, |url| {
+                let host = url.split('/').nth(2).unwrap_or("").to_string();
+                let answered = answered.clone();
+                async move {
+                    let body = http_get(&url, None, 8000).await;
+                    answered.borrow_mut().push(format!("{host}: {}", match &body {
+                        None => "no answer".to_string(),
+                        Some(b) => match parse_dispatch(b) {
+                            Some(a) => format!("mode={:?}, fields={:?}", a.get("mode"), a.keys().collect::<Vec<_>>()),
+                            None => format!("not a dispatcher answer ({} bytes)", b.len()),
+                        },
+                    }));
+                    body
+                }
+            })
+            .await;
+            for a in answered.borrow().iter() {
+                println!("dispatcher {a}");
+            }
+            let conn = match got {
+                Ok(c) => c,
+                Err(e) => return println!("RESULT dispatch: {e}"),
+            };
+            let is_bir = conn.host.to_ascii_lowercase().ends_with("birgovph.com");
+            let kind = if conn.host.parse::<std::net::IpAddr>().is_ok() { "an IP address".to_string() } else {
+                format!("a name ending .{}", conn.host.rsplit('.').take(2).collect::<Vec<_>>().into_iter().rev().collect::<Vec<_>>().join("."))
+            };
+            println!("RESULT host is {kind}");
+            println!("RESULT dispatch ok: mode={} port={} host_is_birgovph={is_bir} user_len={} pass_len={}",
+                conn.mode, conn.port, conn.user.len(), conn.password.len());
+            let addr = format!("{}:{}", conn.host, conn.port);
+            match tokio::time::timeout(std::time::Duration::from_secs(10), tokio::net::TcpStream::connect(&addr)).await {
+                Ok(Ok(mut s)) => {
+                    let mut buf = [0u8; 128];
+                    let n = tokio::time::timeout(std::time::Duration::from_secs(10), s.read(&mut buf)).await.ok().and_then(Result::ok).unwrap_or(0);
+                    println!("RESULT ssh banner: {:?}", String::from_utf8_lossy(&buf[..n]).trim());
+                }
+                Ok(Err(e)) => println!("RESULT tcp connect failed: {e}"),
+                Err(_) => println!("RESULT tcp connect timed out"),
+            }
+        });
+    }
 }

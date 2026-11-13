@@ -460,7 +460,13 @@
     "To file it, do one of these:\n" +
     "1. Print it, and file and pay at your bank or RDO.\n" +
     "2. Use BIR's own eBIRForms app on a Windows computer: copy the saved file (Go > Show Saved Returns) " +
-    "into C:\\eBIRForms\\savefile, open the return there and click Submit.";
+    "into C:\\eBIRForms\\savefile, open the return there and click Submit. (This way has not been tested " +
+    "end to end yet: check that BIR's app shows and validates the return.)\n\n" +
+    "Or turn on Go > Send Returns to BIR (beta), open the return again and click Submit.";
+  // what this app adds to BIR's own "Submit Successful" (the beta is unofficial; BIR's email is the proof)
+  var SENT_NOTE =
+    "\n\nFrom eBIRForms (unofficial beta): your return is filed only when BIR's confirmation email arrives " +
+    "(the Tax Return Receipt Confirmation). Keep that email. If it doesn't arrive within a day, file the return another way.";
   var nativeAlert = window.alert.bind(window);
   var nativeConfirm = window.confirm.bind(window);
   window.confirm = function (message) {
@@ -481,6 +487,7 @@
   window.alert = function (message) {
     var m = String(message);
     if (m.indexOf("The system detected that you have no internet connection") === 0) return nativeAlert(submitTarget.available ? OFFLINE_NOTICE : NOT_FILED_NOTICE);
+    if (CAN_SUBMIT && m.indexOf("Submit Successful.") === 0) return nativeAlert(m + SENT_NOTE);
     return nativeAlert(message);
   };
 

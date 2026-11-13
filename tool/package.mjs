@@ -45,7 +45,9 @@ const no_updater_conf = join(tmpdir(), "ebirforms-no-updater.conf.json");
 if (!signed) writeFileSync(no_updater_conf, JSON.stringify({ bundle: { createUpdaterArtifacts: false } }));
 const no_updater = signed ? [] : ["--config", no_updater_conf];
 
-const build = ["tauri", "build", "--target", PLATFORM.target, "--bundles", PLATFORM.bundle, "--config", "src-tauri/tauri.package.conf.json", ...no_updater, "--", "--no-default-features"];
+// default features: online submission (bir-submit) is built in but OFF until the user turns on Go > Send Returns to
+// BIR. BIR's helpers and their keys are never in the package (stage-package.mjs); the app fetches them from BIR's zip.
+const build = ["tauri", "build", "--target", PLATFORM.target, "--bundles", PLATFORM.bundle, "--config", "src-tauri/tauri.package.conf.json", ...no_updater];
 // macOS: bundle_dmg.sh lays the window out through Finder/AppleScript, which fails now and then on a busy machine;
 // the second run reuses the compiled app, so a retry costs seconds
 try { run("npx", build); } catch { console.error("tauri build failed once — retrying"); run("npx", build); }
