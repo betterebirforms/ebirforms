@@ -115,6 +115,29 @@ fn say(app: &AppHandle, title: &str, text: &str) {
 /// A native message box (rfd), built on the main thread as macOS and GTK need, answered off it. `choice`: the two
 /// button labels (true = the first); None = a plain OK. Shown by Rust, so no page script is involved.
 pub(crate) async fn ask(app: &AppHandle, title: &str, text: &str, choice: Option<(&str, &str)>) -> bool {
+    // macOS: NSAlert directly (mac_dialog::choose); rfd's dialog never showed and its two-button form answered
+    // the first button by itself
+    #[cfg(target_os = "macos")]
+    {
+        let (tx, rx) = std::sync::mpsc::channel();
+        let (title, text) = (title.to_string(), text.to_string());
+        let buttons: Vec<String> = match choice {
+            Some((a, b)) => vec![a.to_string(), b.to_string()],
+            None => vec!["OK".to_string()],
+        };
+        let _ = app.run_on_main_thread(move || {
+            let b: Vec<&str> = buttons.iter().map(String::as_str).collect();
+            let _ = tx.send(crate::mac_dialog::choose(&title, &text, &b));
+        });
+        let answer = tauri::async_runtime::spawn_blocking(move || rx.recv().ok()).await.ok().flatten();
+        return answer == Some(0);
+    }
+    #[allow(unreachable_code)]
+    ask_rfd(app, title, text, choice).await
+}
+
+#[cfg_attr(target_os = "macos", allow(dead_code))]
+async fn ask_rfd(app: &AppHandle, title: &str, text: &str, choice: Option<(&str, &str)>) -> bool {
     use rfd::{AsyncMessageDialog, MessageButtons, MessageDialogResult, MessageLevel};
     let (tx, rx) = std::sync::mpsc::channel();
     let (title, text) = (title.to_string(), text.to_string());

@@ -400,14 +400,33 @@ a {
 }
 
 /* Go > Mods (src/ModScreen.tsx) */
-.mod-screen { max-width: 860px; margin: 0 auto; padding: 24px; font: 14px/1.45 system-ui, sans-serif; color: #1a1a1a; }
-.mod-screen h2 { text-transform: capitalize; margin-top: 28px; border-bottom: 1px solid #ccd; }
-.mod-screen h2 small { text-transform: none; font-weight: normal; color: #556; font-size: 13px; margin-left: 8px; }
-.mod-screen ul { list-style: none; padding: 0; }
-.mod-screen li { padding: 10px 0; border-bottom: 1px solid #eef; }
-.mod-screen li p { margin: 4px 0 2px 26px; color: #333; }
-.mod-screen li code { margin-left: 26px; color: #778; font-size: 12px; }
-.mod-screen label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+/* Go > Mods. Theme colours only (it was hard-coded light, so dark mode showed dark text on dark), and the
+   switch is sized on its own (the global `input { width: 100% }` made it eat the row) */
+.mod-screen { max-width: 760px; margin: 0 auto; padding: 32px 24px 48px; font: 14px/1.5 system-ui, sans-serif; color: var(--ink); }
+.mod-screen h1 { font-size: 26px; margin: 0 0 6px; }
+.mod-screen > p { color: var(--muted); margin: 0 0 8px; }
+.mod-screen a { color: var(--accent); }
+.mod-screen h2 { display: flex; align-items: baseline; gap: 10px; margin: 28px 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.mod-screen h2 small { text-transform: none; letter-spacing: 0; font-weight: normal; font-size: 13px; }
+.mod-screen ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.mod-screen li { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.mod-screen label { display: flex; gap: 12px; align-items: center; cursor: pointer; }
+.mod-screen label strong { flex: 1; font-size: 15px; color: var(--ink); }
+.mod-screen label em { color: var(--muted); font-style: normal; font-size: 12px; }
+.mod-screen li p { margin: 6px 0 4px; color: var(--muted); }
+.mod-screen li code { color: var(--muted); font-size: 12px; opacity: 0.8; }
+/* an on/off switch: the checkbox itself, drawn as a track and knob */
+.mod-screen input[type="checkbox"] {
+  appearance: none; flex: none; order: 2; width: 38px; height: 22px; padding: 0; margin: 0;
+  border-radius: 11px; border: 0; background: color-mix(in srgb, var(--muted) 45%, transparent); position: relative; cursor: pointer; transition: background 0.15s;
+}
+.mod-screen input[type="checkbox"]::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 0.3); transition: left 0.15s;
+}
+.mod-screen input[type="checkbox"]:checked { background: var(--ok); }
+.mod-screen input[type="checkbox"]:checked::after { left: 19px; }
+.mod-screen input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .schedule-modal {
   width: min(56rem, 96vw);
   max-height: 90vh;

@@ -44,6 +44,24 @@ unsafe fn alert(message: &NSString, buttons: &[&str], input: Option<&NSString>) 
     (answer, field)
 }
 
+/// A dialog the app itself asks (the update prompt, the Send Returns to BIR switch): NSAlert, run modally. Call on
+/// the main thread. Returns the index of the button clicked (0 = the first). Used instead of rfd on macOS: rfd's
+/// two-button dialog answered its first button at once without showing (measured 2026-11-13, menu-triggered).
+pub fn choose(title: &str, text: &str, buttons: &[&str]) -> usize {
+    unsafe {
+        let alert: *mut AnyObject = msg_send![objc2::class!(NSAlert), new];
+        let _: () = msg_send![alert, setMessageText: &*NSString::from_str(title)];
+        let _: () = msg_send![alert, setInformativeText: &*NSString::from_str(text)];
+        for b in buttons {
+            let _: *mut AnyObject = msg_send![alert, addButtonWithTitle: &*NSString::from_str(b)];
+        }
+        let app: *mut AnyObject = msg_send![objc2::class!(NSApplication), sharedApplication];
+        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+        let answer: isize = msg_send![alert, runModal];
+        (answer - FIRST_BUTTON).max(0) as usize
+    }
+}
+
 extern "C" fn run_alert(_this: *mut AnyObject, _cmd: Sel, _view: *mut AnyObject, message: &NSString, _frame: *mut AnyObject, done: &Block<dyn Fn()>) {
     unsafe { alert(message, &["OK"], None) };
     done.call(());
