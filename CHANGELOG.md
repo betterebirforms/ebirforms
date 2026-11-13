@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.1.8 (13 November 2026)
+
 - The app's data folder has a new name (io.github.betterebirforms.ebirforms). Your saved returns, profile and settings move there by themselves the first time this version starts.
 - On a Mac, yes or no questions (updates, sending to BIR) now show a proper dialog and wait for your answer.
 - The Mods screen is readable in dark mode, and each mod has a clear on/off switch.
