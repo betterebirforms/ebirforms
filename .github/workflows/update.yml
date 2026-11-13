@@ -26,6 +26,10 @@ jobs:
           if (-not $exe) { throw "ebirforms.exe not found after install" }
           $before = (Get-Item $exe.FullName).VersionInfo.ProductVersion
           Write-Output "installed $before at $($exe.FullName); latest release $latest"
+          # a saved return in the pre-0.1.8 data folder (app id ph.advo.ebirforms): the new version must move it
+          $old = Join-Path $env:APPDATA "ph.advo.ebirforms\data\savefile"
+          New-Item -ItemType Directory -Force $old | Out-Null
+          Set-Content (Join-Path $old "probe.xml") "probe"
           Start-Process $exe.FullName
           $shell = New-Object -ComObject WScript.Shell
           $asked = $false
@@ -35,6 +39,17 @@ jobs:
           $after = (Get-Item $exe.FullName).VersionInfo.ProductVersion
           Write-Output "UPDATE windows from=$before after=$after latest=$latest"
           if (-not ($after -like "$latest*")) { exit 1 }
+          # the app restarts after the update; give it time to start and move the data folder
+          if (-not (Get-Process ebirforms -ErrorAction SilentlyContinue)) { Start-Process $exe.FullName }
+          Start-Sleep 20
+          $moved = Test-Path (Join-Path $env:APPDATA "io.github.betterebirforms.ebirforms\data\savefile\probe.xml")
+          $entry = @(Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall", "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall", "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall" -ErrorAction SilentlyContinue |
+            ForEach-Object { Get-ItemProperty $_.PSPath } | Where-Object { $_.DisplayName -like "*eBIRForms*" })
+          Write-Output "DATA windows moved=$moved; INSTALL entries=$($entry.Count): $(($entry | ForEach-Object { "$($_.DisplayName) $($_.DisplayVersion) by $($_.Publisher)" }) -join '; ')"
+          if ($after -like "0.1.8*" -or [version]($after -replace '[^0-9.].*','') -ge [version]"0.1.8") {
+            if (-not $moved) { throw "saved return did not move to the new data folder" }
+            if ($entry.Count -ne 1) { throw "expected one installed eBIRForms entry, found $($entry.Count)" }
+          }
 
   linux:
     runs-on: ubuntu-22.04
