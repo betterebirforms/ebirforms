@@ -64,6 +64,14 @@ Step-by-step pictures for each system are on the [download page](https://github.
 
 Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
 
+## Support
+
+eBIRForms is free. If it saved you a trip to a Windows PC, you can chip in on Ko-fi (PayPal or card):
+
+[![Support this project on Ko-fi](https://img.shields.io/badge/Donate-Ko--fi%20or%20PayPal-FFC439?style=for-the-badge&logo=kofi&logoColor=black&labelColor=FFC439)](https://ko-fi.com/betterebirforms)
+
+The app has the same link under **Support > Donate**, and the web version shows it on its home screen.
+
 ## Links
 
 - Problems or questions: [Issues](https://github.com/betterebirforms/ebirforms/issues)

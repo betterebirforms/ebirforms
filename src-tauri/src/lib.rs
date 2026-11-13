@@ -126,8 +126,16 @@ fn caption_selftest(handle: tauri::AppHandle) {
 
 /// The Go menu: point the content webview at BIR's main screen or the native forms.
 /// Opens a folder in Finder / File Explorer / the Linux file manager (made first if it isn't there yet).
+/// The project's Ko-fi page (takes PayPal and cards). Same URL as `src/lib/donate.ts`; `test/donate.test.ts` checks.
+const DONATE_URL: &str = "https://ko-fi.com/betterebirforms";
+
 fn show_folder(dir: &std::path::Path) {
     let _ = std::fs::create_dir_all(dir);
+    open_external(dir.as_os_str());
+}
+
+/// Hands a folder or a URL to the system (Finder / Explorer / the default browser).
+fn open_external(target: &std::ffi::OsStr) {
     let opener = if cfg!(target_os = "macos") {
         "open"
     } else if cfg!(windows) {
@@ -135,7 +143,7 @@ fn show_folder(dir: &std::path::Path) {
     } else {
         "xdg-open"
     };
-    let _ = std::process::Command::new(opener).arg(dir).spawn();
+    let _ = std::process::Command::new(opener).arg(target).spawn();
 }
 
 fn go_to(app: &tauri::AppHandle, id: &str) {
@@ -437,15 +445,19 @@ pub fn run() {
                     .checked(update::auto_check_enabled(&data))
                     .build(app)?;
                 let help = SubmenuBuilder::new(app, "Updates").item(&check).item(&auto).build()?;
+                let donate = MenuItemBuilder::with_id("donate", "Donate (Ko-fi or PayPal)…").build(app)?;
+                let support = SubmenuBuilder::new(app, "Support").item(&donate).build()?;
                 let menu = Menu::default(app.handle())?;
                 menu.append(&go)?;
                 menu.append(&help)?;
+                menu.append(&support)?;
                 app.set_menu(menu)?;
                 app.on_menu_event(move |app, event| match event.id().as_ref() {
                     "check_update" => update::check(app.clone(), data.clone(), true),
                     // the menu toggles the tick itself; save what it now shows
                     "auto_update" => update::set_auto_check(&data, auto.is_checked().unwrap_or(true)),
                     "show_saved" => show_folder(&data.join("savefile")),
+                    "donate" => open_external(DONATE_URL.as_ref()),
                     #[cfg(feature = "bir-submit")]
                     "submit_on" => submit_menu::toggle(app.clone(), data.clone(), send.clone()),
                     id => go_to(app, id),

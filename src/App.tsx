@@ -8,6 +8,7 @@ import { ModScreen } from "./ModScreen.tsx";
 import { NATIVE_FORM } from "@/form/registry.ts";
 import { parseSavefile, profileFromSavefile, type Profile } from "@/lib/savefile.ts";
 import { reopenSavefile, type FormState, type GroupState } from "@/form/schema.ts";
+import { DONATE_URL } from "@/lib/donate.ts";
 
 /** Where the app is served from: "/" on the desktop, "/ebirforms/" on GitHub Pages (vite `base`). */
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -25,11 +26,27 @@ const MAIN_SCREEN = "/legacy/BIRForms.hta";
  */
 export function App() {
   const route = /^\/form(?:\/([^/?#]+))?\/?$/.exec(routePath());
-  if (route) return <NativeScreen form_code={route[1] ? decodeURIComponent(route[1]) : null} />;
+  const form_code = route?.[1] ? decodeURIComponent(route[1]) : null;
+  // the web version's home (`/` or `/form`) carries the donate link; a form page never does
+  if (IS_WEB && !form_code)
+    return (
+      <>
+        <NativeScreen form_code={null} />
+        <DonateLink />
+      </>
+    );
+  if (route) return <NativeScreen form_code={form_code} />;
   if (!IS_WEB && /^\/mod\/?$/.test(routePath())) return <ModScreen />;
-  // the web version never shows BIR's own pages: its home is the native form list
-  if (IS_WEB) return <NativeScreen form_code={null} />;
   return <LegacyScreen />;
+}
+
+/** The web version's home only (never over a form page): a small corner link to the project's Ko-fi page. */
+function DonateLink() {
+  return (
+    <a className="donate" href={DONATE_URL} target="_blank" rel="noopener noreferrer" title="Ko-fi takes PayPal and cards">
+      Support this project
+    </a>
+  );
 }
 
 const EMPTY_PROFILE: Profile = { fn: "", tin1: "", tin2: "", tin3: "", tin4: "", rdo: "", lob: "", regAddr: "", zip: "", telNo: "", email: "", formType: "" };

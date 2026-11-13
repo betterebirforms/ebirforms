@@ -84,6 +84,29 @@ select {
   border: 1px solid var(--warn);
   color: var(--warn);
 }
+/* PayPal's button yellow, as on the Ko-fi page it opens */
+.donate {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: #ffc439;
+  color: #111;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
+}
+.donate:hover {
+  background: #ffb028;
+}
+@media print {
+  .donate {
+    display: none;
+  }
+}
 .empty {
   max-width: 34rem;
   margin: 12vh auto;

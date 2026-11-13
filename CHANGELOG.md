@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- You can now support the project: Support > Donate in the app, a button on the web version's home screen, and a link in the README. It opens our Ko-fi page, which takes PayPal and cards.
+
 ## v0.1.8 (13 November 2026)
 
 - The app's data folder has a new name (io.github.betterebirforms.ebirforms). Your saved returns, profile and settings move there by themselves the first time this version starts.
