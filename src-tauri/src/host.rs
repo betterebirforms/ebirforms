@@ -840,6 +840,27 @@ mod shareable_test {
         let _ = fs::remove_dir_all(dir);
     }
 
+    /// LIVE, opt-in, reaches BIR: the app's own path with the switch on and the keys kept from BIR's zip, up to the
+    /// dispatcher's answer. Nothing is uploaded. EBIRFORMS_PACKAGE=<BIR's zip> EBF_LIVE_TIN=<TIN>
+    ///   cargo test -- --ignored --nocapture live_host_dispatch
+    #[cfg(feature = "bir-submit")]
+    #[test]
+    #[ignore]
+    fn live_host_dispatch() {
+        let dir = std::env::temp_dir().join(format!("ebf-live-host-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        crate::bir_key::keep_from_zip(&dir, &fs::read(std::env::var("EBIRFORMS_PACKAGE").unwrap()).unwrap()).unwrap();
+        crate::submit_setting::set_enabled(&dir, true).unwrap();
+        let h = host(dir.clone());
+        let tin = std::env::var("EBF_LIVE_TIN").unwrap();
+        let form = std::env::var("EBF_LIVE_FORM").unwrap_or_else(|_| "1701Q".into());
+        let d = h.dispatch_op(&tin, &form);
+        println!("RESULT host dispatch: mode={} note={}", d["mode"], d.get("note").cloned().unwrap_or_default());
+        assert_ne!(d["mode"], "0");
+        let _ = fs::remove_dir_all(dir);
+    }
+
     fn host(data: PathBuf) -> Host {
         Host {
             asset: Box::new(|_| None),
