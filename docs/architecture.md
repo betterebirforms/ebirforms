@@ -71,7 +71,8 @@ Windows and `~/.local/share/io.github.betterebirforms.ebirforms` on Linux. Up to
 The downloads have it built in (the Rust build option `bir-submit`, on by default) but it is **off until the user
 turns it on** in Go > Send Returns to BIR (beta) (`submit_menu.rs`, saved in `<app data>/data/settings/submit.json`;
 `host.rs` `submit_on()`). Off, every submit operation behaves as before: nothing leaves the machine. On, it does what
-BIR's app does: asks BIR's dispatcher where to upload (`dispatch.rs`), encrypts the final copy the way `Encrypt.exe`
+BIR's app does: asks BIR's dispatcher where to upload (`dispatch.rs`; plain HTTP with the 9-digit TIN in the query, as
+BIR's `environment.js` does, because birgovph.com refuses HTTPS; the answer is parsed as JSON, never run), encrypts the final copy the way `Encrypt.exe`
 does (`crypto.rs`), and uploads over SFTP with the server's key pinned (`submit.rs`).
 
 The two passphrases live inside BIR's own helpers (`Encrypt.exe`, `ebfSFTP.exe`), which are never in this repo or a
