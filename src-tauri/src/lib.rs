@@ -4,6 +4,7 @@ mod codec;
 mod bir_key;
 #[cfg(feature = "bir-submit")]
 mod crypto;
+mod data_move;
 #[cfg(feature = "bir-submit")]
 mod dispatch;
 mod host;
@@ -306,6 +307,10 @@ pub fn run() {
         // window.alert/confirm in every page (update.rs uses rfd instead)
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
+            // up to v0.1.7 the app id was ph.advo.ebirforms: carry that data folder over once (data_move.rs)
+            if let Ok(new) = app.path().app_data_dir() {
+                data_move::from_old_id(&new);
+            }
             // debug + EBF_RUST_HOST=<data dir>: the packaged Rust host (native print, Submit) over dist/ + vendor/original
             let rust_host_data = std::env::var("EBF_RUST_HOST").ok().filter(|_| cfg!(debug_assertions));
             let url = if cfg!(debug_assertions) && rust_host_data.is_none() {

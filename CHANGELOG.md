@@ -5,6 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
+- The app's data folder has a new name (io.github.betterebirforms.ebirforms). Your saved returns, profile and settings move there by themselves the first time this version starts.
+- On a Mac, yes or no questions (updates, sending to BIR) now show a proper dialog and wait for your answer.
+- The Mods screen is readable in dark mode, and each mod has a clear on/off switch.
 - New, in beta: the app can send your return to BIR. It is off until you turn it on in Go > Send Returns to BIR (beta). The first time, it downloads BIR's official package from BIR's website. Your return is filed only when BIR's confirmation email arrives, so keep that email. No return sent by this app has been confirmed by BIR yet.
 - After a successful Submit, the app reminds you that BIR's confirmation email is your proof of filing.
 - Submit's message and the README now say that opening a saved return in BIR's Windows app and submitting it there has not been tested end to end yet.

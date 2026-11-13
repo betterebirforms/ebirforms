@@ -12,13 +12,22 @@ import { computeForm, reopenSavefile, type FormState, type GroupState } from "@/
 import { SAVEFILE_ADAPTER, savefileName } from "@/form/export.ts";
 import { parseSavefile, profileFromSavefile, readSavefile, type Profile } from "@/lib/savefile.ts";
 
-/** The desktop app's data folder (Tauri's app data dir for ph.advo.ebirforms, then `data/`). */
+/** The desktop app's id; up to v0.1.7 it was ph.advo.ebirforms (the app moves that folder on first start). */
+export const APP_ID = "io.github.betterebirforms.ebirforms";
+const OLD_APP_ID = "ph.advo.ebirforms";
+
+function appDataRoot(): string {
+  if (process.platform === "darwin") return join(homedir(), "Library", "Application Support");
+  if (process.platform === "win32") return process.env.APPDATA ?? join(homedir(), "AppData", "Roaming");
+  return process.env.XDG_DATA_HOME ?? join(homedir(), ".local", "share");
+}
+
+/** The desktop app's data folder (Tauri's app data dir, then `data/`); the old id's folder while the app is still v0.1.7. */
 export function defaultDataDir(): string {
   if (process.env.EBF_DATA_DIR) return process.env.EBF_DATA_DIR;
-  const id = "ph.advo.ebirforms";
-  if (process.platform === "darwin") return join(homedir(), "Library", "Application Support", id, "data");
-  if (process.platform === "win32") return join(process.env.APPDATA ?? join(homedir(), "AppData", "Roaming"), id, "data");
-  return join(process.env.XDG_DATA_HOME ?? join(homedir(), ".local", "share"), id, "data");
+  const current = join(appDataRoot(), APP_ID, "data");
+  const old = join(appDataRoot(), OLD_APP_ID, "data");
+  return !existsSync(current) && existsSync(old) ? old : current;
 }
 
 export class ToolError extends Error {}

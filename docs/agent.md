@@ -48,9 +48,9 @@ It uses the desktop app's data folder, so drafts appear in the app:
 
 | System | Folder |
 |---|---|
-| macOS | `~/Library/Application Support/ph.advo.ebirforms/data/` |
-| Windows | `%APPDATA%\ph.advo.ebirforms\data\` |
-| Linux | `~/.local/share/ph.advo.ebirforms/data/` |
+| macOS | `~/Library/Application Support/io.github.betterebirforms.ebirforms/data/` |
+| Windows | `%APPDATA%\io.github.betterebirforms.ebirforms\data\` |
+| Linux | `~/.local/share/io.github.betterebirforms.ebirforms/data/` |
 
 To use another folder (for testing), pass `--data <folder>` or set `EBF_DATA_DIR`.
 

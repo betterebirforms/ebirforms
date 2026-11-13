@@ -67,9 +67,9 @@ Put it in your own mod folder, in a kind subfolder:
 
 | Where | Folder |
 |---|---|
-| Desktop app on macOS | `~/Library/Application Support/ph.advo.ebirforms/mod/` |
-| Desktop app on Windows | `%APPDATA%\ph.advo.ebirforms\mod\` |
-| Desktop app on Linux | `~/.local/share/ph.advo.ebirforms/mod/` |
+| Desktop app on macOS | `~/Library/Application Support/io.github.betterebirforms.ebirforms/mod/` |
+| Desktop app on Windows | `%APPDATA%\io.github.betterebirforms.ebirforms\mod\` |
+| Desktop app on Linux | `~/.local/share/io.github.betterebirforms.ebirforms/mod/` |
 | `npm run dev` and `npm run tauri dev` | `.mod/` in the repo (gitignored). The dev window uses the dev server, so it reads `.mod/` too |
 
 A worked example. Create `.mod/improve/hello.json`:

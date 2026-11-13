@@ -62,8 +62,9 @@ local web server on 127.0.0.1         src-tauri/src/host.rs   (in development: h
 | An imported BIR package | `<app data>/original/` |
 | Your own mods and switches | `<app data>/mod/` |
 
-`<app data>` is `~/Library/Application Support/ph.advo.ebirforms` on macOS, `%APPDATA%\ph.advo.ebirforms` on
-Windows and `~/.local/share/ph.advo.ebirforms` on Linux.
+`<app data>` is `~/Library/Application Support/io.github.betterebirforms.ebirforms` on macOS, `%APPDATA%\io.github.betterebirforms.ebirforms` on
+Windows and `~/.local/share/io.github.betterebirforms.ebirforms` on Linux. Up to v0.1.7 the folder was named
+`ph.advo.ebirforms`; the app moves it to the new name on its first start.
 
 ## Online submission
 
