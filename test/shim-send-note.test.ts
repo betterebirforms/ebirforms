@@ -7,9 +7,11 @@ import { chromium, type Browser } from "playwright";
 
 const SHIM = readFileSync("public/legacy-shim.js", "utf8");
 const BIR_FAIL = "Your Tax Return was not submitted online due to any of the \n following reasons that may interrupt the submission process: \n - Slow internet connection \n - Overly restrictive firewall";
+// CI installs no Playwright browser: skip there, as the other browser tests do
+const HAS_CHROMIUM = await chromium.launch().then((b) => (void b.close(), true), () => false);
 const DROPPED = "the connection dropped while sending (upload: broken pipe). BIR may or may not have received your return. Wait for BIR's confirmation email before sending it again.";
 
-describe("the shim's failed-send message", () => {
+describe.skipIf(!HAS_CHROMIUM)("the shim's failed-send message", () => {
   let browser: Browser;
   beforeAll(async () => {
     browser = await chromium.launch();

@@ -39,7 +39,10 @@ const opfs = (page: Page, path: string[], text?: string) =>
     { path, text },
   );
 
-describe.skipIf(!existsSync(`${WEB}/index.html`))("web version: a folder on this computer", () => {
+// CI installs no Playwright browser: skip there, as the other browser tests do
+const HAS_CHROMIUM = await chromium.launch().then((b) => (void b.close(), true), () => false);
+
+describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: a folder on this computer", () => {
   let server: Server, base: string, context: BrowserContext, profile_dir: string;
 
   beforeAll(async () => {
