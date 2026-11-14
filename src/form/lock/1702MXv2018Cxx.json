@@ -1,0 +1,46 @@
+{
+ "frm1702MX:ddlPg1I2Date": [
+  "frm1702MX:rdoPg1I1Fiscal",
+  "frm1702MX:rdoPg1I4ShortPeriodYes"
+ ],
+ "frm1702MX:drpPg1I5ATCR2": [
+  "frm1702MX:chkPg1I5ATCR1",
+  "frm1702MX:chkPg1I5ATCR2"
+ ],
+ "frm1702MX:txtPg2Sc3It27A": [
+  "frm1702MX:rdoPg1I3AmendedYes"
+ ],
+ "frm1702MX:txtPg2Sc3It27B": [
+  "frm1702MX:rdoPg1I3AmendedYes"
+ ],
+ "frm1702MX:txtPg2Sc3It27C": [
+  "frm1702MX:rdoPg1I3AmendedYes"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17dC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17eC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17fC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17gC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17hC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17iC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg3Sc6I4CC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg6Sc6I2CC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ],
+ "frm1702MX:txtPg6Sc6I3CC": [
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+ ]
+}

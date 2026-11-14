@@ -1,0 +1,76 @@
+{
+ "frm2552:txtPg1P2I17TaxPaidInPrevRtrn": [
+  "frm2552:rdoPg1I2AmendedYes"
+ ],
+ "frm2552:txtPg1Pt1I10TaxReliefSpec": [
+  "frm2552:rdoPg1I10TaxReliefYes"
+ ],
+ "frm2552:txtPg1Pt1I12NumOfShare": [
+  "frm2552:rdoPg1I11TransactionPrimary",
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg1Pt1I12TotShare": [
+  "frm2552:rdoPg1I11TransactionPrimary",
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch1Buyer1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch1Corp1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch1Date1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch1NumShares1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch1Seller1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch1TaxBase1": [
+  "frm2552:rdoPg1I11TransactionLSE"
+ ],
+ "frm2552:txtPg2Pt5Sch2Buyer1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2Corp1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2Date1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2NumShares1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2Seller1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2TaxBase1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch2TaxRate1": [
+  "frm2552:rdoPg1I11TransactionPrimary"
+ ],
+ "frm2552:txtPg2Pt5Sch3Buyer1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3Corp1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3Date1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3NumShares1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3Seller1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3TaxBase1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ],
+ "frm2552:txtPg2Pt5Sch3TaxRate1": [
+  "frm2552:rdoPg1I11TransactionSecondary"
+ ]
+}

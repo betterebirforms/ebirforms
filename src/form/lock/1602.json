@@ -1,0 +1,146 @@
+{
+ "frm1602:lstSpecialTax": [
+  "frm1602:OptSpecialTax1"
+ ],
+ "frm1602:txt14A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt15A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt16A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt17A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt18A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt19A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt20A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt21A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt22A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt22D": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt22G": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt23A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt24A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt24C": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt25A": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt25C": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txt34": [
+  "frm1602:AmendedRtn1"
+ ],
+ "frm1602:txtForeign1": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign10": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign2": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign3": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign4": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign5": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign6": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign7": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign8": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtForeign9": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst1": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst10": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst2": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst3": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst4": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst5": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst6": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst7": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst8": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtInst9": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg1": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg10": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg2": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg3": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg4": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg5": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg6": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg7": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg8": [
+  "frm1602:OptTaxWithheld1"
+ ],
+ "frm1602:txtReg9": [
+  "frm1602:OptTaxWithheld1"
+ ]
+}

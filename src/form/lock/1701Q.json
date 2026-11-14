@@ -1,0 +1,89 @@
+{
+ "frm1701q:txt12Address": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt16BirthDay": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt16BirthMonth": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt16BirthYear": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt17": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt18Telno": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt21": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txt26A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt27A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt29A": [
+  "frm1701:optMethodOfDeduction23:_1"
+ ],
+ "frm1701q:txt31A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt33A": [
+  "frm1701:optMethodOfDeduction23:_1"
+ ],
+ "frm1701q:txt35A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt38A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt38C": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt38E": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt38G": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt38I": [
+  "frm1701q:AmendedRtn_1"
+ ],
+ "frm1701q:txt38K": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt40A": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt40C": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt40E": [
+  "frm1701:optMethodOfDeduction23:_1",
+  "frm1701:optMethodOfDeduction23:_2"
+ ],
+ "frm1701q:txt7RDOCode": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txtSpousename": [
+  "frm1701q:txt7TIN1=*"
+ ],
+ "frm1701q:txtTaxRelief25": [
+  "frm1701q:SelTreaty_1"
+ ]
+}

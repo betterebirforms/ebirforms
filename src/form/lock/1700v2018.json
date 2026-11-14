@@ -1,0 +1,32 @@
+{
+ "frm1700:txtPg1I13ForeignTaxNumber": [
+  "frm1700:rdoPg1I12ForeignTaxCreditsYes"
+ ],
+ "frm1700:txtPg2I43A": [
+  "frm1700:rdoPg1I6TaxpayerTypeE"
+ ],
+ "frm1700:txtPg2I45A": [
+  "frm1700:rdoPg1I6TaxpayerTypeE"
+ ],
+ "frm1700:txtPg2I45Desc": [
+  "frm1700:rdoPg1I6TaxpayerTypeE"
+ ],
+ "frm1700:txtPg2I49A": [
+  "frm1700:rdoPg1I6TaxpayerTypeN"
+ ],
+ "frm1700:txtPg2I49Desc": [
+  "frm1700:rdoPg1I6TaxpayerTypeN"
+ ],
+ "frm1700:txtPg2I51A": [
+  "frm1700:rdoPg1I6TaxpayerTypeN"
+ ],
+ "frm1700:txtPg2I51Desc": [
+  "frm1700:rdoPg1I6TaxpayerTypeN"
+ ],
+ "frm1700:txtPg2I55A": [
+  "frm1700:rdoPg1I2AmendedYes"
+ ],
+ "frm1700:txtPg2I56A": [
+  "frm1700:rdoPg1I12ForeignTaxCreditsYes"
+ ]
+}

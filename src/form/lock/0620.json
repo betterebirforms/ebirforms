@@ -1,0 +1,9 @@
+{
+ "frm0620:txtTax14": [
+  "frm0620:AmendedRtn_1",
+  "frm0620:TaxWithheld_1"
+ ],
+ "frm0620:txtTax15": [
+  "frm0620:AmendedRtn_1"
+ ]
+}

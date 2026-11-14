@@ -1,0 +1,38 @@
+{
+ "frm1707:txt16Specify": [
+  "frm1707:TaxRelief_O"
+ ],
+ "frm1707:txt17Amount": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17Cost": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17DateDay": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17DateMonth": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17DateYear": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17Mortgage": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17NumberInstallment": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17SellingPrice": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txt17Total": [
+  "frm1707:TaxRelief_IS"
+ ],
+ "frm1707:txtLess2": [
+  "frm1707:j_id217:_1"
+ ],
+ "frm1707:txtSpecify": [
+  "frm1707:TaxRelief_Y"
+ ]
+}

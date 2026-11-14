@@ -1,0 +1,80 @@
+{
+ "frm1621:txtRemittance_Prev": [
+  "frm1621:amendedRtn_1"
+ ],
+ "frm1621:txtSched1_1_DateDeath": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_1_DateWithheld": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_1_Name": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_1_Tin": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_1_Withdrawn": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_2_DateDeath": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_2_DateWithheld": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_2_Name": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_2_Tin": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_2_Withdrawn": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_3_DateDeath": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_3_DateWithheld": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_3_Name": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_3_Tin": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_3_Withdrawn": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_4_DateDeath": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_4_DateWithheld": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_4_Name": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_4_Tin": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_4_Withdrawn": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_5_DateDeath": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_5_DateWithheld": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_5_Name": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_5_Tin": [
+  "frm1621:taxWithheld_1"
+ ],
+ "frm1621:txtSched1_5_Withdrawn": [
+  "frm1621:taxWithheld_1"
+ ]
+}

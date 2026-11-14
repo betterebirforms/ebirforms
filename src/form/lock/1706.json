@@ -1,0 +1,39 @@
+{
+ "frm1706:j_id391:_7": [
+  "frm1706:j_id391:_8"
+ ],
+ "frm1706:txtAmount": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtCost": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtDateDayI": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtDateMonthI": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtDateYearI": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtLess": [
+  "frm1706:j_id217:_1"
+ ],
+ "frm1706:txtMortgage": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtOthers21": [
+  "frm1706:j_id395:_2",
+  "frm1706:j_id395:_5"
+ ],
+ "frm1706:txtSelling": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtTotalN": [
+  "frm1706:j_id395:_3"
+ ],
+ "frm1706:txtTotalP": [
+  "frm1706:j_id395:_3"
+ ]
+}

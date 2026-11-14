@@ -1,0 +1,22 @@
+{
+ "frm1702q:itemYearEndMonth": [
+  "frm1702q:itemFiscalStartMonth:_2"
+ ],
+ "frm1702q:lstTaxTreaty": [
+  "frm1702q:optTreaty:_1"
+ ],
+ "frm1702q:txt29B": [
+  "1702q:OptMethodDeduct_1",
+  "1702q:OptMethodDeduct_2",
+  "frm1702q:optQtr:_1",
+  "frm1702q:optQtr:_2",
+  "frm1702q:optQtr:_3",
+  "frm1702q:txt19B=*"
+ ],
+ "frm1702q:txt31F": [
+  "frm1702q:optRemenderRtn_1"
+ ],
+ "frm1702q:txt31G": [
+  "frm1702q:txt31Gothers=*"
+ ]
+}

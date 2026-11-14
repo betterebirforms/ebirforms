@@ -1,0 +1,12 @@
+{
+ "frm1702RT:ddlPg1I2Month": [
+  "frm1702RT:rdoPg1I1Fiscal",
+  "frm1702RT:rdoPg1I4ShortPeriodYes"
+ ],
+ "frm1702RT:drpPg1I5AtcOther": [
+  "frm1702RT:rdoPg1I5AtcOther"
+ ],
+ "frm1702RT:txtPg2Pt4I51TaxPaidInReturn": [
+  "frm1702RT:rdoPg1I3AmmendYes"
+ ]
+}

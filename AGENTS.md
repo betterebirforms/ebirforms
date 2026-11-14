@@ -24,7 +24,7 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
 | `public/legacy-shim.js` | What IE gave BIR's pages (ActiveX FSO, VBScript helpers, IE DOM quirks), injected into every page |
 | `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one). `LayoutView.tsx` / `MainLayout.tsx`: the web version's BIR-look screens, driven by the engine by BIR's field ids |
 | `src/form/export.ts` | Export adapters: the eBIRForms savefile (name + records, BIR's own) and the TSP slot (refuses until BIR issues a layout) |
-| `src/form/template/`, `upper-case.json` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, and what BIR upper-cases |
+| `src/form/template/`, `upper-case.json`, `lock/` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, what BIR upper-cases, and which greyed boxes each choice opens (`EBF_CAPTURE_LOCK`) |
 | `mcp/` | The agent server (MCP over stdio): `tool.ts` is what an agent may do (drafts only, never a final copy or a submit), `main.ts` serves it. `npm run build:mcp` → `dist-mcp/`; setup in `docs/agent.md` |
 | `src-tauri/src/submit_menu.rs`, `bir_key.rs`, `submit_setting.rs` | Online submit, opt-in beta: Go > Send Returns to BIR, off by default; on first use fetches BIR's official zip and keeps only `Encrypt.exe` + `ebfSFTP.exe` as data (never run, never shipped) |
 | `src-tauri/src/update.rs`, `mac_dialog.rs` | In-app updates (signed `latest.json` from GitHub releases, Rust-only) and the macOS `alert`/`confirm`/`prompt` panels wry lacks |

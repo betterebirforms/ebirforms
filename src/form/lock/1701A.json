@@ -1,0 +1,84 @@
+{
+ "frm1701A:txt36A": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt37A": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt41A": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt41Desc": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt42A": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt42Desc": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt43A": [
+  "frm1701A:optATC_1",
+  "frm1701A:optATC_2",
+  "frm1701A:optTaxRate_1"
+ ],
+ "frm1701A:txt47A": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt48A": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt50A": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt50Desc": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt51A": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt51Desc": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt54A": [
+  "frm1701A:optATC_3",
+  "frm1701A:optATC_4",
+  "frm1701A:optTaxRate_2"
+ ],
+ "frm1701A:txt61A": [
+  "frm1701A:optAmendedReturn_1"
+ ],
+ "frm1701A:txt62A": [
+  "frm1701A:optForeignTaxCredits_1"
+ ],
+ "frm1701A:txtForeignTaxNumber": [
+  "frm1701A:optForeignTaxCredits_1"
+ ],
+ "frm1701A:txtMonth": [
+  "frm1701A:optShortPeriod_1"
+ ]
+}

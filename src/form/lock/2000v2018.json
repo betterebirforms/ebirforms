@@ -1,0 +1,143 @@
+{
+ "frm2000:sched2:txtAmountPaid0": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtAmountPaid1": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtAmountPaid2": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtPaymentDate0": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtPaymentDate1": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtPaymentDate2": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtReceipt0": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtReceipt1": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched2:txtReceipt2": [
+  "frm2000:optMode_2"
+ ],
+ "frm2000:sched3:txtAmountPaid0": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtAmountPaid1": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtAmountPaid2": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtPaymentDate0": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtPaymentDate1": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtPaymentDate2": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtReceipt0": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtReceipt1": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched3:txtReceipt2": [
+  "frm2000:optMode_1"
+ ],
+ "frm2000:sched4:txtAmountRemitted0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtAmountRemitted1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtAmountRemitted2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtBank0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtBank1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtBank2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberFrom0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberFrom1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberFrom2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberTo0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberTo1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtNumberTo2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRCOCode0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRCOCode1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRCOCode2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRemittanceDate0": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRemittanceDate1": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:sched4:txtRemittanceDate2": [
+  "frm2000:optMode_2",
+  "frm2000:optMode_3"
+ ],
+ "frm2000:txtOtherName": [
+  "frm2000:optParty_1",
+  "frm2000:optParty_2"
+ ],
+ "frm2000:txtOtherName2": [
+  "frm2000:optParty_1",
+  "frm2000:optParty_2"
+ ],
+ "frm2000:txtOtherTIN": [
+  "frm2000:optParty_1",
+  "frm2000:optParty_2"
+ ],
+ "frm2000:txtTax15A": [
+  "frm2000:AmendedRtn_1"
+ ]
+}

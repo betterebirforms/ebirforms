@@ -1,0 +1,16 @@
+{
+ "frm1702q:Sched2:txtTax10": [
+  "frm1702q:cbATC_2=*",
+  "frm1702q:rbATC_2",
+  "frm1702q:txtYrEndYear=*"
+ ],
+ "frm1702q:Sched3:txtTax5": [
+  "frm1702q:rbATC_1"
+ ],
+ "frm1702q:rbYrEndMonth": [
+  "frm1702q:rbForClndrFscl_2"
+ ],
+ "frm1702q:txtTxRlfSpcfy": [
+  "frm1702q:rbTxRlf_1"
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "frm1606:j_id393_7": [
+  "frm1606:j_id393_8"
+ ],
+ "frm1606:txtAmount": [
+  "frm1606:j_id395:_3"
+ ],
+ "frm1606:txtCost": [
+  "frm1606:j_id395:_3"
+ ],
+ "frm1606:txtLess": [
+  "frm1606:j_id217:_1"
+ ],
+ "frm1606:txtMortgage": [
+  "frm1606:j_id395:_3"
+ ],
+ "frm1606:txtOthers20": [
+  "frm1606:j_id395:_2",
+  "frm1606:j_id395:_5"
+ ],
+ "frm1606:txtSelling": [
+  "frm1606:j_id395:_3"
+ ],
+ "frm1606:txtTotalN": [
+  "frm1606:j_id395:_3"
+ ],
+ "frm1606:txtTotalP": [
+  "frm1606:j_id395:_3"
+ ]
+}

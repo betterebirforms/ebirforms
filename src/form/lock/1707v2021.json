@@ -1,0 +1,78 @@
+{
+ "frm1707:txtPg1I6SellerAddr1": [
+  "frm1707:txtPg1I6SellerTIN0=*"
+ ],
+ "frm1707:txtPg1I6SellerName1": [
+  "frm1707:txtPg1I6SellerTIN0=*"
+ ],
+ "frm1707:txtPg1I6SellerTIN1": [
+  "frm1707:txtPg1I6SellerTIN0=*"
+ ],
+ "frm1707:txtPg1I7BuyerAddr1": [
+  "frm1707:txtPg1I7BuyerTIN0=*"
+ ],
+ "frm1707:txtPg1I7BuyerName1": [
+  "frm1707:txtPg1I7BuyerTIN0=*"
+ ],
+ "frm1707:txtPg1I7BuyerTIN1": [
+  "frm1707:txtPg1I7BuyerTIN0=*"
+ ],
+ "frm1707:txtPg1I8TaxReliefSpec": [
+  "frm1707:rdoPg1I8TaxReliefYes"
+ ],
+ "frm1707:txtPg1I9TransDescSpec": [
+  "frm1707:rdoPg1I9TransDescOthers"
+ ],
+ "frm1707:txtPg1P2I15TaxPaidInPrevRtrn": [
+  "frm1707:rdoPg1I2AmendedYes"
+ ],
+ "frm1707:txtPg2P4Sch1I1SellPrice": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I2CostExpense": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I3AssumMortgage": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I4NumInstallments": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I5InstallmentAmt": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I6ApplcRate": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I8DateCollection": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch1I9TotCollection": [
+  "frm1707:rdoPg1I9TransDescInstallment"
+ ],
+ "frm1707:txtPg2P4Sch2NameOfCorpStock1": [
+  "frm1707:rdoPg1I9TransDescCash",
+  "frm1707:rdoPg1I9TransDescForeclosure",
+  "frm1707:rdoPg1I9TransDescOthers"
+ ],
+ "frm1707:txtPg2P4Sch2StockCertNo1": [
+  "frm1707:rdoPg1I9TransDescCash",
+  "frm1707:rdoPg1I9TransDescForeclosure",
+  "frm1707:rdoPg1I9TransDescOthers"
+ ],
+ "frm1707:txtPg2P4Sch2TaxBaseSellPrice1": [
+  "frm1707:rdoPg1I9TransDescCash",
+  "frm1707:rdoPg1I9TransDescForeclosure",
+  "frm1707:rdoPg1I9TransDescOthers"
+ ],
+ "frm1707:txtPg2P4Sch3Amount1": [
+  "frm1707:rdoPg1I9TransDescCash",
+  "frm1707:rdoPg1I9TransDescForeclosure",
+  "frm1707:rdoPg1I9TransDescOthers"
+ ],
+ "frm1707:txtPg2P4Sch3Particulars1": [
+  "frm1707:rdoPg1I9TransDescCash",
+  "frm1707:rdoPg1I9TransDescForeclosure",
+  "frm1707:rdoPg1I9TransDescOthers"
+ ]
+}

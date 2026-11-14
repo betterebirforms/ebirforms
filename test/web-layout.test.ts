@@ -15,7 +15,7 @@ const HAS_CHROMIUM = await chromium.launch().then((b) => (void b.close(), true),
 // BIR's main screen, a short form, a long one, and one with schedules
 const PAGE = ["/", "/form/0605", "/form/1701Qv2018", "/form/2550Qv2024"];
 
-describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: BIR's pages ignore dark mode", () => {
+describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: BIR's pages as BIR's app shows them", () => {
   let server: Server, base: string, browser: Browser;
 
   beforeAll(async () => {
@@ -51,6 +51,46 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     }
     expect(shot[0]!.equals(shot[1]!)).toBe(true);
   }, 60_000);
+
+  // BIR greys out boxes that only apply after a choice (src/form/lock/, captured from BIR's pages); so does the web
+  it("0605: No. of Installment and Others (Specify) open only on their choice, as on BIR's page", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    await page.goto(`${base}/form/0605`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const box = (id: string) => page.locator(`[id="${id}"]`);
+    await expect.poll(() => box("frm0605:txtNumOfInstallment").isDisabled()).toBe(true);
+    expect(await box("frm0605:txtOthersName").isDisabled()).toBe(true);
+    await box("frm0605:itemModeOfPayment:_1").check();
+    await expect.poll(() => box("frm0605:txtNumOfInstallment").isDisabled()).toBe(false);
+    expect(await box("frm0605:txtOthersName").isDisabled()).toBe(true);
+    await box("frm0605:itemMannerOfPayment:_5").check();
+    await expect.poll(() => box("frm0605:txtOthersName").isDisabled()).toBe(false);
+    await page.close();
+  }, 60_000);
+
+  // every form: each box BIR greys out (and the capture found a way to open) starts greyed out on the web too
+  it("a new form greys out each box BIR greys out, on every form", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const miss: string[] = [];
+    for (const file of readdirSync("src/form/lock").filter((f) => f.endsWith(".json"))) {
+      const code = file.slice(0, -".json".length);
+      const box = Object.keys(JSON.parse(readFileSync(`src/form/lock/${file}`, "utf8")) as Record<string, string[]>);
+      if (box.length === 0 || !existsSync(`asset/bir/layout/${code}.html`)) continue;
+      await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+      await page.waitForTimeout(800);
+      const open = await page.evaluate((ids) => {
+        const root = document.querySelector(".bir-layout")!.shadowRoot!;
+        return ids.filter((id) => {
+          const el = root.getElementById(id) as HTMLInputElement | null;
+          return el && !el.disabled && !el.readOnly;
+        });
+      }, box);
+      miss.push(...open.map((id) => `${code} ${id}`));
+    }
+    await page.close();
+    expect(miss).toEqual([]);
+  }, 600_000);
 
   // BIR's blank page preselects some choices (1701Q item 3 "Amended Return? No"); its blank save holds them as
   // "true". A fresh web form must show each one ticked, as BIR's page does, on every form with a layout.

@@ -1,0 +1,14 @@
+{
+ "frm1701:txtPg1I14ForeignTaxNumber": [
+  "frm1701:rdoPg1I13ForeignTaxCreditsYes"
+ ],
+ "frm1701:txtPg2IShed3_11A": [
+  "frm1701:rdoPg1I21AMethodDeductionI"
+ ],
+ "frm1701:txtPg3IShed3_27Desc": [
+  "frm1701:rdoPg1I21TaxRateP",
+  "frm1701:rdoPg1I7ATC_II015",
+  "frm1701:rdoPg1I7ATC_II016",
+  "frm1701:rdoPg1I7ATC_II017"
+ ]
+}

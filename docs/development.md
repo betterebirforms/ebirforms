@@ -61,6 +61,7 @@ EBF_CAPTURE=1 npx vitest run test/capture-template.test.ts      # each form's bl
 EBF_CAPTURE_UPPER=1 npx vitest run test/capture-template.test.ts  # which fields BIR upper-cases
 EBF_CAPTURE_CLOCK=1 npx vitest run test/capture-template.test.ts  # which blank-form boxes BIR fills from today's date
 EBF_CAPTURE_LAYOUT=0605,1701Qv2018,main npx vitest run test/capture-layout.test.ts  # BIR's page layouts for the web version
+EBF_CAPTURE_LOCK=0605,1701Qv2018 npx vitest run test/capture-lock.test.ts  # which greyed boxes each choice opens, for the web version
 EBF_PARITY=1 npx vitest run test/parity.test.ts            # are the rebuilt forms still 1:1?
 ```
 
@@ -107,6 +108,7 @@ A `v*` tag builds all three platforms in CI (`.github/workflows/build.yml`) and 
 | `EBF_CAPTURE_CLOCK` | (none) | Open each blank form under six fixed dates and record which boxes BIR fills from today's date, each named by one rule, into `src/form/template-clock.json`. Any other value checks without writing |
 | `EBF_LAYOUT_ABSENT` | (none) | With BIR's tree present, rewrite `asset/bir/layout/absent.json`: the save keys each form's page has no box for, proven commented out in BIR's source. CI checks against this list |
 | `EBF_CAPTURE_LAYOUT` | (none) | Capture BIR's page layouts for the web version into `asset/bir/layout/`: a list of form codes plus `main` for the main screen, or `1` for all. Scripts, handlers and `javascript:` links are removed; images are copied into `img/` |
+| `EBF_CAPTURE_LOCK` | (none) | Capture which boxes BIR's pages grey out on a new form, and which choice, list value or typed box opens each one, into `src/form/lock/`: a list of form codes, or `1` for all (about an hour). Needs BIR's tree in `vendor/original/` |
 
 ### Test and debug switches
 

@@ -1,0 +1,129 @@
+{
+ "frm1701q:txt36A": [
+  "frm1701q:optATC_1",
+  "frm1701q:optATC_2",
+  "frm1701q:optATC_3",
+  "frm1701q:optTaxRate_1",
+  "frm1701q:optType_3",
+  "frm1701q:optType_4"
+ ],
+ "frm1701q:txt36B": [
+  "frm1701q:optSpouseATC_1",
+  "frm1701q:optSpouseATC_2",
+  "frm1701q:optSpouseATC_3",
+  "frm1701q:optSpouseTaxRate_1"
+ ],
+ "frm1701q:txt42A": [
+  "frm1701q:optATC_1",
+  "frm1701q:optATC_2",
+  "frm1701q:optATC_3",
+  "frm1701q:optTaxRate_1",
+  "frm1701q:optType_3",
+  "frm1701q:optType_4"
+ ],
+ "frm1701q:txt42B": [
+  "frm1701q:optSpouseATC_1",
+  "frm1701q:optSpouseATC_2",
+  "frm1701q:optSpouseATC_3",
+  "frm1701q:optSpouseTaxRate_1"
+ ],
+ "frm1701q:txt43A": [
+  "frm1701q:optATC_1",
+  "frm1701q:optATC_2",
+  "frm1701q:optATC_3",
+  "frm1701q:optTaxRate_1",
+  "frm1701q:optType_3",
+  "frm1701q:optType_4"
+ ],
+ "frm1701q:txt43B": [
+  "frm1701q:optSpouseATC_1",
+  "frm1701q:optSpouseATC_2",
+  "frm1701q:optSpouseATC_3",
+  "frm1701q:optSpouseTaxRate_1"
+ ],
+ "frm1701q:txt43Desc": [
+  "frm1701q:optATC_1",
+  "frm1701q:optATC_2",
+  "frm1701q:optATC_3",
+  "frm1701q:optSpouseATC_1",
+  "frm1701q:optSpouseATC_2",
+  "frm1701q:optSpouseATC_3",
+  "frm1701q:optSpouseTaxRate_1",
+  "frm1701q:optTaxRate_1",
+  "frm1701q:optType_3",
+  "frm1701q:optType_4"
+ ],
+ "frm1701q:txt44A": [
+  "frm1701q:optATC_1",
+  "frm1701q:optATC_2",
+  "frm1701q:optATC_3",
+  "frm1701q:optTaxRate_1",
+  "frm1701q:optType_3",
+  "frm1701q:optType_4"
+ ],
+ "frm1701q:txt44B": [
+  "frm1701q:optSpouseATC_1",
+  "frm1701q:optSpouseATC_2",
+  "frm1701q:optSpouseATC_3",
+  "frm1701q:optSpouseTaxRate_1"
+ ],
+ "frm1701q:txt47A": [
+  "frm1701q:optATC_4",
+  "frm1701q:optATC_5",
+  "frm1701q:optATC_6",
+  "frm1701q:optTaxRate_2"
+ ],
+ "frm1701q:txt47B": [
+  "frm1701q:optSpouseATC_5",
+  "frm1701q:optSpouseATC_6",
+  "frm1701q:optSpouseATC_7",
+  "frm1701q:optSpouseTaxRate_2"
+ ],
+ "frm1701q:txt48A": [
+  "frm1701q:optATC_4",
+  "frm1701q:optATC_5",
+  "frm1701q:optATC_6",
+  "frm1701q:optTaxRate_2"
+ ],
+ "frm1701q:txt48B": [
+  "frm1701q:optSpouseATC_5",
+  "frm1701q:optSpouseATC_6",
+  "frm1701q:optSpouseATC_7",
+  "frm1701q:optSpouseTaxRate_2"
+ ],
+ "frm1701q:txt48Desc": [
+  "frm1701q:optATC_4",
+  "frm1701q:optATC_5",
+  "frm1701q:optATC_6",
+  "frm1701q:optSpouseATC_5",
+  "frm1701q:optSpouseATC_6",
+  "frm1701q:optSpouseATC_7",
+  "frm1701q:optSpouseTaxRate_2",
+  "frm1701q:optTaxRate_2"
+ ],
+ "frm1701q:txt50A": [
+  "frm1701q:optATC_4",
+  "frm1701q:optATC_5",
+  "frm1701q:optATC_6",
+  "frm1701q:optTaxRate_2"
+ ],
+ "frm1701q:txt50B": [
+  "frm1701q:optSpouseATC_5",
+  "frm1701q:optSpouseATC_6",
+  "frm1701q:optSpouseATC_7",
+  "frm1701q:optSpouseTaxRate_2"
+ ],
+ "frm1701q:txt52A": [
+  "frm1701q:optATC_4",
+  "frm1701q:optATC_5",
+  "frm1701q:optTaxRate_2"
+ ],
+ "frm1701q:txt52B": [
+  "frm1701q:optSpouseATC_5",
+  "frm1701q:optSpouseATC_6",
+  "frm1701q:optSpouseTaxRate_2"
+ ],
+ "frm1701q:txt59A": [
+  "frm1701q:AmendedRtn_1"
+ ]
+}

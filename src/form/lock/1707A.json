@@ -1,0 +1,14 @@
+{
+ "frm1707A:txtI11ASpecify": [
+  "frm1707A:rdoI11TaxTreatyYes"
+ ],
+ "frm1707A:txtI16BTotalTaxPaid": [
+  "frm1707A:rdoI2AmemdedYes"
+ ],
+ "frm1707A:txtI1YearEndDay": [
+  "frm1707A:rdoI1Fiscal"
+ ],
+ "frm1707A:txtI1YearEndMonth": [
+  "frm1707A:rdoI1Fiscal"
+ ]
+}

@@ -15,6 +15,11 @@ import type { Profile } from "@/lib/savefile.ts";
 const layoutFile = import.meta.glob("../../asset/bir/layout/*.html", { query: "?raw", import: "default" }) as Record<string, () => Promise<string>>;
 const imageFile = import.meta.glob("../../asset/bir/layout/img/*", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
 
+// BIR's locked boxes: each box BIR greys out on a blank form, with the choices that open it (captured from BIR's
+// pages by test/capture-lock.test.ts). A box not listed stays as the engine says.
+const lockFile = import.meta.glob("./lock/*.json", { eager: true, import: "default" }) as Record<string, Record<string, string[]>>;
+const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock/${form_code}.json`] ?? {};
+
 const layoutKey = (form_code: string) => `../../asset/bir/layout/${form_code}.html`;
 /** Whether BIR's layout was captured for this form (else the web version shows the plain native form). */
 export const hasLayout = (form_code: string): boolean => layoutKey(form_code) in layoutFile;
@@ -329,6 +334,25 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     // an untouched box shows what the savefile will hold for it (BIR's blank-save default), so what you see is
     // what is saved; BIR's captured page default is only the fallback for a box the file doesn't carry
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
+    const lock = lockOf(form_code);
+    // greyed out as on BIR's page until something that opens it there holds: "<id>" a choice ticked,
+    // "<id>=<value>" a list on that value, "<id>=*" anything typed or picked there (not the blank form's value)
+    const now = (c: string) => (c in state ? computed[c] : (saved.get(c) ?? computed[c])) ?? "";
+    const lockedByBir = (id: string) => {
+      const opener = lock[id];
+      return !!opener && !opener.some((o) => {
+        const at = o.indexOf("=");
+        // a choice BIR's blank page already ticks opens the box only from its click (1701MS item 2 "No"), not
+        // from being ticked: it counts once the user has picked it
+        if (at < 0) return now(o) === "true" && (o in state || !(byId(root, o) as HTMLInputElement | null)?.defaultChecked);
+        const c = o.slice(0, at), want = o.slice(at + 1);
+        if (want !== "*") return now(c) === want;
+        const el = byId(root, c);
+        const v = now(c).trim();
+        const blank = el instanceof HTMLSelectElement ? (Array.from(el.options).find((x) => x.defaultSelected)?.value ?? "") : (el?.defaultValue ?? "");
+        return v !== "" && v !== blank.trim();
+      });
+    };
     for (const f of schema.field) {
       const el = byId(root, f.id);
       if (!el || f.secret) continue;
@@ -349,10 +373,10 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       if (el !== focused && el.value !== value) el.value = value;
       // BIR fills the taxpayer's details from the profile and greys them out; with no profile they stay open to type
       const fromProfile = f.id in def.prefill && Boolean(state[f.id]);
-      if (f.kind === "select") el.disabled = ro || fromProfile;
+      if (f.kind === "select") el.disabled = ro || fromProfile || lockedByBir(f.id);
       else {
         el.readOnly = ro;
-        el.disabled = fromProfile;
+        el.disabled = fromProfile || lockedByBir(f.id);
       }
     }
     // schedule rows BIR shows on the page: the row's value, computed columns locked

@@ -1,0 +1,60 @@
+{
+ "frm1701MS:txtCreditableForm2316No5a": [
+  "frm1701MS:txtTaxpayerNo11b",
+  "frm1701MS:txtTaxpayerNo12e",
+  "taxCodeDropdown=II011",
+  "taxCodeDropdown=II013"
+ ],
+ "frm1701MS:txtLess22A": [
+  "frm1701MS:txtTaxpayerNo11a",
+  "frm1701MS:txtTaxpayerNo11c"
+ ],
+ "frm1701MS:txtMonthNo1": [
+  "frm1701MS:txtReturnPeriodYesNo3"
+ ],
+ "frm1701MS:txtSalesRevenuesFeesANo19a": [
+  "frm1701MS:txtTaxpayerNo11a",
+  "frm1701MS:txtTaxpayerNo11c",
+  "frm1701MS:txtTaxpayerNo12c",
+  "taxCodeDropdown=II015",
+  "taxCodeDropdown=II016",
+  "taxCodeDropdown=II017"
+ ],
+ "frm1701MS:txtTaxDueAllowedNo26b": [
+  "frm1701MS:txtAmendedNoNo2",
+  "frm1701MS:txtAmendedYesNo2"
+ ],
+ "frm1701MS:txtTaxPaidPreviouslyFiledNo6a": [
+  "frm1701MS:txtAmendedYesNo2",
+  "frm1701MS:txtReturnPeriodYesNo3"
+ ],
+ "frm1701MS:txtTaxPaidPreviouslyFiledNo6b": [
+  "frm1701MS:txtReturnPeriodYesNo3"
+ ],
+ "frm1701MS:txtTaxRatea": [
+  "frm1701MS:txtTaxpayerNo11a",
+  "frm1701MS:txtTaxpayerNo11b",
+  "frm1701MS:txtTaxpayerNo11c",
+  "frm1701MS:txtTaxpayerNo12e"
+ ],
+ "frm1701MS:txtTaxpayerNo13a": [
+  "frm1701MS:txtTaxpayerNo12d",
+  "frm1701MS:txtTaxpayerNo12e"
+ ],
+ "frm1701MS:txtTaxpayerNo14a": [
+  "frm1701MS:txtTaxpayerNo12d",
+  "frm1701MS:txtTaxpayerNo12e"
+ ],
+ "frm1701MS:txtTaxpayerNo15a": [
+  "frm1701MS:txtTaxpayerNo12d",
+  "frm1701MS:txtTaxpayerNo12e"
+ ],
+ "frm1701MS:txtTaxpayerNo16a": [
+  "frm1701MS:txtTaxpayerNo12d",
+  "frm1701MS:txtTaxpayerNo12e"
+ ],
+ "frm1701MS:txtTaxpayerNo16a1": [
+  "frm1701MS:txtTaxpayerNo12d",
+  "frm1701MS:txtTaxpayerNo12e"
+ ]
+}

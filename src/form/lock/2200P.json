@@ -1,0 +1,11 @@
+{
+ "frm2200P:lstTaxTreaty": [
+  "frm2200P:optTreaty_1"
+ ],
+ "frm2200P:txtOthMannerofPymnt": [
+  "frm2200P:chkPymntManner_2"
+ ],
+ "frm2200P:txtTax19": [
+  "frm2200P:amendedRtn_1"
+ ]
+}

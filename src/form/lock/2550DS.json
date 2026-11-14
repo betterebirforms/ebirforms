@@ -1,0 +1,42 @@
+{
+ "frm2550ds:RtnPeriodFromNo4": [
+  "frm2550ds:fiscalNo1"
+ ],
+ "frm2550ds:RtnPeriodToNo4": [
+  "frm2550ds:fiscalNo1"
+ ],
+ "frm2550ds:addPenaltiesInterest": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:addPenaltiesSurcharge": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:advancePaymentDeposit": [
+  "frm2550ds:paymentAdvanceDeposit"
+ ],
+ "frm2550ds:advancePaymentOrDepositMadeThisQuarter": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:excessPaymentCarriedOver": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:grossSaleForTheQuarter": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:lessGrossSaleSubjectedToWithHoldingTax": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:otherPaymentCreditAmount": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:otherPaymentCreditSpecify": [
+  "frm2550ds:paymentValueAddedTax"
+ ],
+ "frm2550ds:selectedMonthNo2": [
+  "frm2550ds:fiscalNo1"
+ ],
+ "frm2550ds:vatPaidInReturn": [
+  "frm2550ds:amendedReturnYesNo5",
+  "frm2550ds:paymentValueAddedTax"
+ ]
+}

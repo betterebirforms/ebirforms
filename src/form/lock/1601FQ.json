@@ -1,0 +1,68 @@
+{
+ "drpATCCode0": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpATCCode1": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpATCCode2": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpATCCode3": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpATCCode4": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpTreatyCode0": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpTreatyCode1": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpTreatyCode2": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpTreatyCode3": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "drpTreatyCode4": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "frm1601FQ:drpSpecialTax": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "frm1601FQ:txtTax25": [
+  "frm1601FQ:AmendedRtn_1"
+ ],
+ "txtAmtIncomePay0": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtAmtIncomePay1": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtAmtIncomePay2": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtAmtIncomePay3": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtAmtIncomePay4": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtRate0": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtRate1": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtRate2": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtRate3": [
+  "frm1601FQ:SpecialTax_1"
+ ],
+ "txtRate4": [
+  "frm1601FQ:SpecialTax_1"
+ ]
+}
