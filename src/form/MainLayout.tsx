@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { NATIVE_FORM } from "./registry.ts";
 import { useLayoutRoot, wireMenu } from "./LayoutView.tsx";
 import { listFolder, readText, removeFile, writeText } from "@/lib/vfs";
-import { webExport, webImport, webPersist } from "@/lib/web-store.ts";
+import { canPickFolder, webExport, webFolder, webForgetFolder, webImport, webPersist, webPickFolder, webReconnect } from "@/lib/web-store.ts";
 import { parseSavefile, profileFileName, profileFromSavefile, profileToSavefile, serializeSavefile, type Profile } from "@/lib/savefile.ts";
 import { TinStatus, tinMessage, validateTin } from "@/lib/tin.ts";
 
@@ -191,9 +191,46 @@ export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile
         window.alert((e as Error).message);
       }
     });
-    void webPersist().then((kept) => {
-      if (!kept) add.querySelector("p")!.append(" This browser may delete its storage after a week without a visit; add this page to your Home Screen to keep it.");
-    });
+    // where returns live: this browser, or a folder the user picks (Chrome, Edge), e.g. their eBIRForms folder
+    const where = add.querySelector("p")!;
+    const folderRow = document.createElement("p");
+    add.append(folderRow);
+    const showFolder = async () => {
+      const f = canPickFolder() ? await webFolder().catch(() => null) : null;
+      folderRow.replaceChildren();
+      const link = (text: string, title: string, run: () => Promise<unknown>) => {
+        const u = Object.assign(document.createElement("u"), { textContent: text, title });
+        u.style.cursor = "pointer";
+        on(u, "click", () =>
+          void run()
+            .then(showFolder)
+            .then(scan)
+            .catch((e: Error) => e.name !== "AbortError" && window.alert(e.message)),
+        );
+        return u;
+      };
+      if (!f) {
+        where.textContent = "This web version keeps returns in this browser only. Nothing is sent to BIR or anywhere else. Download each return: that file is your copy.";
+        if (!(await webPersist()))
+          where.append(" This browser may delete its storage after a week without a visit; add this page to your Home Screen to keep it.");
+        if (canPickFolder())
+          folderRow.append(
+            link("Use a folder on this computer…", "Pick your eBIRForms folder (the one with profile and savefile in it). A folder synced by Google Drive or Dropbox works too.", async () => {
+              const n = await webPickFolder();
+              if (n) window.alert(`Copied ${n} file${n === 1 ? "" : "s"} from this browser into the folder. Files already in the folder were kept as they are.`);
+            }),
+          );
+        return;
+      }
+      where.textContent = `Profiles and returns are kept in your folder "${f.name}" on this computer. Nothing is sent to BIR or anywhere else.`;
+      if (f.permission !== "granted") folderRow.append(link(`Allow access to "${f.name}"`, "The browser asks again after a restart.", webReconnect), " · ");
+      folderRow.append(
+        link("Change folder…", "Pick another folder.", webPickFolder),
+        " · ",
+        link("Keep returns in this browser instead", "The folder and its files stay as they are.", webForgetFolder),
+      );
+    };
+    void showFolder();
 
     // BIR's File menu: Save (the profile), View (the picked return); Exit has no window to close on the web
     wireMenu(root, on, {

@@ -40,7 +40,11 @@ impl SubmitTarget {
 pub enum SubmitError {
     HostKeyChanged { host: String, pinned: String, seen: String },
     Auth,
+    /// Failed before any byte of the return was written: nothing reached BIR, so trying again is safe.
     Transport(String),
+    /// Failed while or after the return was written: BIR may or may not have it. Never retried by itself, so the
+    /// same return is not filed twice; BIR's confirmation email is the answer.
+    Interrupted(String),
 }
 
 impl std::fmt::Display for SubmitError {
@@ -51,7 +55,14 @@ impl std::fmt::Display for SubmitError {
                 "the SSH host key for {host} changed (pinned {pinned}, got {seen}). Refusing to upload — this could be an interception. Remove the pin only if you know the server was legitimately rekeyed."
             ),
             SubmitError::Auth => write!(f, "the server rejected the username or password."),
-            SubmitError::Transport(e) => write!(f, "{e}"),
+            SubmitError::Transport(e) => write!(
+                f,
+                "could not reach BIR's upload server ({e}). Your return was not sent. Check your internet connection and click Submit again."
+            ),
+            SubmitError::Interrupted(e) => write!(
+                f,
+                "the connection dropped while sending ({e}). BIR may or may not have received your return. Wait for BIR's confirmation email before sending it again."
+            ),
         }
     }
 }
@@ -121,37 +132,88 @@ async fn connect_stream(target: &SubmitTarget, config: Arc<Config>, handler: Pin
     }
 }
 
-/// Upload one already-encrypted return. Async; call from a Tokio runtime.
+/// How long to wait on a slow line. Tests shorten it.
+#[derive(Clone, Copy, Debug)]
+pub struct Patience {
+    /// Connect, log in and open SFTP: past this, the attempt counts as not sent.
+    pub connect: std::time::Duration,
+    /// Write and close the file.
+    pub write: std::time::Duration,
+    /// Attempts while nothing has been written yet (a weak or dropping connection).
+    pub attempt: u32,
+    /// Wait before the next attempt, times the attempt number.
+    pub backoff: std::time::Duration,
+}
+
+impl Default for Patience {
+    fn default() -> Self {
+        use std::time::Duration;
+        Patience { connect: Duration::from_secs(45), write: Duration::from_secs(120), attempt: 3, backoff: Duration::from_secs(3) }
+    }
+}
+
+/// Upload one already-encrypted return. Async; call from a Tokio runtime. On a weak connection it tries again,
+/// but only while nothing has been written, so BIR never gets the same return twice from one click.
 pub async fn upload(target: &SubmitTarget, remote_name: &str, data: &[u8], known: &KnownHost) -> Result<Submitted, SubmitError> {
+    upload_with(target, remote_name, data, known, Patience::default()).await
+}
+
+pub async fn upload_with(target: &SubmitTarget, remote_name: &str, data: &[u8], known: &KnownHost, patience: Patience) -> Result<Submitted, SubmitError> {
+    let mut n = 1;
+    loop {
+        match upload_once(target, remote_name, data, known, patience).await {
+            Err(SubmitError::Transport(e)) if n < patience.attempt => {
+                eprintln!("[submit] attempt {n} not sent: {e}; trying again");
+                tokio::time::sleep(patience.backoff * n).await;
+                n += 1;
+            }
+            Err(SubmitError::Transport(e)) if n > 1 => return Err(SubmitError::Transport(format!("{e}; tried {n} times"))),
+            other => return other,
+        }
+    }
+}
+
+async fn upload_once(target: &SubmitTarget, remote_name: &str, data: &[u8], known: &KnownHost, patience: Patience) -> Result<Submitted, SubmitError> {
     let seen = Arc::new(std::sync::Mutex::new(None));
     let handler = PinHandler {
         host: target.host.clone(),
         pinned: known.get(&target.host).cloned(),
         seen: seen.clone(),
     };
-    let config = Arc::new(Config { ..Default::default() });
-    let mut session = connect_stream(target, config, handler).await?;
+    // a silent line ends the session instead of hanging Submit forever
+    let config = Arc::new(Config { inactivity_timeout: Some(patience.connect), ..Default::default() });
+    let timed_out = |what: &str| SubmitError::Transport(format!("{what} timed out"));
 
-    if !session.authenticate_password(&target.user, &target.password).await?.success() {
-        let _ = session.disconnect(Disconnect::ByApplication, "", "en").await;
-        return Err(SubmitError::Auth);
-    }
-
-    let channel = session.channel_open_session().await?;
-    channel.request_subsystem(true, "sftp").await?;
-    let sftp = SftpSession::new(channel.into_stream()).await.map_err(|e| SubmitError::Transport(e.to_string()))?;
+    let open = async {
+        let mut session = connect_stream(target, config, handler).await?;
+        if !session.authenticate_password(&target.user, &target.password).await?.success() {
+            let _ = session.disconnect(Disconnect::ByApplication, "", "en").await;
+            return Err(SubmitError::Auth);
+        }
+        let channel = session.channel_open_session().await?;
+        channel.request_subsystem(true, "sftp").await?;
+        let sftp = SftpSession::new(channel.into_stream()).await.map_err(|e| SubmitError::Transport(e.to_string()))?;
+        Ok::<_, SubmitError>((session, sftp))
+    };
+    let (session, sftp) = tokio::time::timeout(patience.connect, open).await.map_err(|_| timed_out("connecting"))??;
 
     let dir = target.remote_dir();
-    let _ = sftp.create_dir(dir.trim_end_matches('/')).await; // BIR pre-creates these; ignore "already exists"
     let remote_path = format!("{dir}{remote_name}");
-    {
+    let send = async {
+        let _ = sftp.create_dir(dir.trim_end_matches('/')).await; // BIR pre-creates these; ignore "already exists"
         use tokio::io::AsyncWriteExt;
-        // create() opens CREATE|WRITE|TRUNCATE; plain write() opens WRITE only and fails on a new file
+        // create() opens CREATE|WRITE|TRUNCATE; plain write() opens WRITE only and fails on a new file.
+        // Failing to open it means nothing was written yet: still safe to try again.
         let mut file = sftp.create(&remote_path).await.map_err(|e| SubmitError::Transport(format!("upload: {e}")))?;
-        file.write_all(data).await.map_err(|e| SubmitError::Transport(format!("upload: {e}")))?;
-        file.flush().await.map_err(|e| SubmitError::Transport(format!("upload: {e}")))?;
-        file.shutdown().await.map_err(|e| SubmitError::Transport(format!("upload: {e}")))?;
-    }
+        let gone = |e: std::io::Error| SubmitError::Interrupted(format!("upload: {e}"));
+        file.write_all(data).await.map_err(gone)?;
+        file.flush().await.map_err(gone)?;
+        file.shutdown().await.map_err(gone)?;
+        Ok::<_, SubmitError>(())
+    };
+    tokio::time::timeout(patience.write, send)
+        .await
+        .map_err(|_| SubmitError::Interrupted("sending timed out".into()))??;
     let _ = sftp.close().await;
     let _ = session.disconnect(Disconnect::ByApplication, "", "en").await;
     drop(session); // release the handler's Arc clone before we read the recorded fingerprint
@@ -192,6 +254,52 @@ mod test {
         let h = PinHandler { host: "bir".into(), pinned: None, seen: seen.clone() };
         assert_eq!(h.verify("SHA256:ccc".into()).unwrap(), true);
         assert_eq!(seen.lock().unwrap().as_deref(), Some("SHA256:ccc"));
+    }
+
+    fn quick() -> Patience {
+        use std::time::Duration;
+        Patience { connect: Duration::from_millis(300), write: Duration::from_millis(300), attempt: 3, backoff: Duration::from_millis(10) }
+    }
+
+    fn local(port: u16) -> SubmitTarget {
+        SubmitTarget { host: "127.0.0.1".into(), port, user: "u".into(), password: "p".into(), folder: String::new(), form_code: "0605".into(), proxy: None }
+    }
+
+    /// A weak line: the server takes the connection, then says nothing. Each attempt times out instead of hanging,
+    /// is tried again (nothing was written), and the user is told plainly that the return was not sent.
+    #[tokio::test]
+    async fn a_silent_server_times_out_and_is_tried_again() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let count = Arc::new(std::sync::atomic::AtomicU32::new(0));
+        let c = count.clone();
+        tokio::spawn(async move {
+            let mut held = Vec::new();
+            while let Ok((sock, _)) = listener.accept().await {
+                c.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                held.push(sock); // keep it open, never answer
+            }
+        });
+        let started = std::time::Instant::now();
+        let e = upload_with(&local(port), "x.xml", b"data", &KnownHost::new(), quick()).await.unwrap_err();
+        assert!(matches!(&e, SubmitError::Transport(m) if m.contains("timed out") && m.contains("tried 3 times")), "{e:?}");
+        assert_eq!(count.load(std::sync::atomic::Ordering::SeqCst), 3);
+        assert!(started.elapsed() < std::time::Duration::from_secs(5));
+        assert!(e.to_string().contains("was not sent"));
+    }
+
+    /// Nothing listening at all (no internet): same, tried again, then "not sent".
+    #[tokio::test]
+    async fn no_connection_is_tried_again_then_reported_not_sent() {
+        let port = std::net::TcpListener::bind("127.0.0.1:0").unwrap().local_addr().unwrap().port(); // freed: refused
+        let e = upload_with(&local(port), "x.xml", b"data", &KnownHost::new(), quick()).await.unwrap_err();
+        assert!(matches!(&e, SubmitError::Transport(m) if m.contains("tried 3 times")), "{e:?}");
+    }
+
+    #[test]
+    fn a_drop_while_sending_is_never_called_not_sent() {
+        let m = SubmitError::Interrupted("broken pipe".into()).to_string();
+        assert!(m.contains("may or may not") && m.contains("confirmation email") && !m.contains("not sent"));
     }
 }
 

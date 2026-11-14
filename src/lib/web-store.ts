@@ -1,15 +1,111 @@
-// The web version's storage: the browser's Origin Private File System, on this device only. Same paths and
-// same cp1252 bytes as the desktop host writes (`savefile/<name>.xml`), so an exported file is an eBIRForms
-// savefile. Nothing here touches the network. Safari can delete site storage after 7 days without a visit
-// unless the site is on the Home Screen, so the exported file — not OPFS — is the user's real copy.
+// The web version's storage: the browser's Origin Private File System, on this device only, or a folder the user
+// picked (Chrome and Edge: their eBIRForms folder, maybe one a sync app like Google Drive keeps). Same paths and
+// same cp1252 bytes as the desktop host writes (`profile/<TIN>.xml`, `savefile/<name>.xml`), so a picked
+// C:\eBIRForms works as is. Nothing here touches the network. Safari can delete site storage after 7 days without
+// a visit unless the site is on the Home Screen, so the exported file, not OPFS, is the user's real copy there.
 import type { VfsEntry } from "../../host/legacy-server.ts";
 import { decodeCp1252, encodeCp1252 } from "./cp1252.ts";
 import { parseSavefile, serializeSavefile, withoutSecret } from "./savefile.ts";
 
 const part = (path: string) => path.split("/").filter((p) => p && p !== "." && p !== "..");
 
+// ---- the picked folder: its handle lives in IndexedDB, so it survives a reload; the browser may ask again for access
+
+type Permission = "granted" | "denied" | "prompt";
+interface PickedHandle extends FileSystemDirectoryHandle {
+  queryPermission(o: { mode: "readwrite" }): Promise<Permission>;
+  requestPermission(o: { mode: "readwrite" }): Promise<Permission>;
+}
+const DB = "ebirforms-web", STORE = "setting", KEY = "folder";
+
+function idb<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest): Promise<T> {
+  return new Promise((done, fail) => {
+    const open = indexedDB.open(DB, 1);
+    open.onupgradeneeded = () => open.result.createObjectStore(STORE);
+    open.onerror = () => fail(open.error);
+    open.onsuccess = () => {
+      const req = run(open.result.transaction(STORE, mode).objectStore(STORE));
+      req.onsuccess = () => (open.result.close(), done(req.result as T));
+      req.onerror = () => (open.result.close(), fail(req.error));
+    };
+  });
+}
+
+let picked: PickedHandle | null | undefined; // undefined = not read from IndexedDB yet
+
+async function pickedFolder(): Promise<PickedHandle | null> {
+  if (picked === undefined) picked = await idb<PickedHandle | undefined>("readonly", (s) => s.get(KEY)).then((h) => h ?? null, () => null);
+  return picked;
+}
+
+/** True where the browser can hand a page a real folder (Chrome, Edge); Safari and Firefox keep OPFS only. */
+export const canPickFolder = () => typeof (window as { showDirectoryPicker?: unknown }).showDirectoryPicker === "function";
+
+/** The folder in use, if any, and whether this visit may read and write it yet. */
+export async function webFolder(): Promise<{ name: string; permission: Permission } | null> {
+  const h = await pickedFolder();
+  return h ? { name: h.name, permission: await h.queryPermission({ mode: "readwrite" }) } : null;
+}
+
+/** Ask again for the picked folder (the browser needs a click for this). */
+export async function webReconnect(): Promise<boolean> {
+  const h = await pickedFolder();
+  return !!h && (await h.requestPermission({ mode: "readwrite" })) === "granted";
+}
+
+/**
+ * Let the user choose their eBIRForms folder (the one holding `profile` and `savefile`). Profiles and returns kept
+ * in this browser are copied into it, never over a file it already has. Returns how many were copied.
+ */
+export async function webPickFolder(): Promise<number> {
+  const pick = (window as unknown as { showDirectoryPicker(o: object): Promise<PickedHandle> }).showDirectoryPicker;
+  const h = await pick({ id: "ebirforms", mode: "readwrite" });
+  let copied = 0;
+  const from = await navigator.storage.getDirectory();
+  for (const sub of ["profile", "savefile"]) {
+    let src: FileSystemDirectoryHandle;
+    try {
+      src = await from.getDirectoryHandle(sub);
+    } catch {
+      continue;
+    }
+    const dst = await h.getDirectoryHandle(sub, { create: true });
+    for await (const f of (src as unknown as { values(): AsyncIterable<FileSystemHandle> }).values()) {
+      if (f.kind !== "file") continue;
+      try {
+        await dst.getFileHandle(f.name);
+        continue; // the folder's own copy wins
+      } catch {
+        /* not there yet */
+      }
+      const w = await (await dst.getFileHandle(f.name, { create: true })).createWritable();
+      await w.write(await (f as FileSystemFileHandle).getFile());
+      await w.close();
+      copied++;
+    }
+  }
+  await idb("readwrite", (s) => s.put(h, KEY));
+  picked = h;
+  return copied;
+}
+
+/** Go back to this browser's own storage. The folder and its files stay as they are. */
+export async function webForgetFolder(): Promise<void> {
+  await idb("readwrite", (s) => s.delete(KEY));
+  picked = null;
+}
+
+/** Where profiles and returns live now. A picked folder the browser hasn't re-allowed is an error, never a quiet switch to OPFS. */
+async function storeRoot(): Promise<FileSystemDirectoryHandle> {
+  const h = await pickedFolder();
+  if (!h) return navigator.storage.getDirectory();
+  if ((await h.queryPermission({ mode: "readwrite" })) !== "granted")
+    throw new Error(`This page needs permission again to use your folder "${h.name}". Click "Allow access" on the home page.`);
+  return h;
+}
+
 async function folderOf(path: string[], create: boolean): Promise<FileSystemDirectoryHandle> {
-  let dir = await navigator.storage.getDirectory();
+  let dir = await storeRoot();
   for (const name of path) dir = await dir.getDirectoryHandle(name, { create });
   return dir;
 }
@@ -58,8 +154,9 @@ export async function webWrite(path: string, text: string): Promise<object> {
     const writer = await handle.createWritable();
     await writer.write(byte as Uint8Array<ArrayBuffer>);
     await writer.close();
-  } else await writeInWorker(path, byte);
-  void webPersist();
+  } else if (await pickedFolder()) throw new Error("This browser cannot write to the picked folder.");
+  else await writeInWorker(path, byte);
+  if (!(await pickedFolder())) void webPersist();
   return {};
 }
 

@@ -50,6 +50,7 @@ Each part of the plan below says which layer it touches.
 | A small API for mods | A mod can't ask the app for anything: no file picker, no profile, no settings | app + mods | A mod can ask for a file picker or the profile, each one only after the user allows it, through one documented call |
 | Proxy setting in the app | Today it is a hand-edited file | app | A setting in the app, saved where the full build reads it |
 | The agent server, part two | Agents can fill and save drafts (`npm run build:mcp`), but must be set up by hand and can't open a form in the app | app | The app ships the agent server, shows how to connect it, and an agent can open a saved draft in the app's window |
+| Check BIR's pages against Internet Explorer on Windows | BIR's pages were written for Internet Explorer 8 and run here in a modern engine. The shim covers the gaps we found, but some differences only show when the same return is filled side by side (pointed out by a developer who also took eBIRForms apart) | rebuild | For each form, the same inputs in BIR's app on Windows and in ours give the same figures, messages and saved file, recorded as a fixture |
 | Keyboard and screen reader | Tab order and labels were never checked | rebuild | The rebuilt 1701Q can be filled with the keyboard only and read by VoiceOver |
 
 ## Next: improvements, kept switchable
@@ -73,7 +74,8 @@ rebuilt forms do the work behind them.
 |---|---|---|
 | Input screens that fit a phone | BIR's form layouts are made for a wide screen and a mouse | The rebuilt forms render as a one-column, touch-friendly flow on a 375 px wide screen, saving the same file |
 | Mobile app (iOS and Android) | Filing from a phone | A Tauri mobile build (or an installable web app) fills, saves and exports a 1701Q on an iPhone and an Android phone |
-| Save to the user's own storage | Returns should stay with the user, not on our servers | Export and import of savefiles through the phone's Files app or the browser's download, plus an optional folder the user picks |
+| Save to the user's own storage on a phone and in Safari | Returns should stay with the user, not on our servers. On a computer, Chrome and Edge can already use a folder the user picks (a CPA asked for it, to keep the eBIRForms folder Google Drive syncs); Safari, Firefox and phones can only download and add files | Export and import of savefiles through the phone's Files app, and a folder the user picks wherever the browser allows one |
+| BIR's other offline tools: Alphalist and RELIEF | Accountants say these hurt more than eBIRForms (Alphalist Data Entry and the RELIEF data entry for purchases and sales are Windows-only too) | A plan in `docs/` says which of the two to rebuild first and what file each must produce to be accepted by BIR |
 | PDF on the device | Printing from a phone usually means PDF | A rebuilt form exports a PDF that matches BIR's printed layout on A4, Legal and long bond |
 
 ## Waiting on BIR

@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version in Chrome or Edge, you can keep your profiles and returns in a folder on your computer instead of the browser: click "Use a folder on this computer" on the home screen and pick your eBIRForms folder. A folder that Google Drive or Dropbox syncs works too, and so does a copy of the Windows app's eBIRForms folder. What the browser already held is copied in, and nothing in the folder is overwritten.
+- Sending to BIR copes better with a weak connection. It no longer waits forever on a line that went quiet, and it tries again by itself up to three times while nothing has been sent yet. If the line drops in the middle of sending, it tells you BIR may or may not have your return and to wait for BIR's email before sending again, instead of saying it was not sent.
 - You can now support the project: Support > Donate in the app, a button on the web version's home screen, and a link in the README. It opens our Ko-fi page, which takes PayPal and cards.
 
 ## v0.1.8 (13 November 2026)

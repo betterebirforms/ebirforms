@@ -371,9 +371,11 @@
       tin: submitTarget.tin,
       form_code: submitTarget.form_code,
     };
+    lastSendNote = "";
     for (var attempt = 0; attempt < 2; attempt++) {
       var r = vfs(req);
       if (r.note) console.warn("[ebirforms] submit: " + r.note);
+      if (r.exit_code !== 0 && r.note) lastSendNote = r.note;
       if (r.exit_code === 0 || !r.host_key_changed || attempt > 0) return r.exit_code;
       var k = r.host_key_changed;
       var accept = nativeConfirm(
@@ -467,6 +469,9 @@
   var SENT_NOTE =
     "\n\nFrom eBIRForms (unofficial beta): your return is filed only when BIR's confirmation email arrives " +
     "(the Tax Return Receipt Confirmation). Keep that email. If it doesn't arrive within a day, file the return another way.";
+  // why the last send failed, in plain words from the host (not sent / may have been sent); BIR's own failure
+  // message always says "not submitted" and blames the connection, which is wrong when the line dropped mid-send
+  var lastSendNote = "";
   var nativeAlert = window.alert.bind(window);
   var nativeConfirm = window.confirm.bind(window);
   window.confirm = function (message) {
@@ -488,6 +493,11 @@
     var m = String(message);
     if (m.indexOf("The system detected that you have no internet connection") === 0) return nativeAlert(submitTarget.available ? OFFLINE_NOTICE : NOT_FILED_NOTICE);
     if (CAN_SUBMIT && m.indexOf("Submit Successful.") === 0) return nativeAlert(m + SENT_NOTE);
+    if (lastSendNote && m.indexOf("Your Tax Return was not submitted online") === 0) {
+      var note = lastSendNote;
+      lastSendNote = "";
+      return nativeAlert("Sending to BIR: " + note.charAt(0).toUpperCase() + note.slice(1));
+    }
     return nativeAlert(message);
   };
 
