@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version with dark mode turned on, BIR's pages are readable again: labels are black and what you type shows in black on the white boxes, as in BIR's app. Before, the labels faded into the grey and typed text was white on white.
+
 ## v0.1.9 (14 November 2026)
 
 - On the web version in Chrome or Edge, you can keep your profiles and returns in a folder on your computer instead of the browser: click "Use a folder on this computer" on the home screen and pick your eBIRForms folder. A folder that Google Drive or Dropbox syncs works too, and so does a copy of the Windows app's eBIRForms folder. What the browser already held is copied in, and nothing in the folder is overwritten.

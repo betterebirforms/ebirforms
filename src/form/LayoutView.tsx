@@ -34,8 +34,12 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
     void loadLayout(name).then((html) => {
       if (!live || !host.current) return;
       const shadow = host.current.shadowRoot ?? host.current.attachShadow({ mode: "open" });
-      // BIR's page sizes itself against <body>; inside the shadow root that is the .bir-body wrapper
-      shadow.innerHTML = `<style>:host{display:block;min-height:100vh} .bir-body{min-height:100vh}</style>${html}`;
+      // BIR's page sizes itself against <body>; inside the shadow root that is the .bir-body wrapper.
+      // BIR drew these pages for IE's defaults: black text, light controls. The app around them follows the
+      // system's dark mode (style.css `color-scheme: light dark`), which a shadow root inherits: in dark mode the
+      // labels went light on BIR's grey and typed text white on its white fields. The desktop never had this
+      // (BIR's pages don't opt into dark mode there), so pin the layout to IE's defaults.
+      shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style>${html}`;
       setRoot(shadow);
     });
     return () => {

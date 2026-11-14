@@ -455,3 +455,13 @@ a {
   max-height: 90vh;
   overflow: auto;
 }
+/* Behind BIR's layouts, IE's page: white and light-only, whatever the system's dark mode. BIR's own CSS clears the
+   layout host's background, so its translucent edges showed this page through (LayoutView.tsx pins the rest).
+   White goes on the canvas (html) and body stays clear: an opaque body would cover BIR's gradient (<img id="bg">). */
+html:has(.bir-layout) {
+  background: #fff;
+  color-scheme: light;
+}
+body:has(.bir-layout) {
+  background: transparent;
+}
