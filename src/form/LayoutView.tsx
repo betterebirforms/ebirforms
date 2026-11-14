@@ -334,7 +334,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       if (!el || f.secret) continue;
       const ro = readOnly(f, computed);
       if (f.kind === "radio" || f.kind === "checkbox") {
-        el.checked = computed[f.id] === "true";
+        // like a text box: an untouched choice shows what the savefile will hold, so BIR's preselected options
+        // (1701Q item 3 "Amended Return? No") are ticked as on BIR's page, not left blank
+        el.checked = (f.id in state || f.compute ? computed[f.id] : (saved.get(f.id) ?? computed[f.id])) === "true";
         el.disabled = !isGateOpen(f, computed);
         continue;
       }

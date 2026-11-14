@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, BIR's pages now match BIR's app more closely: rows are as compact as in BIR's app (they were taller, so long forms ran further down the page), and choices BIR ticks on a new form, like "Amended Return? No", show ticked.
 - On the web version with dark mode turned on, BIR's pages are readable again: labels are black and what you type shows in black on the white boxes, as in BIR's app. Before, the labels faded into the grey and typed text was white on white.
 
 ## v0.1.9 (14 November 2026)
