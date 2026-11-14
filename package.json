@@ -1,6 +1,6 @@
 {
   "name": "ebirforms",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Cross-platform (macOS-first) rebuild of the BIR Offline eBIRForms Package",
   "directories": {
     "doc": "docs",
