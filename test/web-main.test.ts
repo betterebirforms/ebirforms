@@ -104,6 +104,38 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 60_000);
 
+  it("offers to update 3-digit-branch files to 5 digits, and does it only on a yes", async () => {
+    const page = await context.newPage();
+    const said: string[] = [];
+    let answer = false;
+    page.on("dialog", (d) => (said.push(d.message()), void (d.type() === "confirm" && !answer ? d.dismiss() : d.accept())));
+    await page.goto(`${base}/`);
+    const old = PROFILE.split("=00000").join("=000");
+    await opfs(page, ["profile", "555666777000.xml"], old.split("=123").join("=555").split("=456").join("=666").split("=789").join("=777"));
+    await opfs(page, ["savefile", "555666777000-2551Qv2018-122026Q3.xml"], "<?xml version='1.0'?><div>frm2551Qv2018:txtBranchCode=000frm2551Qv2018:txtBranchCode=</div>All Rights Reserved BIR 2012.");
+    await page.reload();
+    const name = () =>
+      page.evaluate(async () => {
+        const out: string[] = [];
+        const root = await navigator.storage.getDirectory();
+        for (const sub of ["profile", "savefile"])
+          for await (const f of ((await root.getDirectoryHandle(sub)) as unknown as { values(): AsyncIterable<FileSystemHandle> }).values()) if (f.name.startsWith("555666777")) out.push(`${sub}/${f.name}`);
+        return out.sort();
+      });
+    const offer = page.getByText("Update to 5 digits…");
+    await offer.waitFor();
+    await offer.click(); // answered no: nothing moves
+    await expect.poll(() => said.join("|")).toContain("to the 5-digit branch code?");
+    expect(await name()).toEqual(["profile/555666777000.xml", "savefile/555666777000-2551Qv2018-122026Q3.xml"]);
+    answer = true;
+    await offer.click();
+    await expect.poll(() => said.join("|")).toMatch(/Updated \d+ files? to the 5-digit branch code/);
+    expect(await name()).toEqual(["profile/55566677700000.xml", "savefile/55566677700000-2551Qv2018-122026Q3.xml"]);
+    const text = await page.evaluate(async () => (await (await (await (await navigator.storage.getDirectory()).getDirectoryHandle("savefile")).getFileHandle("55566677700000-2551Qv2018-122026Q3.xml")).getFile()).text());
+    expect(text).toContain("<div>frm2551Qv2018:txtBranchCode=00000frm2551Qv2018:txtBranchCode=</div>");
+    await page.close();
+  }, 60_000);
+
   it("says where a folder can be used when this browser has no folder picker (Brave, Firefox, Safari)", async () => {
     const page = await context.newPage();
     await page.addInitScript("delete window.showDirectoryPicker");

@@ -10,6 +10,7 @@ import { listFolder, readText, removeFile, writeText } from "@/lib/vfs";
 import { canPickFolder, webExport, webFolder, webForgetFolder, webImport, webPersist, webPickFolder, webReconnect } from "@/lib/web-store.ts";
 import { parseSavefile, profileFileName, profileFromSavefile, profileToSavefile, serializeSavefile, type Profile } from "@/lib/savefile.ts";
 import { TinStatus, tinMessage, validateTin } from "@/lib/tin.ts";
+import { oldBranchFile, updateBranch, type BranchStore } from "@/lib/branch.ts";
 
 const PROFILE_FIELD = ["tin1", "tin2", "tin3", "tin4", "rdo", "lob", "fn", "regAddr", "zip", "telNo"] as const;
 
@@ -215,7 +216,14 @@ export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile
     // where returns live: this browser, or a folder the user picks (Chrome, Edge), e.g. their eBIRForms folder
     const where = add.querySelector("p")!;
     const folderRow = document.createElement("p");
-    add.append(folderRow);
+    // files still named with the old 3-digit branch: BIR's current app lists only 5 digits, so offer to update them
+    const branchRow = document.createElement("p");
+    add.append(folderRow, branchRow);
+    const branchStore: BranchStore = { list: (folder) => listFolder(folder).then((l) => l.file.map((x) => x.name)), read: readText, write: writeText, remove: removeFile };
+    const branchKey = (name: string) => {
+      const code = codeOfSavefile(name);
+      return (code && Object.entries(NATIVE_FORM[code]?.prefill ?? {}).find(([, k]) => k === "tin4")?.[0]) || null;
+    };
     const showFolder = async () => {
       const f = canPickFolder() ? await webFolder().catch(() => null) : null;
       folderRow.replaceChildren();
@@ -234,6 +242,20 @@ export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile
         );
         return u;
       };
+      branchRow.replaceChildren();
+      const stale = !f || f.permission === "granted" ? await oldBranchFile(branchStore) : { profile: [], savefile: [] };
+      const stale_count = stale.profile.length + stale.savefile.length;
+      if (stale_count > 0) {
+        const what = [stale.profile.length && `${stale.profile.length} profile${stale.profile.length === 1 ? "" : "s"}`, stale.savefile.length && `${stale.savefile.length} return${stale.savefile.length === 1 ? "" : "s"}`].filter(Boolean).join(" and ");
+        branchRow.append(
+          `${what} here ${stale_count === 1 ? "uses" : "use"} the old 3-digit branch code in the file name (000). BIR's current eBIRForms lists only 5 digits (00000). `,
+          link("Update to 5 digits…", "Renames each file to its 5-digit name and sets the branch code inside it. No file is overwritten.", async () => {
+            if (!window.confirm(`Update ${what} to the 5-digit branch code?\n\nEach file gets its 5-digit name (for example 123456789000 becomes 12345678900000) and the branch code inside it is set to match, so BIR's current eBIRForms lists it too. The old 3-digit name goes away. No file is overwritten.`)) return;
+            const r = await updateBranch(branchStore, branchKey);
+            window.alert(`Updated ${r.updated.length} file${r.updated.length === 1 ? "" : "s"} to the 5-digit branch code.` + (r.kept.length ? `\n\nLeft as they are, because a file with the 5-digit name is already there:\n${r.kept.join("\n")}` : ""));
+          }),
+        );
+      }
       if (!f) {
         where.textContent = "This web version keeps returns in this browser only. Nothing is sent to BIR or anywhere else. Download each return: that file is your copy.";
         where.append(count);
