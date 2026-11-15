@@ -60,6 +60,9 @@ export async function webReconnect(): Promise<boolean> {
 export async function webPickFolder(): Promise<number> {
   const pick = (window as unknown as { showDirectoryPicker(o: object): Promise<PickedHandle> }).showDirectoryPicker;
   const h = await pick({ id: "ebirforms", mode: "readwrite" });
+  // the usual slip: picking one of the two folders inside, which would start a second, empty pair in it
+  if (/^(profile|savefile)s?$/i.test(h.name))
+    throw new Error(`Pick the folder that holds the "profile" and "savefile" folders (usually eBIRForms), not the "${h.name}" folder itself.`);
   let copied = 0;
   const from = await navigator.storage.getDirectory();
   for (const sub of ["profile", "savefile"]) {

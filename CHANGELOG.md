@@ -5,6 +5,11 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, a return added with "Add a savefile from eBIRForms" now shows in the list when its file name has a 3-digit branch code (000) and your profile has 5 digits (00000). Before, the list stayed empty.
+- On the web version, adding a return that belongs to another taxpayer now tells you whose TIN it is. If no taxpayer is on screen yet, it shows that return's taxpayer.
+- On the web version, a new "Saved profiles" list lets you pick a taxpayer instead of typing the TIN.
+- On the web version, the home screen now says how many profiles and returns are stored, and tells you to use Chrome or Edge if your browser cannot use a folder (Brave, Firefox, Safari).
+- On the web version, picking the "savefile" or "profile" folder itself is refused with a note to pick the folder that holds both.
 - On the web version, boxes that BIR greys out on a new form start greyed out too, and open on the same choice as in BIR's app. For example, "No. of Installment" on 0605 opens only when you tick Installment.
 - On the web version, BIR's pages now match BIR's app more closely: rows are as compact as in BIR's app (they were taller, so long forms ran further down the page), and choices BIR ticks on a new form, like "Amended Return? No", show ticked.
 - On the web version with dark mode turned on, BIR's pages are readable again: labels are black and what you type shows in black on the white boxes, as in BIR's app. Before, the labels faded into the grey and typed text was white on white.
