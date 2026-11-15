@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, profiles and returns that still have the old 3-digit branch code in their file name (000) can be updated to 5 digits (00000), so BIR's current eBIRForms lists them too. The home screen says how many there are and offers "Update to 5 digits". It asks first, renames each file, sets the branch code inside it to match, and never overwrites a file. A final copy is renamed only, so what you filed stays as it was.
 - On the web version, a return added with "Add a savefile from eBIRForms" now shows in the list when its file name has a 3-digit branch code (000) and your profile has 5 digits (00000). Before, the list stayed empty.
 - On the web version, adding a return that belongs to another taxpayer now tells you whose TIN it is. If no taxpayer is on screen yet, it shows that return's taxpayer.
 - On the web version, a new "Saved profiles" list lets you pick a taxpayer instead of typing the TIN.
