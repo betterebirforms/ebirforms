@@ -75,6 +75,15 @@ export function vol(v: string | number): string {
   const [p0 = "", p1 = ""] = a.split(".");
   return `${addCommas(String(Number(p0)))}.${p1.length > 2 ? p1.slice(0, 3) : p1.padEnd(3, "0")}`;
 }
+/** isAmountWithinAllowedPrecision (string-util.js) is false on an XA036 volume: xa036VolumeChecker then alerts
+ *  "Value should not exceed Billion" and sets the box to 0.000. More than 12 digits before the point is over. */
+export function overBillion(v: string): boolean {
+  const a = v.replace(/[$,]/g, "");
+  if (Number.isNaN(Number(a))) return false;
+  return (a.indexOf(".") > 0 ? a.split(".")[0]! : a).length > 12;
+}
+/** The XA036 volume box xa036VolumeChecker guards: Bottle column 6, Bulk column 3. */
+export const isVolumeBox = (kind: string, column: number): boolean => (kind === "036Bottle" && column === 6) || (kind === "036Bulk" && column === 3);
 /** roundDownWithAlert on an entered amount: truncate (not round) to two decimals. */
 const trunc2 = (v: string): string => (v === "" ? "" : roundDownEntered(v));
 function roundDownEntered(v: string): string {

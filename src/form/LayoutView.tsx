@@ -388,7 +388,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       else if (v === "Next") on(b, "click", () => showPage(current + 1));
       else if (v === "Main Menu" || v === "Exit") on(b, "click", onClose);
       // BIR's Print button opens its Print Preview; the plain "Print" of its header prints straight away
-      else if (v === "Print") on(b, "click", b.id === "btnPrint" ? preview : () => window.print());
+      // (a calculator's own Print is BIR's printModal, wired with the calculator)
+      else if (v === "Print" && !b.closest("[id^=Calculator]")) on(b, "click", b.id === "btnPrint" ? preview : () => window.print());
       else if (v === "Submit / Final Copy") on(b, "click", () => void finalCopy());
     }
     // BIR's File / Help menu: File opens its list (Main Screen, Save, Print Preview, Exit); in Print Preview, BIR's
@@ -689,7 +690,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         if (header) on(header, "change", () => setGroups((s) => ({ ...s, [g.name]: (s[g.name] ?? []).map((r) => ({ ...r, [tick(name)]: String(header.checked) })) })));
         for (const b of Array.from(div.querySelectorAll<HTMLInputElement>("input[type=button]"))) {
           const v = (b.value || "").trim();
-          if (!/^(?:Add|Delete|Clear|Compute|Close)$/.test(v)) continue;
+          if (!/^(?:Add|Delete|Clear|Compute|Close|Print)$/.test(v)) continue;
           b.dataset.ebfCalc = v;
           on(b, "click", (e) => {
             e.preventDefault();
@@ -727,6 +728,25 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
               // setCalcDate: the "Date computed" line, whatever came of it
               const stamp = root.getElementById(`dateComputed${name}`);
               if (stamp) stamp.textContent = dateToday();
+            } else if (v === "Print") {
+              // printModal: an empty or unfinished table is refused as Compute refuses it; else the calculator prints
+              // alone with its title (the TIN and the date computed), its buttons hidden, and comes back as it was
+              if (row.length === 0) return window.alert("Please provide valid data.");
+              const bad = calc.table_alert(name, shownRow(name));
+              if (bad) return window.alert(bad);
+              const c = latest.current.computed;
+              const tin = ["txtTIN1", "txtTIN2", "txtTIN3", "txtBranchCode"].map((x) => c[`frm2200A:${x}`] ?? "").join("-");
+              for (const span of Array.from(div.querySelectorAll<HTMLElement>('span[name="calcTIN"]'))) span.textContent = tin;
+              const title = root.getElementById(`TitleCalculator${name}`) as HTMLElement | null;
+              const button = Array.from(div.querySelectorAll<HTMLElement>("input[type=button]"));
+              title?.style.setProperty("display", "block");
+              for (const x of button) x.style.setProperty("visibility", "hidden");
+              try {
+                window.print();
+              } finally {
+                title?.style.setProperty("display", "none");
+                for (const x of button) x.style.removeProperty("visibility");
+              }
             } else {
               // cancelCalcu: the pop-up behind comes back
               div.style.setProperty("display", "none");

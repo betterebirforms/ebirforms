@@ -3,7 +3,7 @@
 // (its AddRowXA035Bottle / AddRowXA035Bulk / AddRowXA036 / AddRowOthers), from the engine's group rows; the engine
 // does BIR's arithmetic (form2200a.ts), and LayoutView wires the links and buttons.
 import { useState } from "react";
-import { calcOpenAlert, calcRoute, calcSubTotal, calcDueExceeds, calcTableAlert, CALC } from "./form2200a.ts";
+import { calcOpenAlert, calcRoute, calcSubTotal, calcDueExceeds, calcTableAlert, CALC, isVolumeBox, overBillion } from "./form2200a.ts";
 import type { GroupRow, GroupSpec } from "./schema.ts";
 
 /** One box of a calculator row: BIR's maxlength, whether a person types it (else BIR disables it), which keys its
@@ -105,8 +105,13 @@ export function CalcRows({ spec, kind, group, row, shown, onSet, onBlur }: { spe
                           setFocus(key);
                           e.currentTarget.select();
                         }}
-                        onBlur={() => {
+                        onBlur={(e) => {
                           setFocus(null);
+                          // xa036VolumeChecker: a volume over 12 digits is refused
+                          if (isVolumeBox(kind, c.n) && overBillion(e.currentTarget.value)) {
+                            window.alert("Value should not exceed Billion");
+                            onSet(group, i, id(c.n), "0.000");
+                          }
                           onBlur(group, i);
                         }}
                         onKeyPress={(e) => {

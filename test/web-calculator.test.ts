@@ -210,5 +210,59 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await box(page, "xa1_taxable2").inputValue()).toBe("972.45");
     await page.close();
   }, 90_000);
-});
 
+  it("printModal: Print refuses an empty or unfinished table, then prints the calculator with its TIN title and no buttons", async () => {
+    const { page, said } = await open();
+    await header(page);
+    await link(page, 4).click(); // XA061
+    await page.evaluate(() => {
+      const w = window as unknown as { __printed: Array<{ title: boolean; button: boolean }> };
+      w.__printed = [];
+      window.print = () => {
+        const r = document.querySelector(".bir-layout")!.shadowRoot!;
+        w.__printed.push({
+          title: (r.getElementById("TitleCalculatorXA061") as HTMLElement).style.display === "block",
+          button: Array.from(r.getElementById("CalculatorXA061")!.querySelectorAll<HTMLElement>("input[type=button]")).some((b) => b.style.visibility !== "hidden"),
+        });
+      };
+    });
+    const print = await calcButton(page, "XA061", "Print");
+    const printed = () => page.evaluate(() => (window as unknown as { __printed: unknown[] }).__printed.length);
+    await print.click();
+    expect(said.at(-1)).toBe("Please provide valid data.");
+    await (await calcButton(page, "XA061", "Add")).click();
+    await print.click();
+    expect(said.at(-1)).toBe("Please enter a valid Description at Row 1.");
+    expect(await printed()).toBe(0);
+    await cell(page, "XA061", 1, 2).fill("champagne");
+    for (const [col, v] of [[3, "2"], [4, "12"], [6, "7.50"]] as const) {
+      await cell(page, "XA061", 1, col).fill(v);
+      await cell(page, "XA061", 1, col).blur();
+    }
+    await print.click();
+    expect(await page.evaluate(() => (window as unknown as { __printed: unknown[] }).__printed)).toEqual([{ title: true, button: false }]);
+    // after printing, the calculator is back as it was: title hidden, buttons shown, the TIN filled in
+    expect(await shown(page, "TitleCalculatorXA061")).toBe(false);
+    expect(await print.isVisible()).toBe(true);
+    expect((await page.locator('.bir-layout [id="TitleCalculatorXA061"] span[name="calcTIN"]').textContent())?.split("-").length).toBe(4);
+    await page.close();
+  }, 60_000);
+
+  it("xa036VolumeChecker: an XA036 volume over twelve digits alerts and goes back to 0.000", async () => {
+    const { page, said } = await open();
+    await header(page);
+    await link(page, 3).click(); // XA036 Bulk
+    await (await calcButton(page, "XA036Bulk", "Add")).click();
+    await expect.poll(() => rows(page, "XA036Bulk")).toBe(1);
+    const volume = cell(page, "XA036Bulk", 1, 3);
+    await volume.fill("1234567890123");
+    await volume.blur();
+    expect(said).toContain("Value should not exceed Billion");
+    await expect.poll(() => volume.inputValue()).toBe("0.000");
+    await volume.fill("123456789012.5");
+    await volume.blur();
+    await expect.poll(() => volume.inputValue()).toBe("123,456,789,012.500");
+    expect(said.filter((x) => x === "Value should not exceed Billion").length).toBe(1);
+    await page.close();
+  }, 60_000);
+});
