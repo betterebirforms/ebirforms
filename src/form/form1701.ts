@@ -24,7 +24,7 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1701", frozen as Array<[string, string, string?]>);
 import dom from "./page/1701.json";
-import { ESCAPED, MAX_COPY, MODAL, PFX, forCopy, modalCopy, rowKey, simulate, type Modal, type SimResult } from "./form1701-sim.ts";
+import { COLUMN, ESCAPED, MAX_COPY, MODAL, PFX, forCopy, modalCopy, rowKey, simulate, type Column, type Modal, type SimResult } from "./form1701-sim.ts";
 import { parseMoney } from "./money.ts";
 import { validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
@@ -104,13 +104,40 @@ const modalGroup = (m: Modal, copy: string): GroupSpec => {
     total: { into: rowKey(name), of: row[0]!.id, sum: (rows) => JSON.stringify(rows.map((r) => row.map((sub) => r[sub.id] ?? ""))) },
   };
 };
+/** Schedule 12's pop-ups on page 11 (page/1701-column.json): a row is one block of boxes (Part 1: one row of the table; the
+ *  others: BIR's addRowCol block, two Sale/Exchange columns). validateDate (MM/DD/YYYY, a real day, not in the future,
+ *  else the box is emptied) rules the date of issue; the PS/CS drop-down takes only its two options. */
+const issueDate = (v: string): string => {
+  const m = /^(\d\d)\/(\d\d)\/(\d{4})$/.exec(v);
+  if (!m) return "";
+  const [mo, day, year] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const at = new Date(year, mo - 1, day);
+  return mo < 1 || mo > 12 || at.getMonth() !== mo - 1 || at.getDate() !== day || at.getTime() > Date.now() ? "" : v;
+};
+const columnGroup = (c: Column): GroupSpec => {
+  const row: GroupSpec["row"] = c.cell.map((x) =>
+    x.ml === 12
+      ? { id: x.stem, kind: "money", derive: (_r, v) => wholePeso(v) }
+      : x.select
+        ? { id: x.stem, kind: "select", derive: (_r, v) => (v.toUpperCase() === "CS" ? "CS" : "PS") }
+        : { id: x.stem, kind: "text", derive: (_r, v) => (x.date ? issueDate(v) : (x.upper ? v.toUpperCase() : v).slice(0, x.ml)) },
+  );
+  const text = row.find((sub) => sub.kind === "text")!;
+  return {
+    name: c.modal,
+    first_index: 1,
+    row,
+    total: { into: rowKey(c.modal), of: text.id, sum: (rows) => JSON.stringify(rows.map((r) => row.map((sub) => r[sub.id] ?? ""))) },
+  };
+};
+export const COLUMN_GROUP: GroupSpec[] = COLUMN.map(columnGroup);
 export const MODAL_GROUP: GroupSpec[] = MODAL.flatMap((m) => modalCopy(m, { EX: MAX_COPY, SP: MAX_COPY }).map((copy) => modalGroup(m, copy)));
 
 export const FORM_1701: FormSchema = {
   form_code: "1701",
   title: "Annual Income Tax — Individuals, Estates and Trusts (2013)",
   field,
-  group: MODAL_GROUP,
+  group: [...MODAL_GROUP, ...COLUMN_GROUP],
   attachment: {
     template: "attachmentPages_TEMP",
     token: "TYPE",

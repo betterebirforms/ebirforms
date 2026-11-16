@@ -28,6 +28,7 @@
 import { Bir1701, HANDLER } from "./form1701-bir.ts";
 import type { Elem } from "./form1701-dom.ts";
 import modalJson from "./page/1701-modal.json";
+import columnJson from "./page/1701-column.json";
 
 export const PFX = "frm1701:";
 
@@ -51,6 +52,56 @@ export const rowKey = (name: string): string => `${PFX}_modalRow:${name}`;
 export function modalCopy(m: Modal, copy: { EX: number; SP: number }): string[] {
   if (!m.modal.includes("TYPE")) return [""];
   return [...Array.from({ length: copy.EX }, (_, i) => `EX${i + 1}`), ...Array.from({ length: copy.SP }, (_, i) => `SP${i + 1}`)];
+}
+/** The Schedule 12 pop-ups on page 11 that are not a table of rows under a parent item (tool/gen-1701-column.mjs): Part 1 of
+ *  12A is a row table; the other five add a COLUMN block (BIR's addRowCol), two Sale/Exchange columns of boxes per block. A
+ *  cell is one saved box of the row / block ("{i}" = its number from 1, in the layout's order). */
+export interface Column {
+  kind: "row" | "column";
+  link: string;
+  modal: string;
+  table: string;
+  counter: string;
+  cell: Array<{ stem: string; select: boolean; ml: number; upper: boolean; date: boolean; value: string; option?: string[] }>;
+  summation?: [string, string, string];
+  compute?: string;
+}
+export const COLUMN = columnJson as Column[];
+/** Schedule 1 on page 5 (addRowPg5Sc1): the employer rows below item 3. BIR copies item 4 into the pop-up's first row (id
+ *  I5), so row k has id 4+k. Two or more rows saved: item 4 reads "OTHERS" and the rows' totals, the rows are saved. One row
+ *  goes back to item 4 and BIR's closeModalPg5Sc1 empties the table (nothing is saved). */
+export const SCHED1 = {
+  link: `${PFX}lnkPg5Sc1More`,
+  modal: "modalPage5Schedule1",
+  table: "tblGrossCompensationAndTaxWithheldRepository",
+  counter: `${PFX}txtCtrmodalPage5Schedule1`,
+  first_index: 5,
+  /** the layout's boxes in order: [stem, kind, maxlength] */
+  cell: [
+    [`${PFX}txtPg5Sc1I{i}NameOfEmp`, "text", 90],
+    [`${PFX}rdoPg5Sc1I{i}Taxpayer`, "radio", 0],
+    [`${PFX}rdoPg5Sc1I{i}Spouse`, "radio", 0],
+    [`${PFX}txtPg5Sc1I{i}EmpTIN1C1`, "text", 3],
+    [`${PFX}txtPg5Sc1I{i}EmpTIN2C1`, "text", 3],
+    [`${PFX}txtPg5Sc1I{i}EmpTIN3C1`, "text", 3],
+    [`${PFX}txtPg5Sc1I{i}EmpTIN4C1`, "text", 3],
+    [`${PFX}txtPg5Sc1I{i}ComIncomeC2`, "text", 12],
+    [`${PFX}txtPg5Sc1I{i}TaxWithheldC3`, "text", 12],
+  ] as ReadonlyArray<readonly [string, "text" | "radio", number]>,
+  /** item 4's own boxes (BIR's activeParentInput for Schedule 1) */
+  parent: ["NameOfEmp", "EmpTIN1C1", "EmpTIN2C1", "EmpTIN3C1", "EmpTIN4C1", "ComIncomeC2", "TaxWithheldC3"].map((x) => `${PFX}txtPg5Sc1I4${x}`),
+};
+/** a box BIR's pop-up code built, kept to replay on the reopened page (loadData rebuilds the blocks from the counter) */
+interface Built {
+  container: string[];
+  id: string;
+  value: string;
+  maxLength: number;
+  type: "text" | "select-one" | "radio";
+  name?: string;
+  disabled?: boolean;
+  checked?: boolean;
+  sched1: boolean;
 }
 type Read = (id: string) => string;
 
@@ -133,9 +184,44 @@ class Sim extends Bir1701 {
           if (c.ml !== 12) this.el(parent[k]!).value = row[0]![k] ?? "";
         });
         for (const p of parent) g.update_enabledInputsOnValidation(p, "ADD");
+        g.enableParentInput(link.id); // saveChanges' last step for 0 or 1 rows (not for Schedule 12 Part 1, which has no such pop-up here)
       }
     });
     this.guard(m.link, () => g[m.compute](false));
+  }
+  /** a Schedule 12 pop-up's blocks as BIR's addRowCol built them and saveRowCol kept them in the Repository: the inputs of
+   *  each block, found by id inside the pop-up (BIR's `summation` walks them) */
+  columnInput(c: Column, block: string[][]): void {
+    block.forEach((cell, b) =>
+      c.cell.forEach((x, k) => {
+        if (x.select) return; // a drop-down is not an <input>
+        this.addInput([c.modal], { id: x.stem.replace("{i}", String(b + 1)), value: cell[k] ?? x.value, maxLength: x.ml });
+      }),
+    );
+  }
+  /** SAVE AND CLOSE of a Schedule 12 pop-up holding `block` (one array of cells per block, the layout's order). Part 1 of 12A is
+   *  a row table (saveChanges, then computePage11Schedule12Part1Modal(false)); the rest are column blocks:
+   *  saveRowCol copies the table to the Repository and writes the block count into the counter (any count, one included),
+   *  then the button runs summation over the pop-ups for the schedule's total. */
+  closeColumn(c: Column, block: string[][]): void {
+    if (block.length === 0) return;
+    const g = this as unknown as Record<string, any>;
+    const n = block.length;
+    if (c.kind === "row") {
+      g.activeParentInput = [];
+      this.setTable(
+        [c.table, `${c.table}Repository`],
+        block.map((cell, r) => c.cell.map((x, k) => ({ id: x.stem.replace("{i}", String(r + 1)), value: cell[k] ?? "", maxLength: x.ml }))),
+      );
+      this.guard(c.link, () => g[c.compute!](true));
+      this.el(c.counter).value = n > 1 ? n : 0;
+      this.guard(c.link, () => g[c.compute!](false));
+      return;
+    }
+    this.columnInput(c, block);
+    this.el(c.counter).value = n;
+    const [container, id, target] = c.summation!;
+    this.guard(c.link, () => g.summation(container, id, target));
   }
   /** every pop-up the filer filled (main pages first, then each copy), from the rows the schema's groups carry */
   closeAll(copy: { EX: number; SP: number }, read: Read): void {
@@ -144,6 +230,17 @@ class Sim extends Bir1701 {
         const text = read(rowKey(forCopy(m.modal, c)));
         if (text !== "") this.close(m, c, JSON.parse(text) as string[][]);
       }
+    for (const c of COLUMN) {
+      const text = read(rowKey(c.modal));
+      if (text !== "") this.closeColumn(c, JSON.parse(text) as string[][]);
+    }
+  }
+  /** loadData's addRowCol: the reopened page rebuilds each pop-up's blocks from its counter, then fills them */
+  reopenColumn(read: Read): void {
+    for (const c of COLUMN) {
+      const text = read(rowKey(c.modal));
+      if (c.kind === "column" && text !== "") this.columnInput(c, JSON.parse(text) as string[][]);
+    }
   }
   fire(el: Elem, handler: number): void {
     const h = HANDLER[handler];
@@ -292,6 +389,7 @@ export function simulate(read: Read): SimResult {
   const r = new Sim(copy);
   r.isReload = true;
   r.addAll(copy, read);
+  r.reopenColumn(read);
   for (const e of r.all) {
     if (!e.inForm || e.type === "hidden") continue;
     const v = file.get(e.id);

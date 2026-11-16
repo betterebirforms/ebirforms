@@ -417,6 +417,17 @@ export abstract class Dom1701 {
     }
   }
 
+  /** An input BIR's addRowCol / addRowPg5Sc1 built into a pop-up (a Schedule 12 block, a Schedule 1 employer row): found by
+   *  id and inside the given containers (BIR's `summation` and `sumIterateOnlyPg5Sc1` walk a container's inputs), never
+   *  one of the page's own elements (the saved rows come from the schema's group). */
+  addInput(container: string[], c: { id: string; value: string; maxLength: number; type?: string; name?: string; disabled?: boolean; checked?: boolean }): Elem {
+    const e = new Elem(this, c.id, c.type ?? "text", c.name ?? c.id, "", c.maxLength > 0 ? String(c.maxLength) : "", c.disabled ?? false, c.value, c.checked ?? false, container.join(" "), -1, -1, -1, false, false);
+    this.elem.set(c.id, e);
+    if (e.name && e.name !== c.id) this.nameIndex.set(e.name, [...(this.nameIndex.get(e.name) ?? []), e]);
+    for (const a of container) this.insideIndex.set(a, [...(this.insideIndex.get(a) ?? []), e]);
+    return e;
+  }
+
   boxOf(id: string): Box | null {
     let b = this.box.get(id);
     if (!b) {

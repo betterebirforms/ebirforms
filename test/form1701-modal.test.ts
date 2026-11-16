@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { computeForm, formRecords, type FormState, type GroupRow, type GroupState } from "@/form/schema.ts";
 import { FORM_1701 } from "@/form/form1701.ts";
-import { MODAL, forCopy, modalCopy, simulate } from "@/form/form1701-sim.ts";
+import { COLUMN, MODAL, forCopy, modalCopy, simulate } from "@/form/form1701-sim.ts";
 import { hasForm, startOracle } from "./oracle.ts";
 import { allPageParityCheck } from "./parity-page.ts";
 import { parityProblem } from "./parity.ts";
@@ -15,6 +15,11 @@ const modal = (name: string) => MODAL.find((m) => m.modal === name)!;
 const rows = (name: string, copy: string, cell: string[][]): GroupState => {
   const m = modal(name);
   return { [forCopy(name, copy)]: cell.map((c): GroupRow => Object.fromEntries(m.cell.map((x, k) => [forCopy(x.stem, copy), c[k] ?? ""]))) };
+};
+/** a Schedule 12 pop-up's blocks (page 11): each box by its layout order, money 100 + block number unless given */
+const block = (name: string, cell: Array<Record<number, string>>): GroupState => {
+  const c = COLUMN.find((x) => x.modal === name)!;
+  return { [name]: cell.map((o, b): GroupRow => Object.fromEntries(c.cell.map((x, k) => [x.stem, o[k] ?? (x.ml === 12 ? String(100 + b) : x.select ? "CS" : x.date ? "01/02/2020" : `box${k}`)]))) };
 };
 const at = (state: FormState, group: GroupState) => {
   const record = formRecords(FORM_1701, state, group);
@@ -38,6 +43,11 @@ const CASE: Array<[string, FormState, GroupState]> = [
   ["Schedule 3 item 2 (two rows, two columns)", sched3, rows("modalPage5Schedule3", "", [["Employer A", "1000", "500"], ["Employer B", "2000", "0"]])],
   ["Schedule 11A item 3 with one row", item3, rows("modalPage10Schedule11AI3", "", [["gift", "250"]])],
   ["exempt copy EX1, Schedule E item 2 (two rows)", exempt, rows("modalPage2mScheduleETYPE", "EX1", [["Rental", "500", "0"], ["Fees", "700", "100"]])],
+  ["Schedule 12A Part 1 (two rows)", bizItemized, block("modalPage11Schedule12APt1", [{ 0: "payor a" }, { 0: "payor b" }])],
+  ["Schedule 12A Part 2 (two blocks)", bizItemized, block("modalPage11Schedule12APt2", [{}, {}])],
+  ["Schedule 12A Part 3 (two blocks, a date)", bizItemized, block("modalPage11Schedule12APt3", [{}, { 0: "PS" }])],
+  ["Schedule 12A Part 4 (one block)", bizItemized, block("modalPage11Schedule12APt4", [{}])],
+  ["Schedule 12B Parts 1 and 2", bizItemized, { ...block("modalPage11Schedule12BPt1", [{}, {}]), ...block("modalPage11Schedule12BPt2", [{}]) }],
 ];
 
 describe("1701 (add more...) pop-ups", () => {
@@ -45,7 +55,7 @@ describe("1701 (add more...) pop-ups", () => {
     expect(MODAL.filter((m) => !m.modal.includes("TYPE")).length).toBe(11);
     expect(MODAL.filter((m) => m.modal.includes("TYPE")).length).toBe(11);
     expect(MODAL.flatMap((m) => modalCopy(m, { EX: 5, SP: 5 })).length).toBe(11 + 11 * 10);
-    expect(FORM_1701.group!.length).toBe(11 + 11 * 10);
+    expect(FORM_1701.group!.length).toBe(11 + 11 * 10 + COLUMN.length);
   });
 
   it("two or more rows: the item reads OTHERS and the rows' total, the counter is the row count", () => {
@@ -79,11 +89,13 @@ const PAGE = "[id^=Page][id$=Content]";
 const IE_TOLERANT: Array<[string, string]> = [
   ['var currentAttachmentPage = "";', 'var currentAttachmentPage = "Page1mXContent";'],
   ["function addFocusBlurEvent(tableID) {", "function addFocusBlurEvent(tableID) { return;"],
+  // IE's innerHTML carries a typed value; WebKit's carries the attribute, so write the property into it first
+  ["function saveRowCol(modalID, bool){", 'function saveRowCol(modalID, bool){ for (const e of document.querySelectorAll("#" + modalID + " input[type=text]")) e.setAttribute("value", e.value); for (const o of document.querySelectorAll("#" + modalID + " option")) o.toggleAttribute("selected", o.selected);'],
 ];
 // Harness artifact, not a form difference: BIR copies the pop-up between its tables with innerHTML. IE writes a typed
 // value into it; WebKit writes the value ATTRIBUTE, so after loadData fills the rows (the property) the copy holds the
 // blanks. The counter, the subtotal and every box the rows feed are still compared.
-const cellKey = (group: GroupState): string[] => Object.values(group).flatMap((row) => row.flatMap((r, i) => Object.keys(r).map((k) => k.replace("{i}", String(i + 1)))));
+const cellKey = (group: GroupState): string[] => Object.entries(group).filter(([name]) => !COLUMN.some((c) => c.kind === "column" && c.modal === name)).map(([, row]) => row).flatMap((row) => row.flatMap((r, i) => Object.keys(r).map((k) => k.replace("{i}", String(i + 1)))));
 
 describe.skipIf(!hasForm("1701"))("native 1701 pop-ups are 1:1 with BIR's form", () => {
   let oracle: Awaited<ReturnType<typeof startOracle>>;
