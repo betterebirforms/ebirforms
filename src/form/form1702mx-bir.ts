@@ -163,6 +163,17 @@ export abstract class BirDom {
     const b = subtrahend.split(",").reduce((s, id) => s + this.cents(id), 0);
     this.set(output, this.disp(a - b));
   }
+  /** BIR's summation(params, out) (renamed: the simulations have their own modal `summation`): the float sum of the boxes, written with commas / parentheses (BIR's own float total). */
+  summationTo(params: string, output: string): void {
+    const total = params.split(",").reduce((s, id) => s + this.operand(id), 0);
+    this.set(output, NegativeValue(formatCurrencyWOC(total)));
+  }
+  /** summationThenDifference(params, subtrahend, outSum, outDifference): the sum, and the sum less one box. */
+  summationThenDifference(params: string, subtrahend: string, outputSum: string, outputDifference: string): void {
+    const total = params.split(",").reduce((s, id) => s + this.operand(id), 0);
+    this.set(outputSum, NegativeValue(formatCurrencyWOC(total)));
+    this.set(outputDifference, NegativeValue(formatCurrencyWOC(total - this.operand(subtrahend))));
+  }
   /** BIR's float operand: isNaN(NumWithComma(NumWithParenthesis(x))) ? 0 : x. */
   protected operand(id: string): number {
     const x = NumWithComma(NumWithParenthesis(this.g(id)));
@@ -189,9 +200,20 @@ export abstract class BirDom {
   disableField(params: string): void {
     for (const id of params.split(",")) this.dis[id] = true;
   }
+  /** The Part V attachments in use (BIR's totalEX / totalSP): "EX1", "SP2" … in the order they were added. */
+  copy: { EX: string[]; SP: string[] } = { EX: [], SP: [] };
+  get totalEX(): number {
+    return this.copy.EX.length;
+  }
+  get totalSP(): number {
+    return this.copy.SP.length;
+  }
   enableField(params: string): void {
-    // with no Part V attachments (totalEX = totalSP = 0) every field is enabled
-    for (const id of params.split(",")) this.dis[id] = false;
+    // with Part V attachments the exempt / special-rate column of Schedules 4 to 6 stays disabled (BIR's enableField)
+    for (const id of params.split(",")) {
+      const sched = id.includes("Sc4") || id.includes("Sc5") || id.includes("Sc6");
+      this.dis[id] = sched && ((id.includes("CB") && this.totalSP > 0) || (id.includes("CA") && this.totalEX > 0));
+    }
   }
   enableField1(params: string): void {
     this.enableField(params);

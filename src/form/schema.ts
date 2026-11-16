@@ -114,11 +114,16 @@ export interface AttachmentSpec {
     /** Or: the copies are this group's rows (1701v2018's exempt / special groups), saved by the group as usual;
      *  the web shows each row as a copy of BIR's template, whose ids are the row's cells. */
     group?: string;
-    /** BIR's button that adds a copy of this kind. */
+    /** BIR's button that adds a copy of this kind: its id, or its label when BIR gave it none (1702-MX). */
     add_button: string;
+    /** BIR's question before the first copy of this kind (1702-MX addExemptAttachment); no copy on Cancel. */
+    first_confirm?: string;
   }>;
   /** BIR's script turns these input types in the clone into text (1702-MX: type=hidden → type=text). */
   unhide?: boolean;
+  /** The template key the copies' records follow in BIR's DOM order (1702-MX: its page's "attachmentTotal" box);
+   *  without it they are appended after the template. Used with `FormSchema.attachment_record`. */
+  after?: string;
 }
 
 export interface FormSchema {
@@ -131,6 +136,13 @@ export interface FormSchema {
    *  activity. Each copy's boxes are ordinary fields in `field` (and the state), with BIR's token in the id replaced
    *  by the copy's name ("EX1", "SP2"), for every copy up to `max`; the engine saves only the copies counted. */
   attachment?: AttachmentSpec;
+  /** The save records of the counted attachment copies (each copy's boxes as BIR leaves them), placed right after
+   *  `attachment.after` in the blank save's order — BIR's saveXML walks the page's boxes and the copies sit where
+   *  its containers are. */
+  attachment_record?: (state: FormState, groups: GroupState) => SaveRecord[];
+  /** Template keys BIR's page no longer has once copies exist (1702-MX: the special-rate drop-down is removed
+   *  while a special-rate copy exists), so saveXML never writes them. */
+  attachment_omit?: (state: FormState, groups: GroupState) => string[];
   /** Money display override. Default renders like BIR's `formatCurrency` (round-half-up, "-" sign). The 1707
    *  family uses accounting parentheses for negatives (`formatMoneyParen`). Rounding is identical either way. */
   format?: (cents: Centavo) => string;
@@ -344,13 +356,16 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
     seen.set(key, occurrence + 1);
     return { key, value: fix(read, saved, occurrence) };
   };
-  // BIR's attachments: saveXML walks the page in DOM order, and addAttachment appended each copy of its source block
-  // (the template records carrying the token) just before that block — one run of copies per run of source records
-  const att = schema.attachment;
+  const omitted = new Set(schema.attachment_omit?.(computed, groups) ?? []);
+  // BIR's attachments, two ways. A form with its own attachment_record (1702-MX) splices those records after
+  // attachment.after. Otherwise (1701) saveXML walks the page in DOM order, and addAttachment appended each copy of its
+  // source block (the template records carrying the token) just before that block: one run of copies per run of source
+  const att = schema.attachment_record ? undefined : schema.attachment;
   const copy = att ? attachmentCopy(att, computed) : [];
   const source = (key: string): boolean => !!att && key.includes(att.token);
   const record: SaveRecord[] = [];
   template.forEach((rec, i) => {
+    if (omitted.has(rec[0])) return;
     if (att && source(rec[0]) && !(i > 0 && source(template[i - 1]![0]))) {
       let end = i;
       while (end < template.length && source(template[end]![0])) end++;
@@ -362,6 +377,11 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
     }
     record.push(entry(rec));
   });
+  if (schema.attachment_record) {
+    const extra = schema.attachment_record(computed, groups);
+    const at = schema.attachment?.after ? record.findIndex((r) => r.key === schema.attachment!.after) : -1;
+    record.splice(at < 0 ? record.length : at + 1, 0, ...extra);
+  }
   // each key once: an extra_record entry may override a schedule cell (last write wins, as for template keys)
   const emitted = new Set<string>();
   for (const r of dynamic) {

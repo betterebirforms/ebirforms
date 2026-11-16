@@ -767,15 +767,23 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       off.push(() => el.removeEventListener("click", run, true));
     };
     const count = (code: string) => copyCount(spec, latest.current.state, code, latest.current.groups);
-    for (const kind of spec.kind)
-      on(root.getElementById(kind.add_button), () => {
-        const n = count(kind.code);
-        if (n >= spec.max) return window.alert(`The web version keeps up to ${spec.max} attachments of this kind.`);
-        if (kind.group) addRow(kind.group);
-        else setState((s) => withCount(spec, s, kind.code, n + 1));
-        setCopyView({ code: kind.code, n: n + 1, page: 1 });
-      });
+    const buttons = Array.from(root.querySelectorAll<HTMLInputElement>("input[type=button], button"));
+    for (const kind of spec.kind) {
+      // BIR's add button by id, or by its label where BIR gave it none (1702-MX's "Add Exempt Tax Regime")
+      const own = root.getElementById(kind.add_button);
+      const add = own ? [own] : buttons.filter((b) => (b.value || b.textContent || "").trim() === kind.add_button);
+      for (const el of add)
+        on(el, () => {
+          const n = count(kind.code);
+          if (n >= spec.max) return window.alert(`The web version keeps up to ${spec.max} attachments of this kind.`);
+          if (n === 0 && kind.first_confirm && !window.confirm(kind.first_confirm)) return;
+          if (kind.group) addRow(kind.group);
+          else setState((s) => withCount(spec, s, kind.code, n + 1));
+          setCopyView({ code: kind.code, n: n + 1, page: 1 });
+        });
+    }
     const frame = root.getElementById("ATTACHMENT");
+    const addInFrame = spec.kind.some((k) => buttons.some((b) => frame?.contains(b) && (b.id === k.add_button || (b.value || "").trim() === k.add_button)));
     for (const b of Array.from(root.querySelectorAll<HTMLInputElement>("input[type=button], button, a"))) {
       const id = b.id;
       const v = (b.value || b.textContent || "").replace(/\s+/g, " ").trim();
@@ -803,14 +811,15 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
           const left = count(x.code) - 1;
           setCopyView(left > 0 ? { code: x.code, n: Math.min(x.n, left), page: 1 } : null);
         });
-      else if (/view/i.test(id) && /attach/i.test(id)) {
+      else if (/view/i.test(id) && /attach|exempt|special/i.test(id)) {
         const code = /special|SP/.test(id) ? "SP" : /exempt|EX/.test(id) ? "EX" : null;
         on(b, () => {
           const pick = code ?? spec.kind.find((k) => count(k.code) > 0)?.code;
-          if (!pick || count(pick) === 0) return window.alert("There are no attachments yet.");
+          // the 1702-MX frame holds its own Add buttons: with no copy yet it opens on them (n 0)
+          if (!pick || count(pick) === 0) return addInFrame ? setCopyView({ code: pick ?? spec.kind[0]!.code, n: 0, page: 1 }) : window.alert("There are no attachments yet.");
           setCopyView({ code: pick, n: 1, page: 1 });
         });
-      } else if (frame?.contains(b) && !b.closest("[data-ebf-copy]") && /back|main|close/i.test(`${id} ${v}`)) on(b, () => setCopyView(null));
+      } else if ((frame?.contains(b) && !b.closest("[data-ebf-copy]") && /back|main|close/i.test(`${id} ${v}`)) || /^back to main/i.test(v)) on(b, () => setCopyView(null));
     }
     return () => off.forEach((f) => f());
   }, [root, schema]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -824,7 +833,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     show("ATTACHMENT", Boolean(copyView));
     show("mainPages", !copyView);
     for (const k of spec.kind) show(k.container, copyView?.code === k.code);
-    showCopy(root, copyView ? `${copyView.code}${copyView.n}` : null, copyView?.page ?? 1);
+    showCopy(root, copyView?.n ? `${copyView.code}${copyView.n}` : null, copyView?.page ?? 1);
+    show("viewMainBtn", Boolean(copyView));
+    show("addAttachment", Boolean(copyView));
     if (!copyView) return;
     const kind = spec.kind.find((k) => k.code === copyView.code)!;
     const put = (id: string, value: string) => {

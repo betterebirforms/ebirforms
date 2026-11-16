@@ -196,8 +196,6 @@ export class Sim extends BirDom {
   /** The rebuilt special-rate drop-down's option values. */
   drpOption: string[] = ["0"];
   tempVarForSc1I12 = false;
-  readonly totalEX = 0;
-  readonly totalSP = 0;
   constructor(readonly edition: Edition, now: Date) {
     super(now);
   }

@@ -354,6 +354,31 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 60_000);
 
+  // 1702-MX: View Attachments opens BIR's frame on its Add buttons; the first exempt copy asks BIR's question first
+  it("1702MX: an exempt attachment is added in BIR's frame and keeps what is typed", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const asked: string[] = [];
+    page.on("dialog", (d) => void (asked.push(d.message()), d.accept()));
+    await page.goto(`${base}/form/1702MX`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const display = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e) => getComputedStyle(e).display);
+    await page.locator('[id="viewAttachBtn"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => display("ATTACHMENT")).not.toBe("none");
+    await page.locator('[id="ATTACHMENT"] input[value="Add Exempt Tax Regime"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => asked.at(-1) ?? "").toMatch(/^Adding Exempt Attachments will remove current values/);
+    await expect.poll(() => page.locator('[id="attachmentTotal"]').inputValue()).toBe("1");
+    const box = page.locator('[id="frm1702MX:txtPg1EX1ScAI1"]');
+    await expect.poll(() => box.evaluate((e) => (e as HTMLElement).offsetParent !== null)).toBe(true);
+    await box.evaluate((e: HTMLInputElement) => (e.disabled = false));
+    await box.fill("RA 1234");
+    await box.blur();
+    await page.locator('[id="viewMainBtn"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => display("ATTACHMENT")).toBe("none");
+    await page.locator('[id="viewAttachBtn"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => box.inputValue()).toBe("RA 1234");
+    await page.close();
+  }, 60_000);
+
   // Help > <tax type> > BIR Form <X> opens BIR's own help page, from the main screen and from a form (which asks
   // first, as BIR's goToHelpPage does); a target missing from BIR's package says so
   it("Help opens BIR's help pages from the main screen and from a form", async () => {

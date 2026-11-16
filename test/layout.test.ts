@@ -42,10 +42,11 @@ describe("captured BIR layouts", () => {
         const def = NATIVE_FORM[code];
         expect(def, `no native form ${code}`).toBeDefined();
         const id = new Set(Array.from(html.matchAll(/\sid="([^"]+)"/g), (m) => m[1]));
-        // an attachment copy's box ("...EX1") is BIR's template box ("...TYPE") on this page: the copies are built at run time
+        // an attachment copy's box ("...EX1...") is BIR's template box ("...TYPE..." / "...AttM...") on this page: the
+        // copies are cloned at load
         const att = def!.schema.attachment;
-        const own = (i: string) => (att ? i.replace(new RegExp(`(${att.kind.map((k) => k.code).join("|")})\\d+$`), att.token) : i);
-        const missing = def!.schema.field.filter((f) => !f.secret && !id.has(own(f.id))).map((f) => f.id);
+        const own = (i: string) => (att ? i.replace(new RegExp(`(?:${att.kind.map((k) => k.code).join("|")})\\d+(?!\\d)`), att.token) : i);
+        const missing = def!.schema.field.filter((f) => !f.secret && !id.has(f.id) && !id.has(own(f.id))).map((f) => f.id);
         // a few save keys have no box on BIR's own page either: the element is inside an HTML comment in BIR's
         // source (1603's old tax-rate modal), or BIR's code writes the key itself. With BIR's tree at hand, check
         // each one is like that, so a field the capture lost can't hide among them.

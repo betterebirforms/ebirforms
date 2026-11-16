@@ -1,0 +1,13 @@
+{
+  "title": "1702-MX attachments are saved and reloaded",
+  "about": "When a 1702-MX return has more than one exempt or special-rate activity, BIR copies its attachment pages once per activity and turns their hidden boxes into text boxes so they are saved. It finds those boxes by the text type=hidden, which is how old Internet Explorer wrote the page back. Newer browsers write type=\"hidden\" with quotes, so no box was found, the attachments stayed hidden and nothing in them was saved. This accepts both spellings.",
+  "on": true,
+  "file": "form",
+  "form": ["1702MX", "1702MXv2018", "1702MXv2018C", "1702MXv2018Cxx"],
+  "rule": [
+    {
+      "find": "new RegExp\\(\"type=hidden\", \"g\"\\)",
+      "to": "new RegExp(\"type=\\\"?hidden\\\"?\", \"g\")"
+    }
+  ]
+}
