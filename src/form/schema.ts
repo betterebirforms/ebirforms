@@ -47,6 +47,28 @@ export interface FieldSpec {
    *  upper-cased by capital()), 2000's two `frm2000:optSection:_2` radios (only the first is section B). Gets the
    *  computed form, the record's value (the native overlay, else BIR's default, as saved) and the occurrence index. */
   derive_default?: (read: (id: string) => string, value: string, occurrence: number) => string;
+  /** The drop-down list of a `select` row sub-field, as BIR's pop-up table builds it (value = what BIR saves; the first
+   *  is BIR's selected default). A function when the list depends on another box: `read` takes a sibling sub-field's
+   *  stem (this row) or a form field's id (1602's and 1601F's ATC list follow the form's agent category). The web
+   *  version's row editor draws it as a <select>. */
+  option?: RowOption[] | ((read: (id: string) => string) => RowOption[]);
+  /** A tick or radio the row editor shows (BIR saves it per row: 1700's Taxpayer / Spouse). Without this a checkbox
+   *  sub-field stays hidden: BIR's own row-selection ticks (chk…Delete, sched1Chk) only drive its Delete button. */
+  row_tick?: {
+    /** Sibling sub-fields set to "false" when this one is ticked (a radio pair; the other tick is greyed meanwhile). */
+    exclude?: string[];
+    /** The tick is live only while this holds (1700's Spouse tick needs a joint return). */
+    enabled?: (read: (id: string) => string) => boolean;
+  };
+}
+
+/** One entry of a row sub-field's drop-down list. */
+export interface RowOption {
+  value: string;
+  /** What the list shows (BIR's option text); defaults to the value. */
+  label?: string;
+  /** Other sub-fields BIR fills in the row when this is picked (an ATC's rate): stem -> value. */
+  fill?: Record<string, string>;
 }
 
 /** One gate condition: field `on` must equal `equals` for the gated field to be live — or, for a condition on a

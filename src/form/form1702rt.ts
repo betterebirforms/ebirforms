@@ -22,6 +22,7 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1702RT", frozen as Array<[string, string, string?]>);
 import { parseMoney, type Centavo } from "./money.ts";
+import { PS_CS_OPTION } from "./row-option.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupRow, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { domPeso, formatPeso, nolcoRows, numWithParenthesis, out, product, validIncorporationDate, wholeNum } from "./form1702rtv2018c.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
@@ -125,7 +126,7 @@ export const DIV_RT: Div[] = [
 const divTotal = (d: Div) => `_total_${d.name}`;
 export const DIV_RT_GROUP: GroupSpec[] = DIV_RT.map((d) => {
   const feed = d.feed.flatMap((stem) => ["CA", "CB"].map((c) => `${P}${stem}${c}-{i}`));
-  return { name: d.name, size_field: `${P}${d.counter}`, first_index: 1, row: d.column, total: { into: divTotal(d), of: feed[0]!, sum: wholeSum(feed) } };
+  return { name: d.name, size_field: `${P}${d.counter}`, first_index: 1, row: d.column.map((c): FieldSpec => (c.kind === "select" ? { ...c, option: PS_CS_OPTION } : c)), total: { into: divTotal(d), of: feed[0]!, sum: wholeSum(feed) } };
 });
 
 /** validateYearEnd, old layout: fiscal rules as in 2018, but the floor is September 2013 and from 2018 on the

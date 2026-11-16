@@ -1,8 +1,8 @@
 // A schema-driven renderer for any rebuilt form: no inline IE JavaScript, live exact-centavo compute,
 // real validation, and a save that writes a file byte-compatible with the legacy form and BIR.
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
-import { computeForm, computeGroupRows, typedMoney, groupAggs, isGateOpen, radioGroupName, type FieldSpec, type FormState, type GroupRow, type GroupState, type GroupSpec } from "./schema.ts";
+import { computeForm, computeGroupRows, typedMoney, groupAggs, isGateOpen, radioGroupName, type FieldSpec, type RowOption, type FormState, type GroupRow, type GroupState, type GroupSpec } from "./schema.ts";
 import { formatMoney, parseMoney } from "./money.ts";
 import type { Profile } from "@/lib/savefile.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
@@ -186,6 +186,66 @@ export function ScheduleTable({
   onRemove: (group: string, i: number) => void;
 }) {
   const computed = computeGroupRows(group, rows, form);
+  // a sub-field the editor shows: BIR's own row-selection ticks (chk…Delete) stay hidden, the ones it saves as data show
+  const shown = group.row.filter((sub) => (sub.kind !== "checkbox" && sub.kind !== "radio") || sub.row_tick);
+  // a row's box, else a form box (a list that follows the form: the ATC list follows the agent's category)
+  const reader = (i: number) => (id: string) => computed[i]?.[id] ?? form[id] ?? "";
+  const optionOf = (sub: FieldSpec, i: number): RowOption[] => (typeof sub.option === "function" ? sub.option(reader(i)) : (sub.option ?? []));
+  // a new row's drop-down starts on BIR's first option, so the savefile carries the value BIR's own select would
+  useEffect(() => {
+    rows.forEach((row, i) => {
+      for (const sub of group.row) {
+        const first = sub.kind === "select" ? optionOf(sub, i)[0] : undefined;
+        if (first && row[sub.id] === undefined) onSet(group.name, i, sub.id, first.value);
+      }
+    });
+  });
+  const pick = (i: number, sub: FieldSpec, value: string) => {
+    onSet(group.name, i, sub.id, value);
+    for (const [id, filled] of Object.entries(optionOf(sub, i).find((o) => o.value === value)?.fill ?? {})) onSet(group.name, i, id, filled);
+  };
+  const tick = (i: number, sub: FieldSpec, on: boolean) => {
+    onSet(group.name, i, sub.id, String(on));
+    if (on) for (const id of sub.row_tick?.exclude ?? []) onSet(group.name, i, id, "false");
+  };
+  const cell = (sub: FieldSpec & { row_compute?: unknown }, row: GroupRow, i: number) => {
+    const value = sub.row_compute || sub.derive ? (computed[i]![sub.id] ?? "") : (row[sub.id] ?? "");
+    if (sub.kind === "select" && sub.option) {
+      const list = optionOf(sub, i);
+      return (
+        <select value={list.some((o) => o.value === value) ? value : (list[0]?.value ?? "")} onChange={(e) => pick(i, sub, e.target.value)}>
+          {list.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label ?? o.value}
+            </option>
+          ))}
+        </select>
+      );
+    }
+    if (sub.kind === "checkbox" || sub.kind === "radio") {
+      // greyed while a sibling in its pair is ticked or its own gate is off; a BIR-derived tick is read-only
+      const taken = group.row.some((o) => o.row_tick?.exclude?.includes(sub.id) && row[o.id] === "true");
+      const gated = sub.row_tick?.enabled ? !sub.row_tick.enabled(reader(i)) : false;
+      return (
+        <input
+          type={sub.kind === "radio" ? "radio" : "checkbox"}
+          checked={value === "true"}
+          disabled={Boolean(sub.derive) || taken || gated}
+          onChange={(e) => tick(i, sub, sub.kind === "radio" ? true : e.target.checked)}
+        />
+      );
+    }
+    return (
+      <input
+        inputMode={sub.kind === "money" ? "decimal" : undefined}
+        readOnly={Boolean(sub.row_compute)}
+        className={sub.kind === "money" ? "money" : ""}
+        value={value}
+        onChange={(e) => onSet(group.name, i, sub.id, e.target.value)}
+        onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, typed(e.target.value)) : undefined}
+      />
+    );
+  };
   return (
     <div className="schedule">
       <div className="schedule-head">
@@ -200,7 +260,7 @@ export function ScheduleTable({
         <table>
           <thead>
             <tr>
-              {group.row.filter((sub) => sub.kind !== "checkbox").map((sub) => (
+              {shown.map((sub) => (
                 <th key={sub.id}>{label[sub.id] ?? sub.id.split(":").pop()}</th>
               ))}
               <th />
@@ -209,17 +269,8 @@ export function ScheduleTable({
           <tbody>
             {rows.map((row, i) => (
               <tr key={i}>
-                {group.row.filter((sub) => sub.kind !== "checkbox").map((sub) => (
-                  <td key={sub.id}>
-                    <input
-                      inputMode={sub.kind === "money" ? "decimal" : undefined}
-                      readOnly={Boolean(sub.row_compute)}
-                      className={sub.kind === "money" ? "money" : ""}
-                      value={sub.row_compute || sub.derive ? (computed[i]![sub.id] ?? "") : (row[sub.id] ?? "")}
-                      onChange={(e) => onSet(group.name, i, sub.id, e.target.value)}
-                      onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, typed(e.target.value)) : undefined}
-                    />
-                  </td>
+                {shown.map((sub) => (
+                  <td key={sub.id}>{cell(sub, row, i)}</td>
                 ))}
                 <td>
                   <button className="ghost row-del" onClick={() => onRemove(group.name, i)} title="Remove row">
