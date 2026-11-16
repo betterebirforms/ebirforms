@@ -131,6 +131,11 @@ export const POPUP_NEED: Record<string, Record<string, (state: FormState) => str
 
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
  *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
+/** BIR's "(Add more...)" buttons that open an item's own pop-up table (1702-RT / 1702-EX families): button id → the group
+ *  and the pop-up's title. BIR keeps the button greyed until the item's line is filled; the web version keeps it
+ *  open, because the editor adds the first row itself. */
+const more = (...entry: Array<[button: string, group: string, title: string]>): Record<string, { group: string; title: string; on: () => boolean }> =>
+  Object.fromEntries(entry.map(([id, group, title]) => [id, { group, title, on: () => true }]));
 export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?: string; on?: (groups: GroupState) => boolean }>> = {
   // 2552 Part III: BIR's script adds its rows (AddTransactionNoTax), so none are on the page to find the table by
   "2552": {
@@ -147,6 +152,55 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
   },
 };
+
+// 1702-RT and 1702-EX: the "(Add more...)" tables of their schedules. The 2018 editions of each family share one set
+// of buttons (the superseded and the current edition carry the same ids).
+const RT2018 = more(
+  ["btnPg2Pt4I54More", "credit54", "Part IV item 54: other tax credits"],
+  ["btnPg3Sc1I17iMore", "sc1_17i", "Schedule 1 item 17i: other ordinary allowable deductions"],
+  ["btnPg3Sc2I4More", "sc2_4", "Schedule 2 item 4: other special allowable deductions"],
+  ["btnPg4Sc5I3More", "sc5_3", "Schedule 5 item 3: reconciliation"],
+  ["btnPg4Sc5I6More", "sc5_6", "Schedule 5 item 6: reconciliation"],
+  ["btnPg4Sc5I8More", "sc5_8", "Schedule 5 item 8: reconciliation"],
+);
+const EX2018 = more(
+  ["btnPg3Pt6S1I17More", "sc1_17", "Schedule 1 item 17: other ordinary allowable deductions"],
+  ["btnPg3Pt6S2I4More", "sc2_4", "Schedule 2 item 4: other special allowable deductions"],
+  ["btnPg3Pt6S3I3More", "sc3_3", "Schedule 3 item 3: reconciliation"],
+  ["btnPg3Pt6S3I6More", "sc3_6", "Schedule 3 item 6: reconciliation"],
+  ["btnPg3Pt6S3I8More", "sc3_8", "Schedule 3 item 8: reconciliation"],
+);
+Object.assign(BUTTON_GROUP, {
+  "1702RT": more(
+    ["btnPg4Sc3I3More", "sc3_3", "Schedule 3 item 3: other taxable income"],
+    ["btnPg4Sc4I4More", "sc4_4", "Schedule 4 item 4"],
+    ["btnPg5Sc4I39More", "sc4_39", "Schedule 4 item 39: other ordinary allowable deductions"],
+    ["btnPg5Sc5I4More", "sc5_4", "Schedule 5 item 4: other special allowable deductions"],
+    ["btnPg6Sc7I11More", "sc7_11", "Schedule 7 item 11: other tax credits"],
+    ["btnPg6Sc9I3More", "sc9_3", "Schedule 9 item 3: reconciliation"],
+    ["btnPg6Sc9I6More", "sc9_6", "Schedule 9 item 6: reconciliation"],
+    ["btnPg6Sc9I8More", "sc9_8", "Schedule 9 item 8: reconciliation"],
+  ),
+  "1702RTv2018": RT2018,
+  "1702RTv2018C": RT2018,
+  "1702EX": more(
+    ["btnPg4S3I3More", "sc3_3", "Schedule 3 item 3"],
+    ["btnPg4S4I4More", "sc4_4", "Schedule 4 item 4"],
+    ["btnPg5S4I39More", "sc4_39", "Schedule 4 item 39"],
+    ["btnPg5S5I4More", "sc5_4", "Schedule 5 item 4"],
+    ["btnPg5S6I3More", "sc6_3", "Schedule 6 item 3"],
+    ["btnPg5S6I6More", "sc6_6", "Schedule 6 item 6"],
+    ["btnPg5S6I8More", "sc6_8", "Schedule 6 item 8"],
+    ["Pg7S9Pt1More", "sc9_1", "Schedule 9 Part I: income subject to final tax"],
+    ["btnPg7S9Pt2More", "sc9_2", "Schedule 9 Part II: sale of real property"],
+    ["btnPg7S9Pt3More", "sc9_3", "Schedule 9 Part III: sale of shares of stock"],
+    ["btnPg7S9Pt4More", "sc9_4", "Schedule 9 Part IV: other income subject to final tax"],
+    ["btnPg7S9Pt5More", "sc10_1", "Schedule 10 Part I: exempt income"],
+    ["btnPg7S9Pt6More", "sc10_2", "Schedule 10 Part II: other exempt income"],
+  ),
+  "1702EXv2018": EX2018,
+  "1702EXv2018C": EX2018,
+});
 
 /** BIR's "Read CSV File" (1707A): which schedule each button reads into. */
 export const CSV_BUTTON: Record<string, Record<string, 1 | 2>> = { "1707A": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 } };
