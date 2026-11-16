@@ -9,6 +9,7 @@
 
 import fieldJson from "./fields/1602.json";
 import { parseMoney } from "./money.ts";
+import { atcOption, treatyOption } from "./row-option.ts";
 import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
@@ -81,8 +82,10 @@ const section = (name: string, sec: "B" | "C", into: string): GroupSpec => ({
   name,
   first_index: 0,
   row: [
-    { id: `drpTreatyCodeSec${sec}`, kind: "select" },
-    { id: `drpATCCodeSec${sec}`, kind: "select" },
+    // BIR's lists: "-" then the 1602 treaties; "-", "NA", then the private-agent ATCs (both of its category radios call
+    // getPrivateWithholdingAgentATC, so the government list is never built). Picking an ATC fills the rate box.
+    { id: `drpTreatyCodeSec${sec}`, kind: "select", option: treatyOption("1602", false) },
+    { id: `drpATCCodeSec${sec}`, kind: "select", option: atcOption("1602", "P", `txtRateSec${sec}`) },
     { id: `txtAmtIncomePaySec${sec}`, kind: "money" },
     { id: `txtRateSec${sec}`, kind: "text" },
     { id: `txtReqWithheldSec${sec}`, kind: "money", row_compute: (r) => parseMoney((parseMoney(r(`txtAmtIncomePaySec${sec}`)) / 100) * (Number(r(`txtRateSec${sec}`).replace(/,/g, "")) || 0) / 100) },

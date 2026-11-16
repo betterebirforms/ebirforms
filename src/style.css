@@ -422,6 +422,15 @@ a {
 .schedule input {
   padding: 0.35rem 0.4rem;
 }
+.schedule input[type="checkbox"],
+.schedule input[type="radio"] {
+  width: auto;
+}
+.schedule select {
+  width: 100%;
+  min-width: 4.5rem;
+  padding: 0.35rem 0.3rem;
+}
 .row-del {
   padding: 0.2rem 0.5rem;
 }

@@ -79,6 +79,8 @@ const attachGroup = (kind: AttachKind, name: string): GroupSpec => ({
   row: ATTACH.map(([key, value, radio]) => ({
     id: attachStem(key, kind),
     kind: radio ? ("radio" as const) : value === "0.00" ? ("money" as const) : ("text" as const),
+    // BIR's setTaxRegime ticks (and greys) the regime radios by the pop-up's kind, so the editor shows them read-only
+    ...(radio ? { row_tick: {} } : {}),
     derive: (r: Read) => {
       let hit = rowCache.get(r);
       if (!hit) rowCache.set(r, (hit = attachmentRow((k) => r(attachStem(k, kind)), kind, r(`${P}rdoPg1mOption2`) === "true")));

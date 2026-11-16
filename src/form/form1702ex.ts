@@ -31,6 +31,7 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1702EX", frozen as Array<[string, string, string?]>);
 import type { Centavo } from "./money.ts";
+import { PS_CS_OPTION } from "./row-option.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
@@ -145,7 +146,7 @@ export const GROUP: GroupSpec[] = [
     first_index: 3,
     row: [
       // an untouched PS/CS select keeps its first option
-      ...(p.select ? [{ id: pairId(p.select), kind: "select" as const, derive: (_: Read, value: string) => value || "PS" }] : []),
+      ...(p.select ? [{ id: pairId(p.select), kind: "select" as const, option: PS_CS_OPTION, derive: (_: Read, value: string) => value || "PS" }] : []),
       ...p.text.map((stem) => ({ id: pairId(stem), kind: "text" as const, derive: upper })),
       ...p.amount.map((stem) => ({ id: pairId(stem), kind: "money" as const, row_compute: (r: Read) => rowPeso(r(pairId(stem))) * 100, derive: bareRow })),
     ],

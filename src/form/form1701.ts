@@ -119,7 +119,7 @@ const columnGroup = (c: Column): GroupSpec => {
     x.ml === 12
       ? { id: x.stem, kind: "money", derive: (_r, v) => wholePeso(v) }
       : x.select
-        ? { id: x.stem, kind: "select", derive: (_r, v) => (v.toUpperCase() === "CS" ? "CS" : "PS") }
+        ? { id: x.stem, kind: "select", option: (x.option ?? ["PS", "CS"]).map((value) => ({ value })), derive: (_r, v) => (v.toUpperCase() === "CS" ? "CS" : "PS") }
         : { id: x.stem, kind: "text", derive: (_r, v) => (x.date ? issueDate(v) : (x.upper ? v.toUpperCase() : v).slice(0, x.ml)) },
   );
   const text = row.find((sub) => sub.kind === "text")!;

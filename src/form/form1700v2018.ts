@@ -164,8 +164,14 @@ const moreCell = (col: "c" | "d" | "e"): string => `${P}txtPg2ISched1${col}_4_${
 const sched1more: GroupSpec = {
   name: "sched1more",
   row: [
-    { id: `${P}rdoPg2I4_${MORE}PartVIEmployeeT`, kind: "checkbox" },
-    { id: `${P}rdoPg2I4_${MORE}PartVIEmployeeS`, kind: "checkbox" },
+    // BIR's Taxpayer / Spouse ticks (enabledSched1ColumnField): ticking one clears the other; the Spouse one is live
+    // only on a joint filing status (its add-row sets .disabled from rdoPg1I17FilingStatusJ)
+    { id: `${P}rdoPg2I4_${MORE}PartVIEmployeeT`, kind: "checkbox", row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeS`] } },
+    {
+      id: `${P}rdoPg2I4_${MORE}PartVIEmployeeS`,
+      kind: "checkbox",
+      row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeT`], enabled: (read) => read(`${P}rdoPg1I17FilingStatusJ`) === "true" },
+    },
     { id: `${P}txtPg2I4_${MORE}PartVIEmployerName1`, kind: "text" },
     { id: `${P}txtPg2I4_${MORE}PartVIEmployerName2`, kind: "text" },
     { id: `${P}txtPg2I4_${MORE}PartVIEmployerTIN1`, kind: "text" },

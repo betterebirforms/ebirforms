@@ -22,9 +22,9 @@
 // into all four pop-up labels (allow-listed in the parity test); DS131/DS132's pop-up "Yes" throws.
 
 import fieldJson from "./fields/2000v2018.json";
-import { ATC_CHOICE_2000V2018, rateText2000v2018, taxDue2000v2018, type DstModal } from "./dst.ts";
+import { ATC_CHOICE_2000V2018, DST_ATC, rateText2000v2018, taxDue2000v2018, type DstModal } from "./dst.ts";
 import { formatMoney, parseMoney, type Centavo } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupSpec, type GroupState, type Problem, type RowOption } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 const P = "frm2000:";
@@ -47,6 +47,11 @@ export const modal2000v2018 = (r: Read): DstModal => ({
   month_count_132: r(`${P}numOfMonths132`) || "0",
 });
 
+const ATC_OPTION_2000V2018: RowOption[] = ATC_CHOICE_2000V2018.map((value) => ({
+  value,
+  label: value === "-" ? "-" : `${value} - ${value === "DS010" ? "GENERAL" : (DST_ATC.find((a) => a.atc_code === value)?.description ?? "")}`,
+}));
+
 const atcOf = (r: Read): string => (r("drpATCCode") || "-").trim();
 const engine = (r: Read) => taxDue2000v2018(atcOf(r), m(r, `${S1}txtTaxBase`), r(`${S1}txtTaxRate`), modal2000v2018(r));
 
@@ -55,7 +60,9 @@ export const SCHED1_2000V2018: GroupSpec = {
   first_index: 0,
   row: [
     { id: "chkSchedule1Delete", kind: "checkbox", derive: () => "false" },
-    { id: "drpATCCode", kind: "select", derive: (_r, v) => v.trim() || "-" },
+    // BIR's list: "-", its hard-coded "DS010 - GENERAL", then every DST ATC (DS112 twice there: the pre-need entry
+    // has no value of its own, so the editor lists the code once and the rate box carries the pre-need text)
+    { id: "drpATCCode", kind: "select", option: ATC_OPTION_2000V2018, derive: (_r, v) => v.trim() || "-" },
     // DS130–DS132 range checks reset an out-of-range base to 0.00
     { id: `${S1}txtTaxBase`, kind: "money", derive: (r, v) => formatMoney(engine(r).tax_base ?? parseMoney(v)) },
     {

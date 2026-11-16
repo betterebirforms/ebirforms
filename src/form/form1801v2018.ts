@@ -24,8 +24,18 @@
 
 import fieldJson from "./fields/1801v2018.json";
 import { parseMoney, type Centavo } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
+import { rdoOption } from "./row-option.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FormState, type GroupSpec, type GroupState, type Problem, type RowOption } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
+
+// the drop-downs of BIR's schedule rows (addRow_RealProp / addRow_Fam / addRow_Stock): a blank first, then its options
+const REAL_PROP_CLASS: RowOption[] = [
+  { value: "", label: "" },
+  ...(
+    [["RR", "Residential Regular"], ["CR", "Commercial Regular"], ["CL", "Cemetery Lot"], ["GL", "Government Land"], ["A", "Agricultural"], ["X", "Institutional"], ["RC", "Residential Condominium"], ["CC", "Commercial Condominium"], ["PS", "Parking Slot"], ["GP", "General Purpose"], ["I", "Industrial"], ["APD", "Area for Priority Development"]] as const
+  ).map(([value, label]) => ({ value, label })),
+];
+const STOCK_CLASS: RowOption[] = [{ value: "", label: "" }, { value: "Listed" }, { value: "Not Listed" }];
 
 const P = "frm1801v2018:";
 type Read = (id: string) => string;
@@ -74,7 +84,7 @@ export const SCHED1_1801V2018: GroupSpec = {
   first_index: 1,
   row: [
     text("sched1Oct"), text("sched1Td"), text("sched1Loc"), text("sched1Lot"), text("sched1Area"),
-    { id: `${P}sched1Class_{i}'`, kind: "select" },
+    { id: `${P}sched1Class_{i}'`, kind: "select", option: REAL_PROP_CLASS },
     text("sched1Fmv"), text("sched1Zonal"), money("sched1Exc"), money("sched1Conj"),
   ],
   total: totals("1"),
@@ -84,7 +94,7 @@ export const SCHED1A_1801V2018: GroupSpec = {
   first_index: 1,
   row: [
     text("sched1AOct"), text("sched1ATd"), text("sched1ALoc"), text("sched1AArea"),
-    { id: `${P}sched1AClass_{i}'`, kind: "select" },
+    { id: `${P}sched1AClass_{i}'`, kind: "select", option: REAL_PROP_CLASS },
     text("sched1AFmv"), text("sched1AZonal"), money("sched1AExc"), money("sched1AConj"),
   ],
   total: totals("1A"),
@@ -93,7 +103,7 @@ export const SCHED2_1801V2018: GroupSpec = {
   name: "sched2",
   first_index: 1,
   row: [
-    text("sched2Corp"), { id: `${P}sched2Class_{i}`, kind: "select" }, text("sched2Stock"), text("sched2Shares"),
+    text("sched2Corp"), { id: `${P}sched2Class_{i}`, kind: "select", option: STOCK_CLASS }, text("sched2Stock"), text("sched2Shares"),
     text("sched2FmvPerShare"), money("sched2Exc"), money("sched2Conj"),
   ],
   total: totals("2"),
@@ -116,7 +126,7 @@ export const SCHED4_1801V2018: GroupSpec = {
   row: [
     text("sched4Name"), text("sched4Address"),
     // addRow_Business: the RDO picker's blank option is '000', so an untouched row saves "000", not ""
-    { id: `${P}sched4Rdo_{i}`, kind: "select", derive: (_r, v) => v || "000" },
+    { id: `${P}sched4Rdo_{i}`, kind: "select", option: rdoOption("1801"), derive: (_r, v) => v || "000" },
     money("sched4Exc"), money("sched4Conj"),
   ],
   total: totals("4"),

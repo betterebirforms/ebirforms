@@ -19,6 +19,7 @@
 import fieldJson from "./fields/1601F.json";
 import { atcInListOrder, atcPickIndex, atcPickList, atcPickRecord, type AtcPick } from "./atc.ts";
 import { parseMoney } from "./money.ts";
+import { atcOption, treatyOption } from "./row-option.ts";
 import { buildSchema, validate as validateRequired, type FieldJson, type FormState, type GroupRow, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
@@ -47,8 +48,10 @@ export const SCHEDULE_1601F: GroupSpec = {
   name: "schedI",
   first_index: 0,
   row: [
-    { id: "drpTreatyCode", kind: "select" }, // "NA" or a treaty code
-    { id: "drpATCCode", kind: "select" }, // "NA" or a code on item 12's ATC list
+    // "-", "NA", then the treaty codes whose record names 1601F; "-", "NA", then item 12's ATC list (private or
+    // government, as the agent's category says). Picking an ATC fills the rate box.
+    { id: "drpTreatyCode", kind: "select", option: treatyOption("1601F", true) },
+    { id: "drpATCCode", kind: "select", option: (read) => atcOption("1601F", read(`${P}CatAgent_G`) === "true" ? "G" : "P", "txtRate") },
     { id: "txtAmtIncomePay", kind: "money" },
     { id: "txtRate", kind: "money" }, // the rate field's onblur is round(this,2): BIR keeps it as "10.00"
     {

@@ -41,6 +41,7 @@ import { liveTemplate } from "./clock.ts";
 const template = liveTemplate("1700", frozen as Array<[string, string, string?]>);
 import { NegativeValue, NumWithComma, NumWithParenthesis, formatCurrencyWOC } from "./form1702mx-bir.ts";
 import { parseMoney, type Centavo } from "./money.ts";
+import { PS_CS_OPTION } from "./row-option.ts";
 import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape } from "@/lib/savefile.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
@@ -147,7 +148,16 @@ export const MODAL_GROUP: GroupSpec[] = MODALS.map((m) => ({
   name: m.name,
   size_field: `${P}${m.counter}`,
   first_index: m.first_index ?? 1,
-  row: m.columns.map(([stem, kind]) => ({ id: `${P}${stem}`, kind: kind === "check" ? ("checkbox" as const) : kind })),
+  row: m.columns.map(([stem, kind]): FieldSpec => {
+    const id = `${P}${stem}`;
+    if (kind === "select") return { id, kind, option: PS_CS_OPTION }; // BIR's <select>: PS (selected) / CS
+    if (kind !== "check") return { id, kind };
+    // BIR's Taxpayer / Spouse ticks (processTFEmployer / processSpEmployer): one or the other, and the Spouse one is
+    // live only on a joint return (disableSingle)
+    const spouse = stem.endsWith("Spouse");
+    const other = `${P}${stem.replace(spouse ? "Spouse" : "TaxFiler", spouse ? "TaxFiler" : "Spouse")}`;
+    return { id, kind: "checkbox", row_tick: { exclude: [other], ...(spouse ? { enabled: (read) => read(`${P}rdoPg1Pt1I3JointFilingYes`) === "true" } : {}) } };
+  }),
 }));
 
 // ── the sim ──
