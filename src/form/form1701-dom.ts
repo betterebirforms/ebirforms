@@ -428,6 +428,18 @@ export abstract class Dom1701 {
     return e;
   }
 
+  /** a table of `count` rows whose inputs were added with addInput (Schedule 1's Repository: one row per employer) */
+  setRows(id: string, count: number): void {
+    const table = this.boxOf(id);
+    if (!table) throw new Error(`form1701-dom: no table ${id}`);
+    table.rows = Array.from({ length: count }, () => ({ cells: [], getElementsByTagName: () => [] }));
+  }
+  /** BIR's clearTable: the table's rows and everything inside go */
+  clearInput(container: string): void {
+    this.insideIndex.set(container, []);
+    this.setRows(container, 0);
+  }
+
   boxOf(id: string): Box | null {
     let b = this.box.get(id);
     if (!b) {

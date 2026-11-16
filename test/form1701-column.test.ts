@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { computeForm, formRecords, type FormState, type GroupRow, type GroupState } from "@/form/schema.ts";
 import { FORM_1701 } from "@/form/form1701.ts";
-import { COLUMN, simulate } from "@/form/form1701-sim.ts";
-import { bizItemized, id } from "./form1701-case.ts";
+import { COLUMN, SCHED1, simulate } from "@/form/form1701-sim.ts";
+import { bizItemized, compensation, id } from "./form1701-case.ts";
 
 // Schedule 12 on page 11: Part 1 of 12A is a row table; the other five pop-ups add column blocks (BIR's addRowCol).
 const column = (modal: string) => COLUMN.find((c) => c.modal === modal)!;
@@ -19,7 +19,7 @@ const at = (state: FormState, group: GroupState) => {
 describe("1701 Schedule 12 pop-ups", () => {
   it("lists six pop-ups: one row table and five column blocks", () => {
     expect(COLUMN.map((c) => c.kind)).toEqual(["row", "column", "column", "column", "column", "column"]);
-    expect(FORM_1701.group!.length).toBe(11 + 110 + 6);
+    expect(FORM_1701.group!.length).toBe(11 + 110 + 1 + 6);
   });
 
   it("Part 2: a block's boxes are saved by number with its counter", () => {
@@ -42,6 +42,16 @@ describe("1701 Schedule 12 pop-ups", () => {
     const group: GroupState = { [m.modal]: [{ [m.cell[0]!.stem]: "a", [m.cell[1]!.stem]: "100", [m.cell[2]!.stem]: "10" }, { [m.cell[0]!.stem]: "b", [m.cell[1]!.stem]: "200", [m.cell[2]!.stem]: "20" }] };
     const v = at(bizItemized, group);
     expect([v("txtCtrmodalPage11Schedule12APt1"), v("txtPg11ScAPt1I6_1C1"), v("txtPg11ScAPt1I6_2C2")]).toEqual(["2", "A", "200"]);
+  });
+
+  it("Schedule 1: two employers lock item 4 as OTHERS with their totals and save from I5; one goes back to item 4 and saves no rows", () => {
+    const emp = (name: string, income: string, tax: string): GroupRow =>
+      Object.fromEntries(SCHED1.cell.map(([stem], k) => [stem, [name, "true", "false", "111", "222", "333", "000", income, tax][k] ?? ""]));
+    const base = { ...compensation };
+    const two = at(base, { [SCHED1.modal]: [emp("acme", "120000", "12000"), emp("beta", "30000", "3000")] });
+    expect([two("txtCtrmodalPage5Schedule1"), two("txtPg5Sc1I4NameOfEmp"), two("txtPg5Sc1I4ComIncomeC2"), two("txtPg5Sc1I4TaxWithheldC3"), two("txtPg5Sc1I5NameOfEmp"), two("txtPg5Sc1I6ComIncomeC2"), two("rdoPg5Sc1I6Spouse")]).toEqual(["2", "OTHERS", "150000", "15000", "ACME", "30000", "false"]);
+    const one = at(base, { [SCHED1.modal]: [emp("acme", "120000", "12000")] });
+    expect([one("txtCtrmodalPage5Schedule1"), one("txtPg5Sc1I4NameOfEmp"), one("txtPg5Sc1I4ComIncomeC2"), one("txtPg5Sc1I5NameOfEmp")]).toEqual(["0", "ACME", "120000", undefined]);
   });
 
   it("every pop-up takes its rows without a script error of its own", () => {

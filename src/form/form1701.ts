@@ -24,9 +24,9 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1701", frozen as Array<[string, string, string?]>);
 import dom from "./page/1701.json";
-import { COLUMN, ESCAPED, MAX_COPY, MODAL, PFX, forCopy, modalCopy, rowKey, simulate, type Column, type Modal, type SimResult } from "./form1701-sim.ts";
+import { COLUMN, ESCAPED, MAX_COPY, MODAL, PFX, SCHED1, forCopy, modalCopy, rowKey, simulate, type Column, type Modal, type SimResult } from "./form1701-sim.ts";
 import { parseMoney } from "./money.ts";
-import { validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
+import { groupRecords, validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 export const P = PFX;
@@ -131,13 +131,35 @@ const columnGroup = (c: Column): GroupSpec => {
   };
 };
 export const COLUMN_GROUP: GroupSpec[] = COLUMN.map(columnGroup);
+
+/** Schedule 1 on page 5: the employers below item 3. Two or more rows are saved (ids from I5, BIR's resetMainTableIDPg5Sc1)
+ *  and item 4 reads "OTHERS" with their totals; ONE row goes back to item 4 and BIR deletes it from the pop-up, so the group is
+ *  `unsaved` and `extra_record` writes the rows only from two. The Taxpayer / Spouse radios are two cells holding
+ *  "true" / "false" (Taxpayer wins); the name takes 90 characters for a single or professional filer, else 50. */
+const flag = (v: string): boolean => v === "true";
+const sched1Group: GroupSpec = {
+  name: SCHED1.modal,
+  first_index: 5,
+  unsaved: true,
+  row: SCHED1.cell.map(([stem, kind, ml], k): GroupSpec["row"][number] =>
+    kind === "radio"
+      ? { id: stem, kind: "text", derive: (read, v) => String(k === 1 ? flag(v) : flag(v) && !flag(read(SCHED1.cell[1]![0]))) }
+      : ml === 12
+        ? { id: stem, kind: "money", derive: (_r, v) => wholePeso(v) }
+        : k === 0
+          ? { id: stem, kind: "text", derive: (read, v) => v.toUpperCase().slice(0, read(`${P}rdoPg1Pt1I7TypeSingle`) === "true" || read(`${P}rdoPg1Pt1I7TypeProfessional`) === "true" ? 90 : 50) }
+          : { id: stem, kind: "text", derive: (_r, v) => v.replace(/\D/g, "").slice(0, ml) },
+  ),
+  total: { into: rowKey(SCHED1.modal), of: SCHED1.cell[0]![0], sum: (rows) => JSON.stringify(rows.map((r) => SCHED1.cell.map(([stem]) => r[stem] ?? ""))) },
+};
 export const MODAL_GROUP: GroupSpec[] = MODAL.flatMap((m) => modalCopy(m, { EX: MAX_COPY, SP: MAX_COPY }).map((copy) => modalGroup(m, copy)));
 
 export const FORM_1701: FormSchema = {
   form_code: "1701",
   title: "Annual Income Tax — Individuals, Estates and Trusts (2013)",
   field,
-  group: [...MODAL_GROUP, ...COLUMN_GROUP],
+  group: [...MODAL_GROUP, sched1Group, ...COLUMN_GROUP],
+  extra_record: (state, groups) => ((groups[SCHED1.modal] ?? []).length >= 2 ? groupRecords(sched1Group, groups[SCHED1.modal]!, state, "1701") : []),
   attachment: {
     template: "attachmentPages_TEMP",
     token: "TYPE",

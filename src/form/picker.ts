@@ -8,6 +8,7 @@
 import type { FormState, GroupState } from "./schema.ts";
 import type { AtcPick } from "./atc.ts";
 import modal1701Json from "./page/1701-modal.json";
+import column1701Json from "./page/1701-column.json";
 import { pickList1600 } from "./form1600.ts";
 import { pickList1600WP } from "./form1600wp.ts";
 import { pickList1601E } from "./form1601e.ts";
@@ -153,6 +154,24 @@ function modal1701(): Record<string, { group: string; title: string }> {
   return out;
 }
 
+/** 1701's seven other "(add more...)" links: Schedule 1 on page 5 (employers) and Schedule 12 on page 11 (Part 1 of 12A as
+ *  rows; Parts 2 to 4 and B1, B2 as BIR's column blocks). Each opens the group named after BIR's pop-up
+ *  (page/1701-column.json, tool/gen-1701-column.mjs; form1701-sim.ts SCHED1). */
+function column1701(): Record<string, { group: string; title: string }> {
+  const title: Record<string, string> = {
+    modalPage11Schedule12APt1: "Schedule 12A Part 1 item 6: other compensation, final tax withheld",
+    modalPage11Schedule12APt2: "Schedule 12A Part 2: sale of real property (items 7 to 11), two sales a block",
+    modalPage11Schedule12APt3: "Schedule 12A Part 3: sale of shares of stock (items 12 to 17), two sales a block",
+    modalPage11Schedule12APt4: "Schedule 12A Part 4: other income (items 18 to 20), two a block",
+    modalPage11Schedule12BPt1: "Schedule 12B Part 1: sale of property (items 4 to 7), two sales a block",
+    modalPage11Schedule12BPt2: "Schedule 12B Part 2: other exempt income (items 8 and 9), two a block",
+  };
+  return {
+    "frm1701:lnkPg5Sc1More": { group: "modalPage5Schedule1", title: "Page 5 Schedule 1 item 4: employers (two or more)" },
+    ...Object.fromEntries((column1701Json as Array<{ link: string; modal: string }>).map((c) => [c.link, { group: c.modal, title: title[c.modal] ?? c.modal }])),
+  };
+}
+
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
  *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
 /** BIR's "(Add more...)" buttons that open an item's own pop-up table (1702-RT / 1702-EX families): button id → the group
@@ -202,7 +221,7 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     "frm1700:lnkPg3Pt5I10ADDMore": { group: "Page3Part5ModalB2", title: "Page 3 Part V B Item 10" },
   },
   "1700v2018": { addMoreSched1Link: { group: "sched1more", title: "Part VI Schedule 1: continuation of employers" } },
-  "1701": modal1701(),
+  "1701": { ...modal1701(), ...column1701() },
   "1701A": {
     "frm1701A:lnkPartIVAMore": { group: "partIVA", title: "Part IV.A Other Taxable Income (item 42)" },
     "frm1701A:lnkPartIVBMore": { group: "partIVB", title: "Part IV.B Other Non-Taxable Income (item 51)" },

@@ -21,9 +21,10 @@
 // The add-more pop-ups (22: 11 on the main pages, 11 kinds per copy; page/1701-modal.json, tool/gen-1701-modal.mjs) are
 // closed last, as a filer opens one after typing the item it hangs on: the schema's group rows (a scratch key holding a
 // JSON list) become the pop-up's Repository table, and BIR's own saveChanges outcome is run (the counter, the parent
-// boxes locked with "OTHERS" from two rows, compute...Modal(false) for the schedule's total). Not modelled: the seven
-// column-block pop-ups (Schedule 1 on page 5, Schedule 12 on page 11: addRowCol), BIR's two Schedule 8 links (commented
-// out in its page), and the enabled-link / enabled-input lists for a one-row pop-up (BIR's enableParentInput).
+// boxes locked with "OTHERS" from two rows, compute...Modal(false) for the schedule's total; a one-row pop-up also runs
+// enableParentInput). Schedule 1 on page 5 (employers) and Schedule 12 on page 11 (row table, column blocks) are closed the
+// same way (closeSched1, closeColumn). Not modelled: BIR's two Schedule 8 links (commented out in its page) and its save-time
+// validation (a pop-up BIR refuses to save, e.g. a Schedule 1 employer without a TIN or an amount, is simply saved here).
 
 import { Bir1701, HANDLER } from "./form1701-bir.ts";
 import type { Elem } from "./form1701-dom.ts";
@@ -230,10 +231,87 @@ class Sim extends Bir1701 {
         const text = read(rowKey(forCopy(m.modal, c)));
         if (text !== "") this.close(m, c, JSON.parse(text) as string[][]);
       }
+    const sched1 = read(rowKey(SCHED1.modal));
+    if (sched1 !== "") this.closeSched1(JSON.parse(sched1) as string[][]);
     for (const c of COLUMN) {
       const text = read(rowKey(c.modal));
       if (text !== "") this.closeColumn(c, JSON.parse(text) as string[][]);
     }
+  }
+  /** loadData's saveChangesPg5Sch1(-1) for a saved Schedule 1 pop-up (a counter above 0: two or more employers) */
+  reopenSched1(read: Read): void {
+    const text = read(rowKey(SCHED1.modal));
+    const row = text === "" ? [] : (JSON.parse(text) as string[][]);
+    if (row.length < 2) return;
+    this.guard(SCHED1.link, () => {
+      this.sched1Input(row);
+      this.sched1Save(row.length);
+    });
+  }
+  /** Schedule 1's Repository as BIR's saveChangesPg5Sch1 leaves it: one input set per employer, ids from I5 */
+  sched1Input(row: string[][]): void {
+    this.clearInput(SCHED1.table);
+    row.forEach((cell, r) =>
+      SCHED1.cell.forEach(([stem, kind, ml], k) => {
+        const row_id = 5 + r;
+        const id = stem.replace("{i}", String(row_id));
+        if (kind === "radio") this.addInput([SCHED1.table], { id, value: "", maxLength: 0, type: "radio", name: `${PFX}rdoPg5Sc1I${row_id}TaxpayerSpouse`, checked: cell[k] === "true" });
+        else this.addInput([SCHED1.table], { id, value: ml === 12 && (cell[k] ?? "") === "" ? "0" : (cell[k] ?? ""), maxLength: ml });
+      }),
+    );
+    this.setRows(SCHED1.table, row.length);
+  }
+  /** saveChangesPg5Sch1's outcome for the Repository sched1Input built (BIR's alert and validation left out) */
+  sched1Save(n: number): void {
+    const g = this as unknown as Record<string, any>;
+    g.activeParentInput = [...SCHED1.parent];
+    if (n <= 1) {
+      // one employer goes back to item 4 (its boxes unlock), and item 4 is no longer among the locked inputs
+      g.transferToModalPg5Sc1(false);
+      for (const p of SCHED1.parent) {
+        const at = g.disabledinputIDs.indexOf(p);
+        if (at !== -1) g.disabledinputIDs.splice(at, 1);
+      }
+      g.storeDisabledinputIDs();
+    } else {
+      g.disableItem4(true);
+      this.el(SCHED1.counter).value = n;
+      for (const p of SCHED1.parent) if (!g.disabledinputIDs.includes(p)) g.disabledinputIDs.push(p);
+      g.storeDisabledinputIDs();
+    }
+    g.sumIterateOnlyPg5Sc1(true);
+  }
+  /** item 4's own boxes as one employer row: what openModalPg5Sc1 copies into the pop-up's first row */
+  sched1Item4(): string[] {
+    return SCHED1.cell.map(([stem, kind]) => {
+      const e = this.el(stem.replace("{i}", "4"));
+      return kind === "radio" ? String(e.checked) : e.value;
+    });
+  }
+  /** SAVE AND CLOSE of Schedule 1's pop-up holding `row` (the layout's order, one array per employer). The filer opened it
+   *  first: with no saved rows BIR copies item 4 into the first row and saves it straight back (its Spouse box ticks when
+   *  neither was). Then closeModalPg5Sc1 and the button's own chain. */
+  closeSched1(row: string[][]): void {
+    if (row.length === 0) return;
+    const g = this as unknown as Record<string, any>;
+    this.guard(SCHED1.link, () => {
+      this.sched1Input([this.sched1Item4()]);
+      this.sched1Save(1);
+      this.sched1Input(row);
+      this.sched1Save(row.length);
+      if (row.length === 1) this.clearInput(SCHED1.table); // closeModalPg5Sc1: a lone row is deleted
+      // what the pop-up's blur handlers keep in its subtotal boxes: the rows' totals
+      g.moveValue(`${PFX}txtPg5Sc1I4ComIncomeC2`, `${PFX}txtPg5Sc1I4SubtotalC1`);
+      g.moveValue(`${PFX}txtPg5Sc1I4TaxWithheldC3`, `${PFX}txtPg5Sc1I4SubtotalC2`);
+      g.sumTaxSpouseIterate();
+      g.computePage2Part4("TaxPayer");
+      g.computePage2Part4("Spouse");
+      g.computePage3Part5("TaxPayer");
+      g.computePage3Part5("Spouse");
+      g.computePage1Part2();
+      g.moveValue(`${PFX}txtPg5Sc1I4SubtotalC1`, `${PFX}txtPg5Sc1I4ComIncomeC2`);
+      g.moveValue(`${PFX}txtPg5Sc1I4SubtotalC2`, `${PFX}txtPg5Sc1I4TaxWithheldC3`);
+    });
   }
   /** loadData's addRowCol: the reopened page rebuilds each pop-up's blocks from its counter, then fills them */
   reopenColumn(read: Read): void {
@@ -324,6 +402,10 @@ export function simulate(read: Read): SimResult {
   const tin4 = read(`${PFX}txtTIN4`);
   if (tin4 !== "") s.el(`${PFX}txtTIN4`).value = tin4;
   s.addAll(copy, read);
+  // a saved Schedule 1 item 4 that the file lists as enabled (a one-employer pop-up unlocked it): a reopened page enables it
+  // from txtEnabledOnSave (loadData), so the typing below reaches its boxes, the Spouse box included
+  const item4 = SCHED1.cell.map(([stem]) => stem.replace("{i}", "4")).filter((id) => read(`${PFX}txtEnabledOnSave`).includes(`${id},`));
+  for (const id of item4) s.el(id).disabled = false;
   s.enablePaging();
   (s as unknown as { isOnAttachment: boolean }).isOnAttachment = false;
   const live = (e: Elem) => saved(e) && !e.disabled && (page.get(e)! > 0 || e.visible || e.copy !== "");
@@ -372,6 +454,7 @@ export function simulate(read: Read): SimResult {
   typing();
   // the add-more pop-ups, closed last (a filer opens one after typing the item it hangs on)
   s.closeAll(copy, read);
+  for (const id of item4) s.el(id).disabled = false; // the typing above locks nothing the file kept open
   current.value = "1";
   // "Back to Main Form": the main pages take the copies' figures
   if (copy.EX + copy.SP > 0) s.guard("processBack", () => s.processBack());
@@ -406,6 +489,7 @@ export function simulate(read: Read): SimResult {
     }
   };
   if (copy.EX + copy.SP > 0) call(() => r.processBack());
+  r.reopenSched1(read);
   call(() => r.validateAttachmentPerson());
   call(() => r.validateModalState(true));
   call(() => r.HidePage12Part9());

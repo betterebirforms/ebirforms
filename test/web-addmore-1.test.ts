@@ -8,6 +8,7 @@ import { extname, join } from "node:path";
 import type { AddressInfo } from "node:net";
 import { chromium, type Browser } from "playwright";
 import modal1701 from "@/form/page/1701-modal.json";
+import column1701 from "@/form/page/1701-column.json";
 
 const WEB = "dist-web";
 const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".gif": "image/gif", ".svg": "image/svg+xml", ".woff2": "font/woff2" };
@@ -17,7 +18,7 @@ const LINK: Array<[string, string[]]> = [
   ["1700", ["frm1700:lnkPg2Pt4I12ADDMore", "frm1700:lnkPg3Pt5I6ADDMore", "frm1700:lnkPg3Pt5I11ADDMore", "frm1700:lnkPg3Pt5I17ADDMore", "frm1700:lnkPg3Pt5I20ADDMore", "frm1700:lnkPg3Pt5I7ADDMore", "frm1700:lnkPg3Pt5I10ADDMore"]],
   ["1700v2018", ["addMoreSched1Link"]],
   ["1701A", ["frm1701A:lnkPartIVAMore", "frm1701A:lnkPartIVBMore"]],
-  ["1701", (modal1701 as Array<{ link: string }>).filter((m) => !m.link.includes("TYPE")).map((m) => m.link)],
+  ["1701", [...(modal1701 as Array<{ link: string }>).filter((m) => !m.link.includes("TYPE")).map((m) => m.link), "frm1701:lnkPg5Sc1More", ...(column1701 as Array<{ link: string }>).map((c) => c.link)]],
 ];
 
 describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: (add more...) links open BIR's tables as row editors", () => {
