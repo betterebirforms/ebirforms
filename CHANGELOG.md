@@ -6,7 +6,10 @@ the `docs/` folder.
 ## Unreleased
 
 - On the web version, the Close, OK, Cancel, Clear and Print buttons inside BIR's pop-ups now work, and Clear resets the pop-up's boxes the way BIR's app does. The 2552's tax pop-up opens its rows.
-- On the web version, the attachment buttons of the 1701 and 1702-MX forms now say that attachments are not in the web version yet, instead of opening boxes that would not be saved. The desktop app still has them.
+- On the web version, attachments now work on the 1701 (both editions) and the 1702-MX (2013): add an exempt or special-rate attachment, fill its pages, go between attachments, delete one, and go back to the main pages. They save the same file as BIR's app.
+- The rebuilt 1701 and 1702-MX (2013) forms now save attachments too, so a return with attachments made here opens the same in BIR's app.
+- On the web version, the 2200-T's Schedule 1 opens only once its manner of payment is ticked, as in BIR's app.
+- On the web version, reopening a 2550-DS keeps item 22D as saved, as BIR's app does.
 - Fixed: on the web version, ticking an item 4 choice on the 1701 hid the whole form.
 - On the web version, the last schedules work: the 1602's Sections B and C (they open only when BIR's app allows), the 2552's transactions not subject to tax, the 1707-A's extra rows and its Read CSV File, the 1700's tax table, and the 1602-Q's schedule links. The 2552 and 1707-A save these rows the way BIR's app does.
 - On the web version, BIR's "From item" and "To item" links go to the right page, and the second page of the 2551-Q, 1602-Q and 2200-AN now shows. A table's Add, Delete and More buttons open that table for editing.
