@@ -146,10 +146,17 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
   },
+  "1707Av2021": {
+    btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
+    btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
+  },
 };
 
 /** BIR's "Read CSV File" (1707A): which schedule each button reads into. */
-export const CSV_BUTTON: Record<string, Record<string, 1 | 2>> = { "1707A": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 } };
+export const CSV_BUTTON: Record<string, Record<string, 1 | 2>> = {
+  "1707A": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 },
+  "1707Av2021": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 },
+};
 
 /** Boxes BIR made links to the next page (1602Q ShowSchedule1to3: not when item 4 says no tax was withheld). */
 export const NEXT_PAGE: Record<string, Record<string, (state: FormState) => boolean>> = {

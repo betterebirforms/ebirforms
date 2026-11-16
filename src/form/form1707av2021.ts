@@ -7,7 +7,8 @@
 
 import fieldJson from "./fields/1707Av2021.json";
 import { formatMoneyParen, parseMoney } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupState, type Problem } from "./schema.ts";
+import { EDITION_1707AV2021, applyMoreOverride, moreGroup, validateMore } from "./form1707a.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 const P = "frm1707Av2021:";
@@ -65,12 +66,18 @@ override[`${P}txtI19TotalAmountPayable`] = {
   },
 };
 
+// the "(more...)" pop-ups are 1707A's (BIR's script is the same), taking over row 4 of each schedule: groups sched1more /
+// sched2more, `ModalSched<n>Length`, `txtS<n>ModalTotal*`, and the CSV import (parseSched1Csv / placeSchedCsv in form1707a.ts)
+applyMoreOverride(override, EDITION_1707AV2021);
+
 export const FORM_1707Av2021 = buildSchema("1707Av2021", "Annual Capital Gains Tax — Shares Not Traded (TRAIN)", fieldJson as FieldJson[], override);
 FORM_1707Av2021.format = formatMoneyParen;
+FORM_1707Av2021.group = [moreGroup(1, EDITION_1707AV2021), moreGroup(2, EDITION_1707AV2021)];
 
-export function validate1707Av2021(state: FormState): Problem[] {
+export function validate1707Av2021(state: FormState, groups: GroupState = {}): Problem[] {
   const problem = validateRequired(FORM_1707Av2021, state);
   const tin = `${state[`${P}txtI5TIN1`] ?? ""}${state[`${P}txtI5TIN2`] ?? ""}${state[`${P}txtI5TIN3`] ?? ""}`;
   if (tin.length === 9 && validateTin(tin) !== TinStatus.Valid) problem.push({ id: `${P}txtI5TIN1`, message: "The TIN's check digit doesn't match." });
+  problem.push(...validateMore(groups, EDITION_1707AV2021));
   return problem;
 }

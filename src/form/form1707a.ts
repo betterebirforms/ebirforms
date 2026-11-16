@@ -94,44 +94,57 @@ override[`${P}rdoI19TaxCreditCertificate`] = { derive: overpayment };
 // ---- the "(more...)" pop-ups -------------------------------------------------------------------------------------
 const upper = (_r: Read, v: string): string => v.toUpperCase();
 const SCHED = {
-  1: { more: "sched1more", length: "ModalSched1Length", last: 7, total: "txtS1ModalTotal", amount: ["C3SellingPrice", "C4Cost", "C5CapitalGains", "C6TaxPaid"], count: "_sched1moreCount" },
-  2: { more: "sched2more", length: "ModalSched2Length", last: 4, total: "txtS2ModalTotal", amount: ["C3SellingPrice", "C4Cost", "C5CapitalLoss"], count: "_sched2moreCount" },
+  1: { more: "sched1more", length: "ModalSched1Length", total: "txtS1ModalTotal", amount: ["C3SellingPrice", "C4Cost", "C5CapitalGains", "C6TaxPaid"], count: "_sched1moreCount" },
+  2: { more: "sched2more", length: "ModalSched2Length", total: "txtS2ModalTotal", amount: ["C3SellingPrice", "C4Cost", "C5CapitalLoss"], count: "_sched2moreCount" },
 } as const;
 type Sched = keyof typeof SCHED;
+/** One edition's pop-ups: its id prefix, and the row of each schedule that the pop-up takes over ("OTHERS"). 1707A has
+ *  7 and 4 rows; 1707Av2021 (TRAIN) has 4 and 4. Everything else about the pop-ups (BIR's script) is the same. */
+export interface MoreEdition {
+  prefix: string;
+  last: Record<Sched, number>;
+}
+export const EDITION_1707A: MoreEdition = { prefix: P, last: { 1: 7, 2: 4 } };
+export const EDITION_1707AV2021: MoreEdition = { prefix: "frm1707Av2021:", last: { 1: 4, 2: 4 } };
+/** The edition a form's state belongs to (the web's CSV button passes only the state). */
+const editionOf = (state: FormState): MoreEdition => (Object.keys(state).some((k) => k.startsWith(EDITION_1707AV2021.prefix)) ? EDITION_1707AV2021 : EDITION_1707A);
 /** The pop-up row stem of a column, e.g. column "C3SellingPrice" of Schedule 1 -> "frm1707A:txtS1C3SellingPrice_{i}". */
-const moreStem = (sched: Sched, column: string): string => `${P}txtS${sched}${column}_{i}`;
+const moreStem = (sched: Sched, column: string, ed: MoreEdition = EDITION_1707A): string => `${ed.prefix}txtS${sched}${column}_{i}`;
 
 /** One pop-up's rows. Column 5 is BIR's elemModalSched<n>Compute (gain = selling - cost; loss = cost - selling). */
-function moreGroup(sched: Sched): GroupSpec {
+export function moreGroup(sched: Sched, ed: MoreEdition = EDITION_1707A): GroupSpec {
   const spec = SCHED[sched];
   const gainColumn = spec.amount[2];
   const c5 = (r: Read): string => {
-    const selling = parseMoney(r(moreStem(sched, "C3SellingPrice")));
-    const cost = parseMoney(r(moreStem(sched, "C4Cost")));
+    const selling = parseMoney(r(moreStem(sched, "C3SellingPrice", ed)));
+    const cost = parseMoney(r(moreStem(sched, "C4Cost", ed)));
     return formatMoneyParen(sched === 1 ? selling - cost : cost - selling);
   };
   const row: GroupSpec["row"] = [
-    { id: moreStem(sched, "C1DateOfTransaction"), kind: "text" },
-    { id: moreStem(sched, "C2NameOfCorporateStock"), kind: "text", derive: upper },
-    ...spec.amount.map((column) => ({ id: moreStem(sched, column), ...money, ...(column === gainColumn ? { derive: (r: Read) => c5(r) } : {}) })),
+    { id: moreStem(sched, "C1DateOfTransaction", ed), kind: "text" },
+    { id: moreStem(sched, "C2NameOfCorporateStock", ed), kind: "text", derive: upper },
+    ...spec.amount.map((column) => ({ id: moreStem(sched, column, ed), ...money, ...(column === gainColumn ? { derive: (r: Read) => c5(r) } : {}) })),
   ];
-  const column = spec.amount.map((a) => ({ into: `${P}${spec.total}${a.slice(2)}`, of: moreStem(sched, a) }));
+  const column = spec.amount.map((a) => ({ into: `${ed.prefix}${spec.total}${a.slice(2)}`, of: moreStem(sched, a, ed) }));
   // the row count rides along as a pseudo total, so row 7 / row 4 can tell the pop-up is in use
-  const count = { into: spec.count, of: moreStem(sched, "C1DateOfTransaction"), sum: (rows: GroupRow[]) => String(rows.length) };
+  const count = { into: spec.count, of: moreStem(sched, "C1DateOfTransaction", ed), sum: (rows: GroupRow[]) => String(rows.length) };
   return { name: spec.more, size_field: spec.length, first_index: 1, row, total: [...column, count] };
 }
 
 // row 7 / row 4 while the pop-up holds two or more rows: modalSched<n>Close writes "", "OTHERS" and the pop-up totals
-for (const sched of [1, 2] as const) {
-  const spec = SCHED[sched];
-  const used = (r: Read): boolean => Number(r(spec.count)) >= 2;
-  const at = (column: string): string => `${P}txtS${sched}${column}I${spec.last}`;
-  override[at("C1DateOfTransaction")] = { derive: (r, v) => (used(r) ? "" : v), derive_shown: true };
-  override[at("C2NameOfCorporateStock")] = { derive: (r, v) => (used(r) ? "OTHERS" : v), derive_shown: true };
-  for (const column of spec.amount) {
-    override[at(column)] = { ...override[at(column)], derive: (r, v) => (used(r) ? r(`${P}${spec.total}${column.slice(2)}`) : v), derive_shown: true };
+export function applyMoreOverride(override: Record<string, Partial<FieldSpec>>, ed: MoreEdition): void {
+  for (const sched of [1, 2] as const) {
+    const spec = SCHED[sched];
+    const used = (r: Read): boolean => Number(r(spec.count)) >= 2;
+    const at = (column: string): string => `${ed.prefix}txtS${sched}${column}I${ed.last[sched]}`;
+    override[at("C1DateOfTransaction")] = { derive: (r, v) => (used(r) ? "" : v), derive_shown: true };
+    override[at("C2NameOfCorporateStock")] = { derive: (r, v) => (used(r) ? "OTHERS" : v), derive_shown: true };
+    for (const column of spec.amount) {
+      override[at(column)] = { ...override[at(column)], derive: (r, v) => (used(r) ? r(`${ed.prefix}${spec.total}${column.slice(2)}`) : v), derive_shown: true };
+    }
   }
 }
+applyMoreOverride(override, EDITION_1707A);
 
 export const FORM_1707A = buildSchema("1707A", "Annual Capital Gains Tax — Shares Not Traded", fieldJson as FieldJson[], override);
 FORM_1707A.format = formatMoneyParen;
@@ -141,21 +154,27 @@ export function validate1707A(state: FormState, groups: GroupState = {}): Proble
   const problem = validateRequired(FORM_1707A, state);
   const tin = `${state[`${P}txtI5TIN1`] ?? ""}${state[`${P}txtI5TIN2`] ?? ""}${state[`${P}txtI5TIN3`] ?? ""}`;
   if (tin.length === 9 && validateTin(tin) !== TinStatus.Valid) problem.push({ id: `${P}txtI5TIN1`, message: "The TIN's check digit doesn't match." });
-  // the pop-ups: btnSched<n>Save / validateSchedules(..., isForModal)
+  problem.push(...validateMore(groups));
+  return problem;
+}
+
+/** The pop-ups: btnSched<n>Save / validateSchedules(..., isForModal), for either edition. */
+export function validateMore(groups: GroupState, ed: MoreEdition = EDITION_1707A): Problem[] {
+  const problem: Problem[] = [];
   for (const sched of [1, 2] as const) {
     const spec = SCHED[sched];
     const row = groups[spec.more] ?? [];
-    if (row.length === 1) problem.push({ id: spec.length, message: `Schedule ${sched}: put a single row in row ${spec.last}; "(more...)" is for two or more.` });
+    if (row.length === 1) problem.push({ id: spec.length, message: `Schedule ${sched}: put a single row in row ${ed.last[sched]}; "(more...)" is for two or more.` });
     row.forEach((x, k) => {
-      const at = (column: string): string => x[moreStem(sched, column)] ?? "";
+      const at = (column: string): string => x[moreStem(sched, column, ed)] ?? "";
       const n = k + 1;
       const date = at("C1DateOfTransaction");
       const empty = [date === "", at("C2NameOfCorporateStock") === "", parseMoney(at("C3SellingPrice")) === 0, parseMoney(at("C4Cost")) === 0].filter(Boolean).length;
-      if (empty !== 0) problem.push({ id: moreStem(sched, "C1DateOfTransaction").replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n} is empty or incomplete. Fill in all items or remove the row.` });
-      if (/^\d+$/.test(at("C2NameOfCorporateStock"))) problem.push({ id: moreStem(sched, "C2NameOfCorporateStock").replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n}: the name of the corporate stock should not be all numbers.` });
-      if (parseMoney(at("C3SellingPrice")) < 0 || parseMoney(at("C4Cost")) < 0) problem.push({ id: moreStem(sched, "C3SellingPrice").replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n}: no negative value.` });
+      if (empty !== 0) problem.push({ id: moreStem(sched, "C1DateOfTransaction", ed).replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n} is empty or incomplete. Fill in all items or remove the row.` });
+      if (/^\d+$/.test(at("C2NameOfCorporateStock"))) problem.push({ id: moreStem(sched, "C2NameOfCorporateStock", ed).replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n}: the name of the corporate stock should not be all numbers.` });
+      if (parseMoney(at("C3SellingPrice")) < 0 || parseMoney(at("C4Cost")) < 0) problem.push({ id: moreStem(sched, "C3SellingPrice", ed).replace("{i}", String(n)), message: `Schedule ${sched} pop-up row ${n}: no negative value.` });
       const gain = parseMoney(at("C3SellingPrice")) - parseMoney(at("C4Cost"));
-      if (sched === 1 ? gain < 0 : -gain < 0) problem.push({ id: moreStem(sched, "C4Cost").replace("{i}", String(n)), message: sched === 1 ? `Schedule 1 pop-up row ${n}: the capital gain is negative. Encode it in Schedule 2.` : `Schedule 2 pop-up row ${n}: the capital loss is negative. Encode it in Schedule 1.` });
+      if (sched === 1 ? gain < 0 : -gain < 0) problem.push({ id: moreStem(sched, "C4Cost", ed).replace("{i}", String(n)), message: sched === 1 ? `Schedule 1 pop-up row ${n}: the capital gain is negative. Encode it in Schedule 2.` : `Schedule 2 pop-up row ${n}: the capital loss is negative. Encode it in Schedule 1.` });
     });
   }
   return problem;
@@ -235,7 +254,7 @@ export function birValidDate(text: string): boolean {
   return true;
 }
 
-function parseSchedCsv(sched: Sched, text: string, existing: CsvExisting = {}, lenient = false): GroupRow[] {
+function parseSchedCsv(sched: Sched, text: string, existing: CsvExisting = {}, lenient = false, ed: MoreEdition = EDITION_1707A): GroupRow[] {
   const column = sched === 1 ? 6 : 5;
   const line = text.split("\n");
   if (lenient && line.length > 1 && line[line.length - 1] === "") line.pop();
@@ -277,41 +296,44 @@ function parseSchedCsv(sched: Sched, text: string, existing: CsvExisting = {}, l
     const sellingValue = valForCompute(cell[2]!);
     const costValue = valForCompute(cell[3]!);
     const result: GroupRow = {
-      [moreStem(sched, "C1DateOfTransaction")]: date,
-      [moreStem(sched, "C2NameOfCorporateStock")]: name.toUpperCase(),
-      [moreStem(sched, "C3SellingPrice")]: birRoundAmount(`${sellingValue}`),
-      [moreStem(sched, "C4Cost")]: birRoundAmount(`${costValue}`),
-      [moreStem(sched, sched === 1 ? "C5CapitalGains" : "C5CapitalLoss")]: birRoundAmount(`${preciseCompute(sched === 1 ? sellingValue - costValue : costValue - sellingValue)}`),
+      [moreStem(sched, "C1DateOfTransaction", ed)]: date,
+      [moreStem(sched, "C2NameOfCorporateStock", ed)]: name.toUpperCase(),
+      [moreStem(sched, "C3SellingPrice", ed)]: birRoundAmount(`${sellingValue}`),
+      [moreStem(sched, "C4Cost", ed)]: birRoundAmount(`${costValue}`),
+      [moreStem(sched, sched === 1 ? "C5CapitalGains" : "C5CapitalLoss", ed)]: birRoundAmount(`${preciseCompute(sched === 1 ? sellingValue - costValue : costValue - sellingValue)}`),
     };
-    if (sched === 1) result[moreStem(1, "C6TaxPaid")] = birRoundAmount(cell[5]!);
+    if (sched === 1) result[moreStem(1, "C6TaxPaid", ed)] = birRoundAmount(cell[5]!);
     out.push(result);
   });
   return out;
 }
 
 /** Schedule 1's CSV (6 columns) as pop-up rows (the `sched1more` row shape), or a CsvError with BIR's alert. */
-export const parseSched1Csv = (text: string, existing?: CsvExisting, lenient = false): GroupRow[] => parseSchedCsv(1, text, existing, lenient);
+export const parseSched1Csv = (text: string, existing?: CsvExisting, lenient = false, ed?: MoreEdition): GroupRow[] => parseSchedCsv(1, text, existing, lenient, ed);
 /** Schedule 2's CSV (5 columns) as pop-up rows (the `sched2more` row shape), or a CsvError with BIR's alert. */
-export const parseSched2Csv = (text: string, existing?: CsvExisting, lenient = false): GroupRow[] => parseSchedCsv(2, text, existing, lenient);
+export const parseSched2Csv = (text: string, existing?: CsvExisting, lenient = false, ed?: MoreEdition): GroupRow[] => parseSchedCsv(2, text, existing, lenient, ed);
 
 /** BIR's addToTable: the parsed rows fill the schedule's empty fixed rows first (1..7 / 1..4, "empty" = blank
  *  text and 0.00 amounts); the rest go to the pop-up, which first takes over row 7 / row 4's own content when it was
  *  empty. Returns the fixed cells to set and the pop-up's new rows. */
-export function placeSchedCsv(sched: Sched, state: FormState, more: GroupRow[], csv: GroupRow[]): { state: FormState; more: GroupRow[] } {
-  const spec = SCHED[sched];
+export function placeSchedCsv(sched: Sched, state: FormState, more: GroupRow[], csvRow: GroupRow[]): { state: FormState; more: GroupRow[] } {
+  const ed = editionOf(state);
+  const last = ed.last[sched];
+  // rows parsed without an edition carry 1707A's ids: move them to this form's
+  const csv = ed === EDITION_1707A ? csvRow : csvRow.map((row) => Object.fromEntries(Object.entries(row).map(([k, v]) => [k.startsWith(P) ? ed.prefix + k.slice(P.length) : k, v])));
   const next: FormState = {};
-  const fixed = (column: string, n: number): string => `${P}txtS${sched}${column}I${n}`;
+  const fixed = (column: string, n: number): string => `${ed.prefix}txtS${sched}${column}I${n}`;
   const columns = sched === 1 ? ["C1DateOfTransaction", "C2NameOfCorporateStock", "C3SellingPrice", "C4Cost", "C5CapitalGains", "C6TaxPaid"] : ["C1DateOfTransaction", "C2NameOfCorporateStock", "C3SellingPrice", "C4Cost", "C5CapitalLoss"];
   const cell = (c: string, n: number): string => next[fixed(c, n)] ?? state[fixed(c, n)] ?? (c.startsWith("C1") || c.startsWith("C2") ? "" : "0.00");
   const emptyRow = (n: number): boolean => columns.every((c) => cell(c, n) === (c.startsWith("C1") || c.startsWith("C2") ? "" : "0.00"));
   let used = 0;
-  for (let n = 1; n <= spec.last && used < csv.length; n++) {
+  for (let n = 1; n <= last && used < csv.length; n++) {
     if (!emptyRow(n)) continue;
-    for (const c of columns) next[fixed(c, n)] = csv[used]![moreStem(sched, c)] ?? "";
+    for (const c of columns) next[fixed(c, n)] = csv[used]![moreStem(sched, c, ed)] ?? "";
     used++;
   }
   const rows = [...more];
-  if (used < csv.length && rows.length === 0) rows.push(Object.fromEntries(columns.map((c) => [moreStem(sched, c), cell(c, spec.last)])));
+  if (used < csv.length && rows.length === 0) rows.push(Object.fromEntries(columns.map((c) => [moreStem(sched, c, ed), cell(c, last)])));
   rows.push(...csv.slice(used));
   return { state: next, more: rows };
 }
