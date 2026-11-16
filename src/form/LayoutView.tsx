@@ -10,7 +10,8 @@ import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { AtcPicker, natureOf } from "./AtcPicker.tsx";
-import { LIST_COPY, POPUP_GROUP, pickerOf, rateText, type Picker } from "./picker.ts";
+import { BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
+import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
 import { formatMoney, parseMoney } from "./money.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
@@ -502,7 +503,27 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         setPick({ ...p, title: (el.value || el.textContent || "").replace(/\s+/g, " ").trim() || "ATC" });
       });
     }
-    const popup = Object.fromEntries(Object.entries(POPUP[form_code] ?? {}).filter(([id]) => !picked.has(id)));
+    // BIR's openDialog2: the element's contents in #dialog2 over #overlay2, and a Close that empties it
+    for (const [id, from] of Object.entries(DIALOG[form_code] ?? {})) {
+      const a = root.getElementById(id);
+      const dialog = root.getElementById("dialog2");
+      const overlay = root.getElementById("overlay2");
+      if (!a || !dialog || !overlay) continue;
+      a.dataset.ebfPopup = "bir";
+      on(a, "click", (e) => {
+        e.preventDefault();
+        dialog.innerHTML = `${root.getElementById(from)?.innerHTML ?? ""}<br/><br/><center><input type="button" value="Close" class="ebf-close-dialog" /></center>`;
+        // BIR's centerMe: the dialog centred over a dimmed page
+        overlay.style.cssText = "display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:900";
+        dialog.style.cssText = "display:block;position:fixed;top:4vh;left:50%;transform:translateX(-50%);max-height:92vh;max-width:96vw;overflow:auto;background:#fff;padding:12px;z-index:901;box-shadow:0 4px 24px rgba(0,0,0,.3)";
+        dialog.querySelector(".ebf-close-dialog")?.addEventListener("click", () => {
+          overlay.style.display = "none";
+          dialog.style.display = "none";
+          dialog.innerHTML = "";
+        });
+      });
+    }
+    const popup = Object.fromEntries(Object.entries(POPUP[form_code] ?? {}).filter(([id]) => !picked.has(id) && !(id in (DIALOG[form_code] ?? {}))));
     // a pop-up is a div BIR's page starts with hidden; a button that shows one opens it, the rest close it
     const hidden = (x: string) => {
       const el = root.getElementById(x);
@@ -532,6 +553,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
           e.stopImmediatePropagation();
         }
         if (el.disabled) return;
+        const need = opening ? (POPUP_NEED[form_code]?.[id]?.(latest.current.computed) ?? null) : null;
+        if (need !== null) return need ? window.alert(need) : undefined;
         if (editor) return setOpenGroup({ name: editor.name, title: titleOf(el, editor, div[0]), label: labelOf(editor) });
         if (opening) before = { state: latest.current.state, groups: latest.current.groups };
         else if (/cancel/i.test(el.value || el.textContent || "") && before) {
@@ -601,6 +624,51 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         setOpenGroup({ name: group.name, title: titleOf(b, group), label: labelOf(group) });
       });
     }
+    // a button that opens a group's editor (1707A "(more...)"), and BIR's "Read CSV File" into a schedule
+    for (const [id, { group, title }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
+      const b = root.getElementById(id) as HTMLInputElement | null;
+      const g = (schema.group ?? []).find((x) => x.name === group);
+      if (!b || !g) continue;
+      b.dataset.ebfPopup = "editor";
+      on(b, "click", (e) => {
+        e.preventDefault();
+        if (!b.disabled) setOpenGroup({ name: g.name, title: title ?? titleOf(b, g), label: labelOf(g) });
+      });
+    }
+    for (const [id, sched] of Object.entries(CSV_BUTTON[form_code] ?? {})) {
+      const b = root.getElementById(id) as HTMLInputElement | null;
+      if (!b) continue;
+      on(b, "click", (e) => {
+        e.preventDefault();
+        if (b.disabled) return;
+        const file = document.createElement("input");
+        file.type = "file";
+        file.accept = ".csv,text/csv";
+        file.addEventListener("change", () => {
+          void file.files?.[0]?.text().then((text) => {
+            const { computed: c, groups: g } = latest.current;
+            const more = sched === 1 ? "sched1more" : "sched2more";
+            try {
+              const row = (sched === 1 ? parseSched1Csv : parseSched2Csv)(text);
+              const placed = placeSchedCsv(sched, c, g[more] ?? [], row);
+              set(placed.state);
+              setGroups((x) => ({ ...x, [more]: placed.more }));
+            } catch (err) {
+              window.alert(err instanceof CsvError ? err.message : String(err));
+            }
+          });
+        });
+        file.click();
+      });
+    }
+    // boxes BIR made next-page links (1602Q Schedules 1 to 3)
+    for (const [id, when] of Object.entries(NEXT_PAGE[form_code] ?? {})) {
+      const a = root.getElementById(id);
+      if (a) on(a, "click", (e) => {
+        e.preventDefault();
+        if (when(latest.current.computed)) showPage((pageOf(a) || current) + 1);
+      });
+    }
     // BIR's own page jumps (goTo(n) / linkTo(this, n)), read from its pages by label (page-link.json)
     const jump = (PAGE_LINK as Record<string, Record<string, number | string>>)[form_code] ?? {};
     if (pageCount > 1 && Object.keys(jump).length)
@@ -640,6 +708,10 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     // what is saved; BIR's captured page default is only the fallback for a box the file doesn't carry
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
     const lock = lockOf(form_code);
+    for (const [id, { on: enabled }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
+      const b = root.getElementById(id) as HTMLInputElement | null;
+      if (b && enabled && !validated) b.disabled = !enabled(groups);
+    }
     // a link to a group's pop-up that BIR hides until that group has rows ("Other Selected ATC" past 6 picks)
     for (const [box, name] of Object.entries(POPUP_GROUP[form_code] ?? {})) {
       const has = (groups[name] ?? []).length > 0;
@@ -687,6 +759,18 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       // a locked box shows what the file will hold: some totals (a schedule's rows summed into its item lines) are
       // derived only as the save is built, so the live compute alone would leave them stale
       const value = ro ? (f.escaped ? (computed[f.id] ?? "") : (saved.get(f.id) ?? computed[f.id] ?? "")) : (state[f.id] ?? (f.is_editable || f.derive ? (computed[f.id] || fallback) : fallback));
+      // a box BIR fills from elsewhere for now (1707A row 7 "OTHERS"): its derived value, locked while it differs
+      if (f.derive_shown && !ro) {
+        const own = state[f.id] ?? "";
+        const derived = computed[f.id] ?? "";
+        const same = own === derived || (f.kind === "money" && parseMoney(own) === parseMoney(derived));
+        const taken = !same && (own !== "" || derived !== "");
+        if (taken && el.value !== derived) el.value = derived;
+        if (taken) {
+          el.disabled = true;
+          continue;
+        }
+      }
       if (el !== focused && el.value !== value) el.value = value;
       // BIR fills the taxpayer's details from the profile and greys them out; with no profile they stay open to type
       const fromProfile = f.id in def.prefill && Boolean(state[f.id]);

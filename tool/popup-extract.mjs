@@ -98,6 +98,9 @@ for (const file of readdirSync(FORM).filter((f) => /^BIR-Form.+\.hta$/i.test(f))
     const id = tag[0].match(/\bid\s*=\s*["']([^"']+)["']/i)?.[1];
     const onclick = tag[0].match(/\bonclick\s*=\s*"([^"]*)"|\bonclick\s*=\s*'([^']*)'/i);
     if (!id || !onclick || !onLayout.has(id)) continue;
+    // a radio or tick box: what it shows depends on the rest of the form (1701's item 4 radios open the attachment
+    // pop-up only in some cases); the boxes it opens or greys come from the captured locks (src/form/lock/) instead
+    if (/\btype\s*=\s*["']?(?:radio|checkbox)/i.test(tag[0])) continue;
     const run = effect(strip(onclick[1] ?? onclick[2]), fn);
     const pick = (re) => [...new Set(re.flatMap((r) => [...run.matchAll(r)].map((m) => m[1])).filter((x) => container.has(x)))];
     const show = pick(SHOW);

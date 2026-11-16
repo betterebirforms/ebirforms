@@ -148,50 +148,6 @@
   }
  },
  "1700": {
-  "frm1700:rdoPg1Pt1I3JointFilingYes": {
-   "show": [
-    "modalTable2"
-   ],
-   "hide": []
-  },
-  "frm1700:rdoPg1Pt1I3JointFilingNo": {
-   "show": [
-    "Page2Part4rdoSpanOther",
-    "Page2Part4rdoTable",
-    "modalTable2"
-   ],
-   "hide": []
-  },
-  "frm1700:txtPg1Pt1I9AddressChangedInd": {
-   "show": [
-    "modalTable1"
-   ],
-   "hide": []
-  },
-  "frm1700:rdoPg1Pt1I14YesInd": {
-   "show": [
-    "modalTable2"
-   ],
-   "hide": []
-  },
-  "frm1700:rdoPg1Pt1I14NoInd": {
-   "show": [
-    "modalTable2"
-   ],
-   "hide": []
-  },
-  "frm1700:rdoPg1Pt1I21SpouseClaimAdditionalExemptionYes": {
-   "show": [
-    "modalTable2"
-   ],
-   "hide": []
-  },
-  "frm1700:rdoPg1Pt1I21SpouseClaimAdditionalExemptionNo": {
-   "show": [
-    "modalTable2"
-   ],
-   "hide": []
-  },
   "frm1700:lnkPg2Pt4AddLink": {
    "show": [
     "Page2Part4rdoSpanOther",
@@ -314,354 +270,6 @@
   }
  },
  "1701": {
-  "frm1701:rdoPg1Pt1I4Compensation": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I4Business": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I4Mixed": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I7TypeSingle": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I7TypeProfessional": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I7TypeEstate": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I7TypeTrust": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I14StatusSingle": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I14StatusMarried": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I14StatusSeparated": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I14StatusWidow": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I15WithIncome": {
-   "show": [
-    "attachmentModalADD",
-    "modalPart7A",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg1Pt1I15WithNoIncome": {
-   "show": [
-    "attachmentModalADD",
-    "modalPart7A",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg1Pt1I16Joint": {
-   "show": [
-    "attachmentModalADD",
-    "modalPart7A",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg1Pt1I16Separate": {
-   "show": [
-    "attachmentModalADD",
-    "modalPart7A",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg1Pt1I20DeductionItemized": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I20DeductionOSD": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I21Cash": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I21Accrual": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I21Others": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I22IncomeExemptYes": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I22IncomeExemptNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I23IncomeSpecialYes": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I23IncomeSpecialNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1Pt1I24ClaimingYes": {
-   "show": [
-    "attachmentModalADD",
-    "modalPart7A",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg1Pt1I24ClaimingNo": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I105Itemized": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I105OSD": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I107Yes": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I107No": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I108Yes": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I108No": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I109Compensation": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I109Business": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I109Mixed": {
-   "show": [
-    "attachmentModalADD",
-    "Sc1I4rdoSpanOther",
-    "Sc1I4rdoTable"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg4Pt7I110Yes": {
-   "show": [
-    "modalPart7A",
-    "formPaper"
-   ],
-   "hide": []
-  },
-  "frm1701:rdoPg4Pt7I110No": {
-   "show": [
-    "modalPart7A",
-    "formPaper"
-   ],
-   "hide": []
-  },
   "frm1701:lnkPg5Sc1More": {
    "show": [
     "Sc1I4rdoTable",
@@ -2215,82 +1823,6 @@
   }
  },
  "1701v2018": {
-  "frm1701:rdoPg1I19IncomeExemptYes": {
-   "show": [
-    "Page1mContent",
-    "CONSOLIDATED"
-   ],
-   "hide": [
-    "Page2mContent",
-    "mainPages",
-    "ATTACHMENT"
-   ]
-  },
-  "frm1701:rdoPg1I19IncomeExemptNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg1I20IncomeSpecialYes": {
-   "show": [
-    "Page1mContent",
-    "CONSOLIDATED"
-   ],
-   "hide": [
-    "Page2mContent",
-    "mainPages",
-    "ATTACHMENT"
-   ]
-  },
-  "frm1701:rdoPg1I20IncomeSpecialNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg2I10IncomeExemptYes": {
-   "show": [
-    "Page1mContent",
-    "CONSOLIDATED"
-   ],
-   "hide": [
-    "Page2mContent",
-    "mainPages",
-    "ATTACHMENT"
-   ]
-  },
-  "frm1701:rdoPg2I10IncomeExemptNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
-  "frm1701:rdoPg2I11IncomeSpecialYes": {
-   "show": [
-    "Page1mContent",
-    "CONSOLIDATED"
-   ],
-   "hide": [
-    "Page2mContent",
-    "mainPages",
-    "ATTACHMENT"
-   ]
-  },
-  "frm1701:rdoPg2I11IncomeSpecialNo": {
-   "show": [
-    "attachmentModalADD"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
   "consolidatedPage1New": {
    "show": [
     "Page1mContent",
@@ -2660,16 +2192,6 @@
   }
  },
  "1702MX": {
-  "frm1702MX:chkPg2Pt4I30MoreThanOne": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
   "viewExempt": {
    "show": [
     "attachmentEX",
@@ -2758,26 +2280,6 @@
   }
  },
  "1702MXv2018": {
-  "frm1702MX:InstAPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
-  "frm1702MX:InstBPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
   "viewExempt": {
    "show": [
     "attachmentEX",
@@ -2866,26 +2368,6 @@
   }
  },
  "1702MXv2018C": {
-  "frm1702MX:InstAPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
-  "frm1702MX:InstBPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
   "viewExempt": {
    "show": [
     "attachmentEX",
@@ -2974,26 +2456,6 @@
   }
  },
  "1702MXv2018Cxx": {
-  "frm1702MX:InstAPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
-  "frm1702MX:InstBPg2Part4": {
-   "show": [
-    "addAttachment"
-   ],
-   "hide": [
-    "containerPage",
-    "wrapper",
-    "PageFooter"
-   ]
-  },
   "viewExempt": {
    "show": [
     "attachmentEX",
@@ -3276,12 +2738,6 @@
   }
  },
  "1707v2018": {
-  "frm1707:rdoPg1I3ATCCorp": {
-   "show": [
-    "corpoClassificationView"
-   ],
-   "hide": []
-  },
   "ebirOnlineConfirmCancel": {
    "show": [
     "containerPage",
@@ -3324,12 +2780,6 @@
   }
  },
  "1707v2021": {
-  "frm1707:rdoPg1I3ATCCorp": {
-   "show": [
-    "corpoClassificationView"
-   ],
-   "hide": []
-  },
   "ebirOnlineConfirmCancel": {
    "show": [
     "containerPage",
@@ -3426,33 +2876,6 @@
   }
  },
  "2200A": {
-  "frm2200A:chkPymntManner_1": {
-   "show": [
-    "modalSched1"
-   ],
-   "hide": [
-    "formPaper",
-    "MainContent"
-   ]
-  },
-  "frm2200A:chkPymntManner_2": {
-   "show": [
-    "modalSched1"
-   ],
-   "hide": [
-    "formPaper",
-    "MainContent"
-   ]
-  },
-  "frm2200A:chkPymntManner_3": {
-   "show": [
-    "modalSched1"
-   ],
-   "hide": [
-    "formPaper",
-    "MainContent"
-   ]
-  },
   "frm2200A:btnSched1": {
    "show": [
     "modalSched1"

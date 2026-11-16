@@ -228,6 +228,63 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 60_000);
 
+  // the schedules BIR's script builds: 1602's sections open only when BIR allows (its message otherwise), 2552's
+  // Part III and its detail open their rows, 1707A reads BIR's CSV (row 7 becomes OTHERS once "(more...)" is in use),
+  // 1700's tax table opens in BIR's dialog, and 1602-Q's schedule boxes go to the schedules' page
+  it("BIR's script-built schedules open, read a CSV, and show BIR's dialog", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const alert: string[] = [];
+    page.on("dialog", (d) => void (alert.push(d.message()), d.accept()));
+    const go = async (code: string) => {
+      await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+    };
+    const click = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+    const editor = () => page.locator(".schedule-modal h3").first().textContent();
+    await go("1602");
+    await click("btnSectionB");
+    await expect.poll(() => alert.at(-1)).toMatch(/^Section B is only enabled if Item 4 is set to Yes/);
+    expect(await page.locator(".schedule-modal").count()).toBe(0);
+    await go("2552");
+    await click("btnDetailTrans");
+    await expect.poll(editor).toBe("Details of Transaction not subject to Percentage Tax");
+    await go("2552");
+    await click("frm2552:buttAdd");
+    await expect.poll(editor).toBe("Part III Summary of Transactions not subject to Tax");
+    await go("1707A");
+    const csv = Array.from({ length: 9 }, (_, i) => `01/0${i + 1}/2026,STOCK ${String.fromCharCode(65 + i)},${1000 + i},500,${500 + i},${75 + i}`).join("\n");
+    const chooser = page.waitForEvent("filechooser");
+    await click("btnOpenSched1CSV");
+    await (await chooser).setFiles({ name: "sched1.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
+    const value = (id: string) => page.locator(`[id="${id}"]`).inputValue();
+    await expect.poll(() => value("frm1707A:txtS1C2NameOfCorporateStockI1")).toBe("STOCK A");
+    await expect.poll(() => value("frm1707A:txtS1C2NameOfCorporateStockI7")).toBe("OTHERS");
+    await click("btnSched1More");
+    await expect.poll(() => page.locator(".schedule-modal tbody tr").count()).toBe(3);
+    await go("1700");
+    await click("btntablepop");
+    await expect.poll(() => page.locator('[id="dialog2"] tr').count()).toBeGreaterThan(4);
+    await page.locator('[id="dialog2"] input[value=Close]').click();
+    await expect.poll(() => page.locator('[id="dialog2"]').isVisible()).toBe(false);
+    await go("1602Qv2018");
+    await click("frm1602Q:txtSched1");
+    await expect.poll(() => page.locator('[id="Page2"]').evaluate((e) => getComputedStyle(e).display !== "none")).toBe(true);
+    await page.close();
+  }, 120_000);
+
+  // a choice never opens a pop-up by itself: BIR's 1701 item 4 radios open its attachment pop-up only in some cases
+  it("1701: ticking item 4 keeps the form on screen", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    await page.goto(`${base}/form/1701`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const display = (id: string) => page.locator(`[id="${id}"]`).evaluate((e) => getComputedStyle(e).display);
+    await page.locator('[id="frm1701:rdoPg1Pt1I4Compensation"]').evaluate((e: HTMLElement) => e.click());
+    await page.waitForTimeout(300);
+    expect([await display("formPaper"), await display("attachmentModalADD")]).toEqual(["block", "none"]);
+    await page.close();
+  }, 60_000);
+
   // Help > <tax type> > BIR Form <X> opens BIR's own help page, from the main screen and from a form (which asks
   // first, as BIR's goToHelpPage does); a target missing from BIR's package says so
   it("Help opens BIR's help pages from the main screen and from a form", async () => {

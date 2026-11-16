@@ -5,7 +5,7 @@
 //     already there keeps its tax base. Rate is BIR's cell text, " " + rate.
 //   • "row": a Schedule II payee row's own picker (showSchedIIATC(i) → getSchedIIATC): one code into row i, with its
 //     nature of payment and rate.
-import type { FormState } from "./schema.ts";
+import type { FormState, GroupState } from "./schema.ts";
 import type { AtcPick } from "./atc.ts";
 import { pickList1600 } from "./form1600.ts";
 import { pickList1600WP } from "./form1600wp.ts";
@@ -80,8 +80,8 @@ export const PICKER: Record<string, Record<string, Picker>> = {
  *  row per ticked code (no rate column) and keeps an amount already typed for that code. The web version opens the
  *  list first, then the schedule with those rows. */
 const sched1 = (form: string, list: () => AtcPick[]): Picker => ({ kind: "rows", group: "atc", atc: `frm${form}:txtAtcCde`, list });
-PICKER["2550M"] = { btnSched1: sched1("2550m", pickList2550M) };
-PICKER["2550Q"] = { btnSched1: sched1("2550q", pickList2550Q) };
+PICKER["2550M"] = { btnSched1: sched1("2550m", pickList2550M), btnSched1ATC: sched1("2550m", pickList2550M) };
+PICKER["2550Q"] = { btnSched1: sched1("2550q", pickList2550Q), btnSched1ATC: sched1("2550q", pickList2550Q) };
 
 /** 2551 / 2553 items 14 to 18 (showModalATC(n) → getATCCode): one code per item; A = its description, B = the code,
  *  D = its rate (2553's OT012 has none: 0.00, typed by hand). */
@@ -108,6 +108,39 @@ export const POPUP_GROUP: Record<string, Record<string, string>> = {
   "1600VTv2018": { modalOtherAtc: "other" },
   "1600PTv2018": { modalOtherAtc: "other" },
   "2000": { modalSched1: "sched1" },
+  "1602": { modalSectionB: "secB", modalSectionC: "secC" },
+  "2552": { modalTransactionNoTax: "noTax" },
+};
+
+/** A pop-up BIR opens only when the form allows it (its message, "" = nothing happens). 1602 checkiftaxwheld. */
+const section1602 = (list: string[], which: string) => (state: FormState) =>
+  state["frm1602:OptTaxWithheld1"] === "true" && list.includes(state["frm1602:lstSpecialTax"] ?? "")
+    ? null
+    : `Section ${which} is only enabled if Item 4 is set to Yes and Item 13 is set to Yes - ${which === "B" ? "International Tax Treaty" : "Special Rate"} or\nBoth.`;
+export const POPUP_NEED: Record<string, Record<string, (state: FormState) => string | null>> = {
+  "1602": { btnSectionB: section1602(["2", "3"], "B"), btnSectionC: section1602(["1", "3"], "C") },
+};
+
+/** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
+ *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
+export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?: string; on?: (groups: GroupState) => boolean }>> = {
+  // 2552 Part III: BIR's script adds its rows (AddTransactionNoTax), so none are on the page to find the table by
+  "2552": {
+    "frm2552:buttAdd": { group: "partIII", title: "Part III Summary of Transactions not subject to Tax" },
+    "frm2552:buttDel": { group: "partIII", title: "Part III Summary of Transactions not subject to Tax" },
+  },
+  "1707A": {
+    btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
+    btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
+  },
+};
+
+/** BIR's "Read CSV File" (1707A): which schedule each button reads into. */
+export const CSV_BUTTON: Record<string, Record<string, 1 | 2>> = { "1707A": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 } };
+
+/** Boxes BIR made links to the next page (1602Q ShowSchedule1to3: not when item 4 says no tax was withheld). */
+export const NEXT_PAGE: Record<string, Record<string, (state: FormState) => boolean>> = {
+  "1602Qv2018": Object.fromEntries(["1", "2", "3"].map((n) => [`frm1602Q:txtSched${n}`, (s: FormState) => s["frm1602Q:OptTaxWithheld2"] !== "true"])),
 };
 
 /** The picker for a button on a form, and the row it is for (0-based) when it is a row's own button. */
@@ -156,3 +189,6 @@ LIST_COPY["2000OT"] = {
     return { "frm2000OT:txtATC": code, "frm2000OT:txtTax15": code === "DS125" ? "0.5" : text(root, `AtcRate${i}`) };
   },
 };
+
+/** BIR's openDialog2(element) (1700): the element's contents copied into #dialog2 over #overlay2, with a Close. */
+export const DIALOG: Record<string, Record<string, string>> = { "1700": { btntablepop: "table3pop" } };

@@ -7,8 +7,12 @@
 // Chain: 15 = 12D+13D+13G+13J+14D+14G+14J ; 16C = 16A+16B ; 17 = 15 − 16C ; 18D = 18A+18B+18C ; 19 = 17 + 18D.
 // On reload the legacy rebuilds tblTaxTrans (counting txtTaxableBase occurrences) and re-runs getTaxTrans, so the
 // bucket cells and the chain round-trip exactly.
-// SCOPE: Part III (tblTransaction — transactions NOT subject to tax) and the per-row detail modal are
-// supplementary, non-tax schedules and are not modelled here; the tax return itself is complete and oracle-proven.
+// Part III (transactions NOT subject to tax) is two more groups, neither feeding the tax chain:
+//   partIII  = the summary rows of tblTransaction (AddTransactionNoTax, buttAdd / buttDel): chkTaxTransPartIII<i>,
+//              txtTranClassPartIII<i>, txtAmountInvolvePartIII<i>, 1-indexed, no size field (reload counts the amounts).
+//   noTax    = the pop-up modalTransactionNoTax rows of tblTaxTransNoTax (btnDetailTrans opens it, btnAdd / btnDelete,
+//              btnOkPop closes it): chkTaxTransModal<i>, txtDateNoTax<i>, txtSellerNoTax<i>, txtBuyerNoTax<i>,
+//              txtIssuingCorpNoTax<i>, txtNumberSharesNoTax<i>. BIR fills the (disabled) date from the return period.
 
 import fieldJson from "./fields/2552.json";
 import { parseMoney } from "./money.ts";
@@ -42,6 +46,34 @@ export const TAXTRANS_2552: GroupSpec = {
     { into: `${P}_r2base`, of: "txtTaxableBase", where: rateIs("2") },
     { into: `${P}_r1due`, of: "txtTaxDue", where: rateIs("1") },
     { into: `${P}_r1base`, of: "txtTaxableBase", where: rateIs("1") },
+  ],
+};
+
+const MODAL_DATE = (read: Read): string => `${read(`${P}txtMonth1`)}/${read(`${P}txtDate`)}/${read(`${P}txtForYr`)}`;
+
+// Part III summary rows (tblTransaction): the user types a classification and an amount, no tax is computed.
+export const PARTIII_2552: GroupSpec = {
+  name: "partIII",
+  first_index: 1,
+  row: [
+    { id: "chkTaxTransPartIII", kind: "checkbox", derive: (_read, value) => value || "false" },
+    { id: "txtTranClassPartIII", kind: "text" },
+    { id: "txtAmountInvolvePartIII", kind: "money" }, // the reload counts this occurrence
+  ],
+};
+
+// The Part III details pop-up (modalTransactionNoTax, tblTaxTransNoTax).
+export const NOTAX_2552: GroupSpec = {
+  name: "noTax",
+  first_index: 1,
+  row: [
+    { id: "chkTaxTransModal", kind: "checkbox", derive: (_read, value) => value || "false" }, // the reload counts this occurrence
+    // AddTransactionNoTaxModal writes the return period (month/day/year) into the disabled date box
+    { id: "txtDateNoTax", kind: "text", derive: (read, value) => value || MODAL_DATE(read) },
+    { id: "txtSellerNoTax", kind: "text" },
+    { id: "txtBuyerNoTax", kind: "text" },
+    { id: "txtIssuingCorpNoTax", kind: "text" },
+    { id: "txtNumberSharesNoTax", kind: "text", derive: (_read, value) => value || "0" },
   ],
 };
 
@@ -94,7 +126,7 @@ const override: Record<string, Partial<FieldSpec>> = {
 };
 
 export const FORM_2552 = buildSchema("2552", "Percentage Tax Return — Shares of Stock / IPO", scalarField, override);
-FORM_2552.group = [TAXTRANS_2552];
+FORM_2552.group = [PARTIII_2552, TAXTRANS_2552, NOTAX_2552]; // BIR's DOM order: Part III, then the tax pop-up, then the details pop-up
 // each tblTaxTrans row's delete-selection checkbox, which saveXML writes (unchecked) along with the row
 FORM_2552.extra_record = (_state, groups) =>
   (groups.taxTrans ?? []).map((_, i) => ({ key: `chkTaxTrans${TAXTRANS_2552.first_index + i}`, value: "false" }));

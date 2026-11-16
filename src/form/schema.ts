@@ -39,6 +39,9 @@ export interface FieldSpec {
    *  the total isn't an overpayment), a bare "0" BIR assigns instead of "0.00" (1800 item 25A). Returning "" for
    *  a field that was never set leaves it unset, so BIR's template default still applies. */
   derive?: (read: (id: string) => string, value: string) => string;
+  /** The web version shows the derived value, not what was typed, and locks the box while they differ (1707A's
+   *  row 7 / row 4 reads "OTHERS" and the pop-up's totals once the pop-up is in use). */
+  derive_shown?: boolean;
   /** Rewrites this key's saved value once PER TEMPLATE OCCURRENCE — for an id BIR's DOM carries several times, which
    *  one overlay value can't express: 2000v2018's four `frm2000:modLabel` pop-up labels (each its own default, all
    *  upper-cased by capital()), 2000's two `frm2000:optSection:_2` radios (only the first is section B). Gets the

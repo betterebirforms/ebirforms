@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { computeForm, type FormState, type GroupState } from "@/form/schema.ts";
+import { computeForm, formRecords, groupsFromSavefile, type FormState, type GroupState } from "@/form/schema.ts";
+import type { Savefile } from "@/lib/savefile.ts";
 import { FORM_2552, validate2552 } from "@/form/form2552.ts";
 import { hasForm, startOracle } from "./oracle.ts";
 import { parityCheck, parityProblem } from "./parity.ts";
@@ -81,5 +82,58 @@ describe.skipIf(!hasForm("2552"))("native 2552 matches the legacy form (dynamic 
     expect(o[`${P}txt19ifoverpay:_2`]).toBe("true");
     const r = await parityCheck(oracle, FORM_2552, state, "84653210700000-2552-012017.xml", { taxTrans: rows });
     expect(parityProblem(r)).toEqual([]);
+  }, 120_000);
+});
+
+// Part III: transactions not subject to tax (tblTransaction rows + the modalTransactionNoTax pop-up rows)
+const partIII = [
+  { txtTranClassPartIII: "Sale to the exchange", txtAmountInvolvePartIII: "75,000.50" },
+  { txtTranClassPartIII: "Transfer by succession", txtAmountInvolvePartIII: "12,000.00" },
+];
+const noTax = [
+  { txtDateNoTax: "01/15/2017", txtSellerNoTax: "JUAN DELA CRUZ", txtBuyerNoTax: "MARIA SANTOS", txtIssuingCorpNoTax: "ABC CORP", txtNumberSharesNoTax: "500" },
+  { txtSellerNoTax: "PEDRO REYES", txtBuyerNoTax: "ANA LIM", txtIssuingCorpNoTax: "XYZ INC", txtNumberSharesNoTax: "20" },
+];
+
+describe("2552 Part III (not subject to tax) records", () => {
+  const state: FormState = { [`${P}txtForYr`]: "2017", [`${P}txtMonth1`]: "01", [`${P}txtDate`]: "15" };
+  it("writes BIR's keys per row, in BIR's cell order, with BIR's defaults", () => {
+    const rec = formRecords(FORM_2552, state, { partIII, noTax });
+    const v = (k: string) => rec.find((r) => r.key === k)?.value;
+    expect(v("chkTaxTransPartIII1")).toBe("false");
+    expect(v("txtTranClassPartIII2")).toBe("TRANSFER BY SUCCESSION"); // upper-cased like BIR's other text
+    expect(v("txtAmountInvolvePartIII1")).toBe("75,000.50");
+    expect(v("chkTaxTransModal2")).toBe("false");
+    expect(v("txtDateNoTax1")).toBe("01/15/2017");
+    expect(v("txtDateNoTax2")).toBe("01/15/2017"); // BIR fills the return period
+    expect(v("txtNumberSharesNoTax2")).toBe("20");
+    const keys = rec.map((r) => r.key);
+    expect(keys.indexOf("chkTaxTransModal1")).toBeLessThan(keys.indexOf("txtDateNoTax1"));
+    expect(keys.indexOf("txtDateNoTax1")).toBeLessThan(keys.indexOf("txtNumberSharesNoTax1"));
+    expect(keys.indexOf("txtAmountInvolvePartIII2")).toBeLessThan(keys.indexOf("chkTaxTransModal1"));
+  });
+  it("reopens a native save with the same rows", () => {
+    const rec = formRecords(FORM_2552, state, { partIII, noTax });
+    const file = { name: "x", record: rec } as unknown as Savefile;
+    const back = groupsFromSavefile(FORM_2552, file, "2552");
+    expect(back.partIII!.map((r) => r.txtAmountInvolvePartIII)).toEqual(["75,000.50", "12,000.00"]);
+    expect(back.noTax!.map((r) => r.txtSellerNoTax)).toEqual(["JUAN DELA CRUZ", "PEDRO REYES"]);
+  });
+});
+
+describe.skipIf(!hasForm("2552"))("native 2552 Part III is 1:1 with BIR's form", () => {
+  let oracle: Awaited<ReturnType<typeof startOracle>>;
+  beforeAll(async () => { oracle = await startOracle(); }, 120_000);
+  afterAll(() => oracle?.stop());
+  it("BIR's page rebuilds the Part III rows and the pop-up rows from a native save", async () => {
+    const state: FormState = {
+      [`${P}txtForYr`]: "2017", [`${P}txtMonth1`]: "01", [`${P}txtDate`]: "15", [`${P}OptTransaction1`]: "true", [`${P}PayPenalties`]: "true",
+      [`${P}txtTIN1`]: "846", [`${P}txtTIN2`]: "532", [`${P}txtTIN3`]: "107", [`${P}txtBranchCode`]: "00000",
+      [`${P}txtRDOCode`]: "043", [`${P}txtNameStockBrocker`]: "DELA CRUZ SECURITIES",
+    };
+    const r = await parityCheck(oracle, FORM_2552, state, "84653210700000-2552-012017.xml", { taxTrans: rows, partIII, noTax });
+    expect(parityProblem(r)).toEqual([]);
+    expect(r.extra).toEqual([]);
+    expect(r.missing).toEqual([]);
   }, 120_000);
 });
