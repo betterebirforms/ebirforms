@@ -6,6 +6,8 @@ import { parityCheck, parityProblem } from "./parity.ts";
 
 const P = "frm1702RT:";
 const id = (s: string) => `${P}${s}`;
+/** One div of a Sch 12 / 13 pop-up: BIR's ids put the div number after the column letter. */
+const div = (cell: Array<[string, string]>) => Object.fromEntries(cell.map(([k, v]) => [`${P}${k}`, v]));
 const row = (stem: string, ...col: Array<[string, string]>) => Object.fromEntries(col.map(([c, v]) => [`${P}${stem}.{i}${c}`, v]));
 /** Blurring item 24 asks to jump to Schedule 1 and the oracle accepts every dialog, so BIR's saved pager reads 3. */
 const ALLOW = [id("txtCurrentPage")];
@@ -48,6 +50,66 @@ const groups: GroupState = {
   sc9_6: [row("txtPg6Sc9I6", ["C1", "EXEMPT"], ["C2", "6,000"]), row("txtPg6Sc9I6", ["C1", "FINAL-TAXED"], ["C2", "9,000"])],
   sc9_8: [row("txtPg6Sc9I8", ["C1", "NOLCO"], ["C2", "100,000"])],
 };
+/** The pop-ups beyond the item lines: Sch 6A item 7, Sch 12 item 4, and the div tables of Sch 12 II-IV / Sch 13 I-II. */
+const popup: GroupState = {
+  sc6a_7: [
+    row("txtPg5Sc6AI7", ["C1", "2014"], ["C2", "100,000"], ["C3", "10,000"], ["C4", "5,000"], ["C5", "20,000"]),
+    row("txtPg5Sc6AI7", ["C1", "2015"], ["C2", "50,000"], ["C3", "0"], ["C4", "0"], ["C5", "10,000"]),
+  ],
+  sc12_4: [row("txtPg8Sc12I4", ["C1", "ROYALTIES"], ["C2", "100,000"], ["C3", "10,000"], ["C4", "10,000"]), row("txtPg8Sc12I4", ["C1", "DIVIDENDS"], ["C2", "50,000"], ["C3", "5,000"], ["C4", "5,000"])],
+  sc12_ii: [div([["txtPg8Sc12I5CA-{i}", "LOT 1"], ["txtPg8Sc12I5CB-{i}", "LOT 2"], ["txtPg8Sc12I6CA-{i}", "T-100"], ["txtPg8Sc12I6CB-{i}", "T-200"], ["txtPg8Sc12I7CA-{i}", "C-1"], ["txtPg8Sc12I7CB-{i}", "C-2"], ["txtPg8Sc12I8CA-{i}", "900,000"], ["txtPg8Sc12I8CB-{i}", "800,000"], ["txtPg8Sc12I9CA-{i}", "54,000"], ["txtPg8Sc12I9CB-{i}", "48,000"]])],
+  sc12_iii: [div([["drpPg8Sc12I10CA-1-{i}", "CS"], ["txtPg8Sc12I10CA-2-{i}", "ABC"], ["drpPg8Sc12I10CB-1-{i}", "PS"], ["txtPg8Sc12I10CB-2-{i}", "XYZ"], ["txtPg8Sc12I11CA-{i}", "ISSUER A"], ["txtPg8Sc12I11CB-{i}", "ISSUER B"], ["txtPg8Sc12I12CA-{i}", "300,000"], ["txtPg8Sc12I12CB-{i}", "200,000"], ["txtPg8Sc12I13CADate{i}", "01/15/2017"], ["txtPg8Sc12I13CBDate{i}", "02/20/2017"], ["txtPg8Sc12I14CA-{i}", "250,000"], ["txtPg8Sc12I14CB-{i}", "150,000"], ["txtPg8Sc12I15CA-{i}", "3,000"], ["txtPg8Sc12I15CB-{i}", "2,000"]])],
+  sc12_iv: [div([["txtPg8Sc12I16CA-{i}", "PRIZE"], ["txtPg8Sc12I16CB-{i}", "WINNINGS"], ["txtPg8Sc12I17CA-{i}", "20,000"], ["txtPg8Sc12I17CB-{i}", "30,000"], ["txtPg8Sc12I18CA-{i}", "4,000"], ["txtPg8Sc12I18CB-{i}", "6,000"]])],
+  sc13_i: [div([["txtPg8Sc13I2CA-{i}", "CAR"], ["txtPg8Sc13I2CB-{i}", "TRUCK"], ["txtPg8Sc13I3CA-{i}", "DONATION"], ["txtPg8Sc13I3CB-{i}", "SALE"], ["txtPg8Sc13I4CA-{i}", "JOHN"], ["txtPg8Sc13I4CB-{i}", "MARY"], ["txtPg8Sc13I5CA-{i}", "500,000"], ["txtPg8Sc13I5CB-{i}", "700,000"]])],
+  sc13_ii: [div([["txtPg8Sc13I6CA-{i}", "GIFT"], ["txtPg8Sc13I6CB-{i}", "PRIZE 2"], ["txtPg8Sc13I7CA-{i}", "11,000"], ["txtPg8Sc13I7CB-{i}", "12,000"]])],
+};
+
+describe("1702RT pop-up groups beyond the item lines", () => {
+  const o = computeForm(FORM_1702RT, itemized, { ...groups, ...popup });
+  const rec = new Map(formRecords(FORM_1702RT, itemized, { ...groups, ...popup }).map((r) => [r.key, r.value]));
+  const v = (s: string) => o[id(s)];
+
+  it("Sch 12 item 4: the final-tax column is the subtotal and joins item 19 with the div tables and the line boxes", () => {
+    expect(v("txtPg8Sc12I4Subtotal")).toBe("15,000");
+    // 20,000 (item 1 line) + 15,000 (item 4 rows) + 54,000 + 48,000 (II) + 3,000 + 2,000 (III) + 4,000 + 6,000 (IV)
+    expect(v("txtSc12I19TotalFinalTaxWitheld")).toBe("152,000");
+    expect(rec.get(id("txtPg8Sc12I4CtrModal"))).toBe("2");
+    expect(rec.get(id("txtPg8Sc12I4.2C4"))).toBe("5,000");
+  });
+
+  it("Sch 13: the div rows join item 8 with the premium line", () => {
+    // 7,000 + 500,000 + 700,000 (I) + 11,000 + 12,000 (II)
+    expect(v("txtPg8Sc13I8TotalIncome")).toBe("1,230,000");
+    expect(rec.get(id("txtCtrmodalPg8Sc13I"))).toBe("1");
+    expect(rec.get(id("txtPg8Sc13I5CB-1"))).toBe("700,000");
+  });
+
+  it("each div table writes BIR's ids in BIR's column order, with the counter", () => {
+    const key = formRecords(FORM_1702RT, itemized, { sc12_iii: popup.sc12_iii! }).map((r) => r.key);
+    const at = (k: string) => key.indexOf(id(k));
+    expect(rec.get(id("txtCtrmodalPg8Sc12III"))).toBe("1");
+    expect(at("drpPg8Sc12I10CA-1-1")).toBeLessThan(at("txtPg8Sc12I10CA-2-1"));
+    expect(at("txtPg8Sc12I13CBDate1")).toBeLessThan(at("txtPg8Sc12I14CA-1"));
+    expect(rec.get(id("txtPg8Sc12I13CADate1"))).toBe("01/15/2017");
+  });
+
+  it("Sch 6A item 7: the line turns into OTHERS, takes the five subtotals and writes each row's remaining balance", () => {
+    expect(rec.get(id("txtPg5Sc6AI7C1"))).toBe("OTHERS");
+    expect(rec.get(id("txtPg5Sc6AI7CtrModal"))).toBe("2");
+    expect(rec.get(id("txtPg5Sc6AI7.1C6"))).toBe("65,000");
+    expect(rec.get(id("txtPg5Sc6AI7.2C6"))).toBe("40,000");
+    expect(rec.get(id("txtPg5Sc6AI7C2Subtotal"))).toBe("150,000");
+    expect(rec.get(id("txtPg5Sc6AI7C6Subtotal"))).toBe("105,000");
+    expect(rec.get(id("txtPg5Sc6AI7C5"))).toBe("30,000");
+  });
+
+  it("an overdrawn row is shown negative in brackets, and OSD clears the Sch 6A rows' line", () => {
+    const rows: GroupState = { sc6a_7: [row("txtPg5Sc6AI7", ["C1", "2016"], ["C2", "1,000"], ["C3", "2,000"], ["C4", "0"], ["C5", "0"])] };
+    expect(formRecords(FORM_1702RT, itemized, rows).find((r) => r.key === id("txtPg5Sc6AI7.1C6"))?.value).toBe("(1000)");
+    const osd = formRecords(FORM_1702RT, { ...itemized, [id("rdoPg1Pt1I15OptionalStandard")]: "true", [id("rdoPg1Pt1I15ItemizedDeduction")]: "false" }, { sc6a_7: popup.sc6a_7! });
+    expect(osd.find((r) => r.key === id("txtPg5Sc6AI7C1"))?.value).toBe("");
+  });
+});
 
 describe("1702RT (pre-2018 layout) compute", () => {
   const o = computeForm(FORM_1702RT, itemized, groups);
@@ -130,6 +192,23 @@ describe.skipIf(!hasForm("1702RT"))("native 1702RT is 1:1 with BIR's form", () =
     const r = await parityCheck(oracle, FORM_1702RT, itemized, file, groups);
     expect(parityProblem(r, ALLOW)).toEqual([]);
     expect(r.key_count).toBeGreaterThan(581);
+  }, 120_000);
+
+  it("every pop-up beyond the item lines (Sch 6A 7, Sch 12 4 and II-IV, Sch 13 I-II) filled", async () => {
+    const r = await parityCheck(oracle, FORM_1702RT, itemized, file, { ...groups, ...popup });
+    expect(parityProblem(r, ALLOW)).toEqual([]);
+  }, 120_000);
+
+  it("two divs per pop-up, one NOLCO row that overdraws, and OSD clearing the Sch 6A rows", async () => {
+    const two: GroupState = {
+      ...popup,
+      sc12_iv: [...popup.sc12_iv!, div([["txtPg8Sc12I16CA-{i}", "RAFFLE"], ["txtPg8Sc12I17CA-{i}", "1,000.75"], ["txtPg8Sc12I18CA-{i}", "200.50"]])],
+      sc13_ii: [...popup.sc13_ii!, div([["txtPg8Sc13I6CB-{i}", "AWARD"], ["txtPg8Sc13I7CB-{i}", "9,000"]])],
+      sc6a_7: [...popup.sc6a_7!, row("txtPg5Sc6AI7", ["C1", "2016"], ["C2", "10,000"], ["C3", "9,000"], ["C4", "2,000"], ["C5", "0"])],
+    };
+    expect(parityProblem(await parityCheck(oracle, FORM_1702RT, itemized, file, { ...groups, ...two }), ALLOW)).toEqual([]);
+    const osd = { ...itemized, [id("rdoPg1Pt1I15OptionalStandard")]: "true", [id("rdoPg1Pt1I15ItemizedDeduction")]: "false" };
+    expect(parityProblem(await parityCheck(oracle, FORM_1702RT, osd, file, { ...groups, ...two }), ALLOW)).toEqual([]);
   }, 120_000);
 
   it("OSD, a loss year where MCIT wins, an overpayment carried over", async () => {

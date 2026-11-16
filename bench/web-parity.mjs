@@ -1,4 +1,4 @@
-// `node bench/web-parity.mjs [out.json]`: what still does nothing on the web version. Opens every form's page (and
+// `node bench/web-parity.mjs [out.json [CODE,CODE]]`: what still does nothing on the web version. Opens every form's page (and
 // the main screen) from dist-web in Chromium and lists each control on BIR's page that a user can click (buttons,
 // links, BIR's javascript: links) but that has no click handler, plus the boxes BIR greys out that stay open.
 // Handlers are read with Chrome's DOMDebugger, so this measures what is wired, not what is drawn.
@@ -23,7 +23,9 @@ const code = readdirSync("asset/bir/layout")
   .filter((f) => f.endsWith(".html") && !f.startsWith("help-") && f !== "main.html")
   .map((f) => f.slice(0, -5))
   .sort();
-const route = [{ code: "main", path: "/" }, ...code.map((c) => ({ code: c, path: `/form/${c}` }))];
+// a third argument (comma-separated form codes) audits only those forms
+const only = process.argv[3]?.split(",");
+const route = [{ code: "main", path: "/" }, ...code.map((c) => ({ code: c, path: `/form/${c}` }))].filter((r) => !only || only.includes(r.code));
 
 const browser = await chromium.launch();
 const report = [];

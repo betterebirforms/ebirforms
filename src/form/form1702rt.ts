@@ -13,15 +13,16 @@
 // BIR arithmetic replicated: Sch 12 item 19 and Sch 13 item 8 add each amount as parseInt (WholeNumWithComma), so every
 // line loses its centavos BEFORE the sum (not after, as getSum does).
 // The Sch 2 lines 16 and 19 (sumThenDifference) ROUND to the peso where every other line truncates.
-// Not modelled (they keep BIR's blank defaults): the Sch 12 II–IV / Sch 13 I–II pop-up tables, the Sch 6A row-7 and
-// Sch 12 item-4 modals, and Part III payment details are inputs only.
+// Every "(Add more...)" table is a group: the item lines, Sch 6A item 7 (five NOLCO columns), Sch 12 item 4, and the
+// div tables of Sch 12 II–IV and Sch 13 I–II (one row per div, a column A and a column B). Their subtotals join
+// item 19 / Sch 13 item 8 as whole pesos. Part III payment details are inputs only.
 
 import frozen from "./template/1702RT.json";
 import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1702RT", frozen as Array<[string, string, string?]>);
 import { parseMoney, type Centavo } from "./money.ts";
-import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
+import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupRow, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { domPeso, formatPeso, nolcoRows, numWithParenthesis, out, product, validIncorporationDate, wholeNum } from "./form1702rtv2018c.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
@@ -55,6 +56,76 @@ export const MODAL_RT_GROUP: GroupSpec[] = MODAL_RT.map((m) => ({
   row: [...m.text.map((c) => ({ id: `${P}${m.stem}.{i}${c}`, kind: "text" as const })), { id: `${P}${m.stem}.{i}${m.amount}`, kind: "money" as const }],
   total: { into: total(m), of: `${P}${m.stem}.{i}${m.amount}` },
 }));
+
+
+// ---- the pop-ups that are not 3-element item lines ------------------------------------------------------------------
+const wholeSum = (key: string[]) => (row: GroupRow[]): string => String(row.reduce((s, x) => s + key.reduce((t, k) => t + wholeNum(x[k] ?? "0"), 0), 0));
+/** Sch 12 item 4: a gross-income / final-tax table. Its subtotal (the C4 column) joins item 19; the line boxes stay free. */
+export const SC12_4_GROUP: GroupSpec = {
+  name: "sc12_4",
+  size_field: `${P}txtPg8Sc12I4CtrModal`,
+  first_index: 1,
+  row: [
+    { id: `${P}txtPg8Sc12I4.{i}C1`, kind: "text" },
+    ...["C2", "C3", "C4"].map((c) => ({ id: `${P}txtPg8Sc12I4.{i}${c}`, kind: "money" as const })),
+  ],
+  total: { into: "_total_sc12_4", of: `${P}txtPg8Sc12I4.{i}C4`, sum: wholeSum([`${P}txtPg8Sc12I4.{i}C4`]) },
+};
+/** Sch 6A item 7: five NOLCO columns; the sixth (remaining balance) is BIR's C2 − C3 − C4 − C5 per row. */
+const NOL = `${P}txtPg5Sc6AI7.{i}`;
+const noloRemain = (either: (id: string) => string): string => {
+  const n = wholeNum(either(`${NOL}C2`)) - wholeNum(either(`${NOL}C3`)) - wholeNum(either(`${NOL}C4`)) - wholeNum(either(`${NOL}C5`));
+  return n < 0 ? `(${Math.abs(n)})` : formatPeso(n * 100);
+};
+export const SC6A_7_GROUP: GroupSpec = {
+  name: "sc6a_7",
+  size_field: `${P}txtPg5Sc6AI7CtrModal`,
+  first_index: 1,
+  row: [
+    { id: `${NOL}C1`, kind: "text" },
+    ...["C2", "C3", "C4", "C5"].map((c) => ({ id: `${NOL}${c}`, kind: "money" as const })),
+    { id: `${NOL}C6`, kind: "money", derive: (either) => noloRemain(either) },
+  ],
+  total: [{ into: "_total_sc6a_7_N", of: `${NOL}C2`, sum: (row: GroupRow[]) => String(row.length) }, ...["C2", "C3", "C4", "C5", "C6"].map((c) => ({
+    into: `_total_sc6a_7_${c}`,
+    of: `${NOL}${c}`,
+    sum: (row: GroupRow[]) => wholeSum([`${NOL}${c}`])(row),
+  }))],
+};
+
+interface Div {
+  name: string;
+  counter: string;
+  /** The columns, in the order BIR's markup lists them (CA then CB for each); `{i}` is the div number. */
+  column: Array<{ id: string; kind: "text" | "money" | "select" }>;
+  /** The money columns that feed the Sch 12 item 19 / Sch 13 item 8 total (those BIR names ...name-II etc.). */
+  feed: string[];
+}
+const pair = (stem: string, kind: "text" | "money" | "select", join = "-", suffix = ""): Div["column"] =>
+  ["CA", "CB"].map((c) => ({ id: `${P}${stem}${c}${join}{i}${suffix}`, kind }));
+const dateCell = (c: string) => ({ id: `${P}txtPg8Sc12I13${c}Date{i}`, kind: "text" as const });
+/** The five "(more)" pop-ups of Sch 12 II–IV and Sch 13 I–II: each row is one div holding a column A and a column B. */
+export const DIV_RT: Div[] = [
+  { name: "sc12_ii", counter: "txtCtrmodalPg8Sc12II", column: [...pair("txtPg8Sc12I5", "text"), ...pair("txtPg8Sc12I6", "text"), ...pair("txtPg8Sc12I7", "text"), ...pair("txtPg8Sc12I8", "money"), ...pair("txtPg8Sc12I9", "money")], feed: ["txtPg8Sc12I9"] },
+  {
+    name: "sc12_iii",
+    counter: "txtCtrmodalPg8Sc12III",
+    column: [
+      { id: `${P}drpPg8Sc12I10CA-1-{i}`, kind: "select" }, { id: `${P}txtPg8Sc12I10CA-2-{i}`, kind: "text" },
+      { id: `${P}drpPg8Sc12I10CB-1-{i}`, kind: "select" }, { id: `${P}txtPg8Sc12I10CB-2-{i}`, kind: "text" },
+      ...pair("txtPg8Sc12I11", "text"), ...pair("txtPg8Sc12I12", "money"), dateCell("CA"), dateCell("CB"), ...pair("txtPg8Sc12I14", "money"), ...pair("txtPg8Sc12I15", "money"),
+    ],
+    feed: ["txtPg8Sc12I15"],
+  },
+  { name: "sc12_iv", counter: "txtCtrmodalPg8Sc12IV", column: [...pair("txtPg8Sc12I16", "text"), ...pair("txtPg8Sc12I17", "money"), ...pair("txtPg8Sc12I18", "money")], feed: ["txtPg8Sc12I18"] },
+  { name: "sc13_i", counter: "txtCtrmodalPg8Sc13I", column: [...pair("txtPg8Sc13I2", "text"), ...pair("txtPg8Sc13I3", "text"), ...pair("txtPg8Sc13I4", "text"), ...pair("txtPg8Sc13I5", "money")], feed: ["txtPg8Sc13I5"] },
+  { name: "sc13_ii", counter: "txtCtrmodalPg8Sc13II", column: [...pair("txtPg8Sc13I6", "text"), ...pair("txtPg8Sc13I7", "money")], feed: ["txtPg8Sc13I7"] },
+];
+const divTotal = (d: Div) => `_total_${d.name}`;
+export const DIV_RT_GROUP: GroupSpec[] = DIV_RT.map((d) => {
+  const feed = d.feed.flatMap((stem) => ["CA", "CB"].map((c) => `${P}${stem}${c}-{i}`));
+  return { name: d.name, size_field: `${P}${d.counter}`, first_index: 1, row: d.column, total: { into: divTotal(d), of: feed[0]!, sum: wholeSum(feed) } };
+});
 
 /** validateYearEnd, old layout: fiscal rules as in 2018, but the floor is September 2013 and from 2018 on the
  *  calendar-year checks are skipped (an empty `else if (inputYear >= 2018) {}` branch). */
@@ -199,11 +270,20 @@ export function modelRT(r: Read): ModelRT {
   text.txtPg5Sc6AI4C1 = nol && period.year !== "" ? `20${period.year}` : "";
   amount.txtPg5Sc6AI4C2 = nol;
   amount.txtPg5Sc6AI4C6 = nol;
-  const nrow = [5, 6, 7].map((k) => ({ C2: r(`${P}txtPg5Sc6AI${k}C2`), C3: r(`${P}txtPg5Sc6AI${k}C3`), C4: r(`${P}txtPg5Sc6AI${k}C4`), C5: r(`${P}txtPg5Sc6AI${k}C5`) }));
+  // item 7's pop-up: with rows, the line shows OTHERS and the five subtotals (othersSubtotal), which the checks below then read
+  const has7 = item && parseMoney(r("_total_sc6a_7_N")) > 0;
+  const sub7 = (c: string): string => formatPeso(parseMoney(r(`_total_sc6a_7_${c}`)));
+  const cell = (k: number, c: string): string => (k === 7 && has7 ? sub7(c) : r(`${P}txtPg5Sc6AI${k}${c}`));
+  if (has7) {
+    text.txtPg5Sc6AI7C1 = "OTHERS";
+    for (const c of ["C2", "C3", "C4", "C5", "C6"]) force(`txtPg5Sc6AI7${c}`, sub7(c));
+  }
+  for (const c of ["C2", "C3", "C4", "C5", "C6"]) amount[`txtPg5Sc6AI7${c}Subtotal`] = item ? parseMoney(r(`_total_sc6a_7_${c}`)) : 0;
+  const nrow = [5, 6, 7].map((k) => ({ C2: cell(k, "C2"), C3: cell(k, "C3"), C4: cell(k, "C4"), C5: cell(k, "C5") }));
   const zero = item ? nolcoRows(nrow) : nrow.map(() => ({ C3: true, C4: true, C5: true }));
   let nolco = 0;
   [5, 6, 7].forEach((k, j) => {
-    const col = (c: "C2" | "C3" | "C4" | "C5"): Centavo => (osd || (c !== "C2" && zero[j]![c]) ? 0 : raw(`txtPg5Sc6AI${k}${c}`));
+    const col = (c: "C2" | "C3" | "C4" | "C5"): Centavo => (osd || (c !== "C2" && zero[j]![c]) ? 0 : parseMoney(cell(k, c)));
     if (item) for (const c of ["C3", "C4", "C5"] as const) if (zero[j]![c]) force(`txtPg5Sc6AI${k}${c}`, "0");
     amount[`txtPg5Sc6AI${k}C6`] = item ? out(col("C2") - (col("C3") + col("C4") + col("C5"))) : 0;
     nolco += col("C5");
@@ -279,8 +359,10 @@ export function modelRT(r: Read): ModelRT {
   amount.txtPg7Sc10I17TotalLiabilitiesEquity = sum(amount.txtPg7Sc10I12TotalLiabilities, amount.txtPg7Sc10I16TotalEquity);
   // Schedules 12 and 13 (computePg8Sc12I19 / computePg8Sc13I8): per-line parseInt, then the sum
   const whole = (ids: string[]) => ids.reduce((s, id) => s + wholeNum(r(`${P}${id}`) || "0"), 0) * 100;
-  amount.txtSc12I19TotalFinalTaxWitheld = whole(["I1C3", "I2C3", "I3C3", "I4C3", "I9C1", "I9C2", "I15C1", "I15C2", "I18C1", "I18C2"].map((x) => `txtPg8Sc12${x}`));
-  amount.txtPg8Sc13I8TotalIncome = whole(["txtPg8Sc13I1ReturnOfPremium", "txtPg8Sc13I5C1", "txtPg8Sc13I5C2", "txtPg8Sc13I7C1", "txtPg8Sc13I7C2"]);
+  const popup = (name: string): Centavo => parseMoney(r(`_total_${name}`)) ;
+  amount.txtPg8Sc12I4Subtotal = popup("sc12_4");
+  amount.txtSc12I19TotalFinalTaxWitheld = popup("sc12_4") + popup("sc12_ii") + popup("sc12_iii") + popup("sc12_iv") + whole(["I1C3", "I2C3", "I3C3", "I4C3", "I9C1", "I9C2", "I15C1", "I15C2", "I18C1", "I18C2"].map((x) => `txtPg8Sc12${x}`));
+  amount.txtPg8Sc13I8TotalIncome = popup("sc13_i") + popup("sc13_ii") + whole(["txtPg8Sc13I1ReturnOfPremium", "txtPg8Sc13I5C1", "txtPg8Sc13I5C2", "txtPg8Sc13I7C1", "txtPg8Sc13I7C2"]);
   return { osd, mcit, amount, forced, text };
 }
 
@@ -288,7 +370,7 @@ const ESCAPED = new Set([`${P}txtPg1Pt1I9Name`, `${P}txtPg1Pt1I10Address`, `${P}
 const VERBATIM = /:txtPg[1-8](Pt1I6)?TIN[1-4]$|:txtPg[5-8]BranchCode$|:txtPg1Pt1I7RDO$|:txtPg1Pt1I11Contact$|:txtZIP$|:txtPg1Pt1I12Email$/;
 /** BIR never lets the user set these (masks, signatures, pager, flags, the Sch 12 / 13 totals BIR cannot compute,
  *  the unmodelled pop-up tables' counters/subtotals, page count); they keep BIR's own default. */
-const UNMODELLED = /BranchMask|:txtSignature|:txtPg5Sc6AI4C[345]$|:txtCurrentPage|:txtMaxPage|driveSelectTPExport|txtFinalFlag|txtEnroll|ebirOnline|Ctrmodal|:txtPg5Sc6AI7CtrModal|:txtPg8Sc12I4CtrModal|:txtPg5Sc6AI7C\dSubtotal|:txtPg8Sc12I4Subtotal|:txtPg1Pt2PagesFilled|CtrModal$/;
+const UNMODELLED = /BranchMask|:txtSignature|:txtPg5Sc6AI4C[345]$|:txtCurrentPage|:txtMaxPage|driveSelectTPExport|txtFinalFlag|txtEnroll|ebirOnline|Ctrmodal|:txtPg5Sc6AI7CtrModal|:txtPg8Sc12I4CtrModal|:txtPg1Pt2PagesFilled|CtrModal$/;
 const PERCENT = /:txtPg7Sc11I\d+C4$/;
 
 export function fieldListRT(record: TemplateRecord[]): FieldJson[] {
@@ -314,7 +396,7 @@ export const FORM_1702RT: FormSchema = {
     if (/:txtPg1Pt1I6TIN[1-4]$|:txtPg1Pt1I9Name$|:txtPg1Pt1I10Address$/.test(f.id)) spec.required = true;
     return spec;
   }),
-  group: MODAL_RT_GROUP,
+  group: [...MODAL_RT_GROUP, SC6A_7_GROUP, SC12_4_GROUP, ...DIV_RT_GROUP],
   format: formatPeso,
   extra_record: (state, groups) => derivedRT(state, groups),
 };
