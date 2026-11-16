@@ -77,7 +77,7 @@ export function codeOfSavefile(name: string): string | null {
  */
 function NativeScreen({ form_code }: { form_code: string | null }) {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [initial, setInitial] = useState<{ state: FormState; groups: GroupState } | null | "none">(null);
+  const [initial, setInitial] = useState<{ state: FormState; groups: GroupState; is_final_copy: boolean } | null | "none">(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     // a fragment-only change (picking a profile on /form) doesn't reload the page by itself
@@ -96,7 +96,10 @@ function NativeScreen({ form_code }: { form_code: string | null }) {
   useEffect(() => {
     if (!form_code || !NATIVE_FORM[form_code] || !file_name) return setInitial("none");
     readText(`savefile/${file_name}`)
-      .then((t) => setInitial(reopenSavefile(NATIVE_FORM[form_code]!.schema, parseSavefile(t), form_code)))
+      .then((t) => {
+        const file = parseSavefile(t);
+        setInitial({ ...reopenSavefile(NATIVE_FORM[form_code]!.schema, file, form_code), is_final_copy: file.is_final_copy });
+      })
       .catch((e: Error) => {
         setError(`Couldn't open ${file_name}: ${e.message}`);
         setInitial("none");

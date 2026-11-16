@@ -17,6 +17,8 @@ export interface ExportInput {
   groups?: GroupState;
   /** The active taxpayer profile; its TIN wins over the TIN typed on the form. */
   profile?: Partial<Profile>;
+  /** BIR's offline final copy (the Submit BIR's app makes without internet): the trailer's "0" locks it and
+   *  txtFinalFlag "3" tells BIR's app (and the desktop app) it is ready to send. */
   is_final_copy?: boolean;
   /** The clock for forms whose name carries the time of saving (0605, 2000, 2200*). */
   now?: Date;
@@ -56,6 +58,12 @@ export function savefileName({ form_code, state, groups = {}, profile = {}, now 
   return `${tin("tin1")}${tin("tin2")}${tin("tin3")}${tin("tin4")}-${def.name_code ?? form_code}-${def.periodName(savedValue(def.schema, state, groups), hhmmss(now))}.xml`;
 }
 
+/** BIR's hidden send state on 76 of the 84 forms: "0" new, "3" final copy made offline (BIR's openAlertEmail when
+ *  checkNetConnection fails), "2" a send that failed, "1" sent. BIR's Submit on a "3" copy sends it ("3" -> "2" ->
+ *  upload), so a "3" copy is the one a non-BIR app may hand over for sending. */
+export const FINAL_FLAG = "txtFinalFlag";
+export const OFFLINE_FINAL = "3";
+
 /** The eBIRForms savefile: the 1:1 records under BIR's own name. */
 export const SAVEFILE_ADAPTER: ExportAdapter = {
   id: "savefile",
@@ -64,7 +72,9 @@ export const SAVEFILE_ADAPTER: ExportAdapter = {
   build: (input) => {
     const def = NATIVE_FORM[input.form_code];
     if (!def) throw new ExportUnavailable(`${input.form_code} isn't a native form`);
-    const text = serializeSavefile({ record: formRecords(def.schema, input.state, input.groups ?? {}), trailer_year: 2012, is_final_copy: input.is_final_copy ?? false });
+    const is_final_copy = input.is_final_copy ?? false;
+    const record = formRecords(def.schema, input.state, input.groups ?? {}).map((r) => (is_final_copy && r.key === FINAL_FLAG ? { ...r, value: OFFLINE_FINAL } : r));
+    const text = serializeSavefile({ record, trailer_year: 2012, is_final_copy });
     return { name: savefileName(input), text, byte: encodeCp1252(text) };
   },
 };

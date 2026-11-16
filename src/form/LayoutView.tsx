@@ -3,14 +3,16 @@
 // engine (schema.ts) drives every field it knows by BIR's own id: values in, computed totals out, read-only where
 // BIR's are. BIR's buttons do what they say: Validate (locks the form) and Edit (opens it again), Save, Print and
 // File > Print Preview (BIR's printme(), then the browser's print), Prev / Next, File > Main Menu. Submit / Final
-// Copy is BIR's online send, which a browser can't make: it says how to file instead.
+// Copy is BIR's online send, which a browser can't make: it makes BIR's offline final copy instead (the file BIR's
+// app makes when there is no internet), locked, for the desktop app or BIR's app to send.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { formatMoney, parseMoney } from "./money.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
-import { IS_WEB, writeText } from "@/lib/vfs";
+import { IS_WEB, readText, writeText } from "@/lib/vfs";
+import { parseSavefile } from "@/lib/savefile.ts";
 import { webExport, webDownload } from "@/lib/web-store.ts";
 import type { Profile } from "@/lib/savefile.ts";
 
@@ -28,13 +30,23 @@ import printCss from "../../asset/bir/print.css?raw";
 import printNoteJson from "../../asset/bir/print-note.json";
 const printNote = printNoteJson as Record<string, string>;
 
-/** What Submit / Final Copy says on the web: BIR's button sends the return online, which a browser can't do. */
-export const WEB_SUBMIT_NOTE =
-  "The web version can't send returns to BIR. BIR's Submit uploads the return over a connection a web page is not allowed to open.\n\n" +
-  "To file this return, click Save first, then do one of these:\n" +
-  "1. Print it, and file and pay at your bank or RDO.\n" +
-  "2. In the desktop app (Mac, Windows or Linux), put the saved file in its savefile folder (Go > Show Saved Returns), open it, and click Submit / Final Copy there.\n" +
-  "3. In BIR's eBIRForms on Windows, put it in C:\\eBIRForms\\savefile, open it, and click Submit / Final Copy.";
+/** How a final copy made on the web reaches BIR: the web can't send (BIR's upload is a connection a web page is not
+ *  allowed to open), the desktop app and BIR's own app can. */
+export const WEB_SEND_STEP =
+  "To file it, do one of these:\n" +
+  "1. In the desktop app (Mac, Windows or Linux), put the file in its savefile folder (Go > Show Saved Returns), open it, and click Submit / Final Copy there.\n" +
+  "2. In BIR's eBIRForms on Windows, put it in C:\\eBIRForms\\savefile, open it, and click Submit / Final Copy.\n" +
+  "3. Print it, and file and pay at your bank or RDO.\n\n" +
+  "The return is filed only when BIR's confirmation email arrives. Keep that email.";
+
+/** What Submit / Final Copy asks on the web, before it makes the final copy. */
+export const WEB_FINAL_COPY_ASK =
+  "The web version can't send returns to BIR. Submit makes BIR's final copy instead: the same locked file BIR's eBIRForms makes when there is no internet, ready to send from the desktop app or BIR's app.\n\n" +
+  "After this the return can't be edited. To change it later, file an amended return.\n\n" +
+  "Make the final copy?";
+
+/** What Submit / Final Copy says on a return that is already a final copy. */
+export const WEB_SUBMIT_NOTE = `This return is a final copy, and the web version can't send returns to BIR.\n\n${WEB_SEND_STEP}`;
 
 const layoutKey = (form_code: string) => `../../asset/bir/layout/${form_code}.html`;
 /** Whether BIR's layout was captured for this form (else the web version shows the plain native form). */
@@ -113,7 +125,7 @@ export function wireMenu(root: ShadowRoot, on: (el: EventTarget, type: string, f
   }
 }
 
-export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { form_code: string; profile: Profile; initial?: { state: FormState; groups: GroupState } | undefined; onClose: () => void; onSaved: () => void }) {
+export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { form_code: string; profile: Profile; initial?: { state: FormState; groups: GroupState; is_final_copy?: boolean } | undefined; onClose: () => void; onSaved: () => void }) {
   const def = NATIVE_FORM[form_code]!;
   const { schema, validate } = def;
   const [host, root] = useLayoutRoot(form_code);
@@ -127,7 +139,10 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   const [groups, setGroups] = useState<GroupState>(() => initial?.groups ?? Object.fromEntries((schema.group ?? []).map((g) => [g.name, [] as GroupRow[]])));
   const computed = useMemo(() => computeForm(schema, state, groups), [schema, state, groups]);
   // BIR's Validate locks the form and opens Edit, Print and Submit; Edit opens the form again
-  const [validated, setValidated] = useState(false);
+  // a final copy (made here, or opened from a savefile ending "...BIR 2012.0") stays locked: no Edit, no Save
+  const [final, setFinal] = useState(initial?.is_final_copy ?? false);
+  const [validated, setValidated] = useState(final);
+  const isFinal = useRef(final);
   const latest = useRef({ state, computed, groups });
   const groupBox = useRef(new Map<Element, { group: GroupSpec; row: number; id: string }>());
   latest.current = { state, computed, groups };
@@ -201,11 +216,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       if (n && n !== current) showPage(n);
       el.focus();
     };
-    const save = async () => {
-      const { state: s, computed: c, groups: g } = latest.current;
-      const problem = validate(c, g);
-      if (problem.length > 0) return showProblem(problem);
-      const { name, text } = SAVEFILE_ADAPTER.build({ form_code, state: s, groups: g, profile });
+    const store = async (name: string, text: string) => {
       if (IS_WEB) {
         try {
           await writeText(`savefile/${name}`, text);
@@ -214,7 +225,35 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
           webDownload(name, text);
         }
       } else await writeText(`savefile/${name}`, text);
+    };
+    const save = async () => {
+      if (isFinal.current) return window.alert(WEB_SUBMIT_NOTE);
+      const { state: s, computed: c, groups: g } = latest.current;
+      const problem = validate(c, g);
+      if (problem.length > 0) return showProblem(problem);
+      const { name, text } = SAVEFILE_ADAPTER.build({ form_code, state: s, groups: g, profile });
+      await store(name, text);
       window.alert(`BIR Form saved successfully as : savefile/${name}`);
+      onSaved();
+    };
+    // Submit / Final Copy: BIR's offline branch of openAlertEmail (no internet: txtFinalFlag "3", saveXML(true),
+    // locked). BIR refuses to overwrite a final copy unless the return is amended; amended returns carry their own
+    // name, so the same name holding a final copy is refused here with BIR's words.
+    const finalCopy = async () => {
+      if (isFinal.current) return window.alert(WEB_SUBMIT_NOTE);
+      const { state: s, computed: c, groups: g } = latest.current;
+      const problem = validate(c, g);
+      if (problem.length > 0) return showProblem(problem);
+      if (!window.confirm(WEB_FINAL_COPY_ASK)) return;
+      const { name, text } = SAVEFILE_ADAPTER.build({ form_code, state: s, groups: g, profile, is_final_copy: true });
+      const before = await readText(`savefile/${name}`).catch(() => null);
+      if (before !== null && parseSavefile(before).is_final_copy)
+        return window.alert("If your intention is to make an amended return, kindly tick Amended Return to 'Yes' before hitting 'Save' or 'Final Copy' or 'Submit'.");
+      await store(name, text);
+      isFinal.current = true;
+      setFinal(true);
+      setValidated(true);
+      window.alert(`Final copy saved as : savefile/${name}\n\nIt is locked. ${WEB_SEND_STEP}`);
       onSaved();
     };
     // BIR's Print Preview (printme()): the page as it prints, boxes read-only on white, lists as plain text, the
@@ -290,7 +329,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       else if (v === "Main Menu" || v === "Exit") on(b, "click", onClose);
       // BIR's Print button opens its Print Preview; the plain "Print" of its header prints straight away
       else if (v === "Print") on(b, "click", b.id === "btnPrint" ? preview : () => window.print());
-      else if (v === "Submit / Final Copy") on(b, "click", () => window.alert(WEB_SUBMIT_NOTE));
+      else if (v === "Submit / Final Copy") on(b, "click", () => void finalCopy());
     }
     // BIR's File / Help menu: File opens its list (Main Screen, Save, Print Preview, Exit); in Print Preview, BIR's
     // print menu (Print, Cancel Print)
@@ -414,15 +453,18 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // BIR's buttons follow Validate: before it only Validate (and Save) work; after it Edit, Print and Submit do
+  // BIR's buttons follow Validate: before it only Validate (and Save) work; after it Edit, Print and Submit do. A
+  // final copy keeps Print and Submit (which says how to send it) and nothing that changes it
   useEffect(() => {
     if (!root) return;
     for (const b of Array.from(root.querySelectorAll("input[type=button], button")) as HTMLInputElement[]) {
       const v = (b.value || b.textContent || "").trim();
       if (v === "Validate") b.disabled = validated;
-      else if (v === "Edit" || v === "Submit / Final Copy" || (v === "Print" && b.id === "btnPrint")) b.disabled = !validated;
+      else if (v === "Edit") b.disabled = !validated || final;
+      else if (v === "Save") b.disabled = final;
+      else if (v === "Submit / Final Copy" || (v === "Print" && b.id === "btnPrint")) b.disabled = !validated;
     }
-  }, [root, validated]);
+  }, [root, validated, final]);
 
   // engine → page: write every known field's value, and lock what BIR locks
   useEffect(() => {

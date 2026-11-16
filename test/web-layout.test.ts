@@ -89,9 +89,6 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await box("frm0605:txtReturnPeriodDay").isDisabled()).toBe(true);
     expect(await box("frm0605:cmdEdit").isDisabled()).toBe(false);
     expect(await box("frm0605:btnFinalCopy").isDisabled()).toBe(false);
-    // Submit says how to file: the browser can't send
-    await box("frm0605:btnFinalCopy").click();
-    await expect.poll(() => alert.at(-1)).toMatch(/can't send returns to BIR/);
     // Print: BIR's preview
     await box("btnPrint").click();
     await expect.poll(() => box("printMenu").isVisible()).toBe(true);
@@ -114,6 +111,51 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await page.evaluate(() => Array.from(document.querySelectorAll("#root > :not(.bir-layout)")).every((e) => getComputedStyle(e).display === "none"))).toBe(true);
     await page.close();
   }, 60_000);
+
+  // Submit / Final Copy: the web can't send, so it makes BIR's offline final copy (txtFinalFlag 3, trailer "0"),
+  // locked for good, and says how it reaches BIR. Opened again, it is still locked. Go on the main screen says the same.
+  it("0605: Submit makes BIR's offline final copy, locked, and it opens locked again", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 }, acceptDownloads: true });
+    const dialog: string[] = [];
+    page.on("dialog", (d) => void (dialog.push(`${d.type()}: ${d.message()}`), d.accept()));
+    await page.goto(`${base}/form/0605`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const box = (id: string) => page.locator(`[id="${id}"]`);
+    const typed = { "frm0605:txtReturnPeriodMonth": "10", "frm0605:txtReturnPeriodDay": "15", "frm0605:txtReturnPeriodYear": "2026", "frm0605:txtTIN1": "846", "frm0605:txtTIN2": "532", "frm0605:txtTIN3": "107", "frm0605:txtBranchCode": "00000", "frm0605:txtTaxPayerName": "JUAN DELA CRUZ" };
+    for (const [id, v] of Object.entries(typed)) await box(id).fill(v);
+    await box("frm0605:txtRDOCode").selectOption({ index: 1 });
+    await box("frm0605:cmdValidate").click();
+    await expect.poll(() => dialog.at(-1)).toMatch(/Validation successful/);
+    const download = page.waitForEvent("download");
+    await box("frm0605:btnFinalCopy").click();
+    const file = await download;
+    expect(dialog.at(-2)).toMatch(/^confirm: The web version can't send returns to BIR\. Submit makes BIR's final copy/);
+    await expect.poll(() => dialog.at(-1)).toMatch(/^alert: Final copy saved as : savefile\/84653210700000-0605-.*\.xml\n\nIt is locked\. To file it/);
+    const text = readFileSync((await file.path())!, "latin1");
+    expect(text.endsWith("All Rights Reserved BIR 2012.0")).toBe(true);
+    expect(text).toContain("txtFinalFlag=3txtFinalFlag=");
+    // locked: no Edit, Save or Validate; Print stays, Submit says how to send
+    const state = () => Promise.all(["frm0605:cmdEdit", "btnSave", "frm0605:cmdValidate", "btnPrint", "frm0605:btnFinalCopy", "frm0605:txtTaxPayerName"].map((id) => box(id).isDisabled()));
+    await expect.poll(state).toEqual([true, true, true, false, false, true]);
+    await box("frm0605:btnFinalCopy").click();
+    await expect.poll(() => dialog.at(-1)).toMatch(/^alert: This return is a final copy, and the web version can't send/);
+    // opened again from the list: still locked
+    await page.goto("about:blank");
+    await page.goto(`${base}/form/0605#file=${encodeURIComponent(file.suggestedFilename())}`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    await expect.poll(() => box("frm0605:txtTaxPayerName").inputValue()).toBe("JUAN DELA CRUZ");
+    await expect.poll(state).toEqual([true, true, true, false, false, true]);
+    // the main screen's Go menu
+    await page.goto(`${base}/`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    await page.locator("[data-go-menu] a.toplevel").click();
+    await page.locator("[data-go-menu] a", { hasText: "Send Returns to BIR" }).click();
+    await expect.poll(() => dialog.at(-1)).toMatch(/^alert: The web version can't send returns to BIR.*Submit \/ Final Copy/s);
+    await page.locator("[data-go-menu] a.toplevel").click();
+    await page.locator("[data-go-menu] a", { hasText: "Show Saved Returns" }).click();
+    await expect.poll(() => dialog.at(-1)).toMatch(/^alert: 1 saved return, in this browser\./);
+    await page.close();
+  }, 90_000);
 
   // every form: each box BIR greys out (and the capture found a way to open) starts greyed out on the web too
   it("a new form greys out each box BIR greys out, on every form", async () => {

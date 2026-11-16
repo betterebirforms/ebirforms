@@ -2,7 +2,7 @@
 // names against BIR's own createXMLFileName; test/parity.test.ts checks the records against BIR's own save.
 import { describe, expect, it } from "vitest";
 import { NATIVE_FORM } from "@/form/registry.ts";
-import { EXPORT_ADAPTER, ExportUnavailable, hhmmss, SAVEFILE_ADAPTER, savefileName, TSP_ADAPTER } from "@/form/export.ts";
+import { EXPORT_ADAPTER, ExportUnavailable, FINAL_FLAG, hhmmss, OFFLINE_FINAL, SAVEFILE_ADAPTER, savefileName, TSP_ADAPTER } from "@/form/export.ts";
 import { reopenSavefile, type FormState } from "@/form/schema.ts";
 import { decodeCp1252 } from "@/lib/cp1252.ts";
 import { readSavefile } from "@/lib/savefile.ts";
@@ -29,6 +29,18 @@ describe("savefile adapter", () => {
     const second = SAVEFILE_ADAPTER.build({ form_code: code, state: again.state, groups: again.groups, now: NOW });
     expect(second.text).toBe(out.text);
     expect(second.name).toBe(out.name);
+  });
+
+  // the web's Submit makes BIR's offline final copy: what BIR's openAlertEmail saves when it finds no internet
+  it.each(Object.keys(NATIVE_FORM))("%s: a final copy is locked (trailer 0) and marked ready to send (txtFinalFlag 3)", { timeout: 60_000 }, (code) => {
+    const state = fill(code);
+    const draft = readSavefile(SAVEFILE_ADAPTER.build({ form_code: code, state, now: NOW }).byte);
+    const final = readSavefile(SAVEFILE_ADAPTER.build({ form_code: code, state, now: NOW, is_final_copy: true }).byte);
+    expect([draft.is_final_copy, final.is_final_copy]).toEqual([false, true]);
+    const flag = (f: typeof draft) => f.record.filter((r) => r.key === FINAL_FLAG).map((r) => r.value);
+    expect(flag(final)).toEqual(flag(draft).map(() => OFFLINE_FINAL));
+    // nothing else changes
+    expect(final.record.filter((r) => r.key !== FINAL_FLAG)).toEqual(draft.record.filter((r) => r.key !== FINAL_FLAG));
   });
 
   it("the profile's TIN wins over the TIN typed on the form", () => {

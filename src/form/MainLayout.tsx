@@ -5,7 +5,7 @@
 // browser's storage is not a folder the user can open.
 import { useEffect, useRef } from "react";
 import { NATIVE_FORM } from "./registry.ts";
-import { useLayoutRoot, wireMenu } from "./LayoutView.tsx";
+import { useLayoutRoot, wireMenu, WEB_SEND_STEP } from "./LayoutView.tsx";
 import { listFolder, readText, removeFile, writeText } from "@/lib/vfs";
 import { canPickFolder, webExport, webFolder, webForgetFolder, webImport, webPersist, webPickFolder, webReconnect } from "@/lib/web-store.ts";
 import { parseSavefile, profileFileName, profileFromSavefile, profileToSavefile, serializeSavefile, type Profile } from "@/lib/savefile.ts";
@@ -13,6 +13,12 @@ import { TinStatus, tinMessage, validateTin } from "@/lib/tin.ts";
 import { oldBranchFile, updateBranch, type BranchStore } from "@/lib/branch.ts";
 
 const PROFILE_FIELD = ["tin1", "tin2", "tin3", "tin4", "rdo", "lob", "fn", "regAddr", "zip", "telNo"] as const;
+
+/** Go > Send Returns to BIR on the web: the desktop app's switch, which the web can't offer. */
+export const WEB_SEND_NOTE =
+  "The web version can't send returns to BIR: BIR's upload uses a connection a web page is not allowed to open.\n\n" +
+  "Open the return, Validate, and click Submit / Final Copy. That saves BIR's final copy, locked. " +
+  WEB_SEND_STEP;
 
 export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile_name: string | null; formHref: (code: string, extra?: Record<string, string>) => string; codeOfSavefile: (name: string) => string | null }) {
   const [host, root] = useLayoutRoot("main");
@@ -320,8 +326,29 @@ export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile
     });
     void showFolder();
 
+    // the desktop app's Go menu, on the web: Show Saved Returns (where they are kept, and the list) and Send Returns
+    // to BIR (the web can't: it says what can). Added next to BIR's File menu, in BIR's own menu markup.
+    const fileMenu = root.querySelector("ul.topnav > li");
+    if (fileMenu && !root.querySelector("[data-go-menu]")) {
+      const go = document.createElement("li");
+      go.dataset.goMenu = "";
+      go.innerHTML = `<a href="#" class="toplevel">Go</a><ul class="subnav"><li><a href="#">Show Saved Returns</a></li><li><a href="#">Send Returns to BIR</a></li></ul><span></span>`;
+      fileMenu.after(go);
+    }
+    const showSaved = async () => {
+      const f = canPickFolder() ? await webFolder().catch(() => null) : null;
+      const n = await listFolder("savefile").then((l) => l.file.filter((x) => x.name.endsWith(".xml")).length, () => 0);
+      add.scrollIntoView();
+      window.alert(
+        `${n} saved return${n === 1 ? "" : "s"}, ${f ? `in the folder "${f.name}" on this computer` : "in this browser"}.\n\n` +
+          "The list shows the taxpayer on screen and the form picked under Form Type: View opens one, Download saves a copy.",
+      );
+    };
+
     // BIR's File menu: Save (the profile), View (the picked return); Exit has no window to close on the web
     wireMenu(root, on, {
+      "Show Saved Returns": () => void showSaved(),
+      "Send Returns to BIR": () => window.alert(WEB_SEND_NOTE),
       Save: () =>
         void saveProfile().then((name) => name && window.alert(`Background information saved/updated successfully as : profile/${name}`)),
       View: () => root.getElementById("btnListViewRecord")?.click(),
