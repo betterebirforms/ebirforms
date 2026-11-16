@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, the 2200-A (2013 edition) Schedule 1 calculators now work like BIR's app: each Calculator link opens its calculator, rows can be added, deleted and cleared, Compute fills the Schedule 1 box with BIR's own arithmetic and alerts, and the rows save and reopen in the same file.
 - On the web version, the tables of extra rows now show BIR's drop-downs and ticks: treaty codes and ATCs on the 1602 and 1601-F (picking an ATC fills its rate), the ATC list on the 2000 (2018), PS or CS on the 1700, 1701, 1702-EX and 1702-RT, the class and RDO lists on the 1801 (2018), and Taxpayer or Spouse on the 1700 and 1700 (2018).
 - On the 1700 and 1700 (2018), unticking an employer row empties it as BIR's app does, and its boxes stay greyed until Taxpayer or Spouse is ticked.
 - On the 1701, 1700, 1700 (2018) and 1701-A, each "(add more...)" link turns on only when BIR's app turns it on.

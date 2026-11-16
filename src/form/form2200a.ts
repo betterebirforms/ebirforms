@@ -193,6 +193,58 @@ const taxable = (r: Read, id: string, calc: string): number => {
   return c > 0 ? c : num(r(id) || "0");
 };
 
+/** computeToSchedule1's route for a calculator: the sub-total it copies (XA035 / XA036 combine Bottle + Bulk) and the
+ *  Schedule 1 taxable box it writes. */
+export function calcRoute(name: string): { source: string; target: string } {
+  const source = /^XA03[56]/.test(name) ? name.slice(0, 5) : name;
+  const fixed = FIXED.find(([, , calc]) => calc === source);
+  return { source, target: fixed ? cell(fixed[1], "taxable") : dupCell(name, "taxable") };
+}
+/** The sub-total computeToSchedule1 writes into the taxable box, as BIR's text. */
+export const calcSubTotal = (r: Read, source: string): string => roundDown(calcTotal(r, source));
+/** computeSched1Alcohol's ceiling: the row's due, or the total due, reaching 1,000,000,000,000. */
+export function calcDueExceeds(r: Read, source: string): boolean {
+  const fixed = FIXED.find(([, , calc]) => calc === source);
+  const dup = DUP.find(([, suffix]) => suffix === source);
+  const rate = fixed ? rateFor(fixed[0], year(r)) : dup ? rateFor(dup[0], year(r), 1) : NaN;
+  return rate * calcTotal(r, source) >= 1000000000000 || scheduleTotal(r) >= 1000000000000;
+}
+/** openDialogForATC3536: BIR asks the XA035 / XA036 calculators to be filled in pairs. `empty(name)` says a
+ *  calculator has no rows; the answer is BIR's alert, or null when the calculator opens. */
+export function calcOpenAlert(name: string, empty: (calc: string) => boolean): string | null {
+  const a = empty("XA035Bottle"), b = empty("XA035Bulk"), c = empty("XA036Bottle"), d = empty("XA036Bulk");
+  const first = (text: string) => `Please fill up ${text} Calculator first.`;
+  const s36bulk = first("XA036 Specific Tax (Bulk)"), s36bottle = first("XA036 Specific Tax (Bottle)");
+  const s35bulk = first("XA035 Ad Valorem Tax (Bulk)"), s35bottle = first("XA035 Ad Valorem Tax (Bottle)");
+  switch (name) {
+    case "XA035Bottle": return a && !b && c && d ? s36bulk : a && b && c && !d ? s35bulk : null;
+    case "XA035Bulk": return !a && b && c && d ? s36bottle : a && b && !c && d ? s35bottle : null;
+    case "XA036Bottle": return a && b && c && !d ? s35bulk : a && !b && c && d ? s36bulk : null;
+    case "XA036Bulk": return a && b && !c && d ? s35bottle : !a && b && c && d ? s36bottle : null;
+    default: return null;
+  }
+}
+/** getLabel: the name BIR gives a calculator box in its "should be greater than zero" alert (by the id's last digit). */
+export function calcLabel(id: string): string {
+  const col = id.slice(-1);
+  if (id.includes("Bottle")) return col === "3" ? "Cases" : col === "4" ? "Bottles per Case" : col === "6" ? (id.includes("XA035") ? "NRP Per Bottle" : "Bottle Content") : col === "7" ? "Alcohol Strength" : "Description";
+  if (id.includes("Bulk")) return col === "3" ? (id.includes("XA035") ? "NRP" : "Content") : col === "4" ? "Alcohol Strength" : "Description";
+  return col === "3" ? "No. of Cases" : col === "4" ? "Bottles per Case" : col === "6" ? "Volume Content" : "Description";
+}
+/** ValidateTable: BIR's alert for the first box it finds wrong (rows in order, boxes left to right), or null. `row`
+ *  holds each row's SHOWN values by column number; only the boxes a person fills are checked. */
+export function calcTableAlert(name: string, row: Array<Record<number, string>>): string | null {
+  const calc = CALC.find((c) => c.name === name)!;
+  const typed = calc.kind === "035Bulk" || calc.kind === "036Bulk" ? [2, 3, 4] : calc.kind === "other" ? [2, 3, 4, 6] : [2, 3, 4, 6, 7];
+  for (let i = 0; i < row.length; i++)
+    for (const n of typed) {
+      const v = (row[i]![n] ?? "").split("%")[0]!;
+      if (n === 2 ? v.trim() === "" : v === "" || Number(v) === 0)
+        return n === 2 ? `Please enter a valid Description at Row ${i + 1}.` : `${calcLabel(`${P}Cal${name}_${i + 1}_Col${n}`)} at Row ${i + 1} should be greater than zero.`;
+    }
+  return null;
+}
+
 // ── Others (sched1*<i>) ──
 const OTHER: GroupSpec = {
   name: "other",

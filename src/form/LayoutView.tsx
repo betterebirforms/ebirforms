@@ -6,6 +6,8 @@
 // Copy is BIR's online send, which a browser can't make: it makes BIR's offline final copy instead (the file BIR's
 // app makes when there is no internet), locked, for the desktop app or BIR's app to send.
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { CALCULATOR, CalcRows, dateToday } from "./calculator.tsx";
 import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type AttachmentSpec, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
@@ -188,6 +190,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   const isFinal = useRef(final);
   const latest = useRef({ state, computed, groups });
   const groupBox = useRef(new Map<Element, { group: GroupSpec; row: number; id: string }>());
+  const calcRowBlur = useRef<(group: string, i: number) => void>(() => {});
   latest.current = { state, computed, groups };
 
   // the schedule pop-up open now (BIR's "Add more…" / "View Details"), with its column labels read off BIR's page
@@ -636,11 +639,127 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         if (g) setOpenGroup({ name: g.name, title: titleOf(a, g), label: labelOf(g) });
       });
     }
+    // BIR's calculator pop-ups (calculator.tsx): a "Calculator" link hides the pop-up behind it and shows the calculator
+    // (BIR's openDialog / openDialogForATC3536, with its "fill up ... first" alerts); the calculator's own Add, Delete,
+    // Clear, Compute and Close do what BIR's script does with its rows, and Compute writes the sub-total into the
+    // Schedule 1 box. Its rows are drawn by <CalcRows> from the engine's group rows.
+    const calc = CALCULATOR[form_code];
+    if (calc) {
+      const back = root.getElementById(calc.back) as HTMLElement | null;
+      const groupOfCalc = (name: string) => (schema.group ?? []).find((x) => x.name === calc.group(name));
+      const shownRow = (name: string, groupState: GroupState = latest.current.groups, c: FormState = latest.current.computed) => {
+        const g = groupOfCalc(name)!;
+        return computeGroupRows(g, groupState[g.name] ?? [], c).map((row) => Object.fromEntries(g.row.map((sub, k) => [k + 1, row[sub.id] ?? ""])) as Record<number, string>);
+      };
+      // BIR's rowIndexCalculatorG: the row whose box was left last, which an over-limit total clears
+      let lastRow = -1;
+      const lastCalc: { name: string } = { name: "" };
+      const link = Array.from(root.querySelectorAll<HTMLAnchorElement>("a")).filter((a) => back?.contains(a) && /^\s*Calculator\b/.test(a.textContent ?? ""));
+      const known = (name: string) => !!root.getElementById(`Calculator${name}`) && !!groupOfCalc(name);
+      if (link.length === calc.link.length)
+        link.forEach((a, k) => {
+          const name = calc.link[k]!;
+          if (!known(name)) return;
+          a.dataset.ebfPopup = "calculator";
+          on(a, "click", (e) => {
+            e.preventDefault();
+            const refusal = calc.alert?.(name, (other) => (latest.current.groups[calc.group(other)] ?? []).length === 0) ?? null;
+            if (refusal) return window.alert(refusal);
+            back?.style.setProperty("display", "none");
+            root.getElementById(`Calculator${name}`)?.style.setProperty("display", "block");
+            host.current?.scrollIntoView();
+          });
+        });
+      // what computeToSchedule1WithNoAlertAndPrint does after a Delete or Clear empties a calculator: the Schedule 1 box
+      // takes the (now smaller) sub-total
+      const refill = (name: string, next: GroupState) => {
+        const { source, target } = calc.route(name);
+        const c = computeForm(schema, latest.current.state, next);
+        setGroups(next);
+        set({ [target]: calc.sub_total((id) => c[id] ?? "", source) });
+      };
+      const rowOf = (name: string) => latest.current.groups[calc.group(name)] ?? [];
+      const tick = (name: string) => groupOfCalc(name)!.row[0]!.id;
+      for (const div of Array.from(root.querySelectorAll<HTMLElement>("[id^=Calculator]"))) {
+        const name = div.id.slice("Calculator".length);
+        if (!known(name)) continue;
+        const g = groupOfCalc(name)!;
+        const header = root.getElementById(`CalcCheck${name}`) as HTMLInputElement | null;
+        // selectAll: the header's tick box ticks or unticks every row
+        if (header) on(header, "change", () => setGroups((s) => ({ ...s, [g.name]: (s[g.name] ?? []).map((r) => ({ ...r, [tick(name)]: String(header.checked) })) })));
+        for (const b of Array.from(div.querySelectorAll<HTMLInputElement>("input[type=button]"))) {
+          const v = (b.value || "").trim();
+          if (!/^(?:Add|Delete|Clear|Compute|Close)$/.test(v)) continue;
+          b.dataset.ebfCalc = v;
+          on(b, "click", (e) => {
+            e.preventDefault();
+            const row = rowOf(name);
+            if (v === "Add") {
+              const bad = calc.table_alert(name, shownRow(name));
+              if (bad) return window.alert(bad);
+              setGroups((s) => ({ ...s, [g.name]: [...(s[g.name] ?? []), {}] }));
+            } else if (v === "Delete") {
+              const next = { ...latest.current.groups, [g.name]: row.filter((r) => r[tick(name)] !== "true") };
+              for (const x of Array.from(root.querySelectorAll<HTMLInputElement>("input[name$=':SelectAll']"))) x.checked = false;
+              if (next[g.name]!.length === 0) refill(name, next);
+              else setGroups(next);
+            } else if (v === "Clear") {
+              if (row.length > 0 && window.confirm("Values inputted will be deleted. Do you want to continue?")) refill(name, { ...latest.current.groups, [g.name]: [] });
+            } else if (v === "Compute") {
+              const { source, target } = calc.route(name);
+              const read = (id: string) => latest.current.computed[id] ?? "";
+              if (row.length === 0) window.alert("Please provide valid data.");
+              else {
+                const bad = calc.table_alert(name, shownRow(name));
+                if (bad) window.alert(bad);
+                else if (calc.exceeds(read, source)) {
+                  // computeSched1Alcohol: over the limit, the box goes back to zero and the row last typed in is cleared
+                  window.alert("Exceeded maximum amount of 999,999,999,999.99 on Basic Excise Tax Due/Total Tax Due.");
+                  const cleared = lastRow > -1 && lastCalc.name === name ? row.map((r, i) => (i === lastRow ? { [tick(name)]: r[tick(name)] ?? "false" } : r)) : row;
+                  setGroups({ ...latest.current.groups, [g.name]: cleared });
+                  set({ [target]: "0.00" });
+                  lastRow = -1;
+                } else {
+                  set({ [target]: calc.sub_total(read, source) });
+                  if (window.confirm("You are advised to print this computation.")) window.print();
+                }
+              }
+              // setCalcDate: the "Date computed" line, whatever came of it
+              const stamp = root.getElementById(`dateComputed${name}`);
+              if (stamp) stamp.textContent = dateToday();
+            } else {
+              // cancelCalcu: the pop-up behind comes back
+              div.style.setProperty("display", "none");
+              back?.style.setProperty("display", "block");
+              host.current?.scrollIntoView();
+            }
+          });
+        }
+      }
+      calcRowBlur.current = (group: string, i: number) => {
+        const name = calc.name(group);
+        const g = groupOfCalc(name);
+        if (!g) return;
+        lastRow = i;
+        lastCalc.name = name;
+        // computeXA035Bottle and its kin: a total of bottles, a tax base or the sub-total reaching the limit is
+        // refused and the row emptied
+        const { groups: s, computed: c } = latest.current;
+        const shown = computeGroupRows(g, s[g.name] ?? [], c)[i];
+        if (!shown) return;
+        const big = (id: string) => parseFloat((shown[id] ?? c[id] ?? "").replace(/,/g, "")) >= 1000000000000;
+        const bulk = calc.kind(name).endsWith("Bulk");
+        if (big(g.row[g.row.length - 1]!.id) || (!bulk && big(g.row[4]!.id)) || big(`CalcSubTotal${name}`)) {
+          window.alert(calc.max_alert(name));
+          setGroups((x) => ({ ...x, [g.name]: (x[g.name] ?? []).map((r, j) => (j === i ? { [tick(name)]: r[tick(name)] ?? "false" } : r)) }));
+        }
+      };
+    }
     // a table's own Add / Delete / More button (BIR's script adds or drops a row there): open that table's editor,
     // which adds and deletes rows; the nearest box around the button that holds a group's rows names the table
     for (const b of Array.from(root.querySelectorAll<HTMLInputElement>("input[type=button], button"))) {
       const v = (b.value || b.textContent || "").replace(/\s+/g, " ").trim();
-      if (!/^(?:(?:add|delete|del|remove)(?: \w+)?|more|add more)$/i.test(v) || b.id in popup || picked.has(b.id)) continue;
+      if (!/^(?:(?:add|delete|del|remove)(?: \w+)?|more|add more)$/i.test(v) || b.id in popup || picked.has(b.id) || b.dataset.ebfCalc) continue;
       let g: GroupSpec | null = null;
       for (let n = b.parentElement; n && !g; n = n.parentElement) {
         g = groupIn(n);
@@ -1058,6 +1177,14 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   return (
     <>
       <div ref={host} className="bir-layout" data-form={form_code} />
+      {root &&
+        CALCULATOR[form_code]?.all.map((name) => {
+          const calc = CALCULATOR[form_code]!;
+          const el = root.getElementById(`divCalculator${name}`);
+          const g = (schema.group ?? []).find((x) => x.name === calc.group(name));
+          if (!el || !g) return null;
+          return createPortal(<CalcRows spec={g} kind={calc.kind(name)} group={g.name} row={groups[g.name] ?? []} shown={computeGroupRows(g, groups[g.name] ?? [], computed)} onSet={setRow} onBlur={(group, i) => calcRowBlur.current(group, i)} />, el, name);
+        })}
       {pick && <AtcPicker title={pick.title} list={pickList} multi={pick.picker.kind === "rows"} picked={pickNow} onOk={pickOk} onCancel={() => setPick(null)} />}
       {open && (
         <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setOpenGroup(null)}>
