@@ -41,7 +41,9 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.locator(".bir-layout").waitFor();
     return page;
   };
-  const click = (page: Awaited<ReturnType<typeof open>>, id: string) => page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+  // the links are greyed until BIR's boxes are in (test/web-add-more-link.test.ts covers that rule): switch one on here
+  const click = (page: Awaited<ReturnType<typeof open>>, id: string) =>
+    page.locator(`[id="${id}"]`).first().evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
 
   it("1700 item 17: PS / CS is a drop-down, and the pick stays when the editor is reopened", async () => {
     const page = await open("1700");

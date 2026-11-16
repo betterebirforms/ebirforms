@@ -5,6 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, the tables of extra rows now show BIR's drop-downs and ticks: treaty codes and ATCs on the 1602 and 1601-F (picking an ATC fills its rate), the ATC list on the 2000 (2018), PS or CS on the 1700, 1701, 1702-EX and 1702-RT, the class and RDO lists on the 1801 (2018), and Taxpayer or Spouse on the 1700 and 1700 (2018).
+- On the 1700 and 1700 (2018), unticking an employer row empties it as BIR's app does, and its boxes stay greyed until Taxpayer or Spouse is ticked.
+- On the 1701, 1700, 1700 (2018) and 1701-A, each "(add more...)" link turns on only when BIR's app turns it on.
 - On the web version, the Close, OK, Cancel, Clear and Print buttons inside BIR's pop-ups now work, and Clear resets the pop-up's boxes the way BIR's app does. The 2552's tax pop-up opens its rows.
 - On the web version, attachments now also work on the three 2018 editions of the 1702-MX, and save the same file as BIR's app.
 - On the web version, the "(add more...)" and "Add" links that open a table of extra rows now work on the 1700, 1701, 1701-A, 1702-RT, 1702-EX, 1707, 1707-A (2021), 2552 (2018), 1601-C (2018), 1702-Q (2018), 2200-A (2020) and 2550-Q (2024), including the tables inside 1701 attachments. The rows feed the form and save as BIR's app saves them.
