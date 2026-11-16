@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.2.0 (16 November 2026)
+
 - Sending to BIR (beta) is now on by default. When the app starts with an internet connection, it downloads BIR's official package once and keeps the two files sending needs. You can turn sending off in Go > Send Returns to BIR (beta). Your return is filed only when BIR's confirmation email arrives, so keep that email.
 - On the web version, Validate now works as in BIR's app: when the return passes, its boxes lock and Edit, Print and Submit / Final Copy turn on. Edit opens the boxes again. Before, Edit stayed greyed out, so the "Click on Edit" message pointed at a button that did nothing.
 - On the web version, Print and File > Print Preview now work. They show the form as BIR's app prints it, with the signature box and payment details, and File > Print sends it to your printer or a PDF. Forms that BIR prints on legal or A4 paper say so first, as in BIR's app.
