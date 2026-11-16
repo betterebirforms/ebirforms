@@ -295,6 +295,18 @@ const FROZEN: Record<string, TemplateRecord[]> = Object.fromEntries(
  *  take today's value, not the capture day's. Read on every call, so a page left open past midnight moves on too. */
 const TEMPLATE: Record<string, TemplateRecord[]> = Object.fromEntries(Object.entries(FROZEN).map(([code, record]) => [code, liveTemplate(code, record)]));
 
+/** The copies BIR's attachments hold for a state, in saveXML order: every EX copy, then every SP ("EX1", "EX2", "SP1").
+ *  A kind's count_field holds a plain number, or BIR's own "EX2,SP1" counter (1701's txtAttachmentTypes). */
+export function attachmentCopy(spec: AttachmentSpec, state: FormState): string[] {
+  const out: string[] = [];
+  for (const k of spec.kind) {
+    const v = (state[k.count_field] ?? "").trim();
+    const n = /^\d+$/.test(v) ? Number(v) : Number(new RegExp(`${k.code}(\\d+)`).exec(v)?.[1] ?? 0);
+    for (let i = 1; i <= Math.min(n, spec.max); i++) out.push(`${k.code}${i}`);
+  }
+  return out;
+}
+
 /** The full savefile record list. With a captured template (every BIR form has one), the native values overlay
  *  BIR's own blank save: keys BIR writes but the schema doesn't model keep BIR's default, scalar keys BIR never
  *  writes are dropped, and schedule rows / derived records past the template are appended. Without one: scalar
@@ -320,13 +332,31 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
   const byDefault = new Map(schema.field.filter((f) => f.derive_default).map((f) => [f.id, f.derive_default!]));
   const read = (id: string) => computed[id] ?? "";
   const seen = new Map<string, number>();
-  const record = template.map(([key, value]) => {
+  const entry = ([key, value]: TemplateRecord): SaveRecord => {
     const saved = overlay.get(key) ?? (escaped.has(key) ? legacyEscape(value) : value);
     const fix = byDefault.get(key);
     if (!fix) return { key, value: saved };
     const occurrence = seen.get(key) ?? 0;
     seen.set(key, occurrence + 1);
     return { key, value: fix(read, saved, occurrence) };
+  };
+  // BIR's attachments: saveXML walks the page in DOM order, and addAttachment appended each copy of its source block
+  // (the template records carrying the token) just before that block — one run of copies per run of source records
+  const att = schema.attachment;
+  const copy = att ? attachmentCopy(att, computed) : [];
+  const source = (key: string): boolean => !!att && key.includes(att.token);
+  const record: SaveRecord[] = [];
+  template.forEach((rec, i) => {
+    if (att && source(rec[0]) && !(i > 0 && source(template[i - 1]![0]))) {
+      let end = i;
+      while (end < template.length && source(template[end]![0])) end++;
+      for (const name of copy)
+        for (const [key, value] of template.slice(i, end)) {
+          const copy_key = key.split(att.token).join(name);
+          record.push({ key: copy_key, value: overlay.get(copy_key) ?? value.split(att.token).join(name) });
+        }
+    }
+    record.push(entry(rec));
   });
   // each key once: an extra_record entry may override a schedule cell (last write wins, as for template keys)
   const emitted = new Set<string>();
