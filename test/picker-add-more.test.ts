@@ -36,3 +36,21 @@ describe("2552v2018 Part V Add More", () => {
     expect(sch1({}, { ...full, "frm2552:txtPg2Pt5Sch1TaxBase5": "0.00" })).toBe(false);
   });
 });
+
+describe("1701 Schedule 1 (add more...) (disableLinkIfEmpty)", () => {
+  const on = BUTTON_GROUP["1701"]!["frm1701:lnkPg5Sc1More"]!.on!;
+  const full = rows(4, (i) => ({
+    [`frm1701:txtPg5Sc1I${i}NameOfEmp`]: `EMP ${i}`,
+    ...Object.fromEntries([1, 2, 3].map((k) => [`frm1701:txtPg5Sc1I${i}EmpTIN${k}C1`, "123"])),
+    [`frm1701:txtPg5Sc1I${i}EmpTIN4C1`]: "00000",
+    [`frm1701:txtPg5Sc1I${i}ComIncomeC2`]: "1000",
+  }));
+  it("off on a blank form; on once items 1 to 4 have name, TIN and income; tax withheld and ticks not checked", () => {
+    expect(on({}, {})).toBe(false);
+    expect(on({}, full)).toBe(true);
+    expect(on({}, { ...full, "frm1701:txtPg5Sc1I3ComIncomeC2": "0.00" })).toBe(false);
+    expect(on({}, { ...full, "frm1701:txtPg5Sc1I2EmpTIN4C1": "  " })).toBe(false);
+    expect(on({}, { ...full, "frm1701:txtPg5Sc1I2ComIncomeC2": "1,000.00" })).toBe(true); // JS: "1,000.00" <= 0 is false
+    expect(on({ modalPage5Schedule1: [{}] }, {})).toBe(true);
+  });
+});

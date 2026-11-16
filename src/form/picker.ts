@@ -139,14 +139,23 @@ const notEmpty = (id: string): RowCheck => (s) => (s[id] ?? "") !== ""; // BIR's
 const amount = (id: string): RowCheck => (s) => { const v = (s[id] ?? "").trim(); return v !== "" && Number(v) !== 0; };
 const full = (s: FormState, rows: number, check: (i: number) => RowCheck[]) => Array.from({ length: rows }, (_, i) => check(i + 1)).every((c) => c.every((f) => f(s)));
 const SCHED4_ON = (s: FormState) => amount("frm1702q:Sched4:txtOthrTxCrdtAmnt1")(s);
+/** 1701 Schedule 1 "(add more...)" (disabledAddMoreLinkSchedule1 → disableLinkIfEmpty): on once items 1 to 4 each have
+ *  the employer's name and TIN (a text box that isn't 12 long: non-blank after trim) and compensation income above 0
+ *  (JS `value <= 0`: blank and "0.00" fail, a value with a comma is NaN and passes). Tax withheld and the ticks are not checked. */
+const SCHED1_LINK_1701 = (s: FormState): boolean =>
+  [1, 2, 3, 4].every((i) => {
+    const id = (x: string) => `frm1701:txtPg5Sc1I${i}${x}`;
+    const income = Number(s[id("ComIncomeC2")] ?? "");
+    return ["NameOfEmp", "EmpTIN1C1", "EmpTIN2C1", "EmpTIN3C1", "EmpTIN4C1"].every((x) => (s[id(x)] ?? "").trim() !== "") && !(income <= 0);
+  });
 const ADD_MORE_1707 = {
   btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: (g: GroupState, s: FormState) => (g.sched2more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch2NameOfCorpStock${i}`), amount(`frm1707:txtPg2P4Sch2NoOfShares${i}`), notEmpty(`frm1707:txtPg2P4Sch2StockCertNo${i}`), amount(`frm1707:txtPg2P4Sch2TaxBaseSellPrice${i}`)]) },
   btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: (g: GroupState, s: FormState) => (g.sched3more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch3Particulars${i}`), amount(`frm1707:txtPg2P4Sch3Amount${i}`)]) },
 };
 /** 1701's "(add more...)" links (addmore): the 11 on the main pages and, on each of the ten attachment copies (EX1..EX5,
  *  SP1..SP5), the 11 kinds BIR's attachment block has. The ids and groups come from BIR's page (tool/gen-1701-modal.mjs). */
-function modal1701(): Record<string, { group: string; title: string }> {
-  const out: Record<string, { group: string; title: string }> = {};
+function modal1701(): Record<string, { group: string; title: string; on?: (groups: GroupState, state: FormState) => boolean }> {
+  const out: Record<string, { group: string; title: string; on?: (groups: GroupState, state: FormState) => boolean }> = {};
   const copy = ["EX", "SP"].flatMap((kind) => [1, 2, 3, 4, 5].map((n) => `${kind}${n}`));
   for (const m of modal1701Json as Array<{ link: string; modal: string }>) {
     const title = m.modal.replace(/TYPE$/, "").replace(/^modal/, "").replace(/Page(\d+)m?/, "Page $1 ").replace(/Schedule/, "Schedule ").replace(/I(\d+)$/, " item $1");
@@ -158,7 +167,7 @@ function modal1701(): Record<string, { group: string; title: string }> {
 /** 1701's seven other "(add more...)" links: Schedule 1 on page 5 (employers) and Schedule 12 on page 11 (Part 1 of 12A as
  *  rows; Parts 2 to 4 and B1, B2 as BIR's column blocks). Each opens the group named after BIR's pop-up
  *  (page/1701-column.json, tool/gen-1701-column.mjs; form1701-sim.ts SCHED1). */
-function column1701(): Record<string, { group: string; title: string }> {
+function column1701(): Record<string, { group: string; title: string; on?: (groups: GroupState, state: FormState) => boolean }> {
   const title: Record<string, string> = {
     modalPage11Schedule12APt1: "Schedule 12A Part 1 item 6: other compensation, final tax withheld",
     modalPage11Schedule12APt2: "Schedule 12A Part 2: sale of real property (items 7 to 11), two sales a block",
@@ -168,7 +177,7 @@ function column1701(): Record<string, { group: string; title: string }> {
     modalPage11Schedule12BPt2: "Schedule 12B Part 2: other exempt income (items 8 and 9), two a block",
   };
   return {
-    "frm1701:lnkPg5Sc1More": { group: "modalPage5Schedule1", title: "Page 5 Schedule 1 item 4: employers (two or more)" },
+    "frm1701:lnkPg5Sc1More": { group: "modalPage5Schedule1", title: "Page 5 Schedule 1 item 4: employers (two or more)", on: (g: GroupState, s: FormState) => (g.modalPage5Schedule1 ?? []).length > 0 || SCHED1_LINK_1701(s) },
     ...Object.fromEntries((column1701Json as Array<{ link: string; modal: string }>).map((c) => [c.link, { group: c.modal, title: title[c.modal] ?? c.modal }])),
   };
 }
