@@ -267,6 +267,11 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.locator('[id="dialog2"] input[value=Close]').click();
     await expect.poll(() => page.locator('[id="dialog2"]').isVisible()).toBe(false);
     await go("2200T");
+    await click("frm2200T:btnSchedule1");
+    expect(await page.locator('[id="modalSched1"]').isVisible()).toBe(false);
+    await page.locator('[id="frm2200T:chkPymntManner_1"]').evaluate((e: HTMLInputElement) => e.click());
+    await click("frm2200T:btnSchedule1");
+    await expect.poll(() => page.locator('[id="modalSched1"]').isVisible()).toBe(true);
     await click("frm2200T:lnkXT140");
     await expect.poll(() => page.locator(".schedule-modal").count()).toBe(1);
     await go("1602Qv2018");

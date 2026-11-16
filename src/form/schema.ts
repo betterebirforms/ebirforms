@@ -77,6 +77,9 @@ export interface GroupSpec {
   /** The rows are only what the pop-up's boxes hold: BIR's pop-up sits outside its <form>, so saveXML never writes
    *  them (1701MS). The totals and derives still follow from them; the savefile carries no row record. */
   unsaved?: boolean;
+  /** Saved, but BIR's loadData fills only the boxes already on its blank page, so reopening a file drops the rows and
+   *  keeps what they fed (2550DS item 22D: its description and amount). */
+  not_reloaded?: boolean;
 }
 
 export interface GroupAgg {
@@ -435,6 +438,7 @@ export function reopenSavefile(schema: FormSchema, file: Savefile, form_code = "
 export function groupsFromSavefile(schema: FormSchema, file: Savefile, form_code = ""): GroupState {
   const out: GroupState = {};
   for (const g of schema.group ?? []) {
+    if (g.not_reloaded) continue;
     const first = g.row[0];
     const sized = g.size_field ? Number(getValue(file, g.size_field) ?? "") : NaN;
     const rows: GroupRow[] = [];

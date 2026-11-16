@@ -10,6 +10,7 @@
 // (totalTaxPayableNo22DDescription<i> / ...Amount<i>, 0-indexed), saved with the form. closeModalNo22D then writes item 22D:
 //   2+ rows → description "VARIOUS", amount = the rows' sum;   1 row → that row's description, amount = the sum;
 // and BIR's resultOtherCreditsNo22D is that sum (0.00 until the pop-up has rows). With no rows item 22D is typed as usual.
+// Reopening a file drops the rows (BIR's loadData has no box for them) and keeps item 22D as saved.
 
 import fieldJson from "./fields/2550DS.json";
 import { parseMoney } from "./money.ts";
@@ -31,6 +32,7 @@ const AMOUNT = `${P}totalTaxPayableNo22DAmount`;
 export const SPECIFY_2550DS: GroupSpec = {
   name: "specify22D",
   first_index: 0,
+  not_reloaded: true, // loadData fills only the blank page's boxes: a reopened file keeps item 22D, not the rows
   row: [
     { id: DESCRIPTION, kind: "text" },
     { id: AMOUNT, kind: "money" },

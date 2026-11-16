@@ -16,8 +16,9 @@ describe("reopen a saved native return", () => {
     it.skipIf(KNOWN_GAP.has(code))(code, () => {
       const { schema } = NATIVE_FORM[code]!;
       // one row per schedule, with a value in its first entered cell (an all-blank row is not a row to BIR)
+      // (a group BIR's reload drops, not_reloaded, is left out: its rows are not meant to come back)
       const groups: GroupState = Object.fromEntries(
-        (schema.group ?? []).map((g) => {
+        (schema.group ?? []).filter((g) => !g.not_reloaded).map((g) => {
           const sub = g.row.find((r) => !r.row_compute && !r.compute && (r.kind === "money" || r.kind === "text"));
           return [g.name, [sub ? { [sub.id]: sub.kind === "money" ? "1,000.00" : "X" } : {}]];
         }),

@@ -125,6 +125,8 @@ const section1602 = (list: string[], which: string) => (state: FormState) =>
     : `Section ${which} is only enabled if Item 4 is set to Yes and Item 13 is set to Yes - ${which === "B" ? "International Tax Treaty" : "Special Rate"} or\nBoth.`;
 export const POPUP_NEED: Record<string, Record<string, (state: FormState) => string | null>> = {
   "1602": { btnSectionB: section1602(["2", "3"], "B"), btnSectionC: section1602(["1", "3"], "C") },
+  // showSched1: Schedule 1 (and its calculators) opens only when manner of payment 1 is ticked, silently otherwise
+  "2200T": { "frm2200T:btnSchedule1": (s) => (s["frm2200T:chkPymntManner_1"] === "true" ? null : "") },
 };
 
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns

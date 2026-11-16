@@ -114,3 +114,22 @@ describe.skipIf(!hasForm("2550DS"))("native 2550DS matches the legacy form", () 
     expect(legacy.map(([k]) => k)).toEqual(expect.arrayContaining([`${P}totalTaxPayableNo22DAmount1`, `${P}otherPaymentCreditSpecify`]));
   }, 120_000);
 });
+
+describe("2550DS item 22D reload", () => {
+  it("a reopened file keeps item 22D and drops the rows, as BIR's loadData does", async () => {
+    const { groupsFromSavefile } = await import("../src/form/schema.ts");
+    const { FORM_2550DS } = await import("../src/form/form2550ds.ts");
+    const file = {
+      name: "x",
+      record: [
+        { key: "frm2550ds:otherPaymentCreditSpecify", value: "VARIOUS" },
+        { key: "frm2550ds:totalTaxPayableNo22DDescription0", value: "A" },
+        { key: "frm2550ds:totalTaxPayableNo22DAmount0", value: "1.00" },
+      ],
+    };
+    expect(groupsFromSavefile(FORM_2550DS, file as never, "2550DS").specify22D).toBeUndefined();
+    // the same file reads the row when the group is reloaded (the file shape is right)
+    const reloaded = { ...FORM_2550DS, group: (FORM_2550DS.group ?? []).map((g) => ({ ...g, not_reloaded: false })) };
+    expect(groupsFromSavefile(reloaded, file as never, "2550DS").specify22D?.length).toBe(1);
+  });
+});
