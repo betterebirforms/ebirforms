@@ -94,6 +94,16 @@ export const FORM_1701v2018: FormSchema = {
   title: "Annual Income Tax — Individuals (Mixed Income)",
   field,
   group: [ATTACHMENT_GROUP.exempt, ATTACHMENT_GROUP.special],
+  // the web shows each attachment row as a copy of BIR's template (its ids are the rows' cells); the groups save them
+  attachment: {
+    template: "attachmentPages_TEMP",
+    token: "TYPE",
+    max: 5,
+    kind: [
+      { code: "EX", container: "attachmentEX", group: "exempt", add_button: `${P}btnAddAttachmentEX` },
+      { code: "SP", container: "attachmentSP", group: "special", add_button: `${P}btnAddAttachmentSP` },
+    ],
+  },
   // saveXML: "<div>frm1701:txtPg1I9Address=" + escape(line 1) + escape(line 2) + "frm1701:txtPg1I9Address=</div>"
   extra_record: (state): SaveRecord[] => [
     { key: `${P}txtPg1I9Address`, value: legacyEscape((state[`${P}txtPg1I9Address`] ?? "").toUpperCase()) + legacyEscape((state[`${P}txtPg1I9Address2`] ?? "").toUpperCase()) },

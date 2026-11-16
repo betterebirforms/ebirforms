@@ -2,7 +2,7 @@
 // into attachmentEX / attachmentSP with its token ("TYPE", "AttM") renamed to the copy ("EX1", "SP2"). The web clones
 // every copy the engine models up front, hidden, so each copy's boxes are on the page under BIR's own ids and the
 // usual field binding, compute and save cover them; the count fields say which copies are in use.
-import type { AttachmentSpec, FieldSpec, FormState } from "./schema.ts";
+import type { AttachmentSpec, FieldSpec, FormState, GroupState } from "./schema.ts";
 
 /** Clone the template once per copy into its kind's container (hidden until shown). Idempotent per root. */
 export function prepareCopy(root: ShadowRoot, spec: AttachmentSpec): void {
@@ -39,6 +39,24 @@ export function showCopy(root: ShadowRoot, name: string | null, page: number): v
   }
 }
 
+/** How many copies of a kind are in use: a plain number, or BIR's shared "EX2,SP1" counter (1701's txtAttachmentTypes). */
+export function copyCount(spec: AttachmentSpec, state: FormState, code: string, groups: GroupState = {}): number {
+  const kind = spec.kind.find((k) => k.code === code);
+  if (kind?.group) return groups[kind.group]?.length ?? 0;
+  const v = (state[kind?.count_field ?? ""] ?? "").trim();
+  return /^\d+$/.test(v) ? Number(v) : Number(new RegExp(`${code}(\\d+)`).exec(v)?.[1] ?? 0);
+}
+
+/** The state with a kind's count set, written as BIR writes it (attachmentTypes_Update: "EX" + n + ",SP" + m when the
+ *  kinds share one counter). */
+export function withCount(spec: AttachmentSpec, state: FormState, code: string, n: number): FormState {
+  const kind = spec.kind.find((k) => k.code === code);
+  if (!kind?.count_field) return state;
+  const shared = spec.kind.filter((k) => k.count_field === kind.count_field);
+  const value = shared.length > 1 ? shared.map((k) => `${k.code}${k.code === code ? n : copyCount(spec, state, k.code)}`).join(",") : String(n);
+  return { ...state, [kind.count_field]: value };
+}
+
 /** A field id belongs to copy `code`+`n` (not `code`+`n0`…). */
 const copyOf = (id: string, code: string) => id.match(new RegExp(`${code}(\\d+)(?!\\d)`))?.[1];
 
@@ -46,7 +64,7 @@ const copyOf = (id: string, code: string) => id.match(new RegExp(`${code}(\\d+)(
 export function deleteCopy(state: FormState, field: FieldSpec[], spec: AttachmentSpec, code: string, n: number): FormState {
   const kind = spec.kind.find((k) => k.code === code);
   if (!kind) return state;
-  const count = Number(state[kind.count_field] || 0);
+  const count = copyCount(spec, state, code);
   if (n < 1 || n > count) return state;
   const next: FormState = { ...state };
   const byCopy = new Map<number, FieldSpec[]>();
@@ -61,6 +79,5 @@ export function deleteCopy(state: FormState, field: FieldSpec[], spec: Attachmen
       else delete next[f.id];
     }
   }
-  next[kind.count_field] = String(count - 1);
-  return next;
+  return withCount(spec, next, code, count - 1);
 }

@@ -297,7 +297,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
   }, 60_000);
 
   // a choice never opens a pop-up by itself: BIR's 1701 item 4 radios open its attachment pop-up only in some cases
-  it("1701: ticking item 4 keeps the form on screen; attachments explain", async () => {
+  it("1701: ticking item 4 keeps the form on screen; an attachment opens in BIR's frame", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
     page.on("dialog", (d) => void d.accept());
     await page.goto(`${base}/form/1701`, { waitUntil: "networkidle" });
@@ -306,12 +306,51 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.locator('[id="frm1701:rdoPg1Pt1I4Compensation"]').evaluate((e: HTMLElement) => e.click());
     await page.waitForTimeout(300);
     expect([await display("formPaper"), await display("attachmentModalADD")]).toEqual(["block", "none"]);
-    // attachments are not modelled, so their button says so instead of opening boxes that are never saved
-    const alert: string[] = [];
-    page.on("dialog", (d) => void alert.push(d.message()));
+    // BIR's attachments: Add opens a copy in BIR's frame, its boxes keep what is typed, its pages and Back work
+    const shown = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e) => (e as HTMLElement).offsetParent !== null);
     await page.locator('[id="frm1701:btnAddAttachmentEX"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
-    await expect.poll(() => alert.at(-1)).toMatch(/^Attachments .* not in the web version yet/);
+    await expect.poll(() => display("ATTACHMENT")).toBe("block");
+    expect(await display("mainPages")).toBe("none");
+    const box = page.locator('[id="frm1701:txtPg1mRegisteredNameEX1"]');
+    await expect.poll(() => shown("frm1701:txtPg1mRegisteredNameEX1")).toBe(true);
+    expect(await page.locator('[id="attachmentTotal"]').inputValue()).toBe("1");
+    await box.fill("ACME TRADING");
+    await box.blur();
+    await page.locator('[id="attachmentPage2"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => display("Page2mEX1Content")).toBe("block");
+    expect(await shown("frm1701:txtPg1mRegisteredNameEX1")).toBe(false);
+    await page.locator('[id="frm1701:btnBackToMain"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => display("mainPages")).toBe("block");
     expect(await display("ATTACHMENT")).toBe("none");
+    // View opens the copy again, with what was typed
+    await page.locator('[id="frm1701:btnViewAttachments"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => display("ATTACHMENT")).toBe("block");
+    await expect.poll(() => box.inputValue()).toBe("ACME TRADING");
+    await page.close();
+  }, 60_000);
+
+  // 1701 (2018): its attachments are rows of two groups; Add shows a new row as a copy of BIR's template
+  it("1701v2018: an attachment opens in BIR's frame and keeps what is typed", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    await page.goto(`${base}/form/1701v2018`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const display = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e) => getComputedStyle(e).display);
+    await page.locator('[id="frm1701:btnAddAttachmentSP"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => display("ATTACHMENT")).not.toBe("none");
+    expect(await display("mainPages")).toBe("none");
+    expect(await page.locator('[id="attachmentTotal"]').inputValue()).toBe("1");
+    const box = page.locator('[id="frm1701:txtPg3mSchedA_1ASP1"]');
+    await box.evaluate((e: HTMLInputElement) => (e.disabled = false));
+    await box.fill("1,000.00");
+    await box.blur();
+    await page.locator('[id="frm1701:btnBackToMain"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => display("mainPages")).not.toBe("none");
+    await page.locator('[id="frm1701:btnAddAttachmentSP"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => page.locator('[id="attachmentTotal"]').inputValue()).toBe("2");
+    await page.locator('[id="attachmentCurrent"]').fill("1");
+    await page.locator('[id="attachmentGo"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => box.inputValue()).toBe("1,000.00");
     await page.close();
   }, 60_000);
 

@@ -110,7 +110,10 @@ export interface AttachmentSpec {
     /** The layout element BIR appends this kind's copies to ("attachmentEX"). */
     container: string;
     /** The state key holding how many copies of this kind the filer added (saved as BIR saves its count). */
-    count_field: string;
+    count_field?: string;
+    /** Or: the copies are this group's rows (1701v2018's exempt / special groups), saved by the group as usual;
+     *  the web shows each row as a copy of BIR's template, whose ids are the row's cells. */
+    group?: string;
     /** BIR's button that adds a copy of this kind. */
     add_button: string;
   }>;
@@ -300,6 +303,7 @@ const TEMPLATE: Record<string, TemplateRecord[]> = Object.fromEntries(Object.ent
 export function attachmentCopy(spec: AttachmentSpec, state: FormState): string[] {
   const out: string[] = [];
   for (const k of spec.kind) {
+    if (!k.count_field) continue; // a group's copies are saved as its rows
     const v = (state[k.count_field] ?? "").trim();
     const n = /^\d+$/.test(v) ? Number(v) : Number(new RegExp(`${k.code}(\\d+)`).exec(v)?.[1] ?? 0);
     for (let i = 1; i <= Math.min(n, spec.max); i++) out.push(`${k.code}${i}`);

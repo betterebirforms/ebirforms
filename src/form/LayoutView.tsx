@@ -14,7 +14,7 @@ import { BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, PO
 import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
 import { formatMoney, parseMoney } from "./money.ts";
-import { deleteCopy, prepareCopy, showCopy } from "./attachment.ts";
+import { copyCount, deleteCopy, prepareCopy, showCopy, withCount } from "./attachment.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
 import { IS_WEB, readText, writeText } from "@/lib/vfs";
 import { parseSavefile } from "@/lib/savefile.ts";
@@ -766,12 +766,13 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       el.addEventListener("click", run, true);
       off.push(() => el.removeEventListener("click", run, true));
     };
-    const count = (code: string) => Number(latest.current.state[spec.kind.find((k) => k.code === code)?.count_field ?? ""] || 0);
+    const count = (code: string) => copyCount(spec, latest.current.state, code, latest.current.groups);
     for (const kind of spec.kind)
       on(root.getElementById(kind.add_button), () => {
         const n = count(kind.code);
         if (n >= spec.max) return window.alert(`The web version keeps up to ${spec.max} attachments of this kind.`);
-        setState((s) => ({ ...s, [kind.count_field]: String(n + 1) }));
+        if (kind.group) addRow(kind.group);
+        else setState((s) => withCount(spec, s, kind.code, n + 1));
         setCopyView({ code: kind.code, n: n + 1, page: 1 });
       });
     const frame = root.getElementById("ATTACHMENT");
@@ -796,7 +797,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         on(b, () => {
           const x = copyViewRef.current;
           if (!x || !window.confirm("Are you sure you want to delete this attachment? This is irreversible. ")) return;
-          setState((s) => deleteCopy(s, schema.field, spec, x.code, x.n));
+          const group = spec.kind.find((k) => k.code === x.code)?.group;
+          if (group) removeRow(group, x.n - 1);
+          else setState((s) => deleteCopy(s, schema.field, spec, x.code, x.n));
           const left = count(x.code) - 1;
           setCopyView(left > 0 ? { code: x.code, n: Math.min(x.n, left), page: 1 } : null);
         });
@@ -828,7 +831,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       const el = root.getElementById(id) as HTMLInputElement | null;
       if (el) el.value = value;
     };
-    put("attachmentTotal", state[kind.count_field] || "0");
+    put("attachmentTotal", String(copyCount(spec, state, kind.code, groups)));
     put("attachmentCurrent", String(copyView.n));
     put("currentTypeView", `${copyView.code}${copyView.n}`);
     put("attachTypeView", copyView.code);
@@ -837,7 +840,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       if (b) b.disabled = p === copyView.page;
     }
     host.current?.scrollIntoView();
-  }, [root, schema, copyView, state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [root, schema, copyView, state, groups]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // BIR's buttons follow Validate: before it only Validate (and Save) work; after it Edit, Print and Submit do. A
   // final copy keeps Print and Submit (which says how to send it) and nothing that changes it

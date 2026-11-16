@@ -25,3 +25,16 @@ describe("deleteCopy", () => {
     expect(deleteCopy(state, field, spec, "EX", 2)).toBe(state);
   });
 });
+
+describe("BIR's shared counter (1701 txtAttachmentTypes)", () => {
+  const shared: AttachmentSpec = { ...spec, kind: [
+    { code: "EX", container: "attachmentEX", count_field: "types", add_button: "a" },
+    { code: "SP", container: "attachmentSP", count_field: "types", add_button: "b" },
+  ] };
+  it("reads and writes \"EX<n>,SP<m>\" as attachmentTypes_Update does", async () => {
+    const { copyCount, withCount } = await import("@/form/attachment.ts");
+    expect(copyCount(shared, { types: "EX2,SP1" }, "SP")).toBe(1);
+    expect(withCount(shared, {}, "EX", 1)).toEqual({ types: "EX1,SP0" });
+    expect(withCount(shared, { types: "EX1,SP0" }, "SP", 1)).toEqual({ types: "EX1,SP1" });
+  });
+});
