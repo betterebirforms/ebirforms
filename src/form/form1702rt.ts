@@ -395,6 +395,8 @@ export const FORM_1702RT: FormSchema = {
     const key = f.id.slice(P.length);
     const spec: FieldSpec = f.kind === "money" && computedKey.has(key) ? { ...f, compute: (r) => modelRT(r).amount[key] ?? 0 } : { ...f };
     if (/:txtPg1Pt1I6TIN[1-4]$|:txtPg1Pt1I9Name$|:txtPg1Pt1I10Address$/.test(f.id)) spec.required = true;
+    // Sch 6A item 7 reads OTHERS once its pop-up holds rows (othersSubtotal), whatever was typed on the line before
+    if (key === "txtPg5Sc6AI7C1") Object.assign(spec, { derive: (r: Read, v: string) => modelRT(r).text.txtPg5Sc6AI7C1 ?? v, derive_shown: true });
     return spec;
   }),
   group: [...MODAL_RT_GROUP, SC6A_7_GROUP, SC12_4_GROUP, ...DIV_RT_GROUP],

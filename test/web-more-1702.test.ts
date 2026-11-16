@@ -88,7 +88,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
           Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(e, v);
           e.dispatchEvent(new Event("input", { bubbles: true }));
           e.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
-        }, GATE["1702RT"]![id]!.amount.includes(box) ? "1000" : "OTHERS");
+        }, GATE["1702RT"]![id]!.amount.includes(box) ? "1000" : "TYPED LINE");
       }
       await expect.poll(() => page.locator(`[id="${id}"]`).first().isDisabled(), { message: id }).toBe(false);
       await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
