@@ -7,20 +7,23 @@ import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import type { AddressInfo } from "node:net";
 import { SubmitError, upload, type SubmitTarget } from "../src/submit/sftp.ts";
-import { createRelay } from "../relay/server.mjs";
 
 // run the SSH library's browser code (WebCrypto), the code the web version runs, not its Node code
 vi.hoisted(() => Object.assign(globalThis, { self: globalThis }));
 
 const addr = process.env.EBIRFORMS_SFTP ?? "";
 const [sftpHost, sftpPort] = addr.split(":");
-const WS = createRequire(import.meta.url)("../relay/node_modules/ws") as { WebSocket: new (url: string, option: { origin: string }) => WebSocket };
+// the relay has its own packages (relay/package.json; CI doesn't install them): loaded only when this test runs
+type Ws = { WebSocket: new (url: string, option: { origin: string }) => WebSocket };
+let WS: Ws;
 const ORIGIN = "http://127.0.0.1:10900";
 
 describe.skipIf(!addr)("upload through the relay", () => {
   let relay: { server: import("node:http").Server; close?: () => void };
   let base = "";
   beforeAll(async () => {
+    WS = createRequire(import.meta.url)("../relay/node_modules/ws") as Ws;
+    const { createRelay } = await import("../relay/server.mjs");
     relay = createRelay({ testTcp: addr, tcpPort: [sftpPort], log: () => {} });
     await new Promise<void>((r) => relay.server.listen(0, "127.0.0.1", r));
     base = `ws://127.0.0.1:${(relay.server.address() as AddressInfo).port}`;
