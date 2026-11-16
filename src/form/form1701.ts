@@ -14,8 +14,8 @@
 //            balance sheet, reconciliation, final-tax income) and Part IX (per-regime consolidation).
 //
 // Every value is what BIR's own page logic leaves (form1701-sim.ts runs it over the native state): amounts are
-// whole pesos, saved bare like BIR's saveXML ("1234", "-1234"). The add-more modals are not modelled (their counters
-// stay 0). The Part IX attachments are: up to 5 exempt (EX1..EX5) and 5 special-rate (SP1..SP5) copies of BIR's page
+// whole pesos, saved bare like BIR's saveXML ("1234", "-1234"). The add-more pop-ups are schedules (MODAL_GROUP,
+// closed by the simulator as BIR closes them; the seven column-block ones, Schedules 1 and 12, are not). The Part IX attachments are: up to 5 exempt (EX1..EX5) and 5 special-rate (SP1..SP5) copies of BIR's page
 // 1m-5m block, each box a field named like the source box with TYPE replaced by the copy ("frm1701:txtPg1mTIN1EX1");
 // frm1701:txtAttachmentTypes ("EX2,SP1", BIR's own counter) says how many are saved.
 
@@ -24,9 +24,9 @@ import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1701", frozen as Array<[string, string, string?]>);
 import dom from "./page/1701.json";
-import { ESCAPED, MAX_COPY, PFX, simulate, type SimResult } from "./form1701-sim.ts";
+import { ESCAPED, MAX_COPY, MODAL, PFX, forCopy, modalCopy, rowKey, simulate, type Modal, type SimResult } from "./form1701-sim.ts";
 import { parseMoney } from "./money.ts";
-import { validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type Problem } from "./schema.ts";
+import { validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 export const P = PFX;
@@ -82,10 +82,35 @@ const field: FieldSpec[] = withCopy(template as TemplateRecord[]).map(([id, valu
 const REQUIRED = ["txtPg1Pt1I5TIN1", "txtPg1Pt1I5TIN2", "txtPg1Pt1I5TIN3", "txtPg1Pt1I8TaxFiler", "txtPg1I1Year"].map((x) => P + x);
 for (const f of field) if (REQUIRED.includes(f.id)) f.required = true;
 
+/** An add-more pop-up's table as a schedule (one group per pop-up, and per copy for the attachment pop-ups). A row's
+ *  cells are what BIR's pop-up leaves: descriptions upper-cased where the box capitalizes, amounts whole pesos (the
+ *  box takes digits only; setToZeroIfEmpty), saved bare. The counter, the parent boxes ("OTHERS" and the total) and
+ *  the pop-up's subtotal are BIR's page logic (the simulator, form1701-sim.ts close()), fed the rows by a scratch key. */
+const wholePeso = (value: string): string => {
+  const cents = parseMoney(value);
+  return String(cents <= 0 ? 0 : Math.floor(cents / 100));
+};
+const modalGroup = (m: Modal, copy: string): GroupSpec => {
+  const name = forCopy(m.modal, copy);
+  const row: GroupSpec["row"] = m.cell.map((c) =>
+    c.ml === 12
+      ? { id: forCopy(c.stem, copy), kind: "money", derive: (_r, v) => wholePeso(v) }
+      : { id: forCopy(c.stem, copy), kind: "text", derive: (_r, v) => (c.upper ? v.toUpperCase() : v).slice(0, c.ml) },
+  );
+  return {
+    name,
+    first_index: 1,
+    row,
+    total: { into: rowKey(name), of: row[0]!.id, sum: (rows) => JSON.stringify(rows.map((r) => row.map((sub) => r[sub.id] ?? ""))) },
+  };
+};
+export const MODAL_GROUP: GroupSpec[] = MODAL.flatMap((m) => modalCopy(m, { EX: MAX_COPY, SP: MAX_COPY }).map((copy) => modalGroup(m, copy)));
+
 export const FORM_1701: FormSchema = {
   form_code: "1701",
   title: "Annual Income Tax — Individuals, Estates and Trusts (2013)",
   field,
+  group: MODAL_GROUP,
   attachment: {
     template: "attachmentPages_TEMP",
     token: "TYPE",

@@ -7,6 +7,7 @@
 //     nature of payment and rate.
 import type { FormState, GroupState } from "./schema.ts";
 import type { AtcPick } from "./atc.ts";
+import modal1701Json from "./page/1701-modal.json";
 import { pickList1600 } from "./form1600.ts";
 import { pickList1600WP } from "./form1600wp.ts";
 import { pickList1601E } from "./form1601e.ts";
@@ -140,6 +141,17 @@ const ADD_MORE_1707 = {
   btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: (g: GroupState, s: FormState) => (g.sched2more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch2NameOfCorpStock${i}`), amount(`frm1707:txtPg2P4Sch2NoOfShares${i}`), notEmpty(`frm1707:txtPg2P4Sch2StockCertNo${i}`), amount(`frm1707:txtPg2P4Sch2TaxBaseSellPrice${i}`)]) },
   btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: (g: GroupState, s: FormState) => (g.sched3more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch3Particulars${i}`), amount(`frm1707:txtPg2P4Sch3Amount${i}`)]) },
 };
+/** 1701's "(add more...)" links (addmore): the 11 on the main pages and, on each of the ten attachment copies (EX1..EX5,
+ *  SP1..SP5), the 11 kinds BIR's attachment block has. The ids and groups come from BIR's page (tool/gen-1701-modal.mjs). */
+function modal1701(): Record<string, { group: string; title: string }> {
+  const out: Record<string, { group: string; title: string }> = {};
+  const copy = ["EX", "SP"].flatMap((kind) => [1, 2, 3, 4, 5].map((n) => `${kind}${n}`));
+  for (const m of modal1701Json as Array<{ link: string; modal: string }>) {
+    const title = m.modal.replace(/TYPE$/, "").replace(/^modal/, "").replace(/Page(\d+)m?/, "Page $1 ").replace(/Schedule/, "Schedule ").replace(/I(\d+)$/, " item $1");
+    for (const c of m.modal.includes("TYPE") ? copy : [""]) out[m.link.replace(/TYPE/g, c)] = { group: m.modal.replace(/TYPE/g, c), title: c ? `${title} (copy ${c})` : title };
+  }
+  return out;
+}
 
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
  *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
@@ -178,6 +190,22 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
   "1707Av2021": {
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
+  },
+  // "(add more...)" tables (addmore): the link, BIR's pop-up of rows
+  "1700": {
+    "frm1700:lnkPg2Pt4I12ADDMore": { group: "Page2Part4I12ModalI12", title: "Page 2 Part IV Item 12: others" },
+    "frm1700:lnkPg3Pt5I6ADDMore": { group: "Page3Part5I6ModalA1", title: "Page 3 Part V A Item 6" },
+    "frm1700:lnkPg3Pt5I11ADDMore": { group: "Page3Part5ModalA2", title: "Page 3 Part V A Item 11" },
+    "frm1700:lnkPg3Pt5I17ADDMore": { group: "Page3Part5ModalA3", title: "Page 3 Part V A Item 17" },
+    "frm1700:lnkPg3Pt5I20ADDMore": { group: "Page3Part5ModalA4", title: "Page 3 Part V A Item 20" },
+    "frm1700:lnkPg3Pt5I7ADDMore": { group: "Page3Part5ModalB1", title: "Page 3 Part V B Item 7" },
+    "frm1700:lnkPg3Pt5I10ADDMore": { group: "Page3Part5ModalB2", title: "Page 3 Part V B Item 10" },
+  },
+  "1700v2018": { addMoreSched1Link: { group: "sched1more", title: "Part VI Schedule 1: continuation of employers" } },
+  "1701": modal1701(),
+  "1701A": {
+    "frm1701A:lnkPartIVAMore": { group: "partIVA", title: "Part IV.A Other Taxable Income (item 42)" },
+    "frm1701A:lnkPartIVBMore": { group: "partIVB", title: "Part IV.B Other Non-Taxable Income (item 51)" },
   },
 };
 

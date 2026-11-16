@@ -6825,6 +6825,46 @@ export class Bir1701 extends Dom1701 {
   		this.$('#modalPart7A').show('clip');
       }
 
+  // BIR computePage5Schedule3Modal
+  computePage5Schedule3Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5Schedule3";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5Sc3I2_C1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg5Sc3I2_C2');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5Schedule3Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5Sc3I2TaxPayerC1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg5Sc3I2SpouseC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var taxPayerFilerSummation = 0;
+          var spouseSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+              spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+          }
+  
+         subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+         subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  
+  	//compute textboxes outside modal
+  	this.computePg5Sc3('TaxPayer');
+  	this.computePg5Sc3('Spouse');
+          
+      }
+
   // BIR computePage6Schedule5Modal
   computePage6Schedule5Modal(bool?: any): any {
   	
@@ -6863,6 +6903,443 @@ export class Bir1701 extends Dom1701 {
   	this.computePg6Sc5('Spouse');
       }
 
+  // BIR computePage6Schedule6I4Modal
+  computePage6Schedule6I4Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage6Schedule6";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg6Sc6I4_C1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg6Sc6I4_C2');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage6Schedule6Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg6Sc6I4TaxSumPayerC1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg6Sc6I4SpouseSumC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var taxPayerFilerSummation = 0;
+          var spouseSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+              spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+          subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute textboxes outside modal
+          this.summation('Page7Content,Page6Content', 'TaxSumPayerC1', 'frm1701:txtPg7Sc6I40TaxTotalPayerC1'); this.computePage2Part4('TaxPayer'); this.computePage3Part5('TaxPayer');
+          this.summation('Page7Content,Page6Content', 'SpouseSumC2', 'frm1701:txtPg7Sc6I40TotalSpouseC2'); this.computePage2Part4('Spouse'); this.computePage3Part5('Spouse');
+  		this.computePage1Part2();
+          this.moveValueToItem57();
+      }
+
+  // BIR computePage7Schedule6Modal
+  computePage7Schedule6Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage7Schedule6";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg7Sc6I39_C1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg7Sc6I39_C2');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage7Schedule6Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg7Sc6I39TaxSumPayerC1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg7Sc6I39SpouseSumC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+         var  table = this.d.getElementById(tableID);
+          var taxPayerFilerSummation = 0;
+          var spouseSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+              spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+          subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute textboxes outside modal
+          this.summation('Page7Content,Page6Content', 'TaxSumPayerC1', 'frm1701:txtPg7Sc6I40TaxTotalPayerC1'); this.computePage2Part4('TaxPayer'); this.computePage3Part5('TaxPayer');
+          this.summation('Page7Content,Page6Content', 'SpouseSumC2', 'frm1701:txtPg7Sc6I40TotalSpouseC2'); this.computePage2Part4('Spouse'); this.computePage3Part5('Spouse');
+          this.moveValueToItem57();
+  		this.computePage1Part2();
+      }
+
+  // BIR computePage8Schedule7Modal
+  computePage8Schedule7Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage8Schedule7";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg8Sc7I4_C1');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg8Sc7I4_C2');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage8Schedule7Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg8Sc7I4TaxPayer');
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg8Sc7I4Spouse');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var taxPayerFilerSummation = 0;
+          var spouseSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+              spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[4].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+          subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute textboxes outside modal
+          this.computePg8Sc7('TaxPayer'); this.computePage2Part4('TaxPayer'); this.computePage3Part5('TaxPayer');
+          this.computePg8Sc7('Spouse'); this.computePage2Part4('Spouse'); this.computePage3Part5('Spouse');
+  	this.computePage1Part2();
+      }
+
+  // BIR computePage8Schedule8A1Modal
+  computePage8Schedule8A1Modal(): any {
+          var tableSize = this.d.getElementById('tblPage8Schedule8A1').rows.length;
+          this.table = this.d.getElementById('tblPage8Schedule8A1');
+          var amountSummation = 0, nolcoAppliedPrevYearSummation = 0, nolcoExpiredSummation = 0, nolcoAppliedCurrentYearSummation = 0, netOperatingLossSummation = 0;
+  
+  
+          for (var i = 0; i < tableSize; i++) {
+              amountSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[2].children[0].id));
+              nolcoAppliedPrevYearSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[3].children[0].id));
+              nolcoExpiredSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[4].children[0].id));
+              nolcoAppliedCurrentYearSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[5].children[0].id));
+              netOperatingLossSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[6].children[0].id));
+          }
+  
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7Total').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedCurrentYearSummation));
+  
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7Amount').value = this.NegativeValue(this.formatCurrencyWOC(amountSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7AppliedPreviousYear').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedPrevYearSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7NOLCOExpired').value = this.NegativeValue(this.formatCurrencyWOC(nolcoExpiredSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7NOLCOAppliedCurrentYear').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedCurrentYearSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8A1I7NetOperatingLoss').value = this.NegativeValue(this.formatCurrencyWOC(netOperatingLossSummation));
+  
+          this.computePg8Sc8A1();
+          this.computePage2Part4('TaxPayer'); this.computePage3Part5('TaxPayer');
+  		this.computePage1Part2();
+      }
+
+  // BIR computePage8Schedule8B1Modal
+  computePage8Schedule8B1Modal(): any {
+          var tableSize = this.d.getElementById('tblPage8Schedule8B1').rows.length;
+          this.table = this.d.getElementById('tblPage8Schedule8B1');
+          var amountSummation = 0, nolcoAppliedPrevYearSummation = 0, nolcoExpiredSummation = 0, nolcoAppliedCurrentYearSummation = 0, netOperatingLossSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              amountSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[2].children[0].id));
+              nolcoAppliedPrevYearSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[3].children[0].id));
+              nolcoExpiredSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[4].children[0].id));
+              nolcoAppliedCurrentYearSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[5].children[0].id));
+              netOperatingLossSummation += this.convertToNumber(this.removeCommaParenthesis(this.table.rows[i].cells[6].children[0].id));
+          }
+  
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7Total').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedCurrentYearSummation));
+  
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7Amount').value = this.NegativeValue(this.formatCurrencyWOC(amountSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7AppliedPreviousYear').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedPrevYearSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7NOLCOExpired').value = this.NegativeValue(this.formatCurrencyWOC(nolcoExpiredSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7NOLCOAppliedCurrentYear').value = this.NegativeValue(this.formatCurrencyWOC(nolcoAppliedCurrentYearSummation));
+          this.d.getElementById('frm1701:txtPg8Sc8B1I7NetOperatingLoss').value = this.NegativeValue(this.formatCurrencyWOC(netOperatingLossSummation));
+  
+          this.computePg8Sc8B1();
+          this.computePage2Part4('Spouse'); this.computePage3Part5('Spouse');
+  		this.computePage1Part2();
+      }
+
+  // BIR computePage10Schedule11AI3Modal
+  computePage10Schedule11AI3Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11AI3";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI3Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11AI3Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute textboxes outside modal
+          this.computePg10Sc11A('TaxPayer');
+      }
+
+  // BIR computePage10Schedule11AI6Modal
+  computePage10Schedule11AI6Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11AI6";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI6Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11AI6Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI6NonTaxableIncomeC2');
+  	}
+  	
+  	var tableSize = this.d.getElementById(tableID).rows.length;
+  	var  table = this.d.getElementById(tableID);
+  	var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute textboxes outside modal
+          this.computePg10Sc11A('TaxPayer');
+      }
+
+  // BIR computePage10Schedule11AI8Modal
+  computePage10Schedule11AI8Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11AI8";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI8Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11AI8Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11AI8SpecialDeductionsC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute textboxes outside modal
+          this.computePg10Sc11A('TaxPayer');
+      }
+
+  // BIR computePage10Schedule11BI3Modal
+  computePage10Schedule11BI3Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11BI3";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI3Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11BI3Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute textboxes outside modal
+          this.computePg10Sc11A('Spouse');
+      }
+
+  // BIR computePage10Schedule11BI6Modal
+  computePage10Schedule11BI6Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11BI6";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI6Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11BI6Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI6NonTaxableIncomeC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  		
+  	//compute textboxes outside modal
+          this.computePg10Sc11A('Spouse');
+      }
+
+  // BIR computePage10Schedule11BI8Modal
+  computePage10Schedule11BI8Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage10Schedule11BI8";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI8Total');
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage10Schedule11BI8Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg10Sc11BI8SpecialDeductionsC2');
+  	}
+  	
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var summation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+          }
+  
+          subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+          //compute textboxes outside modal
+          this.computePg10Sc11A('Spouse');
+      }
+
+  // BIR computePage11Schedule12Part1Modal
+  computePage11Schedule12Part1Modal(bool?: any): any {
+  
+          var tableID = "";
+          var subtotalTextboxA = '';
+          var subtotalTextboxB = '';
+  
+          // if true, set subtotal inside modal
+          if (bool === true) {
+              tableID = "tblPage11Schedule12APt1";
+              subtotalTextboxA = this.d.getElementById('frm1701:txtPg11ScAPt1I6_C1');
+              subtotalTextboxB = this.d.getElementById('frm1701:FinalTaxWithheldC2');
+          }
+          // if false, set subtotal outside modal 
+          else {
+              tableID = "tblPage11Schedule12APt1Repository";
+              //subtotalTextboxA = d.getElementById('frm1701:txtPg11Sc12AI6CompensationC1');
+              //subtotalTextboxB = d.getElementById('frm1701:txtPg11Sc12AI6FinalTaxWithheldC2');
+          }
+  
+          var tableSize = this.d.getElementById(tableID).rows.length;
+          var table = this.d.getElementById(tableID);
+          var taxPayerFilerSummation = 0;
+          var spouseSummation = 0;
+  
+          for (var i = 0; i < tableSize; i++) {
+              taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+              spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+          }
+  
+          if(subtotalTextboxA != '' && subtotalTextboxB != ''){
+              subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+              subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+          }
+  		
+  		
+  	this.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
+      }
+
+  // BIR computePage2mScheduleEModal
+  computePage2mScheduleEModal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage2mScheduleE"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg2mScEI2_C1'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg2mScEI2_C2'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage2mScheduleE"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg2mScEI2C2'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg2mScEI2C3'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var taxPayerFilerSummation = 0;
+  	    var spouseSummation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	        spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+  	    subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute textboxes outside modal
+  	    this.computePage2mScheduleE('TaxPayer');
+  	    this.computePage2mScheduleE('Spouse');
+  	}
+
   // BIR computePage3mScheduleGModal
   computePage3mScheduleGModal(bool?: any): any {
   	
@@ -6899,6 +7376,44 @@ export class Bir1701 extends Dom1701 {
   	//compute textboxes outside modal
   	    this.computePage3mScheduleG('TaxPayer');
   	    this.computePage3mScheduleG('Spouse');
+  	}
+
+  // BIR computePage3mScheduleHI4Modal
+  computePage3mScheduleHI4Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage3mScheduleHI4"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg3mScHI4_C1'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg3mScHI4_C2'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage3mScheduleHI4"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg3mScHI4AmortizationC2'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg3mScHI4AmortizationC3'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var taxPayerFilerSummation = 0;
+  	    var spouseSummation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	        spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+  	    subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	    //compute other textboxes
+  	    this.computePage3mScheduleH('TaxPayer');
+  	    this.computePage3mScheduleH('Spouse');
   	}
 
   // BIR computePage4mScheduleHModal
@@ -6976,6 +7491,193 @@ export class Bir1701 extends Dom1701 {
   	//compute other textboxes
   	    this.computePage4mScheduleI('TaxPayer');
   	    this.computePage4mScheduleI('Spouse');
+  	}
+
+  // BIR computePage5mScheduleK1I3Modal
+  computePage5mScheduleK1I3Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK1I3"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK1I3Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK1I3"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI3C1'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	    //compute other textboxes
+  	    this.computePage5mScheduleK1();
+  	}
+
+  // BIR computePage5mScheduleK1I6Modal
+  computePage5mScheduleK1I6Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK1I6"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK1I6Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK1I6"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI6C1'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  		//compute other textboxes
+  		this.computePage5mScheduleK1();
+  	}
+
+  // BIR computePage5mScheduleK1I8Modal
+  computePage5mScheduleK1I8Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK1I8"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK1I8Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK1I8"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI8C1'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	   subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  		
+  	    //compute other textboxes
+  	    this.computePage5mScheduleK1();
+  	}
+
+  // BIR computePage5mScheduleK2I3Modal
+  computePage5mScheduleK2I3Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK2I3"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK2I3Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK2I3"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI3C2'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	     //compute other textboxes
+  	    this.computePage5mScheduleK2();
+  	}
+
+  // BIR computePage5mScheduleK2I6Modal
+  computePage5mScheduleK2I6Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK2I6"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK2I6Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK2I6"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI6C2'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute other textboxes
+  	    this.computePage5mScheduleK2();
+  	}
+
+  // BIR computePage5mScheduleK2I8Modal
+  computePage5mScheduleK2I8Modal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage5mScheduleK2I8"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScK2I8Total'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage5mScheduleK2I8"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg5mScKI8C2'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var summation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        summation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	    }
+  
+  	subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(summation));
+  
+  	//compute other textboxes
+  	this.computePage5mScheduleK2();
   	}
 
   // BIR disableLinkIfEmpty
@@ -7945,6 +8647,35 @@ export class Bir1701 extends Dom1701 {
   	
   	return description;
   }
+
+  // BIR disableParentInput
+  disableParentInput(activeInput?: any): any {
+  
+  	for (var i=0; i < activeInput.length; i++) {
+  		
+  		//disable
+  		this.d.getElementById(activeInput[i]).disabled = true;
+  		this.d.getElementById(activeInput[i]).style.backgroundColor = "#ededed";
+  		
+  		if (this.d.getElementById(activeInput[i]).maxLength != 12){
+  			
+  			this.d.getElementById(activeInput[i]).value = "OTHERS";
+  		}
+  		
+  		//remove enabled rows, for reloading
+  		if (this.d.getElementById(activeInput[i]).disabled){
+  			this.update_enabledInputsOnValidation(activeInput[i],"REMOVE");
+  		}
+  	}
+  	
+  	//add more link
+  	this.d.getElementById(this.activeModalLink[0].id).disabled = false;
+  
+  	//if parent inputs is disabled
+  	//happens when it description turns into "OTHERS"
+  	this.disabledinputIDs.push(activeInput);
+  	this.storeDisabledinputIDs();
+    }
 
   // BIR processBack
   processBack(): any {

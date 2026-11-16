@@ -19,8 +19,8 @@
 //                     chain recomputes the computed ones to "0.00" (44 / 52 are not recomputed, so they stay "0").
 
 import fieldJson from "./fields/1701A.json";
-import { parseMoney } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type Problem } from "./schema.ts";
+import { formatMoney, parseMoney } from "./money.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupAgg, type GroupRow, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 const P = "frm1701A:";
@@ -146,7 +146,60 @@ const ivbDescKept = (r: Read) => !((rateG(r, "A") && !rate8(r, "B")) || (rateG(r
 for (const id of ["txt41Desc", "txt42Desc"]) override[`${P}${id}`] = keepIf(ivaDescKept, "");
 for (const id of ["txt50Desc", "txt51Desc"]) override[`${P}${id}`] = keepIf(ivbDescKept, "");
 
+// ---- the "(add more...)" pop-ups: Part IV.A item 42 (other taxable income) and IV.B item 51 (other non-taxable) ----------
+//   BIR's pop-up copies the item's own boxes into its row 1 (transferToModal), the filer adds rows, and from two rows
+//   on the item's description reads "OTHERS" (disabled) and its A / B boxes read the pop-up's column totals
+//   (computePartIV<A|B>Modal(false)). The rows are saved under `txtmodalPartIV<A|B>Desc_<n>C1` / `_<n>C2` (taxpayer) /
+//   `_<n>C3` (spouse), the row count under `txtCtrmodalPartIV<A|B>` (0 below two rows), the totals in
+//   `txtmodalPartIV<A|B>_C1/C2`. Modelled as the groups `partIVA` / `partIVB` (>= 2 rows; BIR moves a lone row back
+//   into the item's own boxes). BIR's total runs `.toFixed(0)` on every running sum (whole pesos, half away from zero).
+const MORE = {
+  A: { group: "partIVA", item: 42, keep: ivaDescKept },
+  B: { group: "partIVB", item: 51, keep: ivbDescKept },
+} as const;
+type More = keyof typeof MORE;
+const moreStem = (side: More, cell: string): string => `${P}txtmodalPartIV${side}${cell}`;
+const upperCell = (_r: Read, v: string): string => v.toUpperCase();
+/** BIR's `formatCurrency((sum + cell).toFixed(0))` over a column: the running sum is rounded to whole pesos each step */
+function columnTotal(rows: GroupRow[], stem: string): string {
+  let sum = 0; // centavos, always a whole peso
+  for (const x of rows) {
+    const t = sum + parseMoney(x[stem] ?? "0");
+    sum = Math.sign(t) * Math.floor((Math.abs(t) + 50) / 100) * 100;
+  }
+  return formatMoney(sum);
+}
+
+function moreGroup(side: More): GroupSpec {
+  const row: GroupSpec["row"] = [
+    { id: moreStem(side, "Desc_{i}C1"), kind: "text", derive: upperCell },
+    { id: moreStem(side, "_{i}C2"), ...money },
+    { id: moreStem(side, "_{i}C3"), ...money },
+  ];
+  const total = (cell: 1 | 2): GroupAgg => ({ into: `${P}_more${side}${cell}`, of: row[cell]!.id, sum: (rows) => columnTotal(rows, row[cell]!.id) });
+  return {
+    name: MORE[side].group,
+    size_field: `${P}txtCtrmodalPartIV${side}`,
+    first_index: 1,
+    row,
+    total: [total(1), total(2), { into: `${P}_more${side}Count`, of: row[0]!.id, sum: (rows) => String(rows.length) }],
+  };
+}
+for (const side of ["A", "B"] as const) {
+  const { item, keep } = MORE[side];
+  const used = (r: Read): boolean => Number(r(`${P}_more${side}Count`)) >= 2 && keep(r);
+  const at = (stem: string) => `${P}txt${item}${stem}`;
+  const desc = override[at("Desc")]!;
+  override[at("Desc")] = { ...desc, derive: (r, v) => (used(r) ? "OTHERS" : desc.derive!(r, v)) };
+  for (const [col, cell] of [["A", 1], ["B", 2]] as const) {
+    const was = override[at(col)] ?? {};
+    override[at(col)] = { ...money, ...was, derive: (r, v) => (used(r) ? r(`${P}_more${side}${cell}`) : was.derive ? was.derive(r, v) : v) };
+    override[moreStem(side, `_C${cell}`)] = { ...money, derive: (r, v) => (used(r) ? r(`${P}_more${side}${cell}`) : v) };
+  }
+}
+
 export const FORM_1701A = buildSchema("1701A", "Annual Income Tax — Individuals (Business/Profession)", fieldJson as FieldJson[], override);
+FORM_1701A.group = [moreGroup("A"), moreGroup("B")];
 
 export function validate1701A(state: FormState): Problem[] {
   const problem = validateRequired(FORM_1701A, state);

@@ -16,13 +16,42 @@
 // The result is what BIR's own page shows (and saves again) after the native file is reopened in it. The Part IX
 // attachments (frm1701:txtAttachmentTypes "EX2,SP1") are copies of BIR's page 1m–5m block, built into the page like
 // BIR's addAttachment builds them (form1701-dom.ts) and typed / blurred like any page, with TYPE = the copy; the
-// filer is then taken back to the main form (processBack), which recomputes the main pages from them. Not modelled:
-// the add-more modals (txtCtrmodal* stay 0 — each schedule's fixed rows only, on the main pages and in the copies).
+// filer is then taken back to the main form (processBack), which recomputes the main pages from them.
+//
+// The add-more pop-ups (22: 11 on the main pages, 11 kinds per copy; page/1701-modal.json, tool/gen-1701-modal.mjs) are
+// closed last, as a filer opens one after typing the item it hangs on: the schema's group rows (a scratch key holding a
+// JSON list) become the pop-up's Repository table, and BIR's own saveChanges outcome is run (the counter, the parent
+// boxes locked with "OTHERS" from two rows, compute...Modal(false) for the schedule's total). Not modelled: the seven
+// column-block pop-ups (Schedule 1 on page 5, Schedule 12 on page 11: addRowCol), BIR's two Schedule 8 links (commented
+// out in its page), and the enabled-link / enabled-input lists for a one-row pop-up (BIR's enableParentInput).
 
 import { Bir1701, HANDLER } from "./form1701-bir.ts";
 import type { Elem } from "./form1701-dom.ts";
+import modalJson from "./page/1701-modal.json";
 
 export const PFX = "frm1701:";
+
+/** One "(add more...)" pop-up (tool/gen-1701-modal.mjs, read from BIR's page). "TYPE" is the attachment copy token. */
+export interface Modal {
+  link: string;
+  modal: string;
+  table: string;
+  compute: string;
+  parent: string[];
+  cell: Array<{ stem: string; ml: number; upper: boolean }>;
+  counter: string;
+}
+export const MODAL = modalJson as Modal[];
+/** The pop-up as it is for one copy ("" on the main pages): ids with BIR's TYPE token replaced */
+export const forCopy = (id: string, copy: string): string => id.replace(/TYPE/g, copy);
+/** The scratch state key a pop-up's rows travel under, from the schema's group to the simulator (a JSON list of rows,
+ *  each the cells in the layout's order) */
+export const rowKey = (name: string): string => `${PFX}_modalRow:${name}`;
+/** The copies a pop-up kind exists on: the main pages (the 13 without TYPE) or each added copy */
+export function modalCopy(m: Modal, copy: { EX: number; SP: number }): string[] {
+  if (!m.modal.includes("TYPE")) return [""];
+  return [...Array.from({ length: copy.EX }, (_, i) => `EX${i + 1}`), ...Array.from({ length: copy.SP }, (_, i) => `SP${i + 1}`)];
+}
 type Read = (id: string) => string;
 
 /** saveXML escape()s these (and loadData unescapes every text value) */
@@ -71,6 +100,50 @@ class Sim extends Bir1701 {
       (this as unknown as { PERSON: string }).PERSON = read(PFX + tf) !== "true" && read(PFX + spouse) === "true" ? "S" : "TF";
       for (let i = 0; i < copy[type]; i++) this.addAttachment(type);
     }
+  }
+  /** BIR's SAVE AND CLOSE of an add-more pop-up holding `row` (saveChanges(modal, true); closeModal; compute…Modal(false)):
+   *  the rows go to the Repository table, the counter is the row count when there are two or more (else 0), two or more
+   *  rows lock the parent boxes ("OTHERS" in the description) and the schedule's boxes take the rows' total; one row
+   *  hands its description back to the parent boxes. */
+  close(m: Modal, copy: string, row: string[][]): void {
+    if (row.length === 0) return;
+    const g = this as unknown as Record<string, any>;
+    const sub = (id: string): string => forCopy(id, copy);
+    const link = this.d.getElementById(sub(m.link));
+    if (!link) throw new Error(`form1701-sim: no link ${sub(m.link)}`);
+    const parent = m.parent.map(sub);
+    const table = sub(m.table);
+    this.view({ copy } as Elem);
+    g.activeModalLink = [link];
+    g.activeParentInput = parent;
+    if (copy) g.TYPE = copy;
+    this.setTable(
+      [table, `${table}Repository`],
+      row.map((cell, r) => m.cell.map((c, k) => ({ id: sub(c.stem).replace("{i}", String(r + 1)), value: cell[k] ?? "", maxLength: c.ml }))),
+    );
+    const n = row.length;
+    this.guard(m.link, () => g[m.compute](true));
+    this.guard(m.link, () => {
+      if (copy) g.updateAttachemntModalCounter(m.counter, n > 1 ? n : 0);
+      else this.el(m.counter).value = n > 1 ? n : 0;
+      if (n > 1) {
+        if (!this.el(parent[0]!).disabled) g.disableParentInput(parent);
+      } else {
+        m.cell.forEach((c, k) => {
+          if (c.ml !== 12) this.el(parent[k]!).value = row[0]![k] ?? "";
+        });
+        for (const p of parent) g.update_enabledInputsOnValidation(p, "ADD");
+      }
+    });
+    this.guard(m.link, () => g[m.compute](false));
+  }
+  /** every pop-up the filer filled (main pages first, then each copy), from the rows the schema's groups carry */
+  closeAll(copy: { EX: number; SP: number }, read: Read): void {
+    for (const m of MODAL)
+      for (const c of modalCopy(m, copy)) {
+        const text = read(rowKey(forCopy(m.modal, c)));
+        if (text !== "") this.close(m, c, JSON.parse(text) as string[][]);
+      }
   }
   fire(el: Elem, handler: number): void {
     const h = HANDLER[handler];
@@ -200,6 +273,8 @@ export function simulate(read: Read): SimResult {
   typing();
   controls();
   typing();
+  // the add-more pop-ups, closed last (a filer opens one after typing the item it hangs on)
+  s.closeAll(copy, read);
   current.value = "1";
   // "Back to Main Form": the main pages take the copies' figures
   if (copy.EX + copy.SP > 0) s.guard("processBack", () => s.processBack());
