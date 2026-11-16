@@ -42,7 +42,9 @@ describe("captured BIR layouts", () => {
         const def = NATIVE_FORM[code];
         expect(def, `no native form ${code}`).toBeDefined();
         const id = new Set(Array.from(html.matchAll(/\sid="([^"]+)"/g), (m) => m[1]));
-        const missing = def!.schema.field.filter((f) => !f.secret && !id.has(f.id)).map((f) => f.id);
+        // a Part V attachment copy is cloned from BIR's attachment template at load, so it has no box on the page
+        const copy = def!.schema.attachment ? /^frm1702MX:(txt|rdo)\w*?(EX|SP)\d/ : null;
+        const missing = def!.schema.field.filter((f) => !f.secret && !id.has(f.id) && !(copy && copy.test(f.id))).map((f) => f.id);
         // a few save keys have no box on BIR's own page either: the element is inside an HTML comment in BIR's
         // source (1603's old tax-rate modal), or BIR's code writes the key itself. With BIR's tree at hand, check
         // each one is like that, so a field the capture lost can't hide among them.

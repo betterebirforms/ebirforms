@@ -113,6 +113,9 @@ export interface AttachmentSpec {
   }>;
   /** BIR's script turns these input types in the clone into text (1702-MX: type=hidden → type=text). */
   unhide?: boolean;
+  /** The template key the copies' records follow in BIR's DOM order (1702-MX: its page's "attachmentTotal" box);
+   *  without it they are appended after the template. Used with `FormSchema.attachment_record`. */
+  after?: string;
 }
 
 export interface FormSchema {
@@ -125,6 +128,13 @@ export interface FormSchema {
    *  activity. Each copy's boxes are ordinary fields in `field` (and the state), with BIR's token in the id replaced
    *  by the copy's name ("EX1", "SP2"), for every copy up to `max`; the engine saves only the copies counted. */
   attachment?: AttachmentSpec;
+  /** The save records of the counted attachment copies (each copy's boxes as BIR leaves them), placed right after
+   *  `attachment.after` in the blank save's order — BIR's saveXML walks the page's boxes and the copies sit where
+   *  its containers are. */
+  attachment_record?: (state: FormState, groups: GroupState) => SaveRecord[];
+  /** Template keys BIR's page no longer has once copies exist (1702-MX: the special-rate drop-down is removed
+   *  while a special-rate copy exists), so saveXML never writes them. */
+  attachment_omit?: (state: FormState, groups: GroupState) => string[];
   /** Money display override. Default renders like BIR's `formatCurrency` (round-half-up, "-" sign). The 1707
    *  family uses accounting parentheses for negatives (`formatMoneyParen`). Rounding is identical either way. */
   format?: (cents: Centavo) => string;
@@ -317,14 +327,22 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
   const byDefault = new Map(schema.field.filter((f) => f.derive_default).map((f) => [f.id, f.derive_default!]));
   const read = (id: string) => computed[id] ?? "";
   const seen = new Map<string, number>();
-  const record = template.map(([key, value]) => {
-    const saved = overlay.get(key) ?? (escaped.has(key) ? legacyEscape(value) : value);
-    const fix = byDefault.get(key);
-    if (!fix) return { key, value: saved };
-    const occurrence = seen.get(key) ?? 0;
-    seen.set(key, occurrence + 1);
-    return { key, value: fix(read, saved, occurrence) };
-  });
+  const omitted = new Set(schema.attachment_omit?.(computed, groups) ?? []);
+  const record = template
+    .filter(([key]) => !omitted.has(key))
+    .map(([key, value]) => {
+      const saved = overlay.get(key) ?? (escaped.has(key) ? legacyEscape(value) : value);
+      const fix = byDefault.get(key);
+      if (!fix) return { key, value: saved };
+      const occurrence = seen.get(key) ?? 0;
+      seen.set(key, occurrence + 1);
+      return { key, value: fix(read, saved, occurrence) };
+    });
+  if (schema.attachment_record) {
+    const copy = schema.attachment_record(computed, groups);
+    const at = schema.attachment?.after ? record.findIndex((r) => r.key === schema.attachment!.after) : -1;
+    record.splice(at < 0 ? record.length : at + 1, 0, ...copy);
+  }
   // each key once: an extra_record entry may override a schedule cell (last write wins, as for template keys)
   const emitted = new Set<string>();
   for (const r of dynamic) {

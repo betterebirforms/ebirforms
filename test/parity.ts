@@ -105,7 +105,10 @@ export async function parityCheck(oracle: Oracle, schema: FormSchema, state: For
         ? (el.value.includes("(") && el.value.includes(")") ? el.value.replace("(", "-").replace(")", "") : el.value).replace(/,/g, "")
         : el.value;
     const form = document.getElementById("frmMain") as HTMLFormElement | null;
-    const live = (el: HTMLInputElement) => !el.disabled && el.type === "text" && el.offsetParent !== null;
+    // a 1702-MX Part V copy sits in a page BIR keeps hidden until it is viewed; the filer types into it there, so it is
+    // blurred like any other live input (txtPg1EX1ScBI1, txtPg4SP2ScGI40 …)
+    const copy = /^frm1702MX:txt(Pg\d)?(EX|SP)\d|^frm1702MX:txtPg\d(EX|SP)\d/;
+    const live = (el: HTMLInputElement) => !el.disabled && el.type === "text" && (el.offsetParent !== null || copy.test(el.id));
     const all = form ? (Array.from(form.elements) as HTMLInputElement[]) : [];
     // BIR computes on blur; two passes let a later field's result feed an earlier one
     for (let pass = 0; pass < 2; pass++)
