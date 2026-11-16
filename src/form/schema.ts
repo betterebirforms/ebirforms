@@ -74,6 +74,9 @@ export interface GroupSpec {
   /** Optional aggregate(s): each writes the sum of one sub-field's stem across rows into a scalar field.
    *  An array lets a schedule feed several totals (e.g. 1621's Withdrawn and Withheld column totals). */
   total?: GroupAgg | GroupAgg[];
+  /** The rows are only what the pop-up's boxes hold: BIR's pop-up sits outside its <form>, so saveXML never writes
+   *  them (1701MS). The totals and derives still follow from them; the savefile carries no row record. */
+  unsaved?: boolean;
 }
 
 export interface GroupAgg {
@@ -272,7 +275,7 @@ export function formRecords(schema: FormSchema, state: FormState, groups: GroupS
   const computed = computeForm(schema, state, groups);
   const scalar = toRecords(schema, computed);
   const dynamic: SaveRecord[] = [];
-  for (const g of schema.group ?? []) dynamic.push(...groupRecords(g, groups[g.name] ?? [], computed, schema.form_code));
+  for (const g of schema.group ?? []) if (!g.unsaved) dynamic.push(...groupRecords(g, groups[g.name] ?? [], computed, schema.form_code));
   if (schema.extra_record) dynamic.push(...schema.extra_record(computed, groups));
   const template = TEMPLATE[schema.form_code];
   if (!template) return [...scalar, ...dynamic];

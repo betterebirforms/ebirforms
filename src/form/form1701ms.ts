@@ -23,7 +23,7 @@
 // computeRegularIncomeTax: the 2023+ TRAIN table (0 ≤ 250k; 15%; 20% + 22500; 25% + 102500; 30% + 402500; 35% + 2202500).
 import fieldJson from "./fields/1701MS.json";
 import { formatMoney, parseMoney, type Centavo } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 export const P = "frm1701MS:";
@@ -255,9 +255,70 @@ for (const side of ["a", "b"] as const)
     derive: (r: Read, v: string) => (nwc(chain1701MS(r)[`txtTaxPayableNo25${side}`]) < 0 ? "0" : removeDecimal(r, v)),
   };
 override[`${P}addForeignTaxCredits`] = { derive: (_r, v) => v.toUpperCase().trim() };
-override[`${P}addOtherCreditsPayments`] = { derive: (_r, v) => v.toUpperCase().trim() };
+
+// The "View Details" / "Add more" pop-ups. BIR's script draws their rows (Add Row, Remove, Save and Close) in divs that
+// sit outside frmMain, so saveXML never writes a row: what reaches the file is the total each pop-up leaves in its
+// box on the page (computeOther…, then closeModal…: Math.round of the rows' sum, a whole peso). A pop-up with no rows
+// leaves the box as typed. One group per pop-up, `unsaved`, 0-indexed; BIR's own ids are kept (the 20B pop-up's
+// description is `sched42OB`, with a letter O).
+interface Specify {
+  name: string; // group
+  stem: string; // the amount input's id stem
+  description?: string; // the description input's id stem when it differs
+  legal?: boolean; // 10B's pop-ups carry a Legal Basis column
+  box: string; // the page box the total goes to
+}
+const SPECIFY: Specify[] = [
+  { name: "sched410A", stem: "sched410A", box: "txtAllowableItemizedDeductionsNo10a" },
+  { name: "sched410aSpouse", stem: "sched410aSpouse", box: "txtAllowableItemizedDeductionsNo10aSpouse" },
+  { name: "sched410A1", stem: "sched410A1", legal: true, box: "txtSpecialAllowableNo10a" },
+  { name: "sched410A2", stem: "sched410A2", legal: true, box: "txtSpecialAllowableNo10b" },
+  { name: "sched413A", stem: "sched413A", box: "txtNonOperatingIncomeNo13a" },
+  { name: "sched413B", stem: "Sched413B", box: "txtNonOperatingIncomeNo13b" },
+  { name: "sched420A", stem: "sched420A", box: "txtOtherNonOperatingIncomeNo20a" },
+  { name: "sched420B", stem: "sched420B", description: "sched42OB", box: "txtOtherNonOperatingIncomeNo20b" },
+];
+/** A pop-up's whole-peso amount cell (wholenumber + removeDecimal on its blur). */
+const cell = (stem: string, col: string): GroupSpec["row"][number] => ({ id: `${P}${stem}:${col}`, kind: "text", derive: (r, v) => removeDecimal(r, v) });
+const rowsSum = (rows: Array<Record<string, string>>, id: string): number => rows.reduce((sum, row) => sum + nwc(row[id]), 0);
+const specifyGroup = (x: Specify): GroupSpec => {
+  const amount = `${P}${x.stem}:Amount`;
+  return {
+    name: x.name,
+    first_index: 0,
+    unsaved: true,
+    row: [{ id: `${P}${x.description ?? x.stem}:Description`, kind: "text" }, ...(x.legal ? [{ id: `${P}${x.stem}:LegalBasis`, kind: "text" as const }] : []), cell(x.stem, "Amount")],
+    total: [
+      { into: `_${x.name}Count`, of: amount, sum: (row) => String(row.length) },
+      { into: `_${x.name}Sum`, of: amount, sum: (row) => woc(Math.round(rowsSum(row, amount))) },
+    ],
+  };
+};
+/** The box shows the pop-up's total once the pop-up has rows (closeModal…). */
+for (const x of SPECIFY) {
+  const base = override[`${P}${x.box}`]?.derive;
+  override[`${P}${x.box}`] = { ...override[`${P}${x.box}`], derive: (r, v) => (Number(r(`_${x.name}Count`)) > 0 ? r(`_${x.name}Sum`) : base ? base(r, v) : v) };
+}
+
+// Part V item 9, "Other credits / payments" (modalSched5No9): taxpayer and spouse amounts side by side.
+// closeModalSched5No9: two rows or more → the description reads VARIOUS; computeOtherSpecify(Spouse) → 9A / 9B.
+export const SPECIFY_5NO9: GroupSpec = {
+  name: "sched5No9",
+  first_index: 0,
+  unsaved: true,
+  row: [{ id: `${P}sched5No9:Description`, kind: "text" }, cell("sched5No9", "Amount"), cell("sched5No9", "Spouse")],
+  total: [
+    { into: "_sched5No9Count", of: `${P}sched5No9:Amount`, sum: (row) => String(row.length) },
+    { into: "_sched5No9Sum", of: `${P}sched5No9:Amount`, sum: (row) => woc(rowsSum(row, `${P}sched5No9:Amount`)) },
+    { into: "_sched5No9SpouseSum", of: `${P}sched5No9:Spouse`, sum: (row) => woc(rowsSum(row, `${P}sched5No9:Spouse`)) },
+  ],
+};
+override[`${P}txtOtherCreditsPaymentsNo9a`] = { ...override[`${P}txtOtherCreditsPaymentsNo9a`], derive: (r, v) => (Number(r("_sched5No9Count")) > 0 ? r("_sched5No9Sum") : removeDecimal(r, v)) };
+override[`${P}txtOtherCreditsPaymentsNo9b`] = { ...override[`${P}txtOtherCreditsPaymentsNo9b`], derive: (r, v) => (Number(r("_sched5No9Count")) > 0 ? r("_sched5No9SpouseSum") : removeDecimal(r, v)) };
+override[`${P}addOtherCreditsPayments`] = { derive: (r, v) => (Number(r("_sched5No9Count")) > 1 ? "VARIOUS" : v.toUpperCase().trim()) };
 
 export const FORM_1701MS: FormSchema = buildSchema("1701MS", "Annual Income Tax — Individuals (Mixed Income)", fieldJson as FieldJson[], { ...override, ...override2 });
+FORM_1701MS.group = [...SPECIFY.map(specifyGroup), SPECIFY_5NO9];
 
 export function validate1701MS(state: FormState): Problem[] {
   const problem = validateRequired(FORM_1701MS, state);

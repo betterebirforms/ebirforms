@@ -40,6 +40,8 @@ import PAGE_LINK from "./page-link.json";
 const POPUP = popupJson as Record<string, Record<string, { show: string[]; hide: string[] }>>;
 import printNoteJson from "../../asset/bir/print-note.json";
 const printNote = printNoteJson as Record<string, string>;
+const ATTACHMENT_LATER =
+  "Attachments (one for each exempt or special-rate activity) are not in the web version yet. For a return that needs them, use the desktop app, which runs BIR's own page.";
 
 /** How a final copy made on the web reaches BIR: the web can't send (BIR's upload is a connection a web page is not
  *  allowed to open), the desktop app and BIR's own app can. */
@@ -548,6 +550,18 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       const editor = opening && !rowsHere ? ((hinted ? (schema.group ?? []).find((g) => g.name === hinted) : null) ?? div.map(groupIn).find(Boolean) ?? null) : null;
       // what it opens, for bench/web-parity.mjs: BIR's pop-up with its boxes, the schedule editor, or BIR's pop-up
       // with nothing the form keeps (a list BIR's script fills, still to do)
+      // BIR's attachments (one 5-page copy of the return per exempt or special-rate activity) are not modelled by
+      // the engine, so their boxes would never be saved: say so rather than open them (ROADMAP)
+      const attachment = opening && !choice && fx.show.some((x) => /^(?:ATTACHMENT|attachmentModalVIEW|addAttachment)$/.test(x));
+      if (attachment) {
+        el.dataset.ebfPopup = "later";
+        on(el, "click", (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (!el.disabled) window.alert(ATTACHMENT_LATER);
+        });
+        continue;
+      }
       if (opening && !choice) el.dataset.ebfPopup = editor ? "editor" : div.some(bound) || fx.show.some((x) => LIST_COPY[form_code]?.[x]) ? "bir" : "empty";
       on(el, "click", (e) => {
         if (!choice) {

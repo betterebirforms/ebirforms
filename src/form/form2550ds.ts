@@ -6,11 +6,14 @@
 //   vatStillPayable     = vatPayable − totalPaymentsCredits
 //   addPenaltiesTotal   = addPenaltiesSurcharge + addPenaltiesInterest
 //   totalAmountPayable  = vatStillPayable + addPenaltiesTotal
-// (The "other credits" #22D breakdown is an optional dynamic table; here otherPaymentCreditAmount is the entry.)
+// Item 22D's "Add more" pop-up (modalNo22D) is the group `specify22D`: its rows are the inputs BIR's showModalNo22D draws
+// (totalTaxPayableNo22DDescription<i> / ...Amount<i>, 0-indexed), saved with the form. closeModalNo22D then writes item 22D:
+//   2+ rows → description "VARIOUS", amount = the rows' sum;   1 row → that row's description, amount = the sum;
+// and BIR's resultOtherCreditsNo22D is that sum (0.00 until the pop-up has rows). With no rows item 22D is typed as usual.
 
 import fieldJson from "./fields/2550DS.json";
 import { parseMoney } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 // Shared by 2550DS and 2550DS-old — identical prefix, fields, and compute graph (the latter is an older revision).
@@ -22,6 +25,22 @@ const numv = (r: Read, id: string): number => {
   return Number.isFinite(n) ? n : 0;
 };
 const money = { kind: "money" as const };
+const DESCRIPTION = `${P}totalTaxPayableNo22DDescription`;
+const AMOUNT = `${P}totalTaxPayableNo22DAmount`;
+/** The item 22D pop-up's rows. The hidden `_22D…` keys carry what the item's two boxes derive from them. */
+export const SPECIFY_2550DS: GroupSpec = {
+  name: "specify22D",
+  first_index: 0,
+  row: [
+    { id: DESCRIPTION, kind: "text" },
+    { id: AMOUNT, kind: "money" },
+  ],
+  total: [
+    { into: "resultOtherCreditsNo22D", of: AMOUNT },
+    { into: "_22Dcount", of: AMOUNT, sum: (row) => String(row.length) },
+    { into: "_22Dfirst", of: DESCRIPTION, sum: (row) => row[0]?.[DESCRIPTION] ?? "" },
+  ],
+};
 const input: Array<[string, Partial<FieldSpec>]> = [
   "grossSaleForTheQuarter", "lessGrossSaleSubjectedToWithHoldingTax", "vatPaidInReturn", "excessPaymentCarriedOver",
   "advancePaymentOrDepositMadeThisQuarter", "otherPaymentCreditAmount", "addPenaltiesSurcharge", "addPenaltiesInterest",
@@ -29,7 +48,7 @@ const input: Array<[string, Partial<FieldSpec>]> = [
 
 /** Build the shared 2550DS schema for a given form code (2550DS / 2550DS-old) and its field list. */
 function makeDS(code: string, json: FieldJson[]): FormSchema {
-  return buildSchema(code, "VAT Return on Digital Services", json, {
+  const schema = buildSchema(code, "VAT Return on Digital Services", json, {
     [`${P}txtTIN1`]: { required: true },
     [`${P}txtTIN2`]: { required: true },
     [`${P}txtTIN3`]: { required: true },
@@ -39,6 +58,9 @@ function makeDS(code: string, json: FieldJson[]): FormSchema {
     [`${P}selectedMonthNo2`]: { required: true },
     [`${P}txtYearNo2`]: { required: true },
     ...Object.fromEntries(input),
+    // item 22D after closeModalNo22D: rows replace what was typed (2+ rows read VARIOUS)
+    [`${P}otherPaymentCreditSpecify`]: { derive: (r, v) => { const n = Number(r("_22Dcount")); return n > 1 ? "VARIOUS" : n === 1 ? r("_22Dfirst") : v; } },
+    [`${P}otherPaymentCreditAmount`]: { ...money, derive: (r, v) => (Number(r("_22Dcount")) > 0 ? r("resultOtherCreditsNo22D") : v) },
     // item 19's rate is BIR's fixed, disabled "12.00%" text (never inputtable); computePart3A parses it as 12
     [`${P}vatRate`]: { compute: () => 0, format: () => "12.00%" },
     [`${P}balanceSubjectToVAT`]: { ...money, compute: (r) => m(r, "grossSaleForTheQuarter") - m(r, "lessGrossSaleSubjectedToWithHoldingTax") },
@@ -48,6 +70,8 @@ function makeDS(code: string, json: FieldJson[]): FormSchema {
     [`${P}addPenaltiesTotal`]: { ...money, compute: (r) => m(r, "addPenaltiesSurcharge") + m(r, "addPenaltiesInterest") },
     [`${P}totalAmountPayable`]: { ...money, compute: (r) => m(r, "vatStillPayable") + m(r, "addPenaltiesTotal") },
   });
+  schema.group = [SPECIFY_2550DS];
+  return schema;
 }
 
 export function validateDS(schema: FormSchema, state: FormState): Problem[] {

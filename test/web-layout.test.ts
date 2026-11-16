@@ -266,6 +266,9 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await expect.poll(() => page.locator('[id="dialog2"] tr').count()).toBeGreaterThan(4);
     await page.locator('[id="dialog2"] input[value=Close]').click();
     await expect.poll(() => page.locator('[id="dialog2"]').isVisible()).toBe(false);
+    await go("2200T");
+    await click("frm2200T:lnkXT140");
+    await expect.poll(() => page.locator(".schedule-modal").count()).toBe(1);
     await go("1602Qv2018");
     await click("frm1602Q:txtSched1");
     await expect.poll(() => page.locator('[id="Page2"]').evaluate((e) => getComputedStyle(e).display !== "none")).toBe(true);
@@ -289,7 +292,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
   }, 60_000);
 
   // a choice never opens a pop-up by itself: BIR's 1701 item 4 radios open its attachment pop-up only in some cases
-  it("1701: ticking item 4 keeps the form on screen", async () => {
+  it("1701: ticking item 4 keeps the form on screen; attachments explain", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
     page.on("dialog", (d) => void d.accept());
     await page.goto(`${base}/form/1701`, { waitUntil: "networkidle" });
@@ -298,6 +301,12 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.locator('[id="frm1701:rdoPg1Pt1I4Compensation"]').evaluate((e: HTMLElement) => e.click());
     await page.waitForTimeout(300);
     expect([await display("formPaper"), await display("attachmentModalADD")]).toEqual(["block", "none"]);
+    // attachments are not modelled, so their button says so instead of opening boxes that are never saved
+    const alert: string[] = [];
+    page.on("dialog", (d) => void alert.push(d.message()));
+    await page.locator('[id="frm1701:btnAddAttachmentEX"]').evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(() => alert.at(-1)).toMatch(/^Attachments .* not in the web version yet/);
+    expect(await display("ATTACHMENT")).toBe("none");
     await page.close();
   }, 60_000);
 

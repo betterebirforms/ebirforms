@@ -110,6 +110,12 @@ export const POPUP_GROUP: Record<string, Record<string, string>> = {
   "2000": { modalSched1: "sched1" },
   "1602": { modalSectionB: "secB", modalSectionC: "secC" },
   "2552": { modalTransactionNoTax: "noTax", modalTaxTransaction: "taxTrans" },
+  "1701MS": {
+    modalSched410A: "sched410A", modalSched410aSpouse: "sched410aSpouse", modalsched410A1: "sched410A1", modalsched410A2: "sched410A2",
+    modalSched413A: "sched413A", modalSched413B: "sched413B", modalSched420A: "sched420A", modalSched420B: "sched420B", modalSched5No9: "sched5No9",
+  },
+  "2550DS": { modalNo22D: "specify22D" },
+  "2550DS-old": { modalNo22D: "specify22D" },
 };
 
 /** A pop-up BIR opens only when the form allows it (its message, "" = nothing happens). 1602 checkiftaxwheld. */
@@ -129,6 +135,11 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     "frm2552:buttAdd": { group: "partIII", title: "Part III Summary of Transactions not subject to Tax" },
     "frm2552:buttDel": { group: "partIII", title: "Part III Summary of Transactions not subject to Tax" },
   },
+  // 2200T Schedule 1's "Calculator" links (BIR's script builds them, openModal(this, "modalCalculatorXT<n>")): the five
+  // calculators' rows are BIR-built too, so each link opens its calculator's rows; the total is the product row's taxable
+  "2200T": Object.fromEntries(
+    (["XT35", "XT36", "XT40", "XT140", "XT150"] as const).map((n) => [`frm2200T:lnk${n}`, { group: `calc${n}`, title: `Calculator for ${{ XT35: "XT035", XT36: "XT036", XT40: "XT040", XT140: "XT140", XT150: "XT150" }[n]}` }]),
+  ),
   "1707A": {
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
