@@ -10,7 +10,7 @@ import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type AttachmentSpec, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { AtcPicker, natureOf } from "./AtcPicker.tsx";
-import { BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
+import { BUTTON_ACTION, BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
 import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
 import { formatMoney, parseMoney } from "./money.ts";
@@ -203,6 +203,11 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       rows[i] = { ...rows[i], [id]: value };
       return { ...g, [group]: rows };
     });
+  // the latest state and rows, for click handlers bound once
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const groupsRef = useRef(groups);
+  groupsRef.current = groups;
   const addRow = (group: string) => setGroups((g) => ({ ...g, [group]: [...(g[group] ?? []), {}] }));
   const removeRow = (group: string, i: number) => setGroups((g) => ({ ...g, [group]: (g[group] ?? []).filter((_, j) => j !== i) }));
 
@@ -659,6 +664,19 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         });
       }
     }
+    for (const [id, action] of Object.entries(BUTTON_ACTION[form_code] ?? {})) {
+      const b = root.getElementById(id) as HTMLInputElement | null;
+      if (!b) continue;
+      on(b, "click", (e) => {
+        e.preventDefault();
+        if (b.disabled) return;
+        const ticked = Object.keys(action.tick).filter((t) => (root.getElementById(t) as HTMLInputElement | null)?.checked);
+        for (const t of ticked) (root.getElementById(t) as HTMLInputElement).checked = false;
+        const next = action.run(ticked, stateRef.current, groupsRef.current);
+        setState(next.state);
+        setGroups(next.groups);
+      });
+    }
     for (const [id, sched] of Object.entries(CSV_BUTTON[form_code] ?? {})) {
       const b = root.getElementById(id) as HTMLInputElement | null;
       if (!b) continue;
@@ -877,8 +895,18 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
     const lock = lockOf(form_code);
     for (const [id, { on: enabled }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
-      if (enabled && !validated) for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) b.disabled = !enabled(groups, state);
+      if (enabled && !validated) for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) b.disabled = !enabled(groups, computed);
     }
+    for (const [id, { on: enabled }] of Object.entries(BUTTON_ACTION[form_code] ?? {})) {
+      const b = root.getElementById(id) as HTMLInputElement | null;
+      if (b && enabled && !validated) b.disabled = !enabled(groups, computed);
+    }
+    for (const action of Object.values(BUTTON_ACTION[form_code] ?? {}))
+      for (const [t, box] of Object.entries(action.tick)) {
+        const tick = root.getElementById(t) as HTMLInputElement | null;
+        const follow = root.getElementById(box) as HTMLInputElement | null;
+        if (tick && follow) queueMicrotask(() => (tick.disabled = follow.disabled));
+      }
     // a link to a group's pop-up that BIR hides until that group has rows ("Other Selected ATC" past 6 picks)
     for (const [box, name] of Object.entries(POPUP_GROUP[form_code] ?? {})) {
       const has = (groups[name] ?? []).length > 0;

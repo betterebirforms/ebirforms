@@ -135,6 +135,7 @@ const notBlank = (id: string): RowCheck => (s) => (s[id] ?? "").trim() !== "";
 const notEmpty = (id: string): RowCheck => (s) => (s[id] ?? "") !== ""; // BIR's check without $.trim
 const amount = (id: string): RowCheck => (s) => { const v = (s[id] ?? "").trim(); return v !== "" && Number(v) !== 0; };
 const full = (s: FormState, rows: number, check: (i: number) => RowCheck[]) => Array.from({ length: rows }, (_, i) => check(i + 1)).every((c) => c.every((f) => f(s)));
+const SCHED4_ON = (s: FormState) => amount("frm1702q:Sched4:txtOthrTxCrdtAmnt1")(s);
 const ADD_MORE_1707 = {
   btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: (g: GroupState, s: FormState) => (g.sched2more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch2NameOfCorpStock${i}`), amount(`frm1707:txtPg2P4Sch2NoOfShares${i}`), notEmpty(`frm1707:txtPg2P4Sch2StockCertNo${i}`), amount(`frm1707:txtPg2P4Sch2TaxBaseSellPrice${i}`)]) },
   btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: (g: GroupState, s: FormState) => (g.sched3more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch3Particulars${i}`), amount(`frm1707:txtPg2P4Sch3Amount${i}`)]) },
@@ -167,10 +168,33 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
   // 1601C (2018) and 2200A (2020) Add / Delete rows, 1702Q (CREATE) Schedule 4's "Add" pop-up
   "1601Cv2018": { "frm1601c:btnAdd": { group: "sched1", title: "Schedule 1 Adjustments", on: () => true }, "frm1601c:btnDelete": { group: "sched1", title: "Schedule 1 Adjustments", on: () => true } },
   "2200Av2020": { "frm2200Av2020:btnAdd": { group: "sched1more", title: "Schedule 1 Other Rows", on: () => true }, "frm2200Av2020:btnDelete": { group: "sched1more", title: "Schedule 1 Other Rows", on: () => true } },
-  "1702Qv2018C": { "frm1702q:Sched4:btnAdd": { group: "sched4more", title: "Other Tax Credits / Payments", on: () => true } },
+  // 1702Q (CREATE) Schedule 4 "Add": enableSched4 turns Add and Delete on once row b holds an amount
+  "1702Qv2018C": { "frm1702q:Sched4:btnAdd": { group: "sched4more", title: "Other Tax Credits / Payments", on: (_g: GroupState, s: FormState) => SCHED4_ON(s) } },
   "1707Av2021": {
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
+  },
+};
+
+/** A button that changes boxes and rows from what is ticked on the page (BIR's tick boxes have no name, so they are
+ *  not saved): `tick` maps each tick box to the box whose greyed state it follows, `run` gets the ticked ones. */
+export const BUTTON_ACTION: Record<string, Record<string, { on?: (groups: GroupState, state: FormState) => boolean; tick: Record<string, string>; run: (ticked: string[], state: FormState, groups: GroupState) => { state: FormState; groups: GroupState } }>> = {
+  // 1702Q (CREATE) Schedule 4 "Delete" (deleteOtherTaxCredits): each ticked row's description goes blank and its amount
+  // to 0.00, the tick clears, and any ticked row also empties the "Add" pop-up's rows (clearSched4ModalData)
+  "1702Qv2018C": {
+    "frm1702q:Sched4:btnDelete": {
+      on: (_g, s) => SCHED4_ON(s),
+      tick: { "frm1702q:Sched4:chkOthrTxCrdts0": "frm1702q:Sched4:txtOthrTxCrdts0", "frm1702q:Sched4:chkOthrTxCrdts1": "frm1702q:Sched4:txtOthrTxCrdts1" },
+      run: (ticked, state, groups) => {
+        const next = { ...state };
+        for (const t of ticked) {
+          const i = t.slice(-1);
+          next[`frm1702q:Sched4:txtOthrTxCrdts${i}`] = "";
+          next[`frm1702q:Sched4:txtOthrTxCrdtAmnt${i}`] = "0.00";
+        }
+        return { state: next, groups: ticked.length ? { ...groups, sched4more: [] } : groups };
+      },
+    },
   },
 };
 

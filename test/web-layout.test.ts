@@ -325,6 +325,37 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 240_000);
 
+  it("1702Q (2018): Schedule 4 Delete blanks the ticked row and empties the Add pop-up, as BIR's deleteOtherTaxCredits", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    await page.goto(`${base}/form/1702Qv2018C`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const box = (id: string) => page.locator(`[id="${id}"]`).first();
+    const desc = "frm1702q:Sched4:txtOthrTxCrdts0", amount = "frm1702q:Sched4:txtOthrTxCrdtAmnt0", tick = "frm1702q:Sched4:chkOthrTxCrdts0";
+    // Schedule 4 counts only once an ATC is picked (ATCEnableDisableSchedules)
+    await box("frm1702q:cbATC_2").selectOption("IC010_25%");
+    // the tick box follows its row: greyed out with it, open with it
+    await expect.poll(async () => (await box(desc).isDisabled()) === (await box(tick).isDisabled())).toBe(true);
+    await page.locator('input[value="Next"]').first().evaluate((e: HTMLElement) => e.click());
+    await box(desc).waitFor({ state: "visible" });
+    await box(desc).fill("CREDIT A");
+    await box(amount).fill("1500");
+    await box(amount).press("Tab");
+    // Delete stays greyed out until row b holds an amount (enableSched4)
+    expect(await box("frm1702q:Sched4:btnDelete").isDisabled()).toBe(true);
+    await box("frm1702q:Sched4:txtOthrTxCrdts1").fill("CREDIT B");
+    await box("frm1702q:Sched4:txtOthrTxCrdtAmnt1").fill("200");
+    await box("frm1702q:Sched4:txtOthrTxCrdtAmnt1").press("Tab");
+    await expect.poll(() => box("frm1702q:Sched4:btnDelete").isDisabled()).toBe(false);
+    await box(tick).check();
+    await box("frm1702q:Sched4:btnDelete").evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => box(desc).inputValue()).toBe("");
+    await expect.poll(() => box(amount).inputValue()).toBe("0.00");
+    expect(await box(tick).isChecked()).toBe(false);
+    expect(await box("frm1702q:Sched4:txtOthrTxCrdtAmnt1").inputValue()).not.toBe("0.00"); // row b, not ticked, stays
+    await page.close();
+  }, 60_000);
+
   // a pop-up's own buttons BIR runs from its script: Clear resets its boxes as BIR's clearSched5Modal does
   it("2550M: Clear in schedule 5 resets its boxes to 0.00", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
