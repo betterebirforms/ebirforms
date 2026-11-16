@@ -1,0 +1,25 @@
+[package]
+name = "ebf-package"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "BIR's official package -> Encrypt.exe and ebfSFTP.exe, in the browser (the desktop's src-tauri/src/package.rs, compiled to WASM)"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["bir-submit"]
+bir-submit = []
+
+[dependencies]
+wasm-bindgen = "0.2"
+lzma-rs = "0.3"
+zip = { version = "9", default-features = false, features = ["deflate"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+
+[workspace]

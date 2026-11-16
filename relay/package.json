@@ -1,0 +1,16 @@
+{
+  "name": "ebirforms-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Blind pipe so the web version of ebirforms can send returns to BIR",
+  "main": "server.mjs",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "ws": "8.23.0"
+  }
+}

@@ -32,7 +32,9 @@
     "asset:dmg": "node tool/dmg-background.mjs",
     "asset:nsis": "node tool/nsis-image.mjs",
     "mod:check": "node tool/mod-check.ts",
-    "build:mcp": "vite build --config vite.mcp.config.ts"
+    "build:mcp": "vite build --config vite.mcp.config.ts",
+    "build:wasm": "wasm-pack build wasm --release --target web --out-dir ../src/submit/pkg --out-name ebf_package --no-pack && rm -f src/submit/pkg/.gitignore",
+    "test:relay": "npm --prefix relay test"
   },
   "license": "MIT",
   "engines": {
@@ -40,6 +42,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@microsoft/dev-tunnels-ssh": "3.12.42",
     "@tauri-apps/api": "^2.12.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
