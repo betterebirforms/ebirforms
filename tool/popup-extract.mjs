@@ -64,6 +64,11 @@ const OVERRIDE = {
   },
 };
 const result = {};
+// BIR's page jumps (goTo(2), linkTo(this,3), goToControl(2,'…')) by their label → src/form/page-link.json
+const PAGE_OUT = "src/form/page-link.json";
+const pageLink = {};
+const label = (tag, after) =>
+  (tag.match(/\bvalue\s*=\s*"([^"]*)"/i)?.[1] ?? after.match(/^([^<]*)/)?.[1] ?? "").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
 for (const file of readdirSync(FORM).filter((f) => /^BIR-Form.+\.hta$/i.test(f))) {
   const code = file.replace(/^BIR-Form|\.hta$/gi, "");
   const layoutFile = readdirSync(LAYOUT).find((f) => f.toLowerCase() === `${code.toLowerCase()}.html`);
@@ -75,6 +80,20 @@ for (const file of readdirSync(FORM).filter((f) => /^BIR-Form.+\.hta$/i.test(f))
   const page = readFileSync(`${FORM}/${file}`, "latin1");
   const fn = functionsOf(page);
   const entry = {};
+  const jump = {};
+  for (const m of page.matchAll(/<(?:input|a)\b[^>]*\bonclick\s*=\s*"\s*(?:goTo|goToControl)\s*\(\s*(\d+)|<(?:input|a)\b[^>]*\bonclick\s*=\s*"\s*linkTo\s*\(\s*this\s*,\s*(\d+)/gi)) {
+    const end = page.indexOf(">", m.index);
+    const text = label(page.slice(m.index, end + 1), page.slice(end + 1));
+    const n = Number(m[1] ?? m[2]);
+    if (text) jump[text] ??= n;
+  }
+  // processNext() / processPrev() (2551Q's schedule links): one page on or back, from the link's own page
+  for (const m of page.matchAll(/<a\b[^>]*\bonclick\s*=\s*"\s*process(Next|Prev)\s*\(/gi)) {
+    const end = page.indexOf(">", m.index);
+    const text = label(page.slice(m.index, end + 1), page.slice(end + 1).replace(/^(?:\s*<font[^>]*>)+/i, "").replace(/&nbsp;/g, " "));
+    if (text) jump[text] ??= m[1].toLowerCase() === "next" ? "+1" : "-1";
+  }
+  if (Object.keys(jump).length) pageLink[layoutFile.slice(0, -5)] = jump;
   for (const tag of page.matchAll(/<(?:input|a|button|img|span|td)\b[^>]*>/gi)) {
     const id = tag[0].match(/\bid\s*=\s*["']([^"']+)["']/i)?.[1];
     const onclick = tag[0].match(/\bonclick\s*=\s*"([^"]*)"|\bonclick\s*=\s*'([^']*)'/i);
@@ -91,5 +110,7 @@ for (const file of readdirSync(FORM).filter((f) => /^BIR-Form.+\.hta$/i.test(f))
   if (Object.keys(entry).length) result[layoutFile.slice(0, -5)] = entry;
 }
 writeFileSync(OUT, JSON.stringify(result, null, 1) + "\n");
+writeFileSync(PAGE_OUT, JSON.stringify(pageLink, null, 1) + "\n");
 const count = Object.values(result).reduce((n, e) => n + Object.keys(e).length, 0);
 console.log(`${Object.keys(result).length} forms, ${count} buttons that open or close a pop-up → ${OUT}`);
+console.log(`${Object.keys(pageLink).length} forms with page jumps → ${PAGE_OUT}`);

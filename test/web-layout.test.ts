@@ -208,6 +208,26 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 90_000);
 
+  // BIR's page jumps and a table's Add button: 2551-Q names its pages #Page<n>; "(From Schedule 1 Item 7)" goes on a
+  // page and "(To Part II Item 14)" back; 1707's Add Seller opens the sellers' table
+  it("page jumps go to BIR's page, and a table's Add button opens its rows", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    await page.goto(`${base}/form/2551Qv2018`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const shown = (id: string) => page.locator(`[id="${id}"]`).evaluate((e) => getComputedStyle(e).display !== "none");
+    await expect.poll(() => shown("Page2")).toBe(false);
+    await page.locator("a", { hasText: "(From Schedule 1 Item 7)" }).evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => shown("Page2")).toBe(true);
+    expect(await shown("Page1")).toBe(false);
+    await page.locator("a", { hasText: "(To Part II Item 14)" }).evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => shown("Page1")).toBe(true);
+    await page.goto(`${base}/form/1707v2018`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    await page.locator('input[value="Add Seller"]').evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => page.locator(".schedule-modal").count()).toBe(1);
+    await page.close();
+  }, 60_000);
+
   // Help > <tax type> > BIR Form <X> opens BIR's own help page, from the main screen and from a form (which asks
   // first, as BIR's goToHelpPage does); a target missing from BIR's package says so
   it("Help opens BIR's help pages from the main screen and from a form", async () => {

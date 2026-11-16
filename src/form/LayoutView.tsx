@@ -33,6 +33,7 @@ const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock
 import printCss from "../../asset/bir/print.css?raw";
 import phoneCss from "./phone.css?raw";
 import popupJson from "./popup.json";
+import PAGE_LINK from "./page-link.json";
 
 /** BIR's pop-ups per form: the button id → the divs its click shows and hides (tool/popup-extract.mjs). */
 const POPUP = popupJson as Record<string, Record<string, { show: string[]; hide: string[] }>>;
@@ -229,13 +230,15 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
 
     // pages: BIR shows one #Page<n>Content at a time, with Prev / Next and a page-number box
     // (the form's own pages only: Page<n>AttMContent and the like are attachment pages, not in the Prev / Next run)
+    // (2551Q, 1602Q, 2200AN name theirs #Page<n>)
+    const pageId = root.getElementById("Page1Content") ? (n: number) => `Page${n}Content` : (n: number) => `Page${n}`;
     let pageCount = 0;
-    while (root.getElementById(`Page${pageCount + 1}Content`)) pageCount++;
+    while (root.getElementById(pageId(pageCount + 1))) pageCount++;
     let current = 1;
     const showPage = (n: number) => {
       if (n < 1 || n > pageCount) return;
       for (let i = 1; i <= pageCount; i++) {
-        const p = root.getElementById(`Page${i}Content`) as HTMLElement | null;
+        const p = root.getElementById(pageId(i)) as HTMLElement | null;
         if (p) p.style.display = i === n ? "" : "none";
       }
       current = n;
@@ -379,14 +382,14 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     // Schedule X …)" note goes to the other page that holds Schedule X (or Part X)
     const pageOf = (el: Element) => {
       for (let p = el.parentElement; p; p = p.parentElement) {
-        const n = p.id.match(/^Page(\d+)Content$/)?.[1];
+        const n = p.id.match(/^Page(\d+)(?:Content)?$/)?.[1];
         if (n) return Number(n);
       }
       return 0;
     };
     // a page's own text, without the other jump links' labels (they name schedules that live elsewhere)
     const pageText = Array.from({ length: pageCount }, (_, i) => {
-      const p = root.getElementById(`Page${i + 1}Content`)?.cloneNode(true) as HTMLElement | undefined;
+      const p = root.getElementById(pageId(i + 1))?.cloneNode(true) as HTMLElement | undefined;
       p?.querySelectorAll("[data-js]").forEach((a) => a.remove());
       return (p?.textContent ?? "").replace(/\s+/g, " ").replace(/\bSched\.?(?=\s)/gi, "Schedule").replace(/\s*-\s*/g, " ").toLowerCase();
     });
@@ -580,6 +583,38 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         if (g) setOpenGroup({ name: g.name, title: titleOf(a, g), label: labelOf(g) });
       });
     }
+    // a table's own Add / Delete / More button (BIR's script adds or drops a row there): open that table's editor,
+    // which adds and deletes rows; the nearest box around the button that holds a group's rows names the table
+    for (const b of Array.from(root.querySelectorAll<HTMLInputElement>("input[type=button], button"))) {
+      const v = (b.value || b.textContent || "").replace(/\s+/g, " ").trim();
+      if (!/^(?:(?:add|delete|del|remove)(?: \w+)?|more|add more)$/i.test(v) || b.id in popup || picked.has(b.id)) continue;
+      let g: GroupSpec | null = null;
+      for (let n = b.parentElement; n && !g; n = n.parentElement) {
+        g = groupIn(n);
+        if (/^Page\d+(Content)?$/.test(n.id)) break;
+      }
+      if (!g) continue;
+      const group = g;
+      b.dataset.ebfPopup = "editor";
+      on(b, "click", (e) => {
+        e.preventDefault();
+        setOpenGroup({ name: group.name, title: titleOf(b, group), label: labelOf(group) });
+      });
+    }
+    // BIR's own page jumps (goTo(n) / linkTo(this, n)), read from its pages by label (page-link.json)
+    const jump = (PAGE_LINK as Record<string, Record<string, number | string>>)[form_code] ?? {};
+    if (pageCount > 1 && Object.keys(jump).length)
+      for (const a of Array.from(root.querySelectorAll<HTMLElement>("a, input[type=button]"))) {
+        if (a.hasAttribute("data-js")) continue;
+        const text = ((a as HTMLInputElement).value || a.textContent || "").replace(/\s+/g, " ").trim();
+        const n = jump[text];
+        if (!n) continue;
+        on(a, "click", (e) => {
+          e.preventDefault();
+          // "+1" / "-1": BIR's processNext / processPrev, from the page the link is on
+          showPage(typeof n === "number" ? n : (pageOf(a) || current) + Number(n));
+        });
+      }
     groupBox.current = rowBox;
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]); // eslint-disable-line react-hooks/exhaustive-deps

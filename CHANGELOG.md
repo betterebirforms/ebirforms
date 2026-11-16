@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, BIR's "From item" and "To item" links go to the right page, and the second page of the 2551-Q, 1602-Q and 2200-AN now shows. A table's Add, Delete and More buttons open that table for editing.
 - On the web version, a form's pop-ups open as in BIR's app: schedules, lists and sections show and close the same way, and OK copies your choice into the form.
 - On the web version, the ATC lists work: Add ATC on the 1600, 1600-VT, 1600-PT, 1601-E, 1601-F, 1601-EQ and 1601-FQ, Schedule 1 on the 2550-M and 2550-Q, items 14 to 18 on the 2551 and 2553, and the ATC on the 0605, 1702-Q and 2000-OT. Picks past the rows on the page go under Other Selected ATC, as in BIR's app.
 - The 0605 on the web version now asks for the Tax Type (item 8) and the ATC (item 6) and saves them, as BIR's app does.
