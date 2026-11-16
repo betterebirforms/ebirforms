@@ -94,12 +94,37 @@ export interface GroupAgg {
 
 export type GroupRow = Record<string, string>;
 
+export interface AttachmentSpec {
+  /** The layout element whose inner HTML BIR clones for each copy ("attachmentPages_TEMP"). */
+  template: string;
+  /** The token BIR replaces in the clone's ids ("TYPE" on the 1701, "AttM" on the 1702-MX). */
+  token: string;
+  /** Copies the web version prepares per kind (the engine models this many). */
+  max: number;
+  kind: Array<{
+    /** BIR's prefix: "EX" (exempt) or "SP" (special rate). */
+    code: string;
+    /** The layout element BIR appends this kind's copies to ("attachmentEX"). */
+    container: string;
+    /** The state key holding how many copies of this kind the filer added (saved as BIR saves its count). */
+    count_field: string;
+    /** BIR's button that adds a copy of this kind. */
+    add_button: string;
+  }>;
+  /** BIR's script turns these input types in the clone into text (1702-MX: type=hidden → type=text). */
+  unhide?: boolean;
+}
+
 export interface FormSchema {
   form_code: string;
   title: string;
   field: FieldSpec[];
   /** Repeating schedules, if any. */
   group?: GroupSpec[];
+  /** BIR's attachments (1701 / 1702-MX Part IX / Part V): a copy of a template block per exempt or special-rate
+   *  activity. Each copy's boxes are ordinary fields in `field` (and the state), with BIR's token in the id replaced
+   *  by the copy's name ("EX1", "SP2"), for every copy up to `max`; the engine saves only the copies counted. */
+  attachment?: AttachmentSpec;
   /** Money display override. Default renders like BIR's `formatCurrency` (round-half-up, "-" sign). The 1707
    *  family uses accounting parentheses for negatives (`formatMoneyParen`). Rounding is identical either way. */
   format?: (cents: Centavo) => string;
