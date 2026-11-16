@@ -29,7 +29,7 @@
 
 import fieldJson from "./fields/1702Qv2018C.json";
 import { formatMoney, parseMoney } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 const P = "frm1702q:";
@@ -38,6 +38,29 @@ const S2 = `${P}Sched2:txtTax`;
 const S3 = `${P}Sched3:txtTax`;
 const S4 = `${P}Sched4:txtTax`;
 const OTHER = [0, 1];
+// Schedule 4's "Add" pop-up (modalSched4, "Credits / Payment"): its rows are the inputs BIR's addColSched4 draws
+// (frm1702q:sched4:Description<i> / Amount<i>, 0-indexed, inside frmMain so saved). Row b ("Other Tax Credits", B.1 of
+// the pop-up) is what it feeds: computeOtherSpecify writes resultOtherSpecify and row b's amount as the SUM OF EACH
+// ROW ROUNDED TO WHOLE PESOS (Math.round, a BIR defect kept), and closeModalSched4 writes "VARIOUS" into row b's
+// description once the pop-up holds two rows or more. BIR's loadData never rebuilds the rows (they are not in
+// loadOtherTaxCredits), so a reopened file keeps what they fed and drops them.
+const MORE_DESC = `${P}sched4:Description`;
+const MORE_AMOUNT = `${P}sched4:Amount`;
+const ROW_B_DESC = `${P}Sched4:txtOthrTxCrdts1`;
+const ROW_B_AMOUNT = `${P}Sched4:txtOthrTxCrdtAmnt1`;
+export const SCHED4_MORE_1702Q: GroupSpec = {
+  name: "sched4more",
+  first_index: 0,
+  not_reloaded: true,
+  row: [
+    { id: MORE_DESC, kind: "text" },
+    { id: MORE_AMOUNT, kind: "money" },
+  ],
+  total: [
+    { into: "resultOtherSpecify", of: MORE_AMOUNT, sum: (row) => formatMoney(row.reduce((t, x) => t + peso(parseMoney(x[MORE_AMOUNT] ?? "0")), 0)) },
+    { into: "_s4moreCount", of: MORE_AMOUNT, sum: (row) => String(row.length) },
+  ],
+};
 type Read = (id: string) => string;
 const on = (r: Read, id: string): boolean => r(`${P}${id}`) === "true";
 /** JS Math.round on an exact centavo amount (half → +∞), back in centavos. */
@@ -92,6 +115,7 @@ export function mcitRate(r: Read): string | null {
 function input(r: Read, id: string): number {
   const atc = atcOf(r) !== "";
   const q1 = on(r, "rbQuarter_1");
+  if (id === ROW_B_AMOUNT && Number(r("_s4moreCount")) >= 1) return atc ? parseMoney(r("resultOtherSpecify")) : 0; // the pop-up's rounded total
   if (id.startsWith(S1) || id.startsWith(S2) || id.startsWith(S4) || id.startsWith(`${P}Sched4:txtOthrTxCrdtAmnt`)) {
     if (!atc) return 0; // ATCEnableDisableSchedules("") disables and zeroes Schedules 1, 2 and 4
     if (q1 && [`${S1}8A`, `${S1}8B`, `${S2}8`, `${S4}2`, `${S4}3`, `${S4}4`].includes(id)) return 0;
@@ -221,6 +245,8 @@ const override: Record<string, Partial<FieldSpec>> = {
 };
 for (const id of ENTERED) override[id] = { ...money, derive: (r) => fmt(input(r, id)) };
 for (const i of OTHER) override[`${P}Sched4:txtOthrTxCrdts${i}`] = { derive: (r, v) => (atcOf(r) === "" ? "" : v) };
+// with the pop-up holding two rows or more, row b reads VARIOUS (closeModalSched4) and its amount the pop-up's total
+override[ROW_B_DESC] = { derive: (r, v) => (atcOf(r) === "" ? "" : Number(r("_s4moreCount")) >= 2 ? "VARIOUS" : v), derive_shown: true };
 for (const id of COMPUTED) override[id] = { ...money, compute: (r) => chain1702Qv2018C(r).value[id]! };
 // 13B: netIncome's bare number once Schedule 1 B is live (an ATC is chosen); else Sched1_Computation's "0.00"
 override[`${S1}13B`] = { ...money, compute: (r) => chain1702Qv2018C(r).value[`${S1}13B`]!, derive: (r, v) => (atcOf(r) === "" ? v : chain1702Qv2018C(r).net) };
@@ -242,7 +268,9 @@ function yearEnded(r: Read, v: string): string {
   return v;
 }
 
+override[ROW_B_AMOUNT] = { ...override[ROW_B_AMOUNT], derive_shown: true };
 export const FORM_1702Qv2018C = buildSchema("1702Qv2018C", "Quarterly Income Tax — Corporations (CREATE)", fieldJson as FieldJson[], override);
+FORM_1702Qv2018C.group = [SCHED4_MORE_1702Q];
 
 export function validate1702Qv2018C(state: FormState): Problem[] {
   const problem = validateRequired(FORM_1702Qv2018C, state);

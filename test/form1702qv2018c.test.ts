@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { computeAll, type FormState } from "@/form/schema.ts";
+import { computeAll, computeForm, formRecords, groupsFromSavefile, type FormState, type GroupState } from "@/form/schema.ts";
+import { parseMoney } from "@/form/money.ts";
 import { FORM_1702Qv2018C, atcRate1702Qv2018C, item10Rate, mcitRate, validate1702Qv2018C } from "@/form/form1702qv2018c.ts";
 import { hasForm, startOracle } from "./oracle.ts";
 import { parityCheck, parityProblem } from "./parity.ts";
@@ -174,5 +175,93 @@ describe.skipIf(!hasForm("1702Qv2018C"))("native 1702Qv2018C matches BIR's own f
     const r = await parityCheck(oracle, FORM_1702Qv2018C, mcitCase, "84653210700000-1702Qv2018C-2025Q1-parity.xml");
     expect(parityProblem(r, ALLOW)).toEqual([]);
     expect(r.equal_count).toBe(r.key_count - ALLOW.length);
+  }, 120_000);
+});
+
+// Schedule 4's "Add" pop-up (modalSched4): rows B.1 (a copy of row b) ... B.n, feeding row b and resultOtherSpecify
+describe("1702Qv2018C Schedule 4 pop-up (Add)", () => {
+  const DS = `${P}sched4:Description`;
+  const AS = `${P}sched4:Amount`;
+  const D = (i: number) => `${DS}${i}`;
+  const A = (i: number) => `${P}sched4:Amount${i}`;
+  const rowB = (desc: string, amount: string): FormState => v({ "Sched4:txtOthrTxCrdts1": desc, "Sched4:txtOthrTxCrdtAmnt1": amount });
+  const more: GroupState = { sched4more: [{ [DS]: "OLD", [AS]: "10.00" }, { [DS]: "TCC", [AS]: "100.60" }] };
+  const ctx: FormState = { ...rcit, ...rowB("OLD", "10.00") };
+  it("2+ rows: row b reads VARIOUS and the sum of each row rounded to whole pesos; credits follow", () => {
+    const o = computeForm(FORM_1702Qv2018C, ctx, more);
+    expect(o[`${P}Sched4:txtOthrTxCrdts1`]).toBe("VARIOUS");
+    expect(o[`${P}Sched4:txtOthrTxCrdtAmnt1`]).toBe("111.00"); // 10 + round(100.60)
+    expect(o.resultOtherSpecify).toBe("111.00");
+    const base = computeForm(FORM_1702Qv2018C, ctx, {});
+    // item 4 credits: row b was 10 whole pesos before, 111 after
+    expect(parseMoney(o[`${P}Sched4:txtTax7`]) - parseMoney(base[`${P}Sched4:txtTax7`])).toBe(10100);
+    expect(o[`${P}txtTax19`]).toBe(o[`${P}Sched4:txtTax7`]);
+  });
+  it("1 row: row b keeps its description, its amount is the row rounded", () => {
+    const o = computeForm(FORM_1702Qv2018C, ctx, { sched4more: [{ [DS]: "OLD", [AS]: "10.60" }] });
+    expect(o[`${P}Sched4:txtOthrTxCrdts1`]).toBe("OLD");
+    expect(o[`${P}Sched4:txtOthrTxCrdtAmnt1`]).toBe("11.00");
+  });
+  it("no ATC: the schedule is disabled, so row b is blank whatever the pop-up holds", () => {
+    const o = computeForm(FORM_1702Qv2018C, { ...ctx, [`${P}cbATC_2`]: "" }, more);
+    expect(o[`${P}Sched4:txtOthrTxCrdts1`]).toBe("");
+    expect(o[`${P}Sched4:txtOthrTxCrdtAmnt1`]).toBe("0.00");
+  });
+  it("saves the rows under BIR's ids, and a reopened file drops them (BIR never rebuilds them)", () => {
+    const record = formRecords(FORM_1702Qv2018C, ctx, more);
+    const at = (key: string) => record.find((r) => r.key === key)?.value;
+    expect(at(D(1))).toBe("TCC");
+    expect(at(A(0))).toBe("10.00");
+    expect(at("resultOtherSpecify")).toBe("111.00");
+    expect(at(`${P}Sched4:txtOthrTxCrdts1`)).toBe("VARIOUS");
+    expect(groupsFromSavefile(FORM_1702Qv2018C, { record, trailer_year: 2014, is_final_copy: false }, "1702Qv2018C").sched4more).toBeUndefined();
+    expect(formRecords(FORM_1702Qv2018C, ctx).some((r) => r.key === D(0))).toBe(false); // no pop-up, no rows
+  });
+});
+
+describe.skipIf(!hasForm("1702Qv2018C"))("native 1702Qv2018C Schedule 4 pop-up matches the legacy form", () => {
+  let oracle: Awaited<ReturnType<typeof startOracle>>;
+  beforeAll(async () => { oracle = await startOracle(); }, 120_000);
+  afterAll(() => oracle?.stop());
+  const identity: FormState = v({
+    txtTIN1: "846", txtTIN2: "532", txtTIN3: "107", txtBranchCode: "00000", txtRDOCode: "043", txtTaxpayerName1: "ABC TRADING CORP.",
+    txtAddress: "1 RIZAL ST., QUEZON CITY", txtZipCode: "1100", txtTelNum: "0281234567", txtLOB: "RETAIL",
+  });
+  const DS = `${P}sched4:Description`;
+  const AS = `${P}sched4:Amount`;
+  const D = (i: number) => `${DS}${i}`;
+  const A = (i: number) => `${P}sched4:Amount${i}`;
+  const state: FormState = { ...identity, ...rcit, ...v({ "Sched4:txtOthrTxCrdts1": "OLD", "Sched4:txtOthrTxCrdtAmnt1": "10.00" }) };
+  const rows = [{ [DS]: "OLD", [AS]: "10.00" }, { [DS]: "TCC", [AS]: "100.60" }, { [DS]: "EXCESS", [AS]: "0.50" }];
+
+  it("BIR's own pop-up flow (Add, Add Row x2, Save and Close) saves what the native group saves", async () => {
+    const native = new Map(formRecords(FORM_1702Qv2018C, state, { sched4more: rows }).map((x) => [x.key, x.value]));
+    const { page } = await oracle.openSaved(FORM_1702Qv2018C, state, "84653210700000-1702Qv2018C-2025Q2-pop.xml");
+    const legacy: Array<[string, string]> = await page.evaluate(() => {
+      const w = window as unknown as Record<string, (...a: unknown[]) => void>;
+      const box = (id: string) => document.getElementById(id) as HTMLInputElement;
+      w.addOtherTaxCredits!();
+      w.addColSched4!();
+      box("frm1702q:sched4:Description1").value = "TCC";
+      box("frm1702q:sched4:Amount1").value = "100.60";
+      w.computeOtherSpecify!();
+      w.addColSched4!();
+      box("frm1702q:sched4:Description2").value = "EXCESS";
+      box("frm1702q:sched4:Amount2").value = "0.50";
+      w.computeOtherSpecify!();
+      w.closeModalSched4!();
+      const form = document.getElementById("frmMain") as HTMLFormElement;
+      return (Array.from(form.elements) as HTMLInputElement[]).filter((el) => el.id && el.type === "text" && /sched4|OtherSpecify|txtTax19$|txtTax20$|txtTax25$/i.test(el.id)).map((el) => [el.id, el.value] as [string, string]);
+    });
+    await page.close();
+    for (const [key, value] of legacy) expect([key, native.get(key)]).toEqual([key, value]);
+    expect(legacy.map(([k]) => k)).toEqual(expect.arrayContaining([A(2), `${P}Sched4:txtOthrTxCrdts1`, "resultOtherSpecify"]));
+    expect(native.get("resultOtherSpecify")).toBe("112.00"); // 10 + 101 + 1: each row rounded half up
+  }, 120_000);
+
+  it("is 1:1 with BIR after a reload: item 4 credits and Part II follow the pop-up's total", async () => {
+    // BIR never rebuilds the pop-up rows, so only what they fed is compared: the rows' own keys stay out
+    const r = await parityCheck(oracle, FORM_1702Qv2018C, state, "84653210700000-1702Qv2018C-2025Q2-pop2.xml", { sched4more: rows });
+    expect(parityProblem(r, [`${P}Sched1:txtTax13B`, ...rows.flatMap((_, i) => [D(i), A(i)])])).toEqual([]);
   }, 120_000);
 });
