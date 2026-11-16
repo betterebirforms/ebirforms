@@ -1,0 +1,580 @@
+[
+ {
+  "link": "frm1701:lnkPg5Sc3I2More",
+  "modal": "modalPage5Schedule3",
+  "table": "tblPage5Schedule3",
+  "compute": "computePage5Schedule3Modal",
+  "parent": [
+   "frm1701:txtPg5Sc3I2Description",
+   "frm1701:txtPg5Sc3I2TaxPayerC1",
+   "frm1701:txtPg5Sc3I2SpouseC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5Sc3I2_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5Sc3I2_{i}C2",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg5Sc3I2_{i}C3",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5Schedule3"
+ },
+ {
+  "link": "frm1701:lnkPg6Sc5I5More",
+  "modal": "modalPage6Schedule5",
+  "table": "tblPage6Schedule5",
+  "compute": "computePage6Schedule5Modal",
+  "parent": [
+   "frm1701:txtPg6Sc5I5NatureOfIncome",
+   "frm1701:txtPg6Sc5I5TaxPayerC1",
+   "frm1701:txtPg6Sc5I5SpouseC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg6Sc5I5_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg6Sc5I5_{i}C2",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg6Sc5I5_{i}C3",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage6Schedule5"
+ },
+ {
+  "link": "frm1701:lnkPg6Sc6I4More",
+  "modal": "modalPage6Schedule6",
+  "table": "tblPage6Schedule6",
+  "compute": "computePage6Schedule6I4Modal",
+  "parent": [
+   "frm1701:txtPg6Sc6I4Amortizations",
+   "frm1701:txtPg6Sc6I4TaxSumPayerC1",
+   "frm1701:txtPg6Sc6I4SpouseSumC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg6Sc6I4_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg6Sc6I4_{i}C2",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg6Sc6I4_{i}C3",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage6Schedule6"
+ },
+ {
+  "link": "frm1701:lnkPg7Sc6I39More",
+  "modal": "modalPage7Schedule6",
+  "table": "tblPage7Schedule6",
+  "compute": "computePage7Schedule6Modal",
+  "parent": [
+   "frm1701:txtPg7Sc6I39Description",
+   "frm1701:txtPg7Sc6I39TaxSumPayerC1",
+   "frm1701:txtPg7Sc6I39SpouseSumC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg7Sc6I39_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg7Sc6I39_{i}C2",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg7Sc6I39_{i}C3",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage7Schedule6"
+ },
+ {
+  "link": "frm1701:lnkPg8Sc7I4More",
+  "modal": "modalPage8Schedule7",
+  "table": "tblPage8Schedule7",
+  "compute": "computePage8Schedule7Modal",
+  "parent": [
+   "frm1701:txtPg8Sc7I4Description",
+   "frm1701:txtPg8Sc7I4LegalBasis",
+   "frm1701:txtPg8Sc7I4TaxPayer",
+   "frm1701:txtPg8Sc7I4Spouse"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg8Sc7I4_{i}C1",
+    "ml": 25,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg8Sc7I4_{i}C2",
+    "ml": 9,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg8Sc7I4_{i}C3",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg8Sc7I4_{i}C4",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage8Schedule7"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI3More",
+  "modal": "modalPage10Schedule11AI3",
+  "table": "tblPage10Schedule11AI3",
+  "compute": "computePage10Schedule11AI3Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11AI3_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11AI3_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11AI3"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI6More",
+  "modal": "modalPage10Schedule11AI6",
+  "table": "tblPage10Schedule11AI6",
+  "compute": "computePage10Schedule11AI6Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11AI6NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11AI6NonTaxableIncomeC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11AI6_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11AI6_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11AI6"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI8More",
+  "modal": "modalPage10Schedule11AI8",
+  "table": "tblPage10Schedule11AI8",
+  "compute": "computePage10Schedule11AI8Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11AI8SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11AI8SpecialDeductionsC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11AI8_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11AI8_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11AI8"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI3More",
+  "modal": "modalPage10Schedule11BI3",
+  "table": "tblPage10Schedule11BI3",
+  "compute": "computePage10Schedule11BI3Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11BI3_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11BI3_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11BI3"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI6More",
+  "modal": "modalPage10Schedule11BI6",
+  "table": "tblPage10Schedule11BI6",
+  "compute": "computePage10Schedule11BI6Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11BI6NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11BI6NonTaxableIncomeC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11BI6_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11BI6_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11BI6"
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI8More",
+  "modal": "modalPage10Schedule11BI8",
+  "table": "tblPage10Schedule11BI8",
+  "compute": "computePage10Schedule11BI8Modal",
+  "parent": [
+   "frm1701:txtPg10Sc11BI8SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11BI8SpecialDeductionsC2"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg10Sc11BI8_{i}C1",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg10Sc11BI8_{i}C2",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage10Schedule11BI8"
+ },
+ {
+  "link": "frm1701:lnkPg2mScEI2MoreTYPE",
+  "modal": "modalPage2mScheduleETYPE",
+  "table": "tblPage2mScheduleETYPE",
+  "compute": "computePage2mScheduleEModal",
+  "parent": [
+   "frm1701:txtPg2mScEI2DescriptionC1TYPE",
+   "frm1701:txtPg2mScEI2C2TYPE",
+   "frm1701:txtPg2mScEI2C3TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg2mScEI2_{i}C1TYPE",
+    "ml": 25,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg2mScEI2_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg2mScEI2_{i}C3TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage2mScheduleE"
+ },
+ {
+  "link": "frm1701:lnkPg3mScGI6MoreTYPE",
+  "modal": "modalPage3mScheduleGTYPE",
+  "table": "tblPage3mScheduleGTYPE",
+  "compute": "computePage3mScheduleGModal",
+  "parent": [
+   "frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI5C2TYPE",
+   "frm1701:txtPg3mScGI5C3TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg3mScGI5_{i}C1TYPE",
+    "ml": 25,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg3mScGI5_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg3mScGI5_{i}C3TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage3mScheduleG"
+ },
+ {
+  "link": "frm1701:lnkPg3mScHI4MoreTYPE",
+  "modal": "modalPage3mScheduleHI4TYPE",
+  "table": "tblPage3mScheduleHI4TYPE",
+  "compute": "computePage3mScheduleHI4Modal",
+  "parent": [
+   "frm1701:txtPg3mScHI4AmortizationC1TYPE",
+   "frm1701:txtPg3mScHI4AmortizationC2TYPE",
+   "frm1701:txtPg3mScHI4AmortizationC3TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg3mScHI4_{i}C1TYPE",
+    "ml": 25,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg3mScHI4_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg3mScHI4_{i}C3TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage3mScheduleHI4"
+ },
+ {
+  "link": "frm1701:lnkPg4mScHI40MoreTYPE",
+  "modal": "modalPage4mScheduleHI39TYPE",
+  "table": "tblPage4mScheduleHI39TYPE",
+  "compute": "computePage4mScheduleHModal",
+  "parent": [
+   "frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE",
+   "frm1701:txtPg4mScHI39C2TYPE",
+   "frm1701:txtPg4mScHI39C3TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg4mScHI39_{i}C1TYPE",
+    "ml": 25,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg4mScHI39_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg4mScHI39_{i}C3TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage4mScheduleHI39"
+ },
+ {
+  "link": "frm1701:lnkPg4mScII4MoreTYPE",
+  "modal": "modalPage4mScheduleITYPE",
+  "table": "tblPage4mScheduleITYPE",
+  "compute": "computePage4mScheduleIModal",
+  "parent": [
+   "frm1701:txtPg4mScII4DescriptionC1TYPE",
+   "frm1701:txtPg4mScII4LegalBasisC2TYPE",
+   "frm1701:txtPg4mScII4C3TYPE",
+   "frm1701:txtPg4mScII4C4TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg4mScII4_{i}C1TYPE",
+    "ml": 20,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg4mScII4_{i}C2TYPE",
+    "ml": 9,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg4mScII4_{i}C3TYPE",
+    "ml": 12,
+    "upper": false
+   },
+   {
+    "stem": "frm1701:txtPg4mScII4_{i}C4TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage4mScheduleI"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I3MoreTYPE",
+  "modal": "modalPage5mScheduleK1I3TYPE",
+  "table": "tblPage5mScheduleK1I3TYPE",
+  "compute": "computePage5mScheduleK1I3Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI3DescC1TYPE",
+   "frm1701:txtPg5mScKI3C1TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mScK1I3_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK1I3_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK1I3"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I6MoreTYPE",
+  "modal": "modalPage5mScheduleK1I6TYPE",
+  "table": "tblPage5mScheduleK1I6TYPE",
+  "compute": "computePage5mScheduleK1I6Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI6DescC1TYPE",
+   "frm1701:txtPg5mScKI6C1TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mScK1I6_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK1I6_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK1I6"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I8MoreTYPE",
+  "modal": "modalPage5mScheduleK1I8TYPE",
+  "table": "tblPage5mScheduleK1I8TYPE",
+  "compute": "computePage5mScheduleK1I8Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI8DescC1TYPE",
+   "frm1701:txtPg5mScKI8C1TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mScK1I8_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK1I8_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK1I8"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I3MoreTYPE",
+  "modal": "modalPage5mScheduleK2I3TYPE",
+  "table": "tblPage5mScheduleK2I3TYPE",
+  "compute": "computePage5mScheduleK2I3Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI3DescC2TYPE",
+   "frm1701:txtPg5mScKI3C2TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mScK2I3_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK2I3_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK2I3"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I6MoreTYPE",
+  "modal": "modalPage5mScheduleK2I6TYPE",
+  "table": "tblPage5mScheduleK2I6TYPE",
+  "compute": "computePage5mScheduleK2I6Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI6DescC2TYPE",
+   "frm1701:txtPg5mScKI6C2TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mScK2I6_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK2I6_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK2I6"
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I8MoreTYPE",
+  "modal": "modalPage5mScheduleK2I8TYPE",
+  "table": "tblPage5mScheduleK2I8TYPE",
+  "compute": "computePage5mScheduleK2I8Modal",
+  "parent": [
+   "frm1701:txtPg5mScKI8DescC2TYPE",
+   "frm1701:txtPg5mScKI8C2TYPE"
+  ],
+  "cell": [
+   {
+    "stem": "frm1701:txtPg5mSc21I8_{i}C1TYPE",
+    "ml": 30,
+    "upper": true
+   },
+   {
+    "stem": "frm1701:txtPg5mScK2I8_{i}C2TYPE",
+    "ml": 12,
+    "upper": false
+   }
+  ],
+  "counter": "frm1701:txtCtrmodalPage5mScheduleK2I8"
+ }
+]

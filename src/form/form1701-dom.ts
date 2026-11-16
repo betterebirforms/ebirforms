@@ -126,7 +126,7 @@ export class Box {
   value: unknown = undefined;
   disabled = false;
   readonly className = "";
-  readonly rows: Array<{ cells: Array<{ children: Array<Elem | Box | undefined> }>; getElementsByTagName: (tag: string) => Elem[] }>;
+  rows: Array<{ cells: Array<{ children: Array<Elem | Box | undefined> }>; getElementsByTagName: (tag: string) => Elem[] }>;
   constructor(
     private readonly doc: Dom1701,
     readonly id: string,
@@ -395,6 +395,25 @@ export abstract class Dom1701 {
       f();
     } catch (e) {
       this.fault.push({ where, message: e instanceof Error ? e.message : String(e) });
+    }
+  }
+
+  /** An add-more pop-up's table as BIR's addRow built it: one row per entry, cell 0 the row's label, then one cell per
+   *  input (BIR's compute functions read `rows[i].cells[k].children[0]`, then look its id up). The inputs are not part of
+   *  the page's own element list (the saved rows come from the schema's group), only findable by id. */
+  setTable(id: string[], row: Array<Array<{ id: string; value: string; maxLength: number }>>): void {
+    const made = row.map((cell) => {
+      const input = cell.map((c) => {
+        const e = new Elem(this, c.id, "text", c.id, "", String(c.maxLength), false, c.value, false, "", -1, -1, -1, false, false);
+        this.elem.set(c.id, e);
+        return e;
+      });
+      return { cells: [{ children: [undefined] }, ...input.map((e) => ({ children: [e] }))], getElementsByTagName: (tag: string) => (tag === "input" ? input : []) };
+    });
+    for (const one of id) {
+      const table = this.boxOf(one);
+      if (!table) throw new Error(`form1701-dom: no table ${one}`);
+      table.rows = made;
     }
   }
 

@@ -19,6 +19,7 @@ const OUT = `${ROOT_DIR}src/form/form1701-bir.ts`;
 /** loadData's own calls (not reachable from a handler) */
 const RELOAD = ["HidePage12Part9", "disableEnableFieldsOnReload", "validateModalState", "validateAttachmentPerson"];
 /** what addAttachment (hand-written in form1701-sim.ts: the copies are built into the DOM) calls after it clones the block */
+const MODAL = ["disableParentInput"];
 const ATTACHMENT = ["showAttachments", "setView", "displayAttachmentByNumber", "disablePage5mSchedJItem6", "disableSpouseForAttachments", "attachmentTypes_Update", "processBack"];
 
 if (process.argv[2] === "page") page(process.argv[3]);
@@ -149,7 +150,9 @@ function port() {
     return out;
   };
 
-  const seed = new Set([...RELOAD, ...ATTACHMENT]);
+  // the add-more pop-ups: what a closed pop-up runs on the page (compute<Schedule>Modal(false), disableParentInput)
+  const modal = [...fn.keys()].filter((n) => /^compute\w*Modal$/.test(n)).concat(MODAL);
+  const seed = new Set([...RELOAD, ...ATTACHMENT, ...modal]);
   const hOut = dom.handler.map((s, i) => {
     if (!hMain.has(i)) return "null";
     const calls = new Set();
