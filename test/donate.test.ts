@@ -14,7 +14,7 @@ describe("donate link", () => {
   it("matches the desktop menu", () => {
     expect(readFileSync("src-tauri/src/lib.rs", "utf8")).toContain(`const DONATE_URL: &str = "${DONATE_URL}";`);
   });
-  it("is in the README", () => {
-    expect(readFileSync("README.md", "utf8")).toContain(`(${DONATE_URL})`);
+  it("is in every README", () => {
+    for (const readme of ["README.md", "README.fil.md", "README.ceb.md"]) expect(readFileSync(readme, "utf8")).toContain(`href="${DONATE_URL}"`);
   });
 });

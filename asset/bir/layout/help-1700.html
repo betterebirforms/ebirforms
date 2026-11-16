@@ -1,0 +1,733 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+.style2 { font-size: 10px; }
+.style3 { font-size: 10pt; }
+.style4 { font-size: 12pt; }
+.atcNames { font-weight: bold; }
+tr.atc td { border-bottom: 1px solid rgb(225, 225, 225); }
+tr.atc:hover td { background: rgb(255, 255, 204); }
+td.atc { padding: 4px; }
+#header, .menu { position: fixed; width: 100%; top: 0px; left: 0px; height: 25px; background: rgb(254, 254, 254); white-space: nowrap; font-weight: bold; border: 1px solid rgb(204, 204, 204); visibility: hidden; z-index: 3000; }
+.menu { visibility: visible; }
+#header input { background: none; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(204, 204, 204) currentcolor currentcolor; border-image: none; font-weight: bolder; height: 25px; float: left; width: auto; padding-left: 3px; padding-right: 3px; visibility: visible !important; }
+#header input:hover { background: rgb(255, 255, 204); }
+#container { margin-top: 40px; }
+</style>
+<div class="bir-body" ><hta:application id="1700" applicationname="1700" version="1.0" caption="yes" showintaskbar="yes" icon="../img/bir_icon.ico" singleinstance="YES" sysmenu="YES" navigable="YES" contextmenu="NO" windowstate="maximize" scrollflat="YES">	
+		
+			
+        		
+		
+        
+        	
+        
+
+
+    <ul class="topnav printButtonClass">
+        <li>
+            <a href="#" class="toplevel">File</a>
+            <ul class="subnav">
+                <li><a href="../BIRForms.hta">Main Screen</a></li>
+                <li><a href="#">Exit</a></li>
+            </ul>
+        <span></span></li>
+
+    </ul>
+    
+    <div class="printButtonClass" style="position: fixed; top: 10px; font-size: 11px; z-index: 1000000000000000; right: 5px; width: auto;">Government Property Not For Sale</div>
+
+    
+    <img class="printButtonClass" id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top">
+    
+
+    
+
+    <form id="frmMain" name="frmMain">
+        <div id="container">
+            <div id="wrapper" style="margin: 0 auto; position: relative; width: 830px;">
+                <div id="formPaper">
+                    <div id="Content">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td>
+                                    <span class="formTitle"><b>BIR Form No. 1700</b>
+                                        <br>
+                                        Guidelines and Instructions</span>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div class="titlecol">Guidelines and Instructions for BIR Form No. 1700<div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <div class="subtitle" align="center">Annual Income Tax Return</div>
+                        <div class="subtitle" align="center">For Individuals Earning Purely Compensation Income</div>
+                        <div class="subtitle" align="center">(Including Non-Business/Non-Profession Income)</div>
+                        <br>
+                        <br>
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+                                    <p>
+                                        These instructions are designed to assist tax filers, or
+their representatives, with the preparation of the annual
+income tax return (ITR). If there are questions which are not
+adequately covered, please consult the local BIR office. If
+there appears to be any discrepancies between these
+instructions and the applicable laws and regulations, the
+laws and regulations take precedence.
+                                    </p>
+                                    <dt>Who Shall File</dt>
+                                    <p>
+                                        This return shall be filed by every resident citizen
+deriving compensation income from all sources, or
+resident alien and non-resident citizen with respect to
+compensation income from within the Philippines, except
+the following:
+                                    </p>
+                                    <ol>
+                                        <li>An individual whose gross compensation income
+does not exceed his total personal and additional
+exemptions.</li>
+                                        <li>An individual with respect to pure compensation
+income, as defined in Section 32(A)(1) derived from
+sources within the Philippines, the income tax on
+which has been correctly withheld (tax due equals tax
+withheld) under the provisions of Section 79 of the
+Code: Provided, that an individual deriving
+compensation concurrently from two or more
+employers at any time during the taxable year shall file
+an income tax return.</li>
+                                        <li>An individual whose income has been subjected to
+final withholding tax (alien employee as well as
+Filipino employee occupying the same position as that
+of the alien employee of regional or area headquarters
+and regional operating headquarters of multinational
+companies, petroleum service contractors and subcontractors,
+and offshore banking units; non-resident
+alien not engaged in trade or business).</li>
+                                        <li>A minimum wage earner or an individual who is
+exempt from income tax.</li>
+
+                                    </ol>
+                                    <p>
+                                        Married individuals shall file a single return for the
+taxable year to include the income of both spouses,
+separately computing their individual income tax based
+on their respective taxable income, which return shall be
+signed by the tax filer or the spouse, or their authorized
+representative. Where it is impracticable for the spouses
+to file one return, each spouse may file a separate return.
+                                    </p>
+                                    <p>
+                                        Individuals not required to file an ITR or those
+qualified for substituted filing may voluntarily file this
+return for purposes of loans, foreign travel requirements,
+and for other purposes they may deem proper. Employers
+                                    </p>
+                                </td>
+                                <td class="secondcol">
+                                    <p>
+                                        are required to submit Certificate of Compensation
+Payment/Tax Withheld (BIR Form No. 2316) to the
+Revenue District Office (RDO) where registered on or
+before February 28 of the following year.
+                                    </p>
+                                    <p>
+                                        However, individuals other than those solely earning
+income as Overseas Filipino Workers (OFWs) as defined
+in RR No. 1-2011 availing of the benefits of special laws,
+such as, but not limited to the Personal Equity and
+Retirement Account Act (PERA Act) under RA 9505, are
+required to file an ITR.
+                                    </p>
+                                    <p>
+                                        This return shall likewise be used by individuals
+earning other taxable income from non-business/nonprofession.
+                                    </p>
+                                    <p>
+                                        <strong>“Minimum Wage Earner”</strong> shall refer to a worker in
+the private sector paid the statutory minimum wage or to
+an employee in the public sector with compensation
+income of not more than the statutory minimum wage in
+the non-agricultural sector where he/she is assigned.
+                                    </p>
+                                    <p>
+                                        The term "individual whose compensation income
+has been subjected to final withholding tax” shall include
+aliens or Filipino citizens occupying the same positions
+as the alien employees, as the case may be, who are
+employed by regional operating headquarters, regional or
+area headquarters, offshore banking units, petroleum
+service contractors and sub-contractors, pursuant to
+pertinent provisions of Sections 25 (C), (D), (E) and
+57(A), including those subject to Fringe Benefits Tax
+(FBT) under Section 33 of the Tax Code, as amended,
+Republic Act No. 8756, Presidential Decree No. 1354,
+and other pertinent laws.
+                                    </p>
+                                    <dt>When and Where to File and Pay</dt>
+                                    <p>
+                                        <u><strong>A. For Electronic Filing and Payment System (eFPS)
+Tax Filers:</strong></u> The return shall be e-filed and the tax shall
+be e-paid on or before the <strong>15th day of April of each year</strong>
+                                        covering income of the preceding taxable year using the
+eFPS facilities thru the BIR website <strong>www.bir.gov.ph.</strong>
+                                    </p>
+                                    <p>
+                                        <u><strong>B. For Non-Electronic Filing and Payment System
+(Non-eFPS) Tax Filers:</strong></u> The return shall be filed and the
+tax shall be paid on or before the <strong>15th day of April of each
+year</strong> covering income of the preceding taxable year with any
+Authorized Agent Bank (AAB) located within the territorial
+jurisdiction of the RDO where the tax filer is registered. In
+places where there are no AABs, the return shall be filed and
+                                    </p>
+                                </td>
+                            </tr>
+
+                        </tbody></table>
+                        <div align="center"><strong>1</strong></div>
+                        <br>
+                        <br>
+                        <div class="titlecol">Guidelines and Instructions for BIR Form No. 1700<div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <br>
+                        
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">the tax shall be paid with the concerned Revenue Collection
+Officer (RCO) under the jurisdiction of the RDO
+                                    <p>
+                                        Non-eFPS tax filer may opt to use the electronic format
+under <strong>“eBIRForms”</strong> (refer to <strong>www.bir.gov.ph</strong>) for the
+preparation, generation and submission and/or payment
+of this return with greater ease and accuracy, upon
+availability of the same in the system.
+                                    </p>
+                                    <p>
+                                        <strong>FOR NO PAYMENT RETURNS:</strong> This shall be filed
+with the RDO where the tax filer is registered or with the
+concerned RCO under the same RDO.
+                                    </p>
+                                    <p>
+                                        <strong>FOR INSTALLMENT PAYMENT:</strong> When the tax due
+exceeds P 2,000, the tax filer may elect to pay in two
+equal installments, the first installment to be paid at the
+time the return is filed and the second installment, <strong>on or
+before July 15</strong> of the same year.
+                                    </p>
+                                    <p>
+                                        <strong>FOR NON-RESIDENT TAX FILER:</strong> In case tax filer
+has no legal residence or place of business in the
+Philippines, the return shall be filed with the Office of the
+Commissioner thru RDO No. 39, South Quezon City.
+                                    </p>
+                                    <dt>How to Accomplish the Form</dt>
+                                    <ol>
+                                        <li>Enter all required information in <strong>CAPITAL
+LETTERS</strong> using <strong>BLACK INK.</strong> Mark applicable
+boxes with an “X”. Two copies MUST be filed with
+the BIR and one held by the tax filer;
+</li>
+                                        <li>Indicate Taxpayer Identification Number (TIN) and
+registered name on each page;
+                                        </li>
+                                        <li>For all questions wherein an appropriate box is provided
+for a possible answer, mark the applicable box
+corresponding to the chosen answer with an “X”; and</li>
+                                        <li>Required information wherein the space provided has a
+letter separator, the same must be supplied with
+CAPITAL LETTERS where each character (including
+comma or period) shall occupy one box and leave one
+space blank for every word. However, if the word is
+followed by a comma or period, there is no need to leave
+blank after the comma or period. Do NOT write
+“NONE” or make any other marks in the box/es</li>
+
+                                    </ol>
+                                    <dt>For Items 1 to 4</dt>
+                                    <dt>Item 1</dt>
+                                    <dd>Indicate the taxable year covered by the return
+being filed;</dd>
+                                    <dt>Item 2</dt>
+                                    <dd>Choose “Yes” if the tax return is one amending
+previous return filed, “No” if not;</dd>
+                                    <dt>Item 3</dt>
+                                    <dd>Indicate whether the tax filer and spouse are filing
+jointly or not; and</dd>
+                                    <dt>Item 4</dt>
+                                    <dd>Indicate whether the source of income is
+compensation income or other income (nonbusiness/
+non-profession).</dd>
+
+                                </td>
+                                <td class="secondcol">
+                                    <h2>Part I - Background Information</h2>
+                                    <dt>Item 5 Taxpayer Identification Number (TIN):</dt>
+                                    <dd>Enter
+the tax filer’s TIN. Spouse’s TIN is entered in Item
+17. If no TIN, apply for one before filing using
+Application for Registration-For Individuals
+Earning Purely Compensation Income and NonResident
+Citizens/ Resident Alien Employee (BIR
+Form No. 1902). 
+</dd>
+                                    <dt>Item 6 RDO Code: </dt>
+                                    <dd>Enter the appropriate code for RDO
+per BIR Form No. 1902 and/or Certificate of
+Update of Exemption and of Employer’s and
+Employee’s Information (BIR Form No. 2305). </dd>
+                                    <dt>Item 7 Philippine Standard Occupational
+Classification (PSOC) Code:</dt>
+                                    <dd>Refer to
+                                        <strong>www.bir.gov.ph</strong> for applicable PSOC or visit the
+local BIR Office. 
+</dd>
+                                    <dt>Item 8 Tax Filer’s Name:</dt>
+                                    <dd>Print name as it was entered
+on the registration forms.</dd>
+                                    <dt>Item 9 Registered Address:</dt>
+                                    <dd>This refers to the preferred
+address (i.e. residence or employer’s business
+address) provided by the tax filer upon registration
+with the BIR. If tax filer has moved since the previous
+filing and has NOT updated the registration,
+accomplish Table 1 on the last page of this ITR.</dd>
+                                    <dt>Items 10-12:</dt>
+                                    <dd>Enter the requested information. If no
+email address, leave the space blank.</dd>
+                                    <dt>Item 13 Civil Status:</dt>
+                                    <dd>Indicate civil status.
+</dd>
+                                    <dt>Items 14 &amp; 15 Additional Exemption for Qualified
+Dependent Children: </dt>
+                                    <p>
+                                        An individual shall be allowed an additional exemption
+of P25,000 for each qualified dependent child, but not
+exceeding four (4). The additional exemption for
+dependents shall be claimed by the husband, who is deemed
+the proper claimant unless he explicitly waives his right in
+favor of his wife. In the case of legally separated spouses,
+additional exemption may be claimed only by the spouse
+who has custody of the child or children; Provided, that the
+total amount of additional exemptions that may be claimed
+by both shall not exceed the maximum additional exemption
+allowed by the Tax Code.
+                                    </p>
+                                    <p>
+                                        <strong>“Qualified Dependent Child”</strong> means a legitimate,
+illegitimate or legally adopted child chiefly dependent upon
+and living with the tax filer if such dependent is not more than
+twenty-one (21) years of age, unmarried and not gainfully
+employed or if such dependent, regardless of age, is incapable
+of self-support because of mental or physical defect. If “yes”
+is marked for Item 14, enter the number of Dependent 
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>2</strong></div>
+                        <br>
+                        <br>
+                        <div class="titlecol">Guidelines and Instructions for BIR Form No. 1700<div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <br>
+                        
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">Children in Item 15, and then provide the required
+information for each child in Table 2.
+                                   
+                                    <p>
+                                        Should there be additional dependent(s) during the
+taxable year, tax filer may claim the corresponding additional
+exemption, as the case may be, in full for such year. If the tax
+filer dies during the taxable year, his estate may still claim the
+personal and additional exemptions for himself and his
+dependent(s) as if he died at the close of such taxable year.
+                                    </p>
+                                    <p>
+                                        If the spouse or any of the dependents dies or if any
+of such dependents marries, becomes twenty-one (21)
+years old or becomes gainfully employed during the
+taxable year, the tax filer may still claim the same
+exemptions as if the spouse or any of the dependents died,
+or as if such dependents married, became twenty-one (21)
+years old or became employed at the close of such year.
+                                    </p>
+                                    <dt>Items 16-22 Spouse’s Background Information:</dt>
+                                    <dd>Enter
+the appropriate information using the same
+guidelines as above.</dd>
+                                    <h2>Part II - Total Tax Payable</h2>
+                                    <dt>Items 23-31: </dt>
+                                    <dd>Accomplish first Part IV – Computation of
+Tax on page 2 before accomplishing these items.
+Then transfer the information from Part IV to each
+of the items. Individual instructions as to the source
+of the information and the necessary calculations are
+provided on each line item.</dd>
+                                    <dt>Signature Line: 
+                                    </dt>
+                                    <dd>When all pages of the return are
+complete, sign the return in the place indicated, enter
+the number of pages filed. In Items 32-35, provide
+the required information about tax filer’s
+Government Issued ID and its details. </dd>
+                                    <h2>Part III (Item 36) - Details of Payment
+</h2>
+                                    <p>
+                                        Enter the information required and then file the original
+ITR plus two (2) copies to any AAB within the RDO where
+registered. Refer to <strong>www.bir.gov.ph</strong> for the applicable AAB
+or visit the local BIR Office. For no payment returns, proceed
+with filing the ITR with the RDO where the tax filer is
+registered or the concerned RCO under the same RDO.
+                                    </p>
+                                    <h2>Part IV - Computation of Tax</h2>
+                                    <p>
+                                        At the top of this page and in all succeeding pages that
+are to be filed, enter tax filer’s TIN and Last Name. The
+requirement for entering centavos on the ITR has been
+eliminated. If the amount of centavos is 49 or less, drop down
+centavos (e.g. P100.49 = P100.00). If the amount it 50
+centavos or more, round up to the next peso (e.g. P100.50 =
+P101.00)
+                                    </p>
+                                </td>
+                                <td class="secondcol">
+                                    <dt>Items 1-4: </dt>
+                                    <dd>Enter the required information for each of the
+employers and mark whether the information is for
+the Tax filer or the Spouse. Attach additional sheets,
+if necessary. On Item 4A, enter the Total Gross
+Compensation and Total Tax Withheld for the Tax
+Filer. On Item 4B, enter the appropriate information
+for the Spouse.
+</dd>
+                                    <dt>Item 5 Non-Taxable/Exempt Income: </dt>
+                                    <dd>This includes
+enumerations under Sections 32B of the NIRC, as
+amended, and other applicable rules and regulations,
+including De Minimis Benefits within the limitations
+prescribed under existing revenue issuances.
+</dd>
+                                    <dt>Item 6 Gross Taxable Compensation Income:</dt>
+                                    <dd>This
+refers to Item 4A.1 or 4B.1 less the NonTaxable/Exempt
+Income in Item 5. The Gross
+Taxable Compensation Income does not include
+employees’ contributions to SSS, GSIS, HDMF,
+PHIC and Union Dues. Refer to BIR Form No. 2316
+issued by the employer/s.</dd>
+                                    <dt>Item 7 Premium Payment on Health and/or
+Hospitalization Insurance:
+                                    </dt>
+                                    <dd>The amount of
+premiums not to exceed Two Thousand Four
+Hundred Pesos (P2,400) per family or Two
+Hundred Pesos (P200) a month paid during the
+taxable year for health and/or hospitalization
+insurance taken by the tax filer for himself, including
+his family, shall be allowed as a deduction from his
+gross income; Provided, that said family has a gross
+income of not more than Two Hundred Fifty
+Thousand Pesos (P250,000) for the taxable year;
+Provided, finally, that in the case of married tax
+filers, only the spouse claiming the additional
+exemption for dependents shall be entitled to this
+deduction. 
+</dd>
+                                    <dt>Items 8 &amp; 9 Personal and Additional Exemptions:</dt>
+                                    <p>
+                                        An individual tax filer shall be allowed a basic
+personal exemption of Fifty Thousand Pesos (P50,000).
+In the case of married individuals where only one of the
+spouses is deriving income, only such spouse shall be
+allowed the personal exemption.
+                                    </p>
+                                    <p>
+                                        An individual shall be allowed an additional
+exemption of P 25,000 for each qualified dependent child,
+not exceeding four (4). The additional exemption for
+dependents shall be claimed by the husband, who is
+deemed the proper claimant unless he explicitly waives
+his right in favor of his wife.
+                                    </p>
+                                    <dt>Items 10, 11, 13 &amp; 14:</dt>
+                                    <dd>Calculate as indicated on the
+form.</dd>
+                                    <dt>Item 12 Other Taxable Income:</dt>
+                                    <dd>Any non-business/nonprofession
+related income reported under "other </dd>
+                                </td>
+                            </tr>
+
+                        </tbody></table>
+                        <div align="center"><strong>3</strong></div>
+                        <br>
+                        <br>
+                        <div class="titlecol">Guidelines and Instructions for BIR Form No. 1700<div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <br>
+                        
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+                                    <p>
+                                        taxable income" should reflect only the taxable
+amount. Example:<i> Honorarium received not in the
+practice of business or profession by an employee
+other than from his employer.</i>
+                                    </p>
+                                    <dt>Items 15-20 Computation of Tax Credits/Payments:</dt>
+                                    <p>
+                                        Enter the applicable amounts in the Tax filer and/or
+Spouse column. On Item 20 calculate the Net Tax
+Payable. Attach proof on income received and credits
+claimed, e.g. BIR Form No. 2316.
+                                    </p>
+                                    <p>
+                                        Over withholding of income tax on compensation
+shall be refunded by the employer, except if the over
+withholding is due to the employee’s failure or refusal to
+file BIR Form No. 2305, or supplies false or inaccurate
+information, the excess shall not be refunded but shall be
+forfeited in favor of the government.
+                                    </p>
+                                    <dt>Item 21 Net Tax Payable (Overpayment) For Tax
+Filer and Spouse: </dt>
+                                    <dd>This is the aggregate amount of
+Tax Payable (Overpayment) for both Tax Filer and
+Spouse.
+</dd>
+                                    <dt>Item 22 Portion of Tax Payable Allowed for 2nd
+Installment:</dt>
+                                    <dd>Indicate the amount applicable.</dd>
+                                    <dt>Items 23, 27 &amp; 28:</dt>
+                                    <dd>Calculate as indicated in the form.</dd>
+                                    <div class="boxed">
+                                        Penalties shall be imposed and
+collected as part of the tax
+                                    </div>
+                                    <dt>Item 24:</dt>
+                                    <dd>A <strong>surcharge</strong> of twenty five percent (25%) for
+each of the following violations:
+</dd>
+                        <br>
+
+                                    <ol>
+                                        <li>Failure to file any return and pay the amount of tax
+or installment due on or before the due date;</li>
+                                        <li>Unless otherwise authorized by the Commissioner,
+filing a return with a person or office other than those
+with whom it is required to be filed;
+</li>
+                                        <li>Failure to pay the full or part of the amount of tax
+shown on the return, or the full amount of tax due for </li>
+                                    </ol>
+                                </td>
+                                <td class="secondcol">which no return is required to be filed on or before
+the due date;
+                              
+                                    <ol start="4">
+                                        <li>Failure to pay the deficiency tax within the time
+prescribed for its payment in the notice of
+assessment.
+</li>
+                                    </ol>
+                                    <p>
+                                        A surcharge of fifty percent (50%) of the tax or of
+the deficiency tax shall be imposed in case of willful
+neglect to file the return within the period prescribed by
+the Tax Code and/or by rules and regulations or in case a
+false or fraudulent return is filed.
+                                    </p>
+                                    <dt>Item 25: </dt>
+                                    <dd><strong>Interest</strong> at the rate of twenty percent (20%) per
+annum, or such higher rate as may be prescribed by
+rules and regulations, on any unpaid amount of tax,
+from the date prescribed for the payment until it is
+fully paid.</dd>
+                                    <dt>Item 26:</dt>
+                                    <dd><strong>Compromise</strong> penalty pursuant to existing/
+applicable revenue issuances.</dd>
+                                    <h2>Part V - Supplemental Information</h2>
+                                    <p>Fill-up applicable fields. </p>
+                                    <dt>“Fair Market Value”</dt>
+                                    <dd>as determined in accordance with
+the Tax Code, as amended, and existing revenue
+issuances shall be used in reporting the non-cash
+income and receipts in the Supplemental
+Information. </dd>
+                                    <dt>REQUIRED ATTACHMENTS:
+</dt>
+                                    <ol>
+                                        <li>Certificate of Compensation Payment/Tax Withheld
+(BIR Form No. 2316).</li>
+                                        <li>Waiver of the husband’s right to claim additional
+exemption, if applicable.</li>
+                                        <li>Duly approved Tax Debit Memo, if applicable.</li>
+                                        <li>Proof of Foreign Tax Credits, if applicable.</li>
+                                        <li>For amended return, proof of tax payment and the
+return previously filed.</li>
+                                        <li>Proof of other tax payment/credit, if applicable.</li>
+                                        <li>Authorization letter, if filed by authorized
+representative.</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <h2 align="center">Tax Table</h2>
+                        <table align="center" border="1px solid black;" style="width:90%; margin:0 auto 0 auto;">
+                            <tbody><tr>
+                                <td align="center" bgcolor="gray"><strong>If Taxable Income is:</strong></td>
+                                <td align="center" bgcolor="gray"><strong>Tax Due is:</strong></td>
+                                <td align="center" bgcolor="gray"><strong>If Taxable Income is: </strong></td>
+                                <td align="center" bgcolor="gray"><strong>Tax Due is:</strong></td>
+
+                            </tr>
+                            <tr>
+                                <td align="center">Not over P 10,000 </td>
+                                <td align="center">5%</td>
+                                <td align="center" bgcolor="gray"></td>
+                                <td align="center" bgcolor="gray"></td>
+
+
+
+                            </tr>
+                            <tr>
+                                <td align="center">Over P 10,000<br>
+                                    but not over P 30,000</td>
+                                <td align="center">P 500 + 10% of the<br>
+                                    excess over P 10,000</td>
+                                <td align="center">Over P 140,000<br>
+                                    but not over P 250,000</td>
+                                <td align="center">P 22,500 + 25% of the<br>
+                                    excess over P 140,000</td>
+                            </tr>
+                            <tr>
+                                <td align="center">Over P 30,000<br>
+                                    but not over P 70,000</td>
+                                <td align="center">P 2,500 + 15% of the<br>
+                                    excess over P 30,000</td>
+                                <td align="center">Over P 250,000<br>
+                                    but not over P 500,000</td>
+                                <td align="center">P 50,000 + 30% of the<br>
+                                    excess over P 250,000</td>
+                            </tr>
+                            <tr>
+                                <td align="center">Over P 70,000<br>
+                                    but not over P 140,000</td>
+                                <td align="center">P 8,500 + 20% of the<br>
+                                    excess over P 70,000 </td>
+                                <td align="center">Over P 500,000</td>
+                                <td align="center">P 125,000 + 32% of the<br>
+                                    excess over P 500,000</td>
+                            </tr>
+
+
+
+                        </tbody></table>
+                         <br>
+                         <div align="center"><strong>4</strong></div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+</form></hta:application></div>

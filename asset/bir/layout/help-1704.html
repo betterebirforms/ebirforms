@@ -1,0 +1,381 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+.style2 { font-size: 10px; }
+.style3 { font-size: 10pt; }
+.style4 { font-size: 12pt; }
+.atcNames { font-weight: bold; }
+tr.atc td { border-bottom: 1px solid rgb(225, 225, 225); }
+tr.atc:hover td { background: rgb(255, 255, 204); }
+td.atc { padding: 4px; }
+#header, .menu { position: fixed; width: 100%; top: 0px; left: 0px; height: 25px; background: rgb(254, 254, 254); white-space: nowrap; font-weight: bold; border: 1px solid rgb(204, 204, 204); visibility: hidden; z-index: 3000; }
+.menu { visibility: visible; }
+#header input { background: none; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(204, 204, 204) currentcolor currentcolor; border-image: none; font-weight: bolder; height: 25px; float: left; width: auto; padding-left: 3px; padding-right: 3px; visibility: visible !important; }
+#header input:hover { background: rgb(255, 255, 204); }
+#container { margin-top: 40px; }
+</style>
+<div class="bir-body" ><hta:application id="1704" applicationname="1704" version="1.0" caption="yes" showintaskbar="yes" icon="../img/bir_icon.ico" singleinstance="YES" sysmenu="YES" navigable="YES" contextmenu="NO" windowstate="maximize" scrollflat="YES">	
+		
+			
+        		
+		
+        
+        	
+        
+
+
+    <ul class="topnav printButtonClass">
+        <li>
+            <a href="#" class="toplevel">File</a>
+            <ul class="subnav">
+                <li><a href="../BIRForms.hta">Main Screen</a></li>
+                <li><a href="#">Exit</a></li>
+            </ul>
+        <span></span></li>
+
+    </ul>
+    
+    <div class="printButtonClass" style="position: fixed; top: 10px; font-size: 11px; z-index: 1000000000000000; right: 5px; width: auto;">Government Property Not For Sale</div>
+
+    
+    <img class="printButtonClass" id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top">
+    
+
+    
+
+    <form id="frmMain" name="frmMain">
+        <div id="container">
+            <div id="wrapper" style="margin: 0 auto; position: relative; width: 830px;">
+                <div id="formPaper">
+                    <div id="Content" align="center">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td>
+                                    <span class="formTitle"><b>BIR Form No. 1704</b>
+                                        <br>
+                                        Guidelines and Instructions</span>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div class="titlecol">
+                            BIR FORM NO. 1704
+                        </div>
+                        <div class="subtitle">Improperly Accumulated Earnings Tax (IAET) Return</div>
+                        <div class="subtitle">Guidelines and Instructions</div>
+                        <br>
+
+                        <table id="inserted">
+                            <tbody><tr>
+
+
+                                <td class="firstcol">
+
+                                    <dt>Who shall file</dt>
+                                    <p>
+                                        Every domestic corporation (branch of a foreign corporation
+not included) classified as closely-held corporation except banks and
+other non-bank financial intermediaries, insurance companies, taxable
+partnerships, general professional partnerships, non-taxable joint
+ventures and enterprises duly registered with the Philippine Economic
+Zone Authority (PEZA) under R.A. 7916, and enterprises registered
+pursuant to the Bases Conversion and Development Act of 1992 (R.A.
+7227), and other similar laws, shall render a true and accurate tax
+return in accordance with the provisions of the Tax Code. The return
+shall be filed in triplicate copies by the president, vice-president or
+other principal officer, sworn to by such officer and by the Treasurer or
+Assistant Treasurer.
+                                    </p>
+
+                                    <dt>When and Where to File</dt>
+
+                                    <p>
+                                        The return shall be filed within 15 days after the close of the
+year immediately succeeding taxpayer’s covered taxable year.
+Example: For calendar year 2000, the IAET return shall be filed on or
+before January 15, 2002. This return shall be filed with any Authorized
+Agent Bank (AAB) located within the territorial jurisdiction of the
+Revenue District Office where the taxpayer’s place of business is
+located and registered.
+                                    </p>
+                                    <p>
+                                        In places where there are no AABs, the return shall be filed
+with the Revenue Collection Officer or Duly Authorized City or
+Municipal Treasurer of the municipality or city under the jurisdiction of
+the Revenue District Office where the taxpayer’s principal place of
+business is located and registered.
+                                    </p>
+
+                                    <p>
+                                        If the taxpayer is a large taxpayer, the return shall be filed
+with the AAB located at the BIR National Office except if said taxpayer
+is under the jurisdiction of a Large Taxpayer District Office, (LTDO), in
+which case the return shall be filed with the LTDO having jurisdiction
+over the taxpayer.
+                                    </p>
+
+                                    <dt>When and Where to Pay</dt>
+
+                                    <p>
+                                        Upon filing this return, the total amount payable shall be paid
+in full to the AAB where the return is filed. In places where there are no
+AABs, payment shall be made directly to the Revenue Collection
+Officer or duly Authorized City or Municipal Treasurer who shall issue
+Revenue Official Receipt (BIR Form No. 2524) therefor.
+                                    </p>
+                                    <p>
+                                        Where the return is filed with an AAB, the lower portion
+must be duly machine validated and stamped received to serve as
+receipt of payment. The machine validation shall reflect the amount
+paid, the date of payment and the transaction code and the stamp
+mark shall show the name of the AAB, branch code, teller’s code and
+teller’s initial. The AAB shall also issue an Official Receipt as proof of
+payment.
+                                    </p>
+
+                                    <dt>Rate and Base of Tax</dt>
+                                    <p>
+                                        The ten percent (10%) IAET is imposed on improperly
+accumulated taxable income earned starting January 1, 1998 by
+domestic corporations as defined under the Tax Code and which are
+classified as closely-held corporation.
+                                    </p>
+                                    <p>
+                                        The IAET shall not apply on improperly accumulated income
+as of December 31, 1997 in the case of corporations using the
+calendar year basis. In the case of corporations adopting the fiscal
+year accounting period, the IAET shall not apply on improperly
+accumulated taxable income as of the end of the month comprising the
+twelve-month period of fiscal year 1997-1998.
+                                    </p>
+
+                                    <dt>Closely-held Corporations</dt>
+
+                                    <p>
+                                        Closely-held corporations are those corporations at least fifty
+percent (50%) in value of the outstanding capital stock or at least fifty
+percent (50%) of the total combined voting power of all classes of
+stock entitled to vote is owned directly or indirectly by or for not more
+than twenty (20) individuals.
+                                    </p>
+
+                                    <p>
+                                        For purposes of determining whether the corporation is
+closely held corporation, insofar as such determination is based on
+stock ownership, the following rules shall be applied:
+                                    </p>
+
+
+                                    <dd>
+                                        <ol>
+                                            <dd>
+                                                <li>Stock Not Owned by Individuals. – Stock owned
+directly or indirectly by or for a corporation,
+partnership, estate or trust shall be considered as being
+owned proportionately by its shareholders, partners or
+beneficiaries.</li>
+                                            </dd>
+                                        </ol>
+
+
+                                    </dd>
+                                </td>
+
+                                <td class="secondcol">
+                                    <dd>
+                                        <ol start="2">
+
+                                            <li>Family and Partnership Ownership. – An individual
+shall be considered as owning the stock owned, directly
+or indirectly, by or for his family, or by or for his partner.
+For purposes of this paragraph, the ‘family of an
+individual’ includes his brothers or sisters (whether by
+whole or half-blood), spouse, ancestors or lineal
+descendants.</li>
+                                            <li>Option to Acquire Stocks. – If any person has an option
+to acquire stock, such stock shall be considered as
+owned by such person. For purposes of this
+paragraph, an option to acquire such an option and
+each one of a series of option shall be considered as
+an option to acquire such stock.</li>
+                                            <li>Constructive Ownership as Actual Ownership. – Stock
+constructively owned by reason of the application of
+paragraph (1) or (3) hereof shall, for purposes of
+applying paragraph (1) or (2), be treated as actually
+owned by such person; but stock constructively owned
+by the individual by reason of the application of
+paragraph (2) hereof shall not be treated as owned by
+him for purposes of again applying such paragraph in
+order to make another the constructive owner of such
+stock.</li>
+
+                                        </ol>
+
+                                    </dd>
+                                    <br>
+                                    <dt>Penalties</dt>
+
+
+                                    <dd>There shall be imposed and collected as part of the tax:</dd>
+
+                                    <dd>
+                                        <ol>
+                                            <li>A surcharge of twenty five percent (25%) for each of the
+following violations:
+                                                <ol type="a">
+                                                    <li>Failure to file any return and pay the amount of
+tax or installment due on or before the due date;
+or</li>
+                                                    <li>Unless otherwise authorized by the
+Commissioner, filing a return with a person or
+office other than those with whom it is required
+to be filed; or</li>
+                                                    <li>Failure to pay the full or part of the amount of tax
+shown on the return on or before the due date; or</li>
+                                                    <li>Failure to pay the deficiency tax within the time
+prescribed for its payment in the notice of
+assessment.</li>
+                                                </ol>
+                                            </li>
+                                            <li>A surcharge of fifty percent (50%) of the tax or of the
+deficiency tax, in case any payment has been made on the
+basis of such return before the discovery of the falsity or
+fraud, for each of the following violations:
+                                                <ol type="a">
+                                                    <li>Willful neglect to file the return within the period
+prescribed by the code or by rules and
+regulations; or</li>
+                                                    <li>In case a false or fraudulent return is willfully
+made.</li>
+                                                </ol>
+                                            </li>
+                                            <li>Interest at the rate of twenty percent (20%) per annum or
+such higher rates as may be prescribed by rules and
+regulations, on any unpaid amount of tax, from the date
+prescribed for the payment until it is fully paid.</li>
+                                            <li>Compromise penalty.</li>
+                                        </ol>
+                                    </dd>
+                                    <br>
+                                    <dt>Attachments:</dt>
+                                    <dd>
+                                        <ol class="indent">
+                                            <li>Photocopy of the Annual Income Tax Return (BIR
+Form No. 1702) and audited Financial
+Statements/Account Information Forms of the
+taxable year covered duly received by the BIR;
+and</li>
+                                            <li>Sworn declaration as to dividends declared taken
+from the covered year earnings and the
+corresponding tax withheld, if any.</li>
+                                        </ol>
+                                    </dd>
+                                    <br>
+                                    <b>Note:</b>&nbsp;All Background information must be properly filled up.
+                                    <br>
+                                    <br><ul>
+                                        <li>Nos. 1 and 2 of this form refer to transaction period and not
+the date of filing this return.</li>
+                                        <li>TIN = Taxpayer Identification Number.</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+</form></hta:application></div>

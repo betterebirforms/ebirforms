@@ -1,0 +1,884 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+.atcNames { font-weight: bold; }
+tr.atc td { border-bottom: 1px solid rgb(225, 225, 225); }
+tr.atc:hover td { background: rgb(255, 255, 204); }
+td.atc { padding: 4px; }
+#header, .menu { position: fixed; width: 100%; top: 0px; left: 0px; height: 25px; background: rgb(254, 254, 254); white-space: nowrap; font-weight: bold; border: 1px solid rgb(204, 204, 204); visibility: hidden; z-index: 3000; }
+.menu { visibility: visible; }
+#header input { background: none; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(204, 204, 204) currentcolor currentcolor; border-image: none; cursor: pointer; font-weight: bolder; height: 25px; float: left; width: auto; padding-left: 3px; padding-right: 3px; visibility: visible !important; }
+#header input:hover { background: rgb(255, 255, 204); }
+#container { margin-top: 40px; }
+</style>
+<div class="bir-body" ><hta:application id="1700" applicationname="1700" version="1.0" caption="yes" showintaskbar="yes" icon="../img/bir_icon.ico" singleinstance="YES" sysmenu="YES" navigable="YES" contextmenu="NO" windowstate="maximize" scrollflat="YES">	
+		
+			
+        		
+		
+        
+        	
+      
+
+
+    <ul class="topnav printButtonClass">
+        <li>
+            <a href="#" class="toplevel">File</a>
+            <ul class="subnav">
+                <li><a href="../BIRForms.hta">Main Screen</a></li>
+                <li><a href="#">Exit</a></li>
+            </ul>
+        <span></span></li>
+
+    </ul>
+    
+    <div class="printButtonClass" style="position: fixed; top: 10px; font-size: 11px; z-index: 1000000000000000; right: 5px; width: auto;">Government Property Not For Sale</div>
+
+    
+    <img class="printButtonClass" id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top">
+    
+
+    
+
+    <form id="frmMain" name="frmMain">
+        <div id="container">
+            <div id="wrapper" style="margin: 0 auto; position: relative; width: 830px;">
+                <div id="formPaper">
+                    <div id="Content">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td style="border: none;">
+                                    <span class="formTitle"><b>BIR Form No. 1701</b>
+                                        <br>
+                                        Guidelines and Instructions</span>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+                        
+                        <div class="titlecol">
+                            Guidelines and Instructions for BIR Form No. 1701
+                            <div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <div class="subtitle">Annual Income Tax Return</div>
+                        <div class="subtitle">For Self-Employed Individuals, Estates and Trusts</div>
+                        <br>
+                        <table id="inserted">
+                            <tbody><tr>
+                                
+                                <td class="firstcol">
+                                    <p>
+                                        These instructions are designed to assist taxpayers, 
+                                    or their representatives, with the preparation of the annual income tax return (ITR). If there are questions which are not adequately covered, 
+                                    please consult the local BIR office. If there appears to be any discrepancies between these instructions and the applicable laws and regulations, 
+                                    the laws and regulations take precedence.
+                                    </p>
+
+                                    <dt>Who Shall File</dt>
+
+                                    <p>
+                                        BIR Form No. 1701 shall be filed by individuals who are engaged in trade/business or the practice of profession including those with mixed income 
+                                    (i.e., those engaged in the trade/business or profession who are also earning compensation income) in accordance with Sec. 51 of the Code, as amended. 
+                                    The annual income tax return summarizes all the transactions covering the calendar year of the taxpayer.
+                                    </p>
+
+                                    <p>
+                                        This return shall be filed by the following individuals regardless of amount of 
+                                     gross income:
+                                    </p>
+                                    <br>
+                                    <ol>
+                                        <li>A resident citizen engaged in trade, business, or practice of profession within and without the Philippines.</li>
+
+                                        <li>A resident alien, non-resident citizen or non-resident alien individual engaged in trade, business or practice of profession within the Philippines.</li>
+
+                                        <li>A trustee of a trust, guardian of a minor, executor/administrator of an estate, or any person acting in any fiduciary capacity for any person, where such trust, estate, minor, or person is engaged in trade or business.</li>
+
+                                        <li>An individual engaged in trade or business or in the exercise of their profession and receiving compensation income as well.</li>
+                                    </ol>
+                                    <p>
+                                        All individuals, estates and trusts above required under the law 
+                                    and existing issuances to file this return should also fill up Part IX hereof.
+                                     Said individuals, estates and trusts shall declare such income subject to final 
+                                    tax and those exclusions from gross income under Section 32(B) of the Tax Code,
+                                     as amended.
+                                    </p>
+                                    <p>
+                                        Married individuals shall file a return for the taxable year to include 
+                                    the income of both spouses, computing separately their 
+                                    individual income tax based on their respective total taxable income. 
+                                    Where it is impracticable for the spouses to file one return, each spouse may 
+                                    file a separate return of income. If any income cannot be definitely attributed 
+                                    to or identified as income exclusively earned or realized by either of the spouses,
+                                     the same shall be divided equally between the spouses for the purpose of determining their respective taxable income.
+                                    </p>
+
+                                    <p>
+                                        The income of unmarried minors derived from property received from a living parent shall be included in the return of the parent except (1) when the donor’s tax has been paid on such property, or (2) when the transfer of such property is exempt from donor’s tax.
+                                    </p>
+                                    <p>
+                                        If the taxpayer is unable to make his own return, the return may be made by his duly authorized agent or representative or by the guardian or other person charged with the care of his person or property, the principal and his representative or guardian assuming the responsibility of making the return and incurring penalties provided for erroneous, false or fraudulent returns.
+                                    </p>
+                                    <b>When and Where to File and Pay</b>
+                                    <b><i><u>A. For Electronic Filing and Payment System (eFPS) Taxpayer:</u></i></b> The return shall be e-filed and the tax shall be e-paid on or before the 15th day of April of each year covering income of the preceding taxable year using the eFPS facilities thru the BIR website www.bir.gov.ph.
+                                    <b><i><u>B. For Non-Electronic Filing and Payment System (Non-eFPS) Taxpayer:</u></i></b> The return shall be filed and the tax shall be paid on or before the 15th day of April of each year covering income of the preceding
+
+                                </td>
+                                
+
+                                
+                                <td class="secondcol">taxable year with any Authorized Agent Bank (AAB) located within the territorial
+                                         jurisdiction of the RDO where the taxpayer is registered. 
+                                        In places where there are no AABs, the return shall be 
+                                        filed and the tax shall be paid with the concerned Revenue 
+                                        Collection Officer (RCO) under the jurisdiction of the RDO.
+                               
+                                <p>
+                                    Non-eFPS taxpayers may opt to use the electronic format under “eBIRForms” 
+                                        (refer to www.bir.gov.ph) for the preparation, generation and submission and/or 
+                                        payment of this return with greater ease and accuracy, upon availability of the 
+                                        same in the system.
+                                </p>
+                                    <b>FOR NO PAYMENT RETURNS:</b> This shall be filed with the RDO where the taxpayer is registered or with the concerned RCO under the same RDO.
+                                    <br>
+                                    <br>
+                                    <b>FOR INSTALLMENT PAYMENT:</b> When the tax due exceeds P2,000, the taxpayer may elect to pay in two equal installments, the first installment to be paid at the time the return is filed and the second installment, on or before July 15 of the same year.
+                                    <br>
+                                    <br>
+                                    <b>FOR NON-RESIDENT TAXPAYER:</b> In case taxpayer has no legal residence or place of business in the Philippines, the return shall be filed with the Office of the Commissioner thru RDO No. 39, South Quezon City.
+                                    <br>
+                                    <br>
+                                    <dt>How to Accomplish the Form</dt>
+                                    <br>
+                                    <ol>
+                                        <li>Enter all required information in CAPITAL LETTERS using BLACK INK. Mark applicable boxes with an “X”. Two copies MUST be filed with the BIR and one held by the taxpayer;</li>
+                                        <li>Indicate Taxpayer Identification Number (TIN) and registered name on each page;</li>
+                                        <li>For all questions wherein an appropriate box is provided for a possible answer, mark the applicable box corresponding to the chosen answer with an “X”; and</li>
+                                        <li>Required information wherein the space provided has a letter separator, the same must be supplied with CAPITAL LETTERS where each character (including comma or period) shall occupy one box and leave one space blank for every word. However, if the word is followed by a comma or period, there is no need to leave blank after the comma or period. Do NOT write “NONE” or make any other marks in the box/es.</li>
+                                    </ol>
+                                    <p>
+                                        <b>This return is divided into Parts I to X with accompanying Schedules 1 to 12. Individual instructions as to the source of the information and the necessary calculations are provided on each line item.
+                                        </b>
+                                    </p>
+                                    <br>
+                                    <table id="minitable">
+                                        <tbody><tr>
+                                            <th>PART NO.</th>
+                                            <th>PARTS</th>
+                                            <th>PAGE NO.</th>
+                                        </tr>
+                                        <tr>
+                                            <td>I</td>
+                                            <td style="text-align: justify;">Background Information</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>II</td>
+                                            <td style="text-align: justify;">Total Tax Payable</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>III</td>
+                                            <td style="text-align: justify;">Details of Payment</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IV</td>
+                                            <td style="text-align: justify;">Computation of Income Tax-REGULAR RATE</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>V</td>
+                                            <td style="text-align: justify;">Summary of Income Tax Due</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VI</td>
+                                            <td style="text-align: justify;">Tax Relief Availment</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VII</td>
+                                            <td style="text-align: justify;">Other Relevant Information -SPOUSE</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VIII</td>
+                                            <td style="text-align: justify;">Information – External Auditor/Accredited Tax Agent</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IX</td>
+                                            <td style="text-align: justify;">Consolidated Computation by Tax Regime</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>X</td>
+                                            <td style="text-align: justify;">Mandatory Attachments for Exempt/Special Tax Regime per
+                                             Activity- USE THIS IF THERE ARE <b>MORE THAN ONE EXEMPT
+                                             AND/OR SPECIAL</b> TAX REGIME. Consolidate the amounts of 
+                                            all Mandatory Attachments PER TAX REGIME and reflect the
+                                             same to the corresponding schedules and columns of Part IX.
+                                            </td>
+                                            <td>1m to 5m</td>
+                                        </tr>
+                                    </tbody></table>
+                                </td>
+                                
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>1</strong></div>
+                        <br>
+                        
+                        <div class="titlecol">
+                            Guidelines and Instructions for BIR Form No. 1701
+                                    <div class="small">
+                                        June 2013 (ENCS)
+                                    </div>
+                        </div>
+
+                        <table id="inserted">
+                            <tbody><tr>
+                                
+
+                                <td class="firstcol">
+                                    <table id="minitable">
+                                        <tbody><tr>
+                                            <th>SCHED NO.</th>
+                                            <th>SCHEDULES</th>
+                                            <th>PAGE NO.</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1 </td>
+                                            <td>Gross Compensation and Tax Withheld </td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2 </td>
+                                            <td>Sales/Revenues/Receipts/Fees </td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3 </td>
+                                            <td>Other Taxable Income Not Subjected to Final Tax </td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4A</td>
+                                            <td>Cost of Sales (For those Engaged in Trading) </td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4B</td>
+                                            <td>Cost of Sales (For those Engaged in Manufacturing)</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4C </td>
+                                            <td>Cost of Services </td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5 </td>
+                                            <td>Non-Operating Income </td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>Ordinary Allowable Itemized Deductions</td>
+                                            <td>6-7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7 </td>
+                                            <td>Special Allowable Itemized Deductions</td>
+                                            <td>8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>Computation of Net Operating Loss Carry Over
+                                        (NOLCO)</td>
+                                            <td>8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>Tax Credits/Payments-Attach proof</td>
+                                            <td>9</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>Balance Sheet</td>
+                                            <td>9</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11A</td>
+                                            <td>Tax Filer’s-Reconciliation of Net Income per Books
+                                        Against Taxable Income</td>
+                                            <td>10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11B</td>
+                                            <td>Spouse’s-Reconciliation of Net Income per Books</td>
+
+                                            <td>10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12 </td>
+                                            <td>Supplemental Information </td>
+                                            <td>11</td>
+                                        </tr>
+
+                                    </tbody></table>
+                                    <br>
+                                    <b>For Items 1 to 4:</b>
+                                    <br>
+
+                                    <dl>
+                                        <dt>Item 1 </dt>
+                                        <dd>Indicate the taxable year covered by the return being filed;</dd>
+                                        <dt>Item 2 </dt>
+                                        <dd>Choose “Yes” if the tax return is one amending previous return
+                                    filed, “No” if not;</dd>
+                                        <dt>Item 3 </dt>
+                                        <dd>Choose “Yes” if the return is made for a fractional part of a year
+                                    (e.g. commencement or retirement); and</dd>
+                                        <dt>Item 4 </dt>
+                                        <dd>Indicate the appropriate Alphanumeric Tax Code (ATC).</dd>
+                                        <br>
+                                        <b>Part I (Items 5 to 25) – Background Information on TAX FILER</b>
+                                        <br>
+                                        <dt>Item 5 Taxpayer Identification Number (TIN):</dt>
+                                        <dd>Enter tax filer’s TIN.
+                                    Spouse’s TIN is entered in Item 95. If no TIN, apply for one before filing
+                                    using Application for Registration-For Self-Employed and Mixed Income
+                                    Individuals, Estates and Trusts (BIR Form No. 1901).</dd>
+                                        <dt>Item 6 RDO Code:</dt>
+                                        <dd>Enter the appropriate code for the RDO per BIR
+                                    Form No. 1901 and/or Certificate of Registration (BIR Form
+                                    No. 2303).</dd>
+                                        <dt>Item 7 Tax Filer Type:</dt>
+                                        <dd>Mark applicable boxes with an “X”.</dd>
+                                        <dt>Item 8 Tax filer‘s Name:</dt>
+                                        <dd>Enter the Last Name, First Name, Middle
+                                    Name for individuals/ ESTATE of First Name, Middle Name, Last
+                                    Name /TRUST FAO First Name, Middle Name, Last Name as it
+                                    was entered on the BIR Form Nos. 1901/1905/2303.</dd>
+                                        <dt>Item 9 Trade Name: </dt>
+                                        <dd>Indicate trade name as shown in the Department of
+                                    Trade and Industry’s Certificate of Registration, Mayor’s Permit
+                                    etc.</dd>
+                                        <dt>Item 10 Registered Address: </dt>
+                                        <dd>Enter Registered Address as indicated in
+                                    BIR Form No. 2303. If tax filer has moved since the previous filing
+                                    and has NOT updated the registration, update the registration by
+                                    filing BIR Form No. 1905. In the meantime, accomplish Part VIIB
+                                    on page 4 of this ITR.</dd>
+                                        <dt>Items 11 to 16: </dt>
+                                        <dd>Fill-up required information.</dd>
+                                        <dt>Item 17 Main Line of Business:</dt>
+                                        <dd>Indicate the nature of the business the
+                                    taxpayer is engaged in as indicated in BIR Form No. 2303.</dd>
+                                        <dt>Item 18 to 19 PSIC/PSOC Code: </dt>
+                                        <dd>Indicate the Philippine Standard
+                                    Industrial Classification (PSIC) Code and/or Philippine Standard
+                                    Occupational Classification (PSOC) Code. Refer to
+                                    www.bir.gov.ph for the applicable PSIC/PSOC or visit the local
+                                    BIR Office.</dd>
+                                        <dt>Item 20 Method of Deduction:</dt>
+                                        <dd>Choose either Itemized Deduction under
+                                    Section 34(A-J), NIRC or Optional Standard Deduction (OSD), </dd>
+                                    </dl>
+                                </td>
+                                
+
+                                
+
+                                <td class="secondcol">
+                                    
+                                    <dd>which is 40% of Gross Sales/Receipts/Revenues/Fees under
+                                            Section 34(L), NIRC as amended by RA 9504. The option to
+                                            choose applies only to individuals subject to Sec. 24 of the Tax
+                                            Code, as amended, and with no special/preferential tax rates
+                                            applied. The chosen method of deduction used in the first quarter
+                                            of the year shall be irrevocable and consistently applied throughout
+                                            the year.
+                                    </dd>
+
+                                    <dt>Individual taxpayers with mixed income</dt>
+                                    <dd>subject to income tax rates
+                                    other than the income tax rates prescribed under Sec. 24 of the Tax Code,
+                                    as amended, are not included among those individuals with option to
+                                    elect the Optional Standard Deductions under Sec. 24 (L) of the same
+                                    Tax Code. Hence, they are allowed to <b>use only the itemized deductions
+                                    method.</b></dd>
+
+                                    <dt>Item 21 to 23:</dt>
+                                    <dd>Mark applicable box with an “X”.</dd>
+
+                                    <dt>Item 24 to 25 Claiming Additional Exemption:</dt>
+                                    <dd>An individual shall be
+                                    allowed an additional exemption of P25,000 for each qualified
+                                    dependent child, but not exceeding four (4). The additional
+                                    exemption for dependents shall be claimed by the husband, who is
+                                    deemed the proper claimant unless he explicitly waives his right in favor
+                                    of his wife. In the case of legally separated spouses, additional
+                                    exemption may be claimed only by the spouse who has custody of the
+                                    child or children; Provided, that the total amount of additional
+                                    exemptions that may be claimed by both shall not exceed the
+                                    maximum additional exemption allowed by the Tax Code.</dd>
+                                    <br>
+                                    <b>“Qualified Dependent Child”</b> means a legitimate, illegitimate or legally
+                                    adopted child chiefly dependent upon and living with the taxpayer if such
+                                    dependent is not more than twenty-one (21) years of age, unmarried and
+                                    not gainfully employed or if such dependent, regardless of age, is
+                                    incapable of self-support because of mental or physical defect. If “yes”
+                                    is marked for Item 24, enter the number of Dependent Children in Item
+                                    25, and then provide the required information for each child in Part VIIA.
+                                    <br>
+
+                                    <p>
+                                        Should there be additional dependent(s) during the taxable year,
+                                            tax filer may claim the corresponding additional exemption, as the case
+                                            may be, in full for such year. If the taxpayer dies during the taxable year,
+                                            his estate may still claim the personal and additional exemptions for
+                                            himself and his dependent(s) as if he died at the close of such taxable
+                                            year.
+                                    </p>
+                                    <p>
+                                        If the spouse or any of the dependents dies or if any of such
+                                            dependents marries, becomes twenty-one (21) years old or becomes
+                                            gainfully employed during the taxable year, the taxpayer may still claim
+                                            the same exemptions as if the spouse or any of the dependents died, or as
+                                            if such dependents married, became twenty-one (21) years old or became
+                                            employed at the close of such year.
+                                    </p>
+
+                                    <b>Part II (Items 26 to 32) Total Tax Payable:</b>
+                                    <p>
+                                        Complete first Part IV – Computation of Income Tax on page 2
+                                    before accomplishing these items. Then transfer the information from
+                                    Part IV to each of the items. Individual instructions as to the source of
+                                    the information and the necessary calculations are provided on each line
+                                                item.
+                                    </p>
+
+                                    <b>Overpayment Line:</b>
+                                    <p>
+                                        </p><dd>An excess of the total tax credits/payments over the
+                                    actual income tax due computed in the final adjusted return may be
+                                    refunded or issued with the Tax Credit Certificate to the taxpayer
+                                    or credited against its estimated income tax liabilities for the
+                                    quarters of the succeeding taxable years. The taxpayer shall
+                                    exercise its option by placing an “X” in the appropriate box, which
+                                    option shall be considered irrevocable for that taxable period. Thus,
+                                    once the taxpayer opted to carry-over and apply the excess income
+                                    tax against income tax due for the succeeding taxable year, no
+                                    application for cash refund or issuance of a tax credit certificate
+                                    shall be allowed. In case the taxpayer fails to signify its choice, the
+                                    excess payment shall be automatically carried-over to the next
+                                    taxable period.</dd>
+                                    <p></p>
+
+                                    
+                                </td>
+                            </tr>
+
+                        </tbody></table>
+                         <div align="center"><strong>2</strong></div>
+                        <br>
+                        <div class="titlecol">
+                            Guidelines and Instructions for BIR Form No. 1701
+                            <div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <table id="inserted">
+                            <tbody><tr>
+                                
+                                <td class="firstcol">
+                                    <b>Signature Line:
+                                    </b>
+                                    <p>
+                                        </p><dd>When all pages of the return are complete, 
+                                        sign the return in the place indicated, enter
+                                         the number of pages filed in Item 33. In Items
+                                         34-37, provide the required information about
+                                         tax filer’s Government Issued ID and its 
+                                        details.</dd>
+                                    <p></p>
+
+                                    <b>Part III (Items 38 to 40) Details of Payment</b>
+                                    <p>Enter the information required and then file the original ITR plus two (2) copies to any AAB within the RDO where registered. Refer to www.bir.gov.ph for the applicable AAB or visit the local BIR Office. For no payment returns, proceed with filing the ITR with the RDO where the taxpayer is registered or the concerned RCO under the same RDO.</p>
+
+                                    <b>Part IV (Items 41 to 67) Computation of Income Tax-REGULAR RATE</b>
+
+                                    <p>
+                                        At the top of this page and in all succeeding pages that are to be filed, enter the tax filer’s TIN and Last Name. The requirement for entering centavos on the ITR has been eliminated. If the amount of centavos is 49 or less, drop down the centavos (e.g. P100.49 = P100.00). If the amount is 50 centavos or more, round up to the next peso (P100.50 = P101.00).
+                                    </p>
+                                    <p>
+                                        Generally, for all the lines in this part there is a need to complete the appropriate schedules and then transfer the sub-totals to the appropriate line. On the other lines make the appropriate calculations as directed and enter the totals.
+                                    </p>
+
+                                    <dt>Item 44 Premium Payment on Health and/or Hospitalization</dt>
+                                    <dd><b>Insurance:</b> The amount of premiums not to exceed Two Thousand Four Hundred Pesos (P2,400) per family or Two Hundred Pesos (P200) a month paid during the taxable year for health and/or hospitalization insurance taken by the tax filer for himself, including his family, shall be allowed as a deduction from his gross income; Provided, that said family has a gross income of not more than Two Hundred Fifty Thousand Pesos (P250,000) for the taxable year; Provided, finally, that in the case of married tax filers, only the spouse claiming the additional exemption for dependents shall be entitled to this deduction.</dd>
+
+                                    <dt>Items 45 &amp; 46 Personal and Additional Exemptions:</dt>
+                                    <p>An individual tax filer shall be allowed a basic personal exemption of Fifty Thousand Pesos (P50,000). In the case of married individuals where only one of the spouses is deriving income, only such spouse shall be allowed the personal exemption.</p>
+                                    <p>An individual shall be allowed an additional exemption of P25,000 for each qualified dependent child, not exceeding four (4). The additional exemption for dependents shall be claimed by the husband, who is deemed the proper claimant unless he explicitly waives his right in favor of his wife.</p>
+                                    <p>An <b>Estate or Trust</b> shall be allowed an exemption of Twenty Thousand Pesos (P20,000).</p>
+
+                                    <dt>Item 47 to 56:</dt>
+                                    <dd>Fill-up and/or compute required information.</dd>
+
+                                    <dt>Items 57 to 59 Deductions Allowed under Existing Laws:</dt>
+                                    <dd>May choose either the itemized or optional standard deduction, subject to REGULAR TAX RATES only. It shall indicate the choice by marking with an “X” the appropriate box, otherwise, it shall be considered as having availed of the itemized deduction. Such choice made in the initial quarterly return during the taxable year is irrevocable for the said year for which the return is made. The ordinary and special deductions are discussed further under the appropriate schedule. Itemized deductions only, if subject to REGULAR and SPECIAL/ EXEMPT Tax Regime.
+                                    </dd>
+
+                                    <dt>Item 61 Optional Standard Deduction (OSD):</dt>
+                                    <dd>A maximum of 40% of the Total Sales/Revenue Receipts/Fees in Item 52 shall be allowed as deduction in lieu of the itemized deduction if subject to REGULAR Income Tax Regime Only. However, individuals who availed and claimed this deduction is no longer required to submit the financial statements when filing the annual tax return but required to keep such records pertaining to the gross sales or receipts.
+                                    </dd>
+
+                                    <dt>Item 62 to 66:</dt>
+                                    <dd>Compute to arrive at the total taxable income.</dd>
+
+                                </td>
+                                
+                                <td class="secondcol">
+                                    
+                                    <dt>Item 67:</dt>
+                                    <dd>The regular/normal graduated rate of income tax is 5-32% of net taxable income.</dd>
+
+                                    <dt>Part V (Items 68 to 80) Summary of Income Tax Due:</dt>
+
+                                    <p>Complete the appropriate schedules and then transfer the sub-totals to the appropriate line from Part IV- Computation of Income Tax-Regular Rate, and Part IX- Consolidated Computation by Tax Regime</p>
+
+                                    <div class="boxed">
+                                        <b>Penalties shall be imposed and collected as part of the tax</b>
+                                    </div>
+
+                                    <dt>Item 81 Surcharge:</dt>
+                                    <ol>
+                                        <li>A surcharge of twenty five percent (25%) for each of the following violations:
+                                            <ol type="a">
+                                                <li>Failure to file any return and pay the amount of tax or installment due on or before the due dates;</li>
+                                                <li>Unless otherwise authorized by the Commissioner, filing a return with a person or office other than those with whom it is required to be filed;</li>
+                                                <li>Failure to pay the full or part of the amount of tax shown on the return, or the full amount of tax due for which no return is required to be filed, on or before the due date;</li>
+                                                <li>Failure to pay the deficiency tax within the time prescribed for its payment in the notice of assessment.</li>
+                                            </ol>
+                                        </li>
+                                        <li>A surcharge of fifty percent (50%) of the basic tax or of the deficiency tax shall be imposed in case of willful neglect to file the return within the period prescribed by the Tax Code and/or by rules and regulations or in case a false or fraudulent return is filed.
+
+                                        </li>
+                                    </ol>
+
+                                    <dt>Item 82 Interest:</dt>
+                                    <dd>Interest at the rate of twenty percent (20%) per annum on any unpaid amount of tax, from the date prescribed for the payment until it is fully paid.</dd>
+
+                                    <dt>Item 83 Compromise:</dt>
+                                    <dd>This penalty is pursuant to existing/applicable revenue issuances.</dd>
+
+                                    <dt>Part VI- Tax Relief Availment:</dt>
+                                    <p>
+                                        Taxpayer availing of any tax relief under the Tax Code must fill-up Items 86-94.
+                                    </p>
+                                    <p>
+                                        For ECOZONES: Gross income shall refer to gross sales or gross revenue derived from registered business activity within the zone, net of sales discounts, sales returns and allowances minus cost of sales or direct costs but before any deductions for administrative, marketing, selling, operating expenses or incidental losses during a given taxable period.
+                                    </p>
+                                    <p>
+                                        For BCDA: Gross income shall refer to gross sales or gross revenue derived from registered business activity within the zone, net of sales discounts, sales returns and allowances minus cost of sales or direct costs but before any deductions for administrative, marketing, selling, operating expenses or incidental losses during a given taxable period. For those engaged in financial enterprises, gross income shall include interest income, gains from sales and other income net of costs of funds.
+                                    </p>
+
+                                    <dt>Item 89</dt>
+                                    <dd>Other Special Tax Credit refers to tax credit allowed under special laws, rules and issuances.</dd>
+
+                                    <dt>Part VII (Items 95 to 111) Other Relevant Information:</dt>
+                                    <dd>SPOUSE: Follow similar procedures as that of the tax filer, if any.</dd>
+
+                                    <dd>Part VIIA - Qualified Dependent Children: If wife is claiming for additional exemption, please attach waiver of the husband.</dd>
+                                    <dd>Part VIIB - Current Address: Accomplish if current address is different from registered address in Item 10.</dd>
+
+                                    <dt>Part VIII (Items 112 to 118) Information – External Auditor/ Accredited Tax Agent:</dt>
+                                    <p>
+                                        All returns filed by an accredited tax agent on behalf of a taxpayer shall bear the following information:
+                                    </p><dd>a) For CPAs and others (individual practitioners and members of GPPs);</dd>
+                                    <p></p>
+
+                                    <dd><b>Items 112 to 115:</b> Name and Taxpayer Identification Number (TIN);</dd>
+                                    <dd><b>Items 116 to 118:</b> BIR Accreditation Number, Date of Issuance, and Expiry Date.</dd>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+                         <div align="center"><strong>3</strong></div>
+                        <br>
+                        <div class="titlecol">
+                            Guidelines and Instructions for BIR Form No. 1701
+                            <div class="small">June 2013 (ENCS)</div>
+                        </div>
+                        <table id="inserted">
+                            <tbody><tr>
+                                
+                                <td class="firstcol">
+                                    <dd>b) For members of the Philippine Bar (i.e. individual practitioners, members of GPPs);</dd>
+
+                                    <dd><b>Items 112 to 115:</b> Name and Taxpayer Identification Number (TIN);</dd>
+                                    <dd><b>Items 116 to 118:</b> Attorney’s Roll Number or Accreditation Number, Date of Issuance, and Expiry Date.</dd>
+                                    <br>
+                                    <b>SCHEDULES:</b>
+                                    <dd>The information provided in all of the schedules must be supported by appropriate documents.</dd>
+                                    <dt>Schedule 1 -</dt>
+                                    Gross Compensation Income and Tax Withheld of tax filer and/or Spouse.
+                                    <br>
+                                    <dt>Schedules 2 to 5 -</dt>
+                                    Fill-up the information provided in appropriate schedules and must dte supported dty appropriate documents.
+                                    <br>
+                                    <dt>Schedule 6 - Ordinary Allowadtle Itemized Deductions</dt>
+                                    (Attach additional sheets, if necessary): There shall dte allowed as deduction from gross income all the ordinary and necessary trade and dtusiness expenses paid or incurred during the taxadtle year in carrying on or which are directly attridtutadtle to the development, management, operation and/or conduct of the trade and dtusiness. Itemized deduction includes also interest, taxes, losses, dtad dedtts, depreciation, depletion, charitadtle and other contridtutions, research and development and pension trust.
+                                    <br>
+                                    <dt>Schedule 7 - Special Allowadtle Itemized Deductions:</dt>
+                                    There shall be allowable deduction from gross income in computing taxable income, in addition to the regular allowable itemized deduction, as provided under the existing regular and special laws, rules and issuances such as, but not limited to: Rooming-in and Breast-feeding Practices under R.A. 7600, Adopt-A-School Program under R.A. 8525, Expanded Senior Citizens Act under R.A. 9257, Free Legal Assistance under R.A. 9999, etc.
+                                    <br>
+                                    <dt>Schedule 8 – Computation of Net Operating Loss Carry Over:</dt>
+                                    Detailing the computation of available NOLCO (applied, unapplied and expired portion). Only net operating losses incurred by the qualified taxpayer may be carried over to the next three (3) immediately succeeding taxable years following the year of such loss.
+                                      <br>
+                                    <dt>Schedule 9 – Tax Credits/Payments:</dt>
+                                    Indicate claimed Tax Credits/Payments and attach necessary proof/s.
+                                      <br>
+                                    <dt>Schedule 10 – Balance Sheet:</dt>
+                                    Indicate the amounts as shown in the Audited Financial Statements.
+                                      <br>
+                                    <dt>Schedule 11 – Reconciliation of Net Income per Books Against Taxable Income Tax Filer/Spouse:</dt>
+                                    Indicate all the reconciling items to be added or subtracted from the net income reported in the financial statements to arrive at the taxable income reported in the income tax return. For taxpayer subject to regular rate, fill up the non-deductible expenses such as: allowance for bad debts not actually written off, amortization and others which are not deductible for taxation purposes. Also, add other taxable income such as: recovery of bad debts previously written off, adjustment to retained earnings, and other adjustments that are considered as income for tax purposes.
+                                      <br>
+                                    <dt>Schedule 12A - Gross Income/Receipts Subjected to Final Withholding:</dt>
+                                    Indicate the income/receipt of interests; royalties; dividends; prizes and winnings; fringe benefits; compensation subject to 15% preferential rate; sale/ exchange of real property; sale/exchange of shares of stock; other income and the corresponding final tax withheld/paid, if applicable.
+                                      <br>
+                                    <dt>Schedule 12B - Gross Income/Receipts Exempt from Income Tax-</dt>
+                                    Indicate personal/real properties received thru gifts, bequests, and devises; and other exempt income and receipts under Sec. 32(B) of the NIRC, as amended.
+
+                                    <br>
+                                    <b>FOR TAX FILERS WITH MULTIPLE TAX REGIMES:</b>
+                                    <p><b><i>Accomplish only Part IX and X if with Exempt/Special Tax Regime.</i></b></p>
+                                    <p>Accomplish Part X – Mandatory Attachments for Exempt/Special per tax Regime per Activity and consolidate to Part IX together with Part IV for Regular Tax Regime.</p>
+                                </td>
+                                
+                                <td class="secondcol">
+                                    
+
+                                    <dt>Part IX- Consolidated Computation by Tax Regime</dt>
+                                    <p>Accomplish required consolidated information per tax regime and reflect the total for the tax filer and the spouse. If under regular rate only, do not accomplish Part IX, instead, proceed directly to Schedules-Regular Rate (Schedules 1 to 12B).</p>
+
+                                    <dt>Part X - Mandatory Attachments for Exempt/Special Tax Regime per Activity</dt>
+                                    <p>
+                                        Part X is applicable only for those with income subject to multiple
+                                         tax regimes.
+                                         However, tax filer must first complete appropriate schedules <b>from Part 
+                                        X-Mandatory Attachments
+                                         for Exempt/Special Tax Regimes per Activity pages 1m to 5m, including the
+                                         Schedules
+                                         - Regular Rate (Schedules 1 to 12B), if applicable. <u>Accomplish as many 
+                                        PART X as there are activities/programs per TAX REGIME.</u></b>
+                                        Consolidate the amounts PER TAX REGIME under EXEMPT and/or 
+                                        SPECIAL from all of Part X-Mandatory Attachments which shall 
+                                        be reflected in the appropriate items of columns B and/or C for the 
+                                        Tax filer, and columns F and/or G for the spouse, if applicable.
+                                    </p>
+                                    <br>
+                                    <p><b><i>Example:</i></b></p>
+
+                                    <div style="width: 95%; height: 220px; display: block; padding-left: 15px;">
+                                        <dt style="text-align: center">SPECIAL</dt>
+                                        
+                                        <div style="width: 30%; display: inline-block; padding: 2.5px">
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd><b>Special</b> </dd>
+                                                <dd>Activity 1</dd>
+                                                <dd>Schedule B</dd>
+                                            </div>
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 10px 0 0 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd><b>Special</b> </dd>
+                                                <dd>Activity 2</dd>
+                                                <dd>Schedule B</dd>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div style="width: 30%; display: inline-block;">
+                                            <div style="font-size: 18px;">&nbsp;Consolidate</div>
+                                            <div style="font-size: 100px;">→</div>
+                                        </div>
+                                        
+                                        <div style="width: 30%; display: inline-block;">
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 10px 0 0 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd>Column B </dd>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div style="width: 95%; height: 220px; display: block; padding-left: 15px;">
+                                        <dt style="text-align: center">EXEMPT</dt>
+                                        
+                                        <div style="width: 30%; display: inline-block; padding: 2.5px">
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd><b>Exempt</b> </dd>
+                                                <dd>Activity 1</dd>
+                                                <dd>Schedule B</dd>
+                                            </div>
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 10px 0 0 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd><b>Exempt</b> </dd>
+                                                <dd>Activity 2</dd>
+                                                <dd>Schedule B</dd>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div style="width: 30%; display: inline-block;">
+                                            <div style="font-size: 18px;">&nbsp;Consolidate</div>
+                                            <div style="font-size: 100px;">→</div>
+                                        </div>
+                                        
+                                        <div style="width: 30%; display: inline-block;">
+                                            <div style="width: 100px; border: 1px solid black; text-align: center; margin: 10px 0 0 0; padding: 0;">
+                                                <dd>Part X</dd>
+                                                <dd>Column B </dd>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <dt>Subsequently, transfer the applicable Items to Part V, and finally to Part II.</dt>
+                                    <br>
+                                    <dt>REQUIRED ATTACHMENTS:</dt>
+
+                                    <ol>
+                                        <li>Certificate of independent CPA duly accredited by the BIR (The CPA Certificate is required if the gross quarterly sales, earnings, receipts or output exceed P 150,000).</li>
+                                        <li>Account Information Form (AIF) and/or Financial Statements (FS), including the following schedules prescribed under existing revenue issuances which must form part of the Notes to the Audited FS:
+                                            <ol type="a">
+                                                <li>Taxes and Licenses</li>
+                                                <li>Other information prescribed to be disclosed in the notes to FS</li>
+                                            </ol>
+                                        </li>
+                                        <li>Statement of Management’s Responsibility (SMR) for Annual Income Tax Return.</li>
+                                        <li>Certificate of Income Payments not subjected to Withholding Tax (BIR Form No. 2304).</li>
+                                        <li>Certificate of Creditable Tax Withheld at Source (BIR Form
+                                            No. 2307).</li>
+                                        <li>Certificate of Compensation Payment/Tax Withheld (BIR Form
+No. 2316).</li>
+                                        <li>Duly approved Tax Debit Memo, if applicable.</li>
+                                        <li>Proof of prior years' excess credits, if applicable.</li>
+                                        <li>Proof of Foreign Tax Credits, if applicable.</li>
+                                        <li>For amended return, proof of tax payment and the return previously filed.</li>
+                                        <li>Summary Alphalist of Withholding Agents of Income Payments Subjected to Withholding Tax at Source (SAWT), if applicable.</li>
+                                        <li>Proof of other tax payment/credit, if applicable.</li>
+                                        <li>Authorization Letter, if filed by an authorized representative.</li>
+                                        <li>Waiver of husband’s right to claim additional exemption, if applicable.</li>
+                                    </ol>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+                         <div align="center"><strong>4</strong></div>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+</form></hta:application></div>

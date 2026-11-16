@@ -1,0 +1,99 @@
+/* A phone's screen (under 640 px wide) on the pages that can reflow: BIR's main screen and its help pages. They
+   are text and single fields, laid out for an 800 px window; here they wrap to the phone's width instead of
+   shrinking to fit (LayoutView.tsx useLayoutRoot), so text stays readable and boxes stay big enough to tap.
+   BIR's forms keep BIR's page as drawn and shrink to fit: their boxes line up with the paper form. */
+@media screen and (max-width: 640px) {
+  .bir-body {
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+  /* the menu bar: bigger tap targets */
+  ul.topnav {
+    height: auto !important;
+    min-height: 40px;
+    width: 100% !important;
+  }
+  ul.topnav > li > a {
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+    font-size: 15px !important;
+  }
+  ul.topnav li ul.subnav {
+    top: 40px !important;
+    width: min(260px, 80vw) !important;
+  }
+  ul.topnav li ul.subnav li a {
+    padding: 11px 12px !important;
+    font-size: 15px !important;
+    line-height: 1.3 !important;
+  }
+  ul.topnav li ul.subnav li ul.subnav {
+    position: static !important;
+    width: 100% !important;
+  }
+  #watermark {
+    display: none !important;
+  }
+  /* main screen: the profile and the form list fill the width */
+  #all_content {
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 12px 14px 32px !important;
+    margin-top: 44px !important;
+    background-size: cover !important;
+  }
+  #all_content input[type="text"],
+  #all_content select,
+  #all_content .max,
+  #all_content .mainContent {
+    max-width: 100% !important;
+    box-sizing: border-box;
+    min-height: 36px;
+    font-size: 16px !important; /* 16 px stops iOS zooming in on every tap */
+  }
+  #all_content input[type="button"] {
+    min-height: 40px;
+    font-size: 15px !important;
+  }
+  #all_content p {
+    width: auto !important;
+  }
+  #all_content table#outPut,
+  #all_content .table_head {
+    font-size: 13px;
+  }
+  /* help pages: BIR's two columns become one */
+  #wrapper,
+  #container,
+  #formPaper {
+    padding: 0 !important;
+    margin-top: 40px !important;
+    width: auto !important;
+  }
+  #inserted,
+  #inserted > tbody,
+  #inserted > tbody > tr,
+  #inserted > tbody > tr > td {
+    display: block !important;
+    width: auto !important;
+    border-right: 0 !important;
+  }
+  .formTitle,
+  .helpTitle {
+    font-size: 20px !important;
+    width: auto !important;
+    box-sizing: border-box;
+  }
+  .smallSubtitle {
+    width: auto !important;
+  }
+  .firstcol,
+  .secondcol,
+  .firstcol_noborder {
+    padding: 6px 14px !important;
+    font-size: 15px;
+    line-height: 1.45;
+    text-align: left !important;
+  }
+}

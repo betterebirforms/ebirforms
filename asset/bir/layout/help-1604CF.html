@@ -1,0 +1,303 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+.style2 { font-size: 10px; }
+.style3 { font-size: 10pt; }
+.style4 { font-size: 12pt; }
+.atcNames { font-weight: bold; }
+tr.atc td { border-bottom: 1px solid rgb(225, 225, 225); }
+tr.atc:hover td { background: rgb(255, 255, 204); }
+td.atc { padding: 4px; }
+#header, .menu { position: fixed; width: 100%; top: 0px; left: 0px; height: 25px; background: rgb(254, 254, 254); white-space: nowrap; font-weight: bold; border: 1px solid rgb(204, 204, 204); visibility: hidden; z-index: 3000; }
+.menu { visibility: visible; }
+#header input { background: none; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(204, 204, 204) currentcolor currentcolor; border-image: none; font-weight: bolder; height: 25px; float: left; width: auto; padding-left: 3px; padding-right: 3px; visibility: visible !important; }
+#header input:hover { background: rgb(255, 255, 204); }
+#container { margin-top: 40px; }
+</style>
+<div class="bir-body" ><hta:application id="0605" applicationname="0605" version="1.0" caption="yes" showintaskbar="yes" icon="../img/bir_icon.ico" singleinstance="YES" sysmenu="YES" navigable="YES" contextmenu="NO" windowstate="maximize" scrollflat="YES">	
+		
+			
+        		
+		
+        
+        	
+        
+    
+    
+    <ul class="topnav printButtonClass">  
+        <li>
+        	<a href="#" class="toplevel">File</a>
+        	<ul class="subnav">  
+                <li><a href="../BIRForms.hta">Main Screen</a></li>  
+				<li><a href="#">Exit</a></li>  
+            </ul> 
+        <span></span></li>  
+
+    </ul>
+    
+	<div class="printButtonClass" style="position:fixed; top:10px; font-size:11px; z-index:1000000000000000; right:5px; width:auto;">Government Property Not For Sale</div>
+    
+    
+	<img class="printButtonClass" id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top"> 
+
+	
+
+	<form id="frmMain" name="frmMain">
+        <div id="container">
+            <div id="wrapper" style="margin: 0 auto; position: relative; width: 830px; ">
+                <div id="formPaper">
+                    <div id="Content">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td>
+								    <span class="formTitle"><b>BIR Form No. 1604CF</b> <br>Guidelines and Instructions</span>
+									
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div class="smallSubtitle" style="font-weight:bold;">BIR Form No. 1604 CF - Annual Information Return of Income Taxes Withheld on Compensation and Final</div>
+                        <div class="smallSubtitle" style="font-weight:bold;">Withholding Taxes</div>
+                        <div class="smallSubtitle" style="font-weight:bold;">Guidelines and Instructions
+</div>
+                        <br>
+                        <br>
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+                                    <dt>Who Shall File</dt>
+                                    <p>This return shall be filed in triplicate by
+every employer or withholding agent/payor who is
+either an individual, estate, trust, partnership,
+corporation, government agency and
+instrumentality, government-owned and controlled
+corporation, local government unit and other
+juridical entity required to deduct and withhold taxes
+on compensation paid to employees and on other
+income payments subject to Final Withholding
+Taxes. The tax rates for and nature of income
+payments subject to withholding tax on
+compensation and final withholding taxes are
+printed in BIR Form 1601-C and 1601F,
+respectively.</p>
+                                    <p>If the payor is the Government of the
+Philippines or any political subdivision or
+agency/instrumentality thereof, or governmentowned
+and controlled corporation, the return shall
+be made by the officer or employee having control
+of the payments or by any designated officer or
+employee.</p>
+                                    <p>If the person required to withhold and pay
+the tax is a corporation, the return shall be made in
+the name of the corporation and shall be signed and
+verified by the president, vice president or
+authorized officer and shall be countersigned by the
+treasurer or assistant treasurer. </p>
+                                    <p>With respect to fiduciary, the return shall be
+made in the name of the individual, estate or trust
+for which such fiduciary acts, and shall be signed
+and verified by such fiduciary. In case of two or
+more fiduciaries, the return shall be signed and
+verified by one of such fiduciaries.</p>
+                                    <dt>When and Where to File</dt>
+                                    <p>The return shall be filed on or before
+January 31 of the year following the calendar year in
+which the compensation payment and other income
+payments subjected to final withholding taxes were
+paid or accrued.
+</p>
+                                    <p>The return shall be filed with the Revenue
+Collection Officer or duly authorized City/Municipal
+Treasurer of the Revenue District Office having
+jurisdiction over the withholding agent's place of
+business/office.
+</p>
+                                    <p>A taxpayer may file a separate return for the
+head office and for each branch or place of
+business/office or a consolidated return for the head
+office and all the branches/offices except in the
+case of large taxpayers where only one
+consolidated return is required.</p>
+                                    <dt>Penalty for failure to file information returns</dt>
+                                    <p>In the case of each failure to file an
+information return, statement or list, or keep any
+record, or supply any information required by the
+Code or by the Commissioner on the date
+prescribed therefor, unless it is shown that such
+failure is due to reasonable cause and not to willful
+</p>
+                                </td>
+                                <td class="secondcol">
+                                    neglect, there shall, upon notice and demand by the
+Commissioner, be paid by the person failing to file,
+keep or supply the same, One thousand pesos
+(P= 1,000.00) for each such failure: Provided,
+however, that the aggregate amount imposed for all
+such failures during a calendar year shall not
+exceed Twenty five thousand pesos (P= 25,000.00).
+                                    <dt>Attachments Required
+</dt>
+                                    <br>
+                                    <ol>
+                                        <li>Alphalist of Employees as of December 31 with
+No Previous Employer within the Year.</li>
+                                         <li>Alphalist of Employees as of December 31 with
+Previous Employer/s within the Year.</li>
+                                         <li>Alphalist of Employees Terminated before
+December 31.</li>
+                                         <li>Alphalist of Employees Whose Compensation
+Income Are Exempt from Withholding Tax but
+Subject to Income Tax.</li>
+                                         <li>Alphalist of Employees other than Rank &amp; File
+Who Were Given Fringe Benefits During the
+year.</li>
+                                         <li>Alphalist of Payees Subjected to Final
+Withholding Tax.</li>
+                                         <li>Alphalist of Minimum Wage Earners.</li>
+                                    </ol>
+                                    <br>
+                                    <dt>Note: All background information must be
+properly filled up.</dt><br>
+                                    <ul>
+                                        <li>All returns filed by an accredited tax agent on
+behalf of a taxpayer shall bear the following
+information:</li>
+                                        <ol class="indent" type="A">
+                                            <li>. For CPAs and others (individual
+practitioners and members of GPPs);</li>
+                                            <dd>a.1 Taxpayer Identification Number (TIN);
+ and </dd>
+                                            <dd>a.2 Certificate of Accreditation Number,
+ Date of Issuance, and Date of Expiry.</dd>
+                                            <li>For members of the Philippine Bar
+(individual practitioners, members of GPPs);
+</li>
+                                            <dd>b.1 Taxpayer Identification Number (TIN);</dd>
+                                            <dd>b.2 Attorney’s Roll Number or Accreditation
+Number, if any
+</dd>
+                                        </ol>
+                                        <br>
+                                        <li>The last 4 digits of the 13-digit TIN refer to the
+branch code.</li>
+                                         <li>Box No. 1 refers to transaction period and not
+the date of filing this return.</li>
+                                         <li>TIN= Taxpayer Identification Number.</li>
+                                         <li>The ATC in the Alphabetical List of
+Payees/Employees shall be taken from BIR
+Form Nos. 2316 and 2306.</li>
+                                         <li>Employees earning an annual compensation
+income of not exceeding P= 60,000 from one
+employer who did not opt to be subjected to
+withholding tax on compensation shall be
+reported under Schedule 7.2 (Alphalist of
+Employees Whose Compensation Income are
+Exempt from Withholding Tax But Subject to
+Income Tax). (Applicable from January 1 to July
+5, 2008)
+</li>
+
+
+                                    </ul>
+                                    <br>
+                                    <div align="right"><strong>ENCS</strong></div>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+
+</form></hta:application></div>

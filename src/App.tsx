@@ -4,6 +4,7 @@ import { webExport, webImport, webPersist } from "@/lib/web-store.ts";
 import { FormView } from "@/form/FormView.tsx";
 import { LayoutView, hasLayout } from "@/form/LayoutView.tsx";
 import { MainLayout } from "@/form/MainLayout.tsx";
+import { HelpLayout } from "@/form/HelpLayout.tsx";
 import { ModScreen } from "./ModScreen.tsx";
 import { NATIVE_FORM } from "@/form/registry.ts";
 import { parseSavefile, profileFromSavefile, type Profile } from "@/lib/savefile.ts";
@@ -25,6 +26,9 @@ const MAIN_SCREEN = "/legacy/BIRForms.hta";
  * show. After that it hands straight over to BIR's `BIRForms.hta`.
  */
 export function App() {
+  // BIR's help pages (Help > BIR Form <X>), web version only
+  const help = IS_WEB ? /^\/help\/([^/?#]+)\/?$/.exec(routePath()) : null;
+  if (help) return <HelpLayout code={decodeURIComponent(help[1]!)} home={at("/")} />;
   const route = /^\/form(?:\/([^/?#]+))?\/?$/.exec(routePath());
   const form_code = route?.[1] ? decodeURIComponent(route[1]) : null;
   // the web version's home (`/` or `/form`) carries the donate link; a form page never does

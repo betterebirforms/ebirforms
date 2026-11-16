@@ -6,6 +6,7 @@
 import { useEffect, useRef } from "react";
 import { NATIVE_FORM } from "./registry.ts";
 import { useLayoutRoot, wireMenu, WEB_SEND_STEP } from "./LayoutView.tsx";
+import { openHelp } from "./help.ts";
 import { listFolder, readText, removeFile, writeText } from "@/lib/vfs";
 import { canPickFolder, webExport, webFolder, webForgetFolder, webImport, webPersist, webPickFolder, webReconnect } from "@/lib/web-store.ts";
 import { parseSavefile, profileFileName, profileFromSavefile, profileToSavefile, serializeSavefile, type Profile } from "@/lib/savefile.ts";
@@ -352,7 +353,7 @@ export function MainLayout({ profile_name, formHref, codeOfSavefile }: { profile
       Save: () =>
         void saveProfile().then((name) => name && window.alert(`Background information saved/updated successfully as : profile/${name}`)),
       View: () => root.getElementById("btnListViewRecord")?.click(),
-    }, ["Exit"]);
+    }, ["Exit"], (label, href) => openHelp(label, href));
 
     // typing a full TIN loads that taxpayer's saved profile, as BIR's does
     const loadByTin = async () => {

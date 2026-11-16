@@ -22,7 +22,7 @@ Three layers stay apart (docs/architecture.md): BIR's original (never edited), m
 | `src-tauri/` | Tauri v2 desktop host (Rust): replaces BIRForms.exe and the helper exes |
 | `mod/` | Every serve-time change to BIR's pages, one JSON file each, kind = folder (`mod/README.md`). Read by `host/mod.ts` and `src-tauri/src/bir_mod.rs` (embedded by `build.rs`) |
 | `public/legacy-shim.js` | What IE gave BIR's pages (ActiveX FSO, VBScript helpers, IE DOM quirks), injected into every page |
-| `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one). `LayoutView.tsx` / `MainLayout.tsx`: the web version's BIR-look screens, driven by the engine by BIR's field ids |
+| `src/form/` | Native forms: `form<code>.ts` schemas; `entry/<CODE>.ts` registers a form (never edit `registry.ts` for a new one). `LayoutView.tsx` / `MainLayout.tsx`: the web version's BIR-look screens, driven by the engine by BIR's field ids; `HelpLayout.tsx` + `help.ts`: BIR's help pages (`layout/help-<code>.html`); `phone.css`: how the main screen and help wrap on a phone |
 | `src/form/export.ts` | Export adapters: the eBIRForms savefile (name + records, BIR's own) and the TSP slot (refuses until BIR issues a layout) |
 | `src/form/template/`, `upper-case.json`, `lock/` | **Captured** from BIR's forms (do not hand-edit): each form's blank save, what BIR upper-cases, and which greyed boxes each choice opens (`EBF_CAPTURE_LOCK`) |
 | `mcp/` | The agent server (MCP over stdio): `tool.ts` is what an agent may do (drafts only, never a final copy or a submit), `main.ts` serves it. `npm run build:mcp` → `dist-mcp/`; setup in `docs/agent.md` |

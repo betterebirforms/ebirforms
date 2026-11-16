@@ -1,5 +1,6 @@
-BIR's Offline eBIRForms Package, rebuilt to run on Windows, macOS and Linux. Fill in, save and print BIR's 84
-forms offline. The saved files are the same as BIR's own app makes. This app is free and not affiliated with BIR.
+BIR's Offline eBIRForms Package, rebuilt to run on Windows, macOS and Linux. Fill in, check, save, print and send
+BIR's 84 forms. The saved files are the same as BIR's own app makes. This app is free and not affiliated with BIR.
+What's new in each version: [CHANGELOG](https://github.com/betterebirforms/ebirforms/blob/main/CHANGELOG.md).
 
 ## Which file do I download?
 
@@ -49,12 +50,19 @@ You only do this once. On macOS 12 to 14, you can instead right-click eBIRForms 
 
 ## After installing
 
-Fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
+1. Fill in your profile, pick a form, click **Fill-up**, fill it in and click **Validate**.
+2. Click **Submit / Final Copy**. The app sends your return to BIR, the way BIR's own app does. Sending is on by
+   default; you can turn it off in **Go > Send Returns to BIR (beta)**.
+3. **Your return is filed only when BIR's confirmation email arrives.** Keep that email as your proof. Sending is
+   in beta and no return sent by this app has been confirmed by BIR yet, so watch for that email.
 
-This app does **not** file returns with BIR. Submit only locks the return and saves it on your computer. To
-file it, print it and file on paper, or copy it (**Go > Show Saved Returns**) into `C:\eBIRForms\savefile` on a
-Windows computer with BIR's own eBIRForms app, open it there and click Submit.
+If sending is off or does not work for you, the return is still saved as BIR's locked final copy. Print it and
+file on paper, or copy it (**Go > Show Saved Returns**) into `C:\eBIRForms\savefile` on a Windows computer with
+BIR's own eBIRForms, open it there and click Submit.
 
-From v0.1.2 on, the app checks for updates when it opens, and **Updates > Check for Updates** checks now. You
-don't need to come back here for new versions. Found a problem?
+No install? The [web version](https://betterebirforms.github.io/ebirforms/) fills in, saves and prints the same
+returns in your browser. It can't send to BIR; open its final copy in this app or in BIR's app to send it.
+
+The app checks for updates when it opens, and **Updates > Check for Updates** checks now. You don't need to come
+back here for new versions. Found a problem?
 [Open an issue](https://github.com/betterebirforms/ebirforms/issues/new/choose).

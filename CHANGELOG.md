@@ -5,6 +5,10 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On a phone, the web version's home screen and help pages fit the screen at a readable size, with bigger menus and boxes. A form keeps BIR's page shrunk to fit, and a Zoom in button shows it at full size.
+- On the web version, Help works: Help > a tax type > a form opens BIR's own help page for that form, from the home screen and from every form. A form asks first, as in BIR's app, since leaving it loses what you have not saved. For the few forms where BIR's package has no help page, it says so.
+- The README (English, Filipino and Cebuano) now shows the web version up front, explains how filing works in the app and on the web, and has a clearer Support section. The release page no longer says the app can't file returns.
+
 ## v0.2.0 (16 November 2026)
 
 - Sending to BIR (beta) is now on by default. When the app starts with an internet connection, it downloads BIR's official package once and keeps the two files sending needs. You can turn sending off in Go > Send Returns to BIR (beta). Your return is filed only when BIR's confirmation email arrives, so keep that email.

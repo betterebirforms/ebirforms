@@ -1,0 +1,874 @@
+<style>a[disabled], span[disabled], div[disabled], td[disabled], img[disabled] { pointer-events: none; cursor: default; color: graytext !important; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); font-family: Tahoma, Verdana, sans-serif; }
+:where(input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], textarea):where(:disabled, [readonly]) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(select) { appearance: none; border: 1px solid rgb(127, 157, 185); border-radius: 0px; background-color: rgb(255, 255, 255); padding-left: 2px; font-family: Tahoma, Verdana, sans-serif; }
+select:not([multiple]):not([size]), select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='19'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c3d3fd'/%3E%3Cstop offset='1' stop-color='%23a6bdf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='16' height='18' rx='2' fill='url(%23g)' stroke='%23b6c7f4'/%3E%3Cpath d='M5 8l3.5 3.5L12 8' fill='none' stroke='%234d6185' stroke-width='2'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 1px center !important; padding-right: 19px !important; }
+:where(select:disabled) { background-color: rgb(235, 235, 228); color: rgb(109, 109, 109); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button) { appearance: none; border: 1px solid rgb(0, 60, 116); border-radius: 3px; background: linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 243) 40%, rgb(236, 235, 230) 85%, rgb(214, 208, 197) 100%); color: rgb(0, 0, 0); font-family: Tahoma, Verdana, sans-serif; padding: 2px 8px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:hover:not(:disabled)) { box-shadow: rgb(248, 179, 59) 0px -2px inset, rgb(255, 232, 165) 0px 2px inset; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:active:not(:disabled)) { background: linear-gradient(rgb(229, 228, 222), rgb(227, 226, 218) 50%, rgb(242, 241, 236)); }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:focus-visible) { outline: 1px dotted rgb(0, 0, 0); outline-offset: -4px; }
+:where(input[type="button"], input[type="submit"], input[type="reset"], button):where(:disabled) { border-color: rgb(201, 199, 186); color: rgb(172, 168, 153); background: rgb(245, 244, 234); }
+* { margin: 0px; padding: 0px; }
+.bir-body, :host { margin: 0px; padding: 0px; font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; zoom: 1; background: none !important; }
+#wrapper, #container { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+#sched1Div1602 { padding: 1%; margin: 0px auto; width: auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: rgb(226, 226, 226); border: 1px solid rgb(204, 204, 204); }
+#formPaper { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+#formPaper table { width: 100%; }
+#footer { background: rgb(255, 255, 255); width: auto; border: 1px solid rgb(204, 204, 204); margin: 0px auto; }
+.tblForm2200AN { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm2200AN td.tblFormTd2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm2200AN td.tblFormTdPart2200AN { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm1801 td.tblFormTd1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm1801 td.tblFormTdPart1801 { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 2px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm { background: rgb(226, 226, 226); border-collapse: collapse; border-spacing: 0px; }
+.tblForm td.tblFormTd { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdNoTopBorder { background-position: center top; padding: 1px 0px; border-right: 1px solid rgb(170, 170, 170); }
+.tblForm td.tblFormTdPart { background-image: url("{{base}}img/e6b7595eedac92ab.png"); background-repeat: repeat-x; background-position: center top; padding: 1px 0px; border-top: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); }
+.spacePadder { padding: 4px 0px; }
+.aBox { background-color: rgb(226, 226, 226); color: rgb(0, 0, 0); padding: 0px; margin: 0px; top: 50%; left: 30%; position: absolute; z-index: 100000; }
+.aBox input, .aBox label { font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; }
+#msg { color: rgb(255, 0, 0); border: 1px solid rgb(204, 204, 204); padding: 5px; background: rgb(255, 255, 204); }
+.printSignFooterClass table, .printSignFooterClass table td, .printSignFooterClass table tr { border-collapse: collapse; }
+#watermark { position: absolute; margin: 0px auto 0px -350px; float: left; clear: none; width: 700px; display: block; left: 50%; top: 140px; z-index: 3; }
+#bg { position: fixed; float: left; clear: none; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; }
+.formTitle { padding: 20px 2px 2px; display: block; color: rgb(0, 0, 0); font-size: 24px; border-bottom: 1px solid rgb(85, 85, 85); font-weight: bold; margin-bottom: 10px; width: 100% !important; }
+.helpTitle { padding: 20px 2px 2px; font-size: 22px; display: block; color: rgb(102, 101, 101); font-weight: bold; margin-bottom: 10px; font-family: Times New Roman; width: 100% !important; }
+.topnav { background: rgb(249, 249, 249); border-bottom: 1px solid rgb(51, 51, 51); font-size: 0.85em; height: 30px; position: fixed; top: 0px; width: 100%; z-index: 1000000; }
+ul.topnav { list-style: none; padding: 0px 20px; margin: 0px; float: left; background: rgb(249, 249, 249); font-size: 14px; }
+ul.topnav li { float: left; margin: 0px; padding: 0px 15px 0px 0px; position: relative; }
+ul.topnav li a { padding: 7px; color: rgb(0, 0, 0); display: block; text-decoration: none; float: left; }
+ul.topnav li a:hover {  }
+ul.topnav li span { width: 17px; height: 35px; float: left; }
+ul.topnav li span.subhover { cursor: pointer; }
+ul.topnav li ul.subnav { list-style: none; position: absolute; left: 0px; top: 30px; background: rgb(249, 249, 249); margin: 0px; padding: 0px; display: none; float: left; width: 180px; border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(17, 17, 17) rgb(17, 17, 17); border-image: none; }
+ul.topnav li ul.subnav li { margin: 0px; padding: 0px; border-top: 1px solid rgb(37, 37, 37); clear: both; width: 100%; overflow: hidden; }
+:host ul.topnav li ul.subnav li a { float: left; display: block; width: 100%; }
+.previewButtonClass { display: none !important; }
+.footerContent { font-weight: normal; font-family: sans-serif, Arial, Helvetica; font-size: 10px; }
+.footerColumnHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 12px; }
+.footerHeader { font-weight: bold; font-family: sans-serif, Arial, Helvetica; font-size: 14px; }
+.modalContent { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 11px; color: rgb(0, 0, 0); }
+.modalHeader { font-weight: bold; font-family: Arial, sans-serif, Helvetica; font-size: 12px; color: rgb(0, 0, 0); }
+.modalContent_1800 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_1800 { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalContent_2200M { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 10px; }
+.modalColumnHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 11px !important; color: rgb(0, 0, 0) !important; }
+.modalHeader_2200M { font-family: Arial, sans-serif, Helvetica; font-weight: bold !important; font-size: 12px !important; color: rgb(0, 0, 0) !important; }
+.modalColumnHeader1 { font-weight: normal; font-family: Arial, sans-serif, Helvetica; font-size: 12px; }
+.mainLabel { font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+#inserted { font-family: Times New Roman; font-size: 14px; border: medium; border-collapse: collapse; margin-bottom: 15px; }
+#inserted tr { width: 100%; border: medium; }
+#inserted td { vertical-align: top; border: medium; }
+#inserted p { text-indent: 30px; margin: 7.5px 0px; }
+#inserted li { margin: 0px 0px 2.5px 15px; }
+#inserted dt { font-weight: bold; margin: 10px 0px 5px; }
+#inserted dd { margin: 2.5px 0px 2.5px 10px; }
+.titlecol { width: 100%; text-align: center; font-family: Times New Roman; font-size: 25px; font-weight: bold; margin-bottom: 15px; padding-top: 15px; border: medium; }
+.titlecol .small { display: inline; font-size: 16px; }
+.subtitle { font-size: 18px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.smallSubtitle { font-size: 14px; font-weight: bold; text-align: center; font-family: Times New Roman; }
+.firstcol { width: 50%; padding: 5px 15px; text-align: justify; border-right: 1px solid black !important; }
+.firstcol_noborder { width: 50%; padding: 5px 15px; text-align: justify; border-right: 0px solid black !important; }
+.secondcol { width: 50%; padding: 5px 15px; text-align: justify; }
+#minitable { width: 50%; text-align: center; border-collapse: collapse; }
+#minitable th { background-color: rgb(217, 217, 217); }
+#minitable th, #minitable tr, #minitable td { border: 1px solid black; }
+.boxed { padding: 10px; font-weight: bold; text-align: center; margin: 0px auto; width: 50%; border: 1px solid black; }
+.indent { margin-left: 20px; }
+#tosa { color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; position: relative; padding: 25px; width: 80%; margin-left: auto; margin-right: auto; margin-top: 50px; background-color: white; }
+.centerButton { width: 100px; margin: 0px auto; }
+#tosa h2 { margin-top: 25px; margin-bottom: 15px; }
+#tosa h4 { margin-top: 15px; margin-bottom: 15px; }
+#tosa h5 { margin-top: 15px; margin-bottom: 15px; }
+.centerButton input { width: 70px; height: 30px; }
+.indentTosa { margin-left: 30px; margin-bottom: 10px; }
+.payment-option { display: none; width: 50%; position: relative; top: 25%; left: 25%; right: auto; overflow: hidden auto; background: rgb(226, 226, 226); z-index: 100; border: 2px solid rgb(14, 0, 209); }
+.payment-option-content { vertical-align: middle; margin: 10px; }
+.payment-option-footer { padding: 10px; position: relative; font-weight: normal; text-align: right; background: rgb(210, 210, 210); }
+.style2 { font-size: 10px; }
+.style3 { font-size: 10pt; }
+.style4 { font-size: 12pt; }
+.atcNames { font-weight: bold; }
+tr.atc td { border-bottom: 1px solid rgb(225, 225, 225); }
+tr.atc:hover td { background: rgb(255, 255, 204); }
+td.atc { padding: 4px; }
+#header, .menu { position: fixed; width: 100%; top: 0px; left: 0px; height: 25px; background: rgb(254, 254, 254); white-space: nowrap; font-weight: bold; border: 1px solid rgb(204, 204, 204); visibility: hidden; z-index: 3000; }
+.menu { visibility: visible; }
+#header input { background: none; border-width: medium 1px medium medium; border-style: none solid none none; border-color: currentcolor rgb(204, 204, 204) currentcolor currentcolor; border-image: none; font-weight: bolder; height: 25px; float: left; width: auto; padding-left: 3px; padding-right: 3px; visibility: visible !important; }
+#header input:hover { background: rgb(255, 255, 204); }
+#container { margin-top: 40px; }
+</style>
+<div class="bir-body" ><hta:application id="1702RT" applicationname="1702RT" version="1.0" caption="yes" showintaskbar="yes" icon="../img/bir_icon.ico" singleinstance="YES" sysmenu="YES" navigable="YES" contextmenu="NO" windowstate="maximize" scrollflat="YES">	
+		
+			
+        		
+		
+        
+        	
+        
+
+
+    <ul class="topnav printButtonClass">
+        <li>
+            <a href="#" class="toplevel">File</a>
+            <ul class="subnav">
+                <li><a href="../BIRForms.hta">Main Screen</a></li>
+                <li><a href="#">Exit</a></li>
+            </ul>
+        <span></span></li>
+
+    </ul>
+    
+    <div class="printButtonClass" style="position: fixed; top: 10px; font-size: 11px; z-index: 1000000000000000; right: 5px; width: auto;">Government Property Not For Sale</div>
+
+    
+    <img class="printButtonClass" id="bg" src="{{base}}img/db6c2151dc9b11b3.png" height="100%" align="top">
+    
+
+    
+
+    <form id="frmMain" name="frmMain">
+        <div id="container">
+            <div id="wrapper" style="margin: 0 auto; position: relative; width: 830px;">
+                <div id="formPaper">
+                    <div id="Content" align="center">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody><tr>
+                                <td>
+                                    <span class="formTitle"><b>BIR Form No. 1702RT</b>
+                                        <br>
+                                        Guidelines</span>
+                                    
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+                        <div class="titlecol">
+                            Guidelines and Instructions BIR Form No. 1702-RT
+                            <div class="small">(June 2013)</div>
+                        </div>
+                        <div class="subtitle">For Corporation, Partnership and Other Non-Individual Taxpayer</div>
+                        <div class="subtitle">Subject Only to REGULAR INCOME TAX RATE</div>
+                        <br>
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+                                    <p>These instructions are designed to assist tax filers, or their representatives, with the preparation of the annual income tax return (ITR). If there are questions which are not adequately covered, please consult the local BIR office. If there appears to be any discrepancies between these instructions and the applicable laws and regulations, the laws and regulations take precedence.</p>
+
+                                    <dt>What Form to Use:</dt>
+                                    <br>
+                                    <table id="minitable">
+                                        <tbody><tr>
+                                            <th width="20%">BIR Form No.</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1702-RT</td>
+                                            <td>Corporation, Partnership and other Non-Individual Taxpayer Subject Only to <b>REGULAR</b> Income Tax Rate</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1702-EX</td>
+                                            <td>Corporation, Partnership and Other Non-Individual Taxpayer <b>EXEMPT</b> under the Tax Code, as amended [Sec.30 and those exempted in Sec. 27(C)] and other Special Laws, with NO Other Taxable Income</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1702-MX</td>
+                                            <td>For Corporation, Partnership and Other Non-Individual with <b>MIXED</b> Income Subject to Multiple Income Tax Rates or with Income Subject to <b>SPECIAL/ PREFERENTIAL RATE</b></td>
+                                        </tr>
+                                    </tbody></table>
+
+                                    <br>
+                                    <dt>Who Shall File BIR Form No. 1702-RT</dt>
+
+                                    <p>
+                                        This return shall be filed by Corporation, Partnership and other Non-Individual Taxpayer Subject <b>Only to REGULAR Income Tax Rate of 30%</b>. Every corporation, partnership no matter how created or organized, joint stock companies, joint accounts, associations (except foreign corporation not engaged in trade or business in the Philippines and joint venture or consortium formed for the purpose of undertaking construction projects or engaging in petroleum, coal, geothermal and other energy operations), government-owned or controlled corporations, agencies and instrumentalities shall render a true and accurate income tax return in accordance with the provisions of the Tax Code. The return shall be filed by the president, vice-president or other principal officer, and shall be sworn to by such officer and by the treasurer or assistant treasurer.
+                                    </p>
+
+                                    <dt>When and Where to File and Pay</dt>
+                                    <ol>
+                                        <li><b>For Electronic Filing and Payment System (eFPS) Taxpayer:</b> The return shall be e-filed and the tax shall be e-paid on or before the 15th day of the fourth month following the close of the taxpayer’s taxable year using the eFPS facilities thru the BIR website www.bir.gov.ph.</li>
+                                        <li><b>For Non-Electronic Filing and Payment System (Non-eFPS) Taxpayer:</b> The return shall be filed and the tax shall be paid on or before the 15th day of the fourth month following the close of the taxpayer's taxable year with any</li>
+                                    </ol>
+                                </td>
+                                <td class="secondcol">
+                                    <dd>Authorized Agent Bank (AAB) located within the territorial jurisdiction of the Revenue District Office (RDO) where the taxpayer’s principal office is registered. In places where there are no AABs, the return shall be filed and the tax shall be paid with the concerned Revenue Collection Officer (RCO) under the jurisdiction of the RDO.
+
+                                    </dd>
+                                    <br>
+                                    <dd>Non-eFPS tax filer may opt to use the electronic format under “eBIRForms” (refer to www.bir.gov.ph) for the preparation, generation and submission and/or payment of this return with greater ease and accuracy, upon availability of the same in the system.</dd>
+
+
+                                    <dt>For NO PAYMENT RETURN:</dt>
+                                    <dd>The return shall be filed with the RDO where the taxpayer’s principal office is registered or with the concerned RCO under the same RDO on or before the 15th day of the fourth month following the close of the taxpayer's taxable year.
+
+                                    </dd>
+
+                                    <dt>How to Accomplish the Form</dt>
+                                    <ol>
+                                        <li>Enter all required information in <b>CAPITAL LETTERS using BLACK INK</b>. Mark applicable boxes with an “X”. Two copies MUST be filed with the BIR and one held by the taxpayer.</li>
+                                        <li>Indicate TIN and registered name on each page;</li>
+                                        <li>For all questions wherein an appropriate box is provided for a possible answer, mark the applicable box corresponding to the chosen answer with an “X”;</li>
+                                        <li>Required information wherein the space provided has a letter separator, the same must be supplied with CAPITAL LETTERS where each character (including comma or period) shall occupy one box and leave one space blank for every word. However, if the word is followed by a comma or period, there is no need to leave blank after the comma or period. Do NOT write “NONE” or make any other marks in the box/es; and</li>
+                                        <li><b>Accomplish first the applicable schedules before accomplishing Parts II to V.</b></li>
+                                    </ol>
+                                    <br>
+                                    <b>This return is divided into Parts I to VI with accompanying Schedules 1 to 13. Individual instructions as to the source of the information and the necessary calculations are provided on each line item.
+                                    </b>
+                                    <br>
+                                    <br>
+                                    <table id="minitable">
+                                        <tbody><tr>
+                                            <th>PART NO.</th>
+                                            <th>PARTS</th>
+                                            <th>PAGE NO.</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>I</td>
+                                            <td style="text-align: justify">Background Information
+                                            </td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>II</td>
+                                            <td style="text-align: justify">Total Tax Payable</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>III</td>
+                                            <td style="text-align: justify">Details of Payment</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IV</td>
+                                            <td style="text-align: justify">Computation of Tax</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>V</td>
+                                            <td style="text-align: justify">Tax Relief Availment</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VI</td>
+                                            <td style="text-align: justify">Information – External Auditor/Accredited Tax Agent</td>
+                                            <td>2</td>
+                                        </tr>
+
+                                    </tbody></table>
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>1</strong></div>  
+                        <br>
+                                              <div class="titlecol">
+                            Guidelines and Instructions BIR Form No. 1702-RT
+                            <div class="small">(June 2013)</div>
+                        </div>
+
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+
+                                    <table id="minitable">
+                                        <tbody><tr>
+                                            <th>SCHED NO.</th>
+                                            <th>SCHEDULES</th>
+                                            <th>PAGE NO.</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>1</td>
+                                            <td style="text-align: justify">Sales/Revenues/Receipts/Fees
+                                            </td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2A</td>
+                                            <td style="text-align: justify">Cost of Sales (For those Engaged in Trading)</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2B</td>
+                                            <td style="text-align: justify">Cost of Sales (For those Engaged in Manufacturing)</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2C</td>
+                                            <td style="text-align: justify">Cost of Services</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td style="text-align: justify">Other Taxable Income Not Subjected to Final Tax</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td style="text-align: justify">Ordinary Allowable Itemized Deductions</td>
+                                            <td>4-5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td style="text-align: justify">Special Allowable Itemized Deductions</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td style="text-align: justify">Computation of Net Operating Loss Carry Over (NOLCO)</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td style="text-align: justify">Tax Credits/Payments-Attach proof</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td style="text-align: justify">Computation of Minimum Corporate Income Tax (MCIT)</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td style="text-align: justify">Reconciliation of Net Income per Books Against Taxable Income</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td style="text-align: justify">Balance Sheet</td>
+                                            <td>7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11</td>
+                                            <td style="text-align: justify">Stockholders/Partners/Members Information</td>
+                                            <td>7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td>
+                                            <td style="text-align: justify">Supplemental Information</td>
+                                            <td>8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>13</td>
+                                            <td style="text-align: justify">Gross Income/Receipts Exempt from Income Tax</td>
+                                            <td>8</td>
+                                        </tr>
+
+                                    </tbody></table>
+
+                                    <br>
+
+                                    <dt>For Items 1 to 5</dt>
+
+                                    <dt>Item 1</dt>
+                                    <dd>Mark the applicable box with an “X”. This refers to the accounting period (Fiscal or Calendar year) upon the basis of which the annual income tax return is being accomplished;   </dd>
+
+                                    <dt>Item 2</dt>
+                                    <dd>Indicate the taxable year ended covered by the return being filed;  </dd>
+
+                                    <dt>Item 3</dt>
+                                    <dd>Choose “Yes” if the tax return is one amending previous return filed, “No” if not;  </dd>
+
+                                    <dt>Item 4</dt>
+                                    <dd>Choose “Yes” if the return is made for a fractional part of a year (e.g. commencement, retirement or change in accounting period).   </dd>
+
+                                    <dt>Item 5</dt>
+                                    <dd>Indicate the appropriate ATC as shown in the Certificate of Registration (BIR Form No. 2303). If subject to Minimum Corporate Income Tax (MCIT) for this taxable period, mark the applicable box with an “X”.  </dd>
+
+                                    <dt>Part I (Items 6-15) Background Information</dt>
+
+                                    <dt>Item 6 Taxpayer Identification Number (TIN):</dt>
+                                    <dd>Enter the TIN for the corporation, partnership or other non-individual taxpayer.   </dd>
+
+                                    <dt>Item 7 RDO Code:</dt>
+                                    <dd>Enter the appropriate code for the RDO per BIR Form Nos.1903/2303. </dd>
+                                </td>
+                                <td class="secondcol">
+
+                                    <dt>Item 8 Date of Incorporation/Organization:</dt>
+                                    <dd>Enter the date as shown in BIR Form No. 2303. It is the date when the corporation has been incorporated as per Certificate of Registration issued by the Securities and Exchange Commission (SEC)/other regulatory agencies like the Cooperative Development Authority, National Electrification Authority, etc.</dd>
+
+                                    <dt>Item 9 Registered Name:</dt>
+                                    <dd>Enter the name as it was entered on the Certificate of Registration (BIR Form No. 2303).</dd>
+
+
+                                    <dt>Item 10 Registered Address:</dt>
+                                    <dd>Enter Registered Address as indicated in the BIR Form No. 2303. If taxpayer has moved since the previous filing and has NOT updated the registration, the taxpayer must update its registration by filing BIR Form No. 1905.</dd>
+
+                                    <dt>Item 13 Main Line of Business:</dt>
+                                    <dd>Indicate the nature of the main line of business the company is engaged in per BIR Form No. 2303.</dd>
+
+
+
+                                    <dt>Item 14 PSIC Code: Philippine Standard Industrial Classification (PSIC) Code:</dt>
+                                    <dd>Refer to www.bir.gov.ph for the applicable PSIC or visit the local BIR Office.</dd>
+
+
+                                    <dt>Item 15 Method of Deduction:</dt>
+                                    <dd>Choose either Itemized Deduction under Section 34(A-J), NIRC, as amended, or Optional Standard Deduction (OSD) which is 40% of Gross Income under Section 34(L), NIRC, as amended by RA 9504. The chosen method of deduction used in the first quarter of the year shall be irrevocable and consistently applied throughout the year.</dd>
+
+                                    <dt>Part II (Items 16-21) Total Tax Payable</dt>
+                                    <p>Accomplish first Part IV – Computation of Tax on page 2 and other schedules before accomplishing these items. Then transfer the applicable information from Part IV to each of the items. Individual instructions as to the source of the information and the necessary calculations are provided on each line item.</p>
+
+                                    <dt>Signatory Lines:</dt>
+                                    <dd>When all pages of the return are complete, sign the return in the place indicated, enter the number of pages filed. In Items 23-26, provide the required information and its details.</dd>
+
+                                    <dt>Part III (Items 26-29) Details of Payment</dt>
+                                    <dd>Enter the information required and then file the original ITR plus two (2) copies to any AAB within the RDO where registered. Refer to www.bir.gov.ph for the applicable AAB or visit the local BIR Office. For no</dd>
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>2</strong></div>  
+                        <br>
+                        <div class="titlecol">
+                            Guidelines and Instructions BIR Form No. 1702-RT
+                            <div class="small">(June 2013)</div>
+                        </div>
+
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">payment returns, proceed with filing the ITR with the RDO where the tax filer is registered or the concerned RCO under the same RDO.
+                                           <br>
+
+                                    <dt>Part IV (Items 30-51) Computation of Tax</dt>
+                                    <p>Enter taxpayer’s TIN and Registered Name at the top of this page and in all succeeding pages. The requirement for entering centavos on the ITR has been eliminated. If the amount of centavos is 49 or less, drop down the centavos (e.g., P 100.49 = P 100.00). If the amount is 50 centavos or more, round up to the next peso (e.g., P 100.50 = P 101.00).</p>
+                                    <p>
+                                        Accomplish first Schedules 1 to 9 before transferring these items to the applicable information required in
+Part IV-Computation of Tax.
+                                    </p>
+
+                                    <dt>Item 41:</dt>
+
+                                    <dd>The regular/normal rate of income tax is 30% of net taxable income.</dd>
+
+                                    <div class="boxed">
+                                        <b>Penalties shall be imposed and
+collected as part of the tax:</b>
+                                    </div>
+
+                                    <br>
+                                    <dt>Item 47:</dt>
+                                    <dd>A <b>surcharge</b> of twenty five percent (25%) for each of the following violations:</dd>
+
+                                    <ol>
+                                        <li>Failure to file any return and pay the amount of tax or installment due on or before the due date;</li>
+                                        <li>Unless otherwise authorized by the Commissioner, filing a return with a person or office other than those with whom it is required to be filed;</li>
+                                        <li>Failure to pay the full or part of the amount of tax shown on the return, or the full amount of tax due for which no return is required to be filed on or before the due date;</li>
+                                        <li>Failure to pay the deficiency tax within the time prescribed for its payment in the notice of assessment.</li>
+                                    </ol>
+
+
+                                    <p>A surcharge of fifty percent (50%) of the tax or of the deficiency tax shall be imposed in case of willful neglect to file the return within the period prescribed by the Tax Code and/or by rules and regulations or in case a false or fraudulent return is filed.</p>
+
+                                    <dt>Item 48:</dt>
+                                    <dd><b>Interest</b> at the rate of twenty percent (20%) per annum, or such higher rate as may be prescribed by rules and regulations, on any unpaid amount of tax, from the date prescribed for the payment until it is fully paid.</dd>
+
+                                    <dt>Item 49:</dt>
+                                    <dd><b>Compromise penalty</b> pursuant to existing/ applicable revenue issuances.</dd>
+
+                                    <dt>Part V (Items 52-54) Tax Relief Availment</dt>
+                                    <p>Accomplish first Schedules 5 and 7 before entering these items in Part V. Descriptions are defined in the applicable schedules.</p>
+
+                                </td>
+
+                                <td class="secondcol">
+
+                                    <dt>Part VI (Items 55-61) Information – External Auditor/Accredited Tax Agent:</dt>
+
+
+                                    <p>
+                                        All returns filed by an accredited tax agent on behalf of a taxpayer shall bear the following information:
+                                    </p>
+
+                                    <ol type="A">
+                                        <li>For CPAs and others (individual practitioners and members of GPPs);
+                                            <dd><b>Items 55 to 58:</b> Name and TIN;</dd>
+                                            <dd><b>Items 59 to 61:</b> BIR Accreditation Number, Date of
+Issuance and Expiry Date.</dd>
+
+                                        </li>
+                                        <li>For members of the Philippine Bar (i.e. individual practitioners, members of GPPs);
+                                            <dd><b>Items 55 to 58:</b> Name and TIN;</dd>
+                                            <dd><b>Items 59 to 61:</b> Attorney’s Roll Number or
+Accreditation Number, Date of Issuance, and
+Expiry Date.</dd>
+                                        </li>
+                                    </ol>
+
+                                    <br>
+
+                                    <dt>Schedules 1-3:</dt>
+                                    <dd>List down the amounts of sales/ revenues/ receipts/ fees, cost of sales/revenue and other taxable income not subjected to Final Tax (e.g. Interest Income from affiliates, sale of scraps, etc.)</dd>
+
+                                    <dt>Schedule 4 Ordinary Allowable Itemized Deductions:</dt>
+                                    <dd>There shall be allowed as deduction from gross income all the ordinary and necessary trade and business expenses paid or incurred during the taxable year in carrying on or which are directly attributable to the development, management, operation and/or conduct of the trade and business. Itemized deduction also includes interest, taxes, losses, bad debts, depreciation, depletion, charitable and other contributions, research and development and pension trust.</dd>
+
+
+                                    <dt>Schedule 5 Special Allowable Itemized Deductions:</dt>
+                                    <dd>These refer to special allowable deductions from gross income in computing taxable income, in addition to the regular allowable itemized deduction, as provided under the existing regular and special laws, rules and issuances such as, but not limited to: Rooming-in and Breast-feeding Practices under R.A. 7600, Adopt-A-School Program under R.A. 8525, Free Legal Assistance under R.A. 9999, etc.</dd>
+
+
+                                    <dt>Schedule 6 Computation of Net Operating Loss Carry Over (NOLCO):</dt>
+                                    <dd>Detailing the computation of available NOLCO (applied, unapplied and expired portion). Only net operating losses incurred by the qualified taxpayer may be carried over to the three (3) immediately succeeding taxable years following the year of such loss.</dd>
+
+
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>3</strong></div>  
+                        <br>
+                        <div class="titlecol">
+                            Guidelines and Instructions BIR Form No. 1702-RT
+                            <div class="small">(June 2013)</div>
+                        </div>
+
+                        <table id="inserted">
+                            <tbody><tr>
+                                <td class="firstcol">
+
+                                    <dt>Schedule 7 Tax Credits/Payments:</dt>
+                                    <dd>Indicate claimed Tax Credits/Payments and attach necessary proof/s.</dd>
+
+                                    <dt>Schedule 8 Computation of Minimum Corporate Income Tax (MCIT):</dt>
+                                    <dd>MCIT of two percent (2%) of the gross income is imposed upon any domestic corporation and resident foreign corporation beginning on the fourth (4th) taxable year (whether calendar or fiscal year, depending on the accounting period employed) immediately following the taxable year in which such corporation commenced its business operation. The MCIT shall be imposed whenever the corporation has zero or negative taxable income or whenever the amount of minimum corporate income tax is greater than the normal income tax due from such corporation. Any excess of the MCIT over the normal income tax shall be carried forward and credited against the normal income tax for the three (3) immediate succeeding taxable years. The computation and the payment of MCIT shall apply each time a corporate income tax return is filed, whether quarterly or annual basis.</dd>
+
+                                    <dt>Schedule 9 Reconciliation of Net Income per Books Against Taxable Income:</dt>
+                                    <dd>Indicate all the reconciling items to be added or subtracted from the net income reported in the financial statements to arrive at the taxable income reported in the income tax return. Fill up the non-deductible expenses such as: allowance for bad debts not actually written off, amortization and others which are not deductible for taxation purposes. Also, add other taxable income such as: recovery of bad debts previously written off, adjustment to retained earnings, and other adjustments that are considered as income for tax purposes. (Provide additional sheet/s, if necessary.)</dd>
+
+                                    <dt>Schedule 10 Balance Sheet:</dt>
+                                    <dd>Indicate the amounts as shown in the Audited Financial Statements.</dd>
+
+                                    <dt>Schedule 11 Stockholders / Partners / Members Information:</dt>
+                                    <dd>Indicate only the Top 20 stockholders, partners or members showing the Registered Name, TIN, amount of capital contribution and the percentage to the total ownership/equity.</dd>
+
+                                    <dt>Schedule 12 Supplemental Information:</dt>
+                                    <dd>Indicate gross income subject to final tax: sale/ exchange of real property; sale/exchange of shares of stocks; other income and the corresponding final withholding tax, if applicable.</dd>
+
+                                    <dt>Schedule 13 Gross Income/Receipts Exempt from Income Tax:</dt>
+                                    <dd>Indicate personal/real properties received thru gifts, bequests, and devises; and other exempt income and receipts under Sec. 32(B) of the NIRC, as amended.</dd>
+
+                                    <dt>REQUIRED ATTACHMENTS</dt>
+
+                                    <ol>
+                                        <li>Certificate of independent CPA duly accredited by the BIR (The CPA Certificate is required if the gross quarterly sales, earnings, receipts or output exceed
+P 150,000).</li>
+                                        <li>Account Information Form (AIF) and/or Financial Statements (FS), including the following schedules prescribed under existing revenue issuances which must form part of the Notes to the audited FS:</li>
+                                        <li>Statement of Management’s Responsibility (SMR) for Annual Income Tax Return.
+                                            <ol type="a">
+                                                <li>Taxes and Licenses</li>
+                                                <li>Other information prescribed to be disclosed in the notes to FS</li>
+                                            </ol>
+                                        </li>
+                                        <li>Certificate of Income Payments not subjected to Withholding Tax (BIR Form No. 2304)</li>
+                                        <li>Certificate of Creditable Tax Withheld at Source (BIR Form No. 2307).</li>
+                                        <li>Duly approved Tax Debit Memo, if applicable.</li>
+                                        <li>Proof of prior years' excess credits, if applicable.</li>
+                                        <li>Proof of Foreign Tax Credits, if applicable.</li>
+                                        <li>For amended return, proof of tax payment and the return previously filed.</li>
+                                        <li>Summary Alphalist of Withholding Agents of Income Payments Subjected to Withholding Tax at Source (SAWT), if applicable.</li>
+                                        <li>Proof of other tax payment/credit, if applicable.</li>
+
+                                    </ol>
+                                </td>
+
+
+
+                                <td class="secondcol">
+                                    <table id="minitable" style="border: none;">
+                                        <tbody><tr>
+                                            <th width="15%">ATC</th>
+                                            <th width="50%">
+                                                <div>DESCRIPTION TAX</div>
+                                                <div style="border-top: 1px solid black">DOMESTIC CORPORATION</div>
+                                            </th>
+                                            <th width="10%">TAX RATE</th>
+                                            <th width="25%">TAX BASE</th>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="border-top: none !important;">
+                                                <div>IC 010</div>
+                                            </td>
+                                            <td style="text-align: justify; border-top: none !important;">
+                                                <div>1. a. In General</div>
+                                            </td>
+                                            <td style="border-top: none !important;">
+                                                <div>30 %</div>
+                                            </td>
+                                            <td style="text-align: justify; border-top: none !important;">
+                                                <div>Taxable Income from All Sources</div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="border-top: none !important;">IC 055</td>
+                                            <td style="border-top: none !important;">b. Minimum Corporate Income Tax</td>
+                                            <td style="border-top: none !important;">2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+
+                                        
+                                        <tr>
+                                            <td>
+                                                <div>IC 030</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    2. a. Proprietary Educational Institution whose gross
+income from unrelated trade, business or other
+activity exceeds fifty percent (50%) of the total
+gross income from all sources.
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                <div>IC 031</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    3. a. Non-Stock, Non-Profit Hospitals whose gross
+income from unrelated trade, business or other
+activity exceeds fifty percent (50%) of the total
+gross income from all sources.
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                <div>IC 040</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    4. a. Government Owned &amp; Controlled Corporations
+(GOCC), Agencies &amp; Instrumentalities
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                <div>IC 041</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    5. a. National Government and Local Government
+Units (LGUs)
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                <div>IC 020</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>6. a. Taxable Partnership</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="4">RESIDENT FOREIGN CORPORATION
+                                            </th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div>IC 070</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>1. a. In General</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td>
+                                                <div>30 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>Taxable Income from All Sources</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>IC 055</td>
+                                            <td>b. Minimum Corporate Income Tax</td>
+                                            <td>2 %</td>
+                                            <td style="text-align: justify;">Gross Income</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div>IC 190</div>
+
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    Offshore Banking Units (OBUs)
+1. a. Foreign Currency Transaction not subjected to
+Final tax
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+
+                                            <td>
+                                                <div>10 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    <div>Gross Taxable Income on Foreign Currency Transactions not subjected to Final Tax</div>
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>b. Other than Foreign Currency Transaction</td>
+                                            <td>30 %</td>
+                                            <td style="text-align: justify;">Taxable Income Other Than Foreign Currency Transaction</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div>IC 191</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    Foreign Currency Deposit Units (FCDU)
+                                                    <br>
+                                                    1. a. Foreign Currency Transaction on not subjected
+to Final tax
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+
+                                            <td>
+                                                <div>10 %</div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+                                            <td style="text-align: justify;">
+                                                <div>
+                                                    <div>Gross Taxable Income on Foreign Currency Transactions not subjected to Final Tax</div>
+                                                </div>
+                                                <div style="padding-top: 5px;"></div>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td></td>
+                                            <td>b. Other than Foreign Currency Transaction</td>
+                                            <td>30 %</td>
+                                            <td style="text-align: justify;">Taxable Income Other Than Foreign Currency Transaction</td>
+                                        </tr>
+
+                                    </tbody></table>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <div align="center"><strong>4</strong></div>  
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+</div></form></hta:application></div>

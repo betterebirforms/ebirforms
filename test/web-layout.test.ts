@@ -157,6 +157,64 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 90_000);
 
+  // Help > <tax type> > BIR Form <X> opens BIR's own help page, from the main screen and from a form (which asks
+  // first, as BIR's goToHelpPage does); a target missing from BIR's package says so
+  it("Help opens BIR's help pages from the main screen and from a form", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const dialog: string[] = [];
+    page.on("dialog", (d) => void (dialog.push(d.message()), d.accept()));
+    const help = async (path: string, group: string, item: string) => {
+      await page.goto(`${base}${path}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+      await page.locator("a.toplevel", { hasText: /^Help$/ }).first().click();
+      await page.locator("a.atoplevel", { hasText: group }).first().click();
+      await page.locator("ul.asubnav a", { hasText: new RegExp(`^${item}$`) }).first().click();
+    };
+    await help("/", "Payment", "BIR Form 0605");
+    await page.waitForURL(/\/help\/0605$/);
+    await page.locator('.bir-layout[data-form="help-0605"]').waitFor();
+    await expect.poll(() => page.locator(".bir-layout").evaluate((e) => e.shadowRoot?.textContent?.includes("0605") ?? false)).toBe(true);
+    await help("/form/1701Qv2018", "Income", "BIR Form 1701Q");
+    await page.waitForURL(/\/help\/1701Q$/);
+    expect(dialog.at(-1)).toMatch(/^Navigating away/);
+    await help("/form/2551Qv2018", "Percentage", "BIR Form 2551Q");
+    await page.waitForURL(/\/help\/2551$/);
+    // File > Main Screen goes home
+    await page.locator("a.toplevel", { hasText: "File" }).first().click();
+    await page.locator("ul.subnav a", { hasText: "Main Screen" }).first().click();
+    await page.waitForURL((u) => !u.pathname.includes("/help/"));
+    await page.close();
+  }, 90_000);
+
+  // a phone: the main screen and help pages wrap to its width at a readable size (src/form/phone.css); a form keeps
+  // BIR's page shrunk to fit, with a Zoom in button that shows it full size, scrolling sideways
+  it("on a phone, the main screen and help wrap to the width, and a form zooms in and out", async () => {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const look = () =>
+      page.locator(".bir-layout").evaluate((e) => {
+        const body = e.shadowRoot!.querySelector(".bir-body") as HTMLElement;
+        const zoom = e.shadowRoot!.querySelector(".ebf-zoom") as HTMLButtonElement | null;
+        return { zoom: body.style.zoom, wide: body.scrollWidth > e.clientWidth + 1, button: zoom && !zoom.hidden ? zoom.textContent : null };
+      });
+    for (const path of ["/", "/help/0605"]) {
+      await page.goto(`${base}${path}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+      await expect.poll(look).toEqual({ zoom: "", wide: false, button: null });
+    }
+    // the main screen's boxes are big enough to tap, and 16 px text stops iOS zooming in on each one
+    const box = await page.goto(`${base}/`, { waitUntil: "networkidle" }).then(() => page.locator(".bir-layout #regAddr").boundingBox());
+    expect(box!.height).toBeGreaterThanOrEqual(32);
+    await page.goto(`${base}/form/0605`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    await expect.poll(async () => (await look()).button).toBe("Zoom in");
+    expect(Number((await look()).zoom)).toBeLessThan(1);
+    await page.locator(".bir-layout .ebf-zoom").tap();
+    expect(await look()).toMatchObject({ zoom: "", button: "Fit to screen" });
+    await page.locator(".bir-layout .ebf-zoom").tap();
+    expect(Number((await look()).zoom)).toBeLessThan(1);
+    await page.close();
+  }, 60_000);
+
   // every form: each box BIR greys out (and the capture found a way to open) starts greyed out on the web too
   it("a new form greys out each box BIR greys out, on every form", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });

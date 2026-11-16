@@ -5,13 +5,16 @@
 <h1 align="center">eBIRForms</h1>
 
 <p align="center">
-  BIR's Offline eBIRForms Package, rebuilt to run natively on <b>macOS, Windows and Linux</b>.<br>
-  All 84 BIR tax forms, offline, with savefiles that open in BIR's own app.
+  BIR's Offline eBIRForms Package, rebuilt for <b>Mac, Windows, Linux and your web browser</b>.<br>
+  All 84 BIR tax forms. Fill in, check, save, print and send your return, with files that open in BIR's own app.
 </p>
 
 <p align="center">
-  <a href="https://github.com/betterebirforms/ebirforms/releases/latest"><img src="https://img.shields.io/badge/download-latest-1F4FB8" alt="Download"></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-14286B" alt="Platforms: macOS, Windows, Linux">
+  <a href="https://github.com/betterebirforms/ebirforms/releases/latest"><img src="https://img.shields.io/badge/Download_the_app-Mac_%C2%B7_Windows_%C2%B7_Linux-1F4FB8?style=for-the-badge" alt="Download the app for Mac, Windows or Linux"></a>
+  <a href="https://betterebirforms.github.io/ebirforms/"><img src="https://img.shields.io/badge/Open_the_web_version-No_install-C8102E?style=for-the-badge" alt="Open the web version, no install"></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/BIR%20package-v7.9.6.2.1-C8102E" alt="BIR package v7.9.6.2.1">
   <img src="https://img.shields.io/badge/forms-84-F4B400" alt="84 forms">
   <img src="https://img.shields.io/badge/status-beta-555" alt="Status: beta">
@@ -28,29 +31,44 @@
 
 > Unofficial. Not affiliated with or endorsed by the Bureau of Internal Revenue (BIR).
 
+## Two ways to use it
+
+| | Desktop app | Web version |
+|---|---|---|
+| Where | Mac, Windows, Linux | Any browser: [betterebirforms.github.io/ebirforms](https://betterebirforms.github.io/ebirforms/) |
+| Install | Yes, [download](https://github.com/betterebirforms/ebirforms/releases/latest) | No. Works offline after the first visit |
+| Forms | BIR's 84 forms, as in BIR's app | The same 84 forms on BIR's own page layout |
+| Your returns | On your computer | In your browser, or in a folder you pick (Chrome, Edge) |
+| Sending to BIR | **Yes** (beta), with Submit | No. Submit makes BIR's locked final copy; send it from the desktop app or BIR's app |
+| Updates | The app updates itself | Always the latest |
+
+Both save the same files as BIR's Windows app, so a return opens in any of the three.
+
+## Filing your return
+
+1. Fill in your profile, pick a form, click **Fill-up**.
+2. Fill in the form and click **Validate**. When it passes, the form locks. **Edit** opens it again.
+3. Click **Submit / Final Copy**.
+   - **Desktop app:** it sends the return to BIR, the way BIR's own app does. Sending is on by default; you can turn
+     it off in **Go > Send Returns to BIR (beta)**.
+   - **Web version:** a web page can't open BIR's upload connection, so it saves BIR's locked final copy instead.
+     Open that file in the desktop app or in BIR's eBIRForms on Windows and click Submit there, or print it.
+4. **Your return is filed only when BIR's confirmation email arrives.** Keep that email as your proof.
+
+Sending is in beta. No return sent by this app has been confirmed by BIR yet. How it works: when the app starts with
+an internet connection, it downloads BIR's official package from bir.gov.ph once and keeps two files from it. Like
+BIR's app, it first asks BIR's server where to upload, over plain HTTP (BIR's server offers no HTTPS), with your TIN
+(without the branch code). The answer is checked, never run, and the return itself goes over SFTP.
+
 ## Download
 
 Get the file for your computer from the **[latest release](https://github.com/betterebirforms/ebirforms/releases/latest)**.
 
 | Your computer | File |
 |---|---|
-| Mac (Apple Silicon or Intel) | `Offline_eBIRForms_Package_v7.9.6.2.1_macOS_universal.dmg` |
+| Mac (Apple Silicon or Intel), macOS 12 or later | `Offline_eBIRForms_Package_v7.9.6.2.1_macOS_universal.dmg` |
 | Windows 10 or 11 (64-bit) | `Offline_eBIRForms_Package_v7.9.6.2.1_Windows_x64_setup.exe` |
-| Linux (64-bit) | `..._Linux_x86_64.AppImage` or `..._Linux_amd64.deb` |
-
-## Compatibility
-
-| Item | Supported |
-|---|---|
-| BIR package | v7.9.6.2.1 (BIR Revenue Memorandum Circular No. 104-2026): all 84 forms, including the new 0605 codes for micro taxpayers |
-| macOS | 12 Monterey or later |
-| Windows | 10 or 11, 64-bit |
-| Linux | Ubuntu 22.04 or later, or equivalent |
-| Savefiles | Same format as BIR's Windows app, so a file opens in either |
-| Online Submit (sending the return to BIR from inside the app) | **Beta, on by default.** You can turn it off in **Go > Send Returns to BIR (beta)**. When the app starts with an internet connection, it downloads BIR's official package from bir.gov.ph once and keeps two files from it. Submit then sends your return to BIR the way BIR's own app does. Like BIR's app, its first step asks BIR's server over plain HTTP (BIR's server offers no HTTPS) and includes your TIN (without the branch code); the answer is checked, never run, and the return itself goes over SFTP. **Your return is filed only when BIR's confirmation email arrives.** Keep it. No return sent by this app has been confirmed by BIR yet. If you turn sending off, Submit only locks the return and saves it on your computer, and nothing is sent: print it and file on paper, or copy it (Go > Show Saved Returns) to BIR's own eBIRForms app on Windows and submit it there (not tried end to end yet) |
-| Web version | Fills, checks, saves, prints and reopens returns in the browser, with the same savefiles. Submit / Final Copy makes BIR's locked final copy. It cannot send a return to BIR: a web page is not allowed to open BIR's upload connection. Send the final copy from the desktop app, or from BIR's own app on Windows (not tried end to end yet) |
-| Updates | The app checks for a new version when it opens (from v0.1.2), and **Updates > Check for Updates** checks now. Each update is signed |
-| Status | Beta |
+| Linux (64-bit), Ubuntu 22.04 or later | `..._Linux_x86_64.AppImage` or `..._Linux_amd64.deb` |
 
 ## Install
 
@@ -62,16 +80,26 @@ Get the file for your computer from the **[latest release](https://github.com/be
   `sudo apt install ./..._amd64.deb`.
 
 Step-by-step pictures for each system are on the [download page](https://github.com/betterebirforms/ebirforms/releases/latest).
+After that, the app checks for updates when it opens; **Updates > Check for Updates** checks now. Each update is signed.
 
-Then fill in your profile, pick a form, click **Fill-up**, and **Save**, the same as in BIR's app.
+## What it covers
 
-## Support
+| Item | Supported |
+|---|---|
+| BIR package | v7.9.6.2.1 (BIR Revenue Memorandum Circular No. 104-2026): all 84 forms, including the new 0605 codes for micro taxpayers |
+| Savefiles | Same format as BIR's Windows app, so a file opens in either |
+| Help | BIR's own help page for each form, under **Help** |
+| Status | Beta |
 
-eBIRForms is free. If it saved you a trip to a Windows PC, you can chip in on Ko-fi (PayPal or card):
+## Support this project
 
-[![Support this project on Ko-fi](https://img.shields.io/badge/Donate-Ko--fi%20or%20PayPal-FFC439?style=for-the-badge&logo=kofi&logoColor=black&labelColor=FFC439)](https://ko-fi.com/betterebirforms)
+eBIRForms is free and open source. If it saved you a trip to a Windows PC, you can buy us a coffee.
 
-The app has the same link under **Support > Donate**, and the web version shows it on its home screen.
+<p align="center">
+  <a href="https://ko-fi.com/betterebirforms"><img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" height="44" alt="Buy us a coffee on Ko-fi"></a>
+  <br>
+  <sub>Ko-fi takes PayPal and cards. The same link is under <b>Support > Donate</b> in the app and on the web version's home screen.</sub>
+</p>
 
 ## Links
 
@@ -80,8 +108,7 @@ The app has the same link under **Support > Donate**, and the web version shows 
 - Help build it: [CONTRIBUTING.md](CONTRIBUTING.md) (setup, how the repo is laid out, the rules)
 - Change how a form behaves, or switch our fixes off: [mods](mod/README.md), or **Go > Mods** in the app
 - Let an AI agent (Claude, Codex) fill and save draft returns: [docs/agent.md](docs/agent.md)
-- Web version (no install; our own forms, works offline, returns stay in your browser, or in a folder you pick in Chrome and Edge): https://betterebirforms.github.io/ebirforms/
-- What's planned, including mobile and web: [ROADMAP.md](ROADMAP.md)
+- What's planned, including phones: [ROADMAP.md](ROADMAP.md)
 - How it works: [docs/architecture.md](docs/architecture.md)
 
 BIR's forms are works of the Philippine Government (the Intellectual Property Code, RA 8293 §176.1). The logo is adapted from BIR's seal.

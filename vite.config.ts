@@ -65,6 +65,12 @@ const webManifest = (): Plugin => ({
       mkdirSync(join(dir, "form", c), { recursive: true });
       writeFileSync(join(dir, "form", c, "index.html"), index);
     }
+    // and every BIR help page (/help/<X>, captured as asset/bir/layout/help-<X>.html)
+    for (const f of readdirSync("asset/bir/layout").filter((n) => /^help-.+\.html$/.test(n))) {
+      const c = f.slice("help-".length, -".html".length);
+      mkdirSync(join(dir, "help", c), { recursive: true });
+      writeFileSync(join(dir, "help", c, "index.html"), index);
+    }
   },
   transformIndexHtml: (html) =>
     html.replace(

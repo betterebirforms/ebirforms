@@ -13,6 +13,7 @@ import { formatMoney, parseMoney } from "./money.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
 import { IS_WEB, readText, writeText } from "@/lib/vfs";
 import { parseSavefile } from "@/lib/savefile.ts";
+import { openHelp } from "./help.ts";
 import { webExport, webDownload } from "@/lib/web-store.ts";
 import type { Profile } from "@/lib/savefile.ts";
 
@@ -27,6 +28,7 @@ const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock
 // BIR's print stylesheet (css/print.css, media="print" on every form page) and the paper-size message its Print
 // Preview shows first on 15 forms (tool/print-extract.mjs)
 import printCss from "../../asset/bir/print.css?raw";
+import phoneCss from "./phone.css?raw";
 import printNoteJson from "../../asset/bir/print-note.json";
 const printNote = printNoteJson as Record<string, string>;
 
@@ -58,6 +60,9 @@ export async function loadLayout(name: string): Promise<string> {
   return raw.replace(/\{\{base\}\}(img\/[^"')\s]+)/g, (_, rel: string) => imageFile[`../../asset/bir/layout/${rel}`] ?? "");
 }
 
+/** BIR's main screen and help pages wrap to a phone's width (phone.css); its forms shrink to fit. */
+const reflow = (name: string) => name === "main" || name.startsWith("help-");
+
 /** A shadow root holding BIR's layout; resolves once it is in the page. */
 export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | null>, ShadowRoot | null] {
   const host = useRef<HTMLDivElement>(null);
@@ -73,7 +78,7 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
       // labels went light on BIR's grey and typed text white on its white fields. The desktop never had this
       // (BIR's pages don't opt into dark mode there), so pin the layout to IE's defaults.
       // BIR's print stylesheet applies when printing, as on BIR's pages; the phone fit (zoom) is for the screen only
-      shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style><style media="print">${printCss}\n:host{min-height:0} .bir-body{zoom:1 !important;min-height:0}</style>${html}`;
+      shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style><style media="print">${printCss}\n:host{min-height:0} .bir-body{zoom:1 !important;min-height:0} .ebf-zoom{display:none !important}</style>${html}${reflow(name) ? `<style>${phoneCss}</style>` : ""}`;
       setRoot(shadow);
     });
     return () => {
@@ -81,22 +86,42 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
     };
   }, [name]);
   // BIR's pages are laid out for an 800 px window: on a narrower screen (a phone) shrink the whole page to fit,
-  // as a browser's "zoom out" would, instead of cutting off its right side
+  // as a browser's "zoom out" would, instead of cutting off its right side. A shrunk page gets a Zoom button
+  // (bottom left) that shows it at full size, scrolling sideways, and back.
   useEffect(() => {
     const el = host.current;
     if (!root || !el) return;
     const body = root.querySelector(".bir-body") as HTMLElement | null;
     if (!body) return;
+    let full = false;
+    const zoom = document.createElement("button");
+    zoom.type = "button";
+    zoom.className = "ebf-zoom";
+    zoom.hidden = true;
+    zoom.style.cssText =
+      "position:fixed;left:12px;bottom:12px;z-index:2000000;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #555;background:#f9f9f9;color:#000;font:600 15px Arial,sans-serif;box-shadow:0 2px 8px rgb(0 0 0/.3)";
+    root.appendChild(zoom);
     const fit = () => {
       body.style.zoom = "";
       const need = body.scrollWidth;
       const have = el.clientWidth;
-      body.style.zoom = need > have && have > 0 ? String(have / need) : "";
+      const shrink = need > have && have > 0;
+      zoom.hidden = !shrink;
+      zoom.textContent = full ? "Fit to screen" : "Zoom in";
+      el.style.overflowX = shrink && full ? "auto" : "";
+      body.style.zoom = shrink && !full ? String(have / need) : "";
     };
+    zoom.addEventListener("click", () => {
+      full = !full;
+      fit();
+    });
     fit();
     const watch = new ResizeObserver(fit);
     watch.observe(el);
-    return () => watch.disconnect();
+    return () => {
+      watch.disconnect();
+      zoom.remove();
+    };
   }, [root]);
   return [host, root];
 }
@@ -105,7 +130,8 @@ const byId = (root: ShadowRoot, id: string) => root.getElementById(id) as HTMLIn
 
 /** BIR's File / Help menus: a top item opens its list; a list item runs `action[text]`; items named in `hide`
  *  have nothing to do on the web and are taken out; BIR's help pages aren't in the web version yet. */
-export function wireMenu(root: ShadowRoot, on: (el: EventTarget, type: string, fn: (e: Event) => void) => void, action: Record<string, () => void>, hide: string[]) {
+/** BIR's File / Help menus. A Help item ("BIR Form <X>") calls `help` with its link, if given. */
+export function wireMenu(root: ShadowRoot, on: (el: EventTarget, type: string, fn: (e: Event) => void) => void, action: Record<string, () => void>, hide: string[], help?: (label: string, href: string | null) => void) {
   for (const a of Array.from(root.querySelectorAll("a.toplevel, a.atoplevel")) as HTMLElement[]) {
     on(a, "click", (e) => {
       e.preventDefault();
@@ -120,7 +146,8 @@ export function wireMenu(root: ShadowRoot, on: (el: EventTarget, type: string, f
       on(a, "click", (e) => {
         e.preventDefault();
         (a.closest("ul.subnav") as HTMLElement | null)?.style.setProperty("display", "none");
-        action[t]?.();
+        if (action[t]) action[t]();
+        else if (help && /^BIR Form /.test(t)) help(t, a.getAttribute("href"));
       });
   }
 }
@@ -333,7 +360,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     }
     // BIR's File / Help menu: File opens its list (Main Screen, Save, Print Preview, Exit); in Print Preview, BIR's
     // print menu (Print, Cancel Print)
-    wireMenu(root, on, { "Main Screen": onClose, Save: () => void save(), "Print Preview": preview, Print: () => window.print(), "Cancel Print": cancelPreview }, ["Exit"]);
+    wireMenu(root, on, { "Main Screen": onClose, Save: () => void save(), "Print Preview": preview, Print: () => window.print(), "Cancel Print": cancelPreview }, ["Exit"], (label, href) => openHelp(label, href, true));
     const pageBox = root.querySelector("input[id$=':txtCurrentPage']") as HTMLInputElement | null;
     if (pageBox) on(pageBox, "change", () => showPage(Number(pageBox.value)));
     // BIR's page-jump links: "btnNavigatePage<N>_…" goes to page N, Next / Prev page by one, and a "(To / From …

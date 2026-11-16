@@ -11,7 +11,8 @@ const DIR = "asset/bir/layout";
 const ABSENT_FILE = `${DIR}/absent.json`;
 const absent: Record<string, string[]> = existsSync(ABSENT_FILE) ? JSON.parse(readFileSync(ABSENT_FILE, "utf8")) : {};
 const found: Record<string, string[]> = {};
-const layout = existsSync(DIR) ? readdirSync(DIR).filter((f) => f.endsWith(".html")) : [];
+// BIR's help pages (help-<code>.html) are text to read, not forms the engine drives
+const layout = existsSync(DIR) ? readdirSync(DIR).filter((f) => f.endsWith(".html") && !f.startsWith("help-")) : [];
 
 describe("captured BIR layouts", () => {
   it("there is a main screen and at least one form", () => {

@@ -3,8 +3,9 @@
 // BIR's stylesheet is inlined, images are written once under asset/bir/layout/img/, and every script, event
 // handler and javascript: link is removed. The web version shows this inside a shadow root and drives its fields
 // with the native engine by the same ids (src/form/LayoutView.tsx). BIR's code never runs on the web.
-//   EBF_CAPTURE_LAYOUT=0605,1701Qv2018 npx vitest run test/capture-layout.test.ts   (=1 for every form + main screen)
-// Writes asset/bir/layout/<CODE>.html (and main.html for BIRForms.hta). Re-run after importing a newer BIR package.
+//   EBF_CAPTURE_LAYOUT=0605,1701Qv2018 npx vitest run test/capture-layout.test.ts   (=1 for every form, the main screen
+//   and the help pages; =help for the help pages only)
+// Writes asset/bir/layout/<CODE>.html (main.html for BIRForms.hta, help-<CODE>.html for helpfile/Help<CODE>.hta). Re-run after importing a newer BIR package.
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
@@ -18,7 +19,11 @@ const page = existsSync(`${ORIGINAL}/forms`)
         .filter((f) => /^BIR-Form.+\.hta$/.test(f))
         .map((f) => ({ code: f.slice("BIR-Form".length, -".hta".length), url: `/legacy/forms/${f}` })),
       { code: "main", url: "/legacy/BIRForms.hta" },
-    ].filter((p) => want === "1" || want?.split(",").includes(p.code))
+      // BIR's help pages (Help > a form, in the main screen's and every form's menu): help-<CODE>.html
+      ...readdirSync(`${ORIGINAL}/helpfile`)
+        .filter((f) => /^Help.+\.hta$/.test(f))
+        .map((f) => ({ code: `help-${f.slice("Help".length, -".hta".length)}`, url: `/legacy/helpfile/${f}` })),
+    ].filter((p) => want === "1" || want?.split(",").includes(p.code) || (want === "help" && p.code.startsWith("help-")))
   : [];
 
 describe.runIf(want)("capture BIR form layouts", () => {
