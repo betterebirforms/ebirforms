@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the 1702-RT (2018 editions), the "(Add more...)" button of Schedule 3A item 7 turns on once the year and amount are in, as in BIR's app, and explains that BIR's own form cannot add more rows there, instead of doing nothing.
 - On the 2200-A (2013 edition), Schedule 1 takes a calculator's total only when you press Compute, Clear or delete its last row, as in BIR's app. Print shows BIR's legal paper notice first, and "You are advised to print this computation" prints the calculator the same way.
 - On the 2200-A (2013 edition), a calculator's Print now checks the table first and prints the calculator with your TIN and the date computed, and a volume over twelve digits is refused as in BIR's app.
 - On the web version, the 2200-A (2013 edition) Schedule 1 calculators now work like BIR's app: each Calculator link opens its calculator, rows can be added, deleted and cleared, Compute fills the Schedule 1 box with BIR's own arithmetic and alerts, and the rows save and reopen in the same file.

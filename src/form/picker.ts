@@ -322,6 +322,24 @@ Object.assign(BUTTON_GROUP, {
   "1702EXv2018C": EX2018,
 });
 
+// 1702-RT 2018 Schedule 3A item 7 "(Add more...)": BIR turns it on like the others (enableCompleteRows on the year and
+// the amount), but BIR commented out the pop-up's row counter (txtPg4Sc3AI7CtrModal), so its loadModalTable throws
+// and nothing opens, and its save template carries no rows for it. The web version turns it on at the same moment and
+// says why no rows can be added, instead of doing nothing.
+export const NOLCO_MORE_NOTE =
+  "BIR's own eBIRForms cannot add more rows to Schedule 3A item 7: BIR switched this pop-up off in its form, so extra rows would not be saved. Only the row on the page is filed.";
+const nolcoMore = {
+  btnPg4Sc3AI7More: {
+    on: gateOn({ text: ["frm1702RT:txtPg4Sc3AI7C1"], amount: ["frm1702RT:txtPg4Sc3AI7C2"], keep: false }, "", "RT"),
+    tick: {},
+    run: (_ticked: string[], state: FormState, groups: GroupState) => {
+      window.alert(NOLCO_MORE_NOTE);
+      return { state, groups };
+    },
+  },
+};
+for (const code of ["1702RTv2018", "1702RTv2018C"]) BUTTON_ACTION[code] = { ...BUTTON_ACTION[code], ...nolcoMore };
+
 /** BIR's "Read CSV File" (1707A): which schedule each button reads into. */
 export const CSV_BUTTON: Record<string, Record<string, 1 | 2>> = {
   "1707A": { btnOpenSched1CSV: 1, btnOpenSched2CSV: 2 },

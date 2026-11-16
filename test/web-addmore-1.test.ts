@@ -43,6 +43,30 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     server?.close();
   });
 
+  it.each(["1702RTv2018", "1702RTv2018C"])("%s Schedule 3A item 7: on once the year and amount are in, and says why it adds no rows (BIR's pop-up is switched off)", async (code) => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const said: string[] = [];
+    page.on("dialog", (d) => void (said.push(d.message()), d.accept()));
+    await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const button = page.locator('.bir-layout [id="btnPg4Sc3AI7More"]');
+    expect(await button.isDisabled()).toBe(true);
+    for (const [id, v] of [["frm1702RT:txtPg4Sc3AI7C1", "2023"], ["frm1702RT:txtPg4Sc3AI7C2", "5000"]] as const) {
+      const box = page.locator(`.bir-layout [id="${id}"]`);
+      // the box sits on page 4 of BIR's pager: type it the way the page sees typing
+      await box.evaluate((e: HTMLInputElement, v) => {
+        e.disabled = false;
+        e.value = v;
+        for (const t of ["input", "change", "blur", "focusout"]) e.dispatchEvent(new Event(t, { bubbles: true }));
+      }, v);
+    }
+    await expect.poll(() => button.isDisabled()).toBe(false);
+    await button.evaluate((e: HTMLInputElement) => e.click());
+    await expect.poll(() => said.at(-1) ?? "").toMatch(/^BIR's own eBIRForms cannot add more rows to Schedule 3A item 7/);
+    expect(await page.locator(".schedule-modal h3").count()).toBe(0);
+    await page.close();
+  }, 120_000);
+
   it.each(LINK)("%s: every link opens its editor", async (code, link) => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
     page.on("dialog", (d) => void d.accept());
