@@ -206,7 +206,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   useEffect(() => {
     if (!root) return;
     const off: Array<() => void> = [];
+    const wired = new WeakSet<EventTarget>();
     const on = (el: EventTarget, type: string, fn: (e: Event) => void) => {
+      if (type === "click") wired.add(el);
       el.addEventListener(type, fn);
       off.push(() => el.removeEventListener(type, fn));
     };
@@ -683,6 +685,47 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
           showPage(typeof n === "number" ? n : (pageOf(a) || current) + Number(n));
         });
       }
+    // the rest of a pop-up's own buttons, which BIR's script runs (ds106CloseModal, btnClearPop, a calculator's
+    // Print): Close / OK / Cancel close the pop-up and bring back the page its opener hid, Clear empties its boxes,
+    // Print prints. Only buttons nothing above has wired, inside a pop-up a button opens.
+    const pageWrap = /^(?:mainContent|Content|wrapper|formPaper|container|mainPages|PageFooter|Page\d+\w*)$/;
+    const opener = new Map<string, string[]>();
+    for (const fx of Object.values(POPUP[form_code] ?? {})) for (const x of fx.show) if (!pageWrap.test(x)) opener.set(x, [...(opener.get(x) ?? []), ...fx.hide]);
+    for (const [x, back] of opener) {
+      const box = root.getElementById(x) as HTMLElement | null;
+      if (!box) continue;
+      for (const b of Array.from(box.querySelectorAll<HTMLInputElement>("input[type=button], button"))) {
+        if (wired.has(b) || b.dataset.ebfPopup || picked.has(b.id)) continue;
+        const v = (b.value || b.textContent || "").replace(/\s+/g, " ").trim();
+        if (/^(?:ok|close|cancel|save and close|done)$/i.test(v))
+          on(b, "click", (e) => {
+            e.preventDefault();
+            if (/cancel/i.test(v) && before) {
+              setState(before.state);
+              setGroups(before.groups);
+            } else {
+              const patch = LIST_COPY[form_code]?.[x]?.(root);
+              if (patch) set(patch);
+            }
+            before = null;
+            box.style.display = "none";
+            for (const y of new Set(back)) if (y !== x) (root.getElementById(y) as HTMLElement | null)?.style.setProperty("display", "block");
+            host.current?.scrollIntoView();
+          });
+        else if (/^clear(?: all)?$/i.test(v))
+          on(b, "click", (e) => {
+            e.preventDefault();
+            const patch: FormState = {};
+            for (const f of schema.field) {
+              const el = root.getElementById(f.id) as HTMLInputElement | null;
+              if (!el || !box.contains(el) || el.readOnly || el.disabled) continue;
+              patch[f.id] = f.kind === "checkbox" || f.kind === "radio" ? "false" : f.kind === "money" ? "0.00" : "";
+            }
+            set(patch);
+          });
+        else if (/^print(?: preview)?$/i.test(v)) on(b, "click", () => window.print());
+      }
+    }
     groupBox.current = rowBox;
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]); // eslint-disable-line react-hooks/exhaustive-deps

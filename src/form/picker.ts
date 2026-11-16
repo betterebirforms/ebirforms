@@ -109,7 +109,7 @@ export const POPUP_GROUP: Record<string, Record<string, string>> = {
   "1600PTv2018": { modalOtherAtc: "other" },
   "2000": { modalSched1: "sched1" },
   "1602": { modalSectionB: "secB", modalSectionC: "secC" },
-  "2552": { modalTransactionNoTax: "noTax" },
+  "2552": { modalTransactionNoTax: "noTax", modalTaxTransaction: "taxTrans" },
 };
 
 /** A pop-up BIR opens only when the form allows it (its message, "" = nothing happens). 1602 checkiftaxwheld. */

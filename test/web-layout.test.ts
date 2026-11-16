@@ -272,6 +272,22 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 120_000);
 
+  // a pop-up's own buttons BIR runs from its script: Clear resets its boxes as BIR's clearSched5Modal does
+  it("2550M: Clear in schedule 5 resets its boxes to 0.00", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    await page.goto(`${base}/form/2550M`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const click = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+    await click("btnSched5");
+    const box = page.locator('[id="txtinputtaxSched5"]');
+    await box.fill("1,234.00");
+    await box.blur();
+    await click("btnClearPop5");
+    await expect.poll(() => box.inputValue()).toBe("0.00");
+    await page.close();
+  }, 60_000);
+
   // a choice never opens a pop-up by itself: BIR's 1701 item 4 radios open its attachment pop-up only in some cases
   it("1701: ticking item 4 keeps the form on screen", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
