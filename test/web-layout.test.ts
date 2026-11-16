@@ -294,7 +294,6 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const open: Array<[string, string, string]> = [
       ["1601Cv2018", "frm1601c:btnAdd", "Schedule 1 Adjustments"],
       ["1601Cv2018", "frm1601c:btnDelete", "Schedule 1 Adjustments"],
-      ["1702Qv2018C", "frm1702q:Sched4:btnAdd", "Other Tax Credits / Payments"],
       ["2200Av2020", "frm2200Av2020:btnAdd", "Schedule 1 Other Rows"],
       ["2200Av2020", "frm2200Av2020:btnDelete", "Schedule 1 Other Rows"],
       ["2550Qv2024", "btnNewSched1", "Date Purchased/Imported"],
@@ -347,6 +346,11 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await box("frm1702q:Sched4:txtOthrTxCrdtAmnt1").fill("200");
     await box("frm1702q:Sched4:txtOthrTxCrdtAmnt1").press("Tab");
     await expect.poll(() => box("frm1702q:Sched4:btnDelete").isDisabled()).toBe(false);
+    // Add opens the "Credits / Payment" pop-up's rows once on
+    await box("frm1702q:Sched4:btnAdd").evaluate((e: HTMLElement) => e.click());
+    await expect.poll(() => page.locator(".schedule-modal h3").first().textContent()).toContain("Other Tax Credits / Payments");
+    await page.keyboard.press("Escape");
+    if (await page.locator(".schedule-modal").count()) await page.locator(".schedule-modal button", { hasText: /close|done|ok/i }).first().click();
     await box(tick).check();
     await box("frm1702q:Sched4:btnDelete").evaluate((e: HTMLElement) => e.click());
     await expect.poll(() => box(desc).inputValue()).toBe("");
