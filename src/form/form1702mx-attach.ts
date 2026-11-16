@@ -150,7 +150,7 @@ export interface Handled {
 export function runHandler(sim: Handled, source: string, copy: string, element: string): void {
   for (const st of statementOf(copyId(source, copy))) {
     const f = sim[st.fn];
-    const arg = st.arg.map((a) => (a === "this" ? element : a));
+    const arg = st.arg.map((a) => (a === "this" || a === "this.value" ? element : a));
     if (typeof f === "function") (f as (...x: unknown[]) => unknown).apply(sim, arg);
     else if (!NO_EFFECT.has(st.fn)) throw new Unported(`${st.fn} (${element})`);
   }

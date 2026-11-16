@@ -38,6 +38,10 @@ import { liveTemplate } from "./clock.ts";
 const template = liveTemplate("1702MXv2018C", frozen as Array<[string, string, string?]>);
 import { atcPickList } from "./atc.ts";
 import { BirDom, addCommas1702MXValue, NegativeValue, NumWithComma, NumWithParenthesis, WholeNumWithComma, addCommas, birDateValid, formatCurrencyWOC } from "./form1702mx-bir.ts";
+import { BOX, COLUMN, KIND, MAX, attachmentSpec, copyBox, copyField, copyId, copyName, countField, roleOf, runHandler, type Kind } from "./form1702mx-attach.ts";
+import { attachFunction as attach2018, attachState as state2018 } from "./attachment/1702mx-2018.ts";
+import { attachFunction as attach2018c, attachState as state2018c } from "./attachment/1702mx-2018c.ts";
+import { attachFunction as attach2018cxx, attachState as state2018cxx } from "./attachment/1702mx-2018cxx.ts";
 import { parseMoney } from "./money.ts";
 import { validate as validateRequired, type FieldJson, type FieldSpec, type FormSchema, type FormState, type GroupSpec, type GroupState, type Problem } from "./schema.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
@@ -112,7 +116,7 @@ const bare = (k: string): string => (k.startsWith(P) ? k.slice(P.length) : k);
 /** Zero-default keys that are NOT BIR `numbertext` inputs (rates, the NOLCO rows, counters, page furniture). */
 const NOT_NUMBERTEXT = /:(txtPg2Pt4I34SpecialTaxRate|txtPg2Sc2It14[BC]|drpPg3Sc1I11CB|txtPg[34]IShed|txtCtrmodal|totalEXAttach|totalSPAttach)/;
 const NUMBERTEXT = new Set(TEMPLATE.filter(([k, v, r]) => !r && v === "0" && k.startsWith(P) && !NOT_NUMBERTEXT.test(k)).map(([k]) => bare(k)));
-const isNumbertext = (id: string): boolean => NUMBERTEXT.has(id) || MODAL.some((m) => id.startsWith(m.stem) && !m.text.some((c) => id.endsWith(`Col${c}`)));
+const isNumbertext = (id: string): boolean => NUMBERTEXT.has(id) || copyBox("1702MXv2018C", id)?.box.numbertext === true || MODAL.some((m) => id.startsWith(m.stem) && !m.text.some((c) => id.endsWith(`Col${c}`)));
 
 /** Keys BIR always derives (never an input under instruction A): disabled at blank and never enabled by BIR. */
 const COMPUTED_RE = new RegExp(
@@ -196,8 +200,13 @@ export class Sim extends BirDom {
   /** The rebuilt special-rate drop-down's option values. */
   drpOption: string[] = ["0"];
   tempVarForSc1I12 = false;
+  /** The viewer's hidden "attachTypeView": the kind of the copy last shown (what loadData's last addAttachment leaves). */
+  attachTypeView = "";
   constructor(readonly edition: Edition, now: Date) {
     super(now);
+    // BIR's attachment compute functions and the per-copy arrays they keep state in, as this edition's page has them
+    const [state, fn] = edition === "2018" ? [state2018, attach2018] : edition === "2018Cxx" ? [state2018cxx, attach2018cxx] : [state2018c, attach2018c];
+    Object.assign(this, state(), fn);
   }
   /** data-type="negative": Sch 10 item 1 may hold a loss. */
   protected override negative(e: string): boolean {
@@ -372,11 +381,17 @@ export class Sim extends BirDom {
     return rate.sort((a, b) => Number(a) - Number(b));
   }
   changeSpecialTaxRate(): void {
+    // with special-rate copies the drop-down is left alone and each copy re-derives its own rate
+    if (this.totalSP !== 0) {
+      for (const copy of this.copy.SP) this.populatePg1AttachScBI13(copy);
+      return;
+    }
     this.drpOption = this.getSpecialTaxRates().map((r) => String((Number(r) * 1) / 100));
     this.set("drpPg3Sc1I11CB", this.drpOption[0] ?? "");
     this.populatePg3Sc1I11();
   }
   populatePg3Sc1I11(): void {
+    if (this.totalSP !== 0) return; // BIR: the whole body is `if (totalSP === 0)`
     this.tempVarForSc1I12 = false;
     const ipa = this.g("txtPg2Pt4I31CB").toUpperCase();
     const legal = this.g("txtPg2Pt4I32CB").toUpperCase().replace(/[. ]/g, "");
@@ -426,18 +441,32 @@ export class Sim extends BirDom {
     this.getSum("txtPg2Sc2Itm8A,txtPg2Sc2Itm8B,txtPg2Sc2Itm8C", "txtPg2Sc2Itm8D");
     this.computePg2Sc2It11();
   }
+  /** The sum of one box (by its name suffix) over a kind's copies: BIR's jQuery `input[name*=EX]` filter, in its float. */
+  copySum(kind: Kind, suffix: string): number {
+    let sum = 0;
+    for (const copy of this.copy[kind])
+      for (const b of BOX["1702MXv2018C"]) {
+        if (!b.name || !copyId(b.name, copy).endsWith(suffix)) continue;
+        const x = NumWithComma(NumWithParenthesis(this.g(copyId(b.id, copy))));
+        sum += Number.isNaN(x) ? 0 : x;
+      }
+    return sum;
+  }
   computePg3Sc1I7(): void {
-    this.set("hidden", "0");
+    this.set("hidden", NegativeValue(formatCurrencyWOC(this.copySum("EX", "BI7"))));
     this.getSum("txtPg6Sc6I5CA,hidden", "txtPg2Sc2Itm9A");
+    this.set("hidden", NegativeValue(formatCurrencyWOC(this.copySum("SP", "BI7"))));
     this.getSum("txtPg6Sc6I5CB,hidden", "txtPg2Sc2Itm9B");
     this.getSum("txtPg6Sc6I5CC", "txtPg2Sc2Itm9C");
     this.getSum("txtPg2Sc2Itm9A,txtPg2Sc2Itm9B,txtPg2Sc2Itm9C", "txtPg2Sc2Itm9D");
+    this.set("hidden", "0");
     this.computePg2Sc2It11();
   }
   computePg3Sc1I8(): void {
-    this.set("hidden", "0");
+    this.set("hidden", NegativeValue(formatCurrencyWOC(this.copySum("SP", "BI8"))));
     this.getSum("hidden", "txtPg2Sc2It10B"); // BIR: 10B = the (empty) SP attachments' NOLCO sum
     this.getSum("txtPg2Sc2It10B,txtPg2Sc2It10C", "txtPg2Sc2It10D");
+    this.set("hidden", "0");
     this.computePg2Sc2It11();
   }
 
@@ -930,6 +959,10 @@ export class Sim extends BirDom {
     else this.disableField(button);
     this.methodOfDeductionsOptional();
   }
+  checkNullRow_OnBlur3(textbox: string, param: string): void {
+    const first = param.split(",")[0]!;
+    if (this.g(textbox).trim() !== "" && this.g(first).trim() !== "OTHERS") this.enableField(param);
+  }
   checkNullRow_OnBlur4(t1: string, t2: string, param: string): void {
     const [a, b] = param.split(",") as [string, string];
     if (this.g(t1).trim() !== "" && this.g(t2).trim() !== "" && this.g(a).trim() !== "OTHERS" && this.g(b).trim() !== "OTHERS") this.enableField(param);
@@ -983,10 +1016,165 @@ export class Sim extends BirDom {
 
   // ── events ──
   change(e: string): void {
+    const c = copyBox("1702MXv2018C", e);
+    if (c) return runHandler(this as never, c.box.change, c.copy, e);
     ((this.edition === "2018" ? CHANGE_2018.get(e) : undefined) ?? HANDLER.get(e)?.[0])?.(this, e);
   }
   blur(e: string): void {
+    const c = copyBox("1702MXv2018C", e);
+    if (c) return runHandler(this as never, c.box.blur, c.copy, e);
     HANDLER.get(e)?.[1]?.(this, e);
+  }
+
+  // ── Part V attachments: one copy of BIR's attachment pages per exempt / special-rate activity ──
+  /** `this.value = addCommas(this.value)`. */
+  addCommas(e: string): void {
+    this.set(e, addCommas(this.g(e)));
+  }
+  compareFutureDateAttach(e: string, copy: string, from: string, to: string): void {
+    const f = `txtPg1${copy}${from}`;
+    const t = `txtPg1${copy}${to}`;
+    if (this.validateFutureDate(f) && this.validateFutureDate(t) && "" !== (this.g(f) && this.g(t))) {
+      if (this.dateOf(this.g(t)) < this.dateOf(this.g(f))) this.set(e, "");
+    }
+  }
+  compareEffectivityDateAttach(e: string, copy: string, to: string): void {
+    const t = `txtPg1${copy}${to}`;
+    const filingDate = new Date(2000 + Number(this.g("txtPg1I2YearEnd")), Number(this.g("ddlPg1I2Date")), 1);
+    if (this.validateFutureDate(t) && this.g(t) !== "" && filingDate < this.dateOf(this.g(t))) this.set(e, "");
+  }
+  compareExpirationDateAttach(e: string, copy: string, to: string): void {
+    const t = `txtPg1${copy}${to}`;
+    const filingDate = new Date(2000 + Number(this.g("txtPg1I2YearEnd")), Number(this.g("ddlPg1I2Date")), 0);
+    if (this.validateFutureDate(t) && this.g(t) !== "" && filingDate > this.dateOf(this.g(t))) this.set(e, "");
+  }
+  /** enableCompleteRows(text ids, amount ids, output ids): the output boxes open once the row is complete. */
+  enableCompleteRows(param1: string, param2: string, output: string): void {
+    const bare = (x: string) => x.replace(/^frm1702MX:/, "");
+    let valid = param1.split(",").every((id) => this.g(bare(id)).trim() !== "");
+    if (valid) valid = param2.split(",").every((id) => NumWithComma(NumWithParenthesis(this.g(bare(id)))) !== 0);
+    const out = output.split(",").map(bare);
+    if (valid) {
+      for (const id of out) {
+        if (this.g(id).trim() === "OTHERS") break;
+        this.dis[id] = false;
+      }
+    } else {
+      for (const id of out)
+        if (/^btn/.test(id)) {
+          this.dis[id] = true;
+          break;
+        }
+    }
+  }
+  /** addAttachment(kind): one more copy, its boxes at BIR's defaults (loadData and the Add buttons call it). */
+  addAttachment(kind: Kind): string {
+    const copy = copyName(kind, this.copy[kind].length + 1);
+    this.copy[kind].push(copy);
+    for (const b of BOX["1702MXv2018C"]) {
+      const id = copyId(b.id, copy);
+      if (b.type === "radio") this.chk[id] = (kind === "EX" && id.endsWith("Exempt")) || (kind === "SP" && id.endsWith("SpecialRate"));
+      else this.v[id] = b.value;
+    }
+    this.resetCopyDisabled(copy);
+    this.attachTypeView = kind; // viewAttachments(kind)
+    return copy;
+  }
+  /** What addAttachment leaves disabled in a fresh copy: BIR's own disabled boxes, Schedule I / IA, and an exempt copy's rate. */
+  resetCopyDisabled(copy: string): void {
+    for (const b of BOX["1702MXv2018C"]) this.dis[copyId(b.id, copy)] = b.disabled || b.inside.some((x) => x === "AttMScheduleI" || x === "AttMScheduleIA");
+    if (copy.startsWith("EX")) this.dis[`txtPg1${copy}ScAI4`] = true;
+  }
+  /** The boxes of a copy's Schedule I / IA block, in DOM order. */
+  private scheduleBox(copy: string, part: "I" | "IA") {
+    return BOX["1702MXv2018C"].filter((b) => b.inside.includes(`AttMSchedule${part}`)).map((b) => ({ ...b, id: copyId(b.id, copy) }));
+  }
+  /** populatePg1AttachScBI13: the copy's rate (item 13) from its item 4, and Schedule I / IA opened or closed. */
+  populatePg1AttachScBI13(a: string): void {
+    this.tempVarForSc1I12 = false;
+    const item4 = this.g(`txtPg1${a}ScAI4`);
+    const ipa = this.g(`txtPg1${a}ScAI1`).toUpperCase();
+    const legal = this.g(`txtPg1${a}ScAI2`).toUpperCase().replace(/[. ]/g, "");
+    const rate = Number(item4) * 1;
+    const special = a.includes("SP");
+    const atc = this.g("drpPg1I5ATCR2");
+    const ticked = !!this.chk.chkPg1I5ATCR2;
+    const isPEZA5 = (IPA_LIST.includes(ipa) || LEGAL_BASIS.includes(legal)) && rate === 5;
+    const isTaxCode10 = ipa.replace(/[. ]/g, "") === "TAXCODE" && rate === 10;
+    const isIC030 = ticked && (atc === "IC030" || atc === "IC031" || atc === "IC101");
+    const isIC010 = ticked && atc === "IC010";
+    const ipaBare = ipa.replace(/[. ]/g, "");
+    const isRA9513 = (ipaBare === "RA9513" || ipaBare === "9513" || legal === "RA9513" || legal === "9513") && rate === 10;
+    const rate13 = `txtPg1${a}ScBI13`;
+    const open = () => {
+      for (const b of [...this.scheduleBox(a, "I"), ...this.scheduleBox(a, "IA")]) if (!b.notenabled) this.dis[b.id] = false;
+    };
+    if (isPEZA5 && special) this.set(rate13, item4);
+    else if (isTaxCode10 && isIC030 && special) {
+      this.set(rate13, item4);
+      open();
+    } else if (isRA9513 && isIC010 && special) {
+      this.set(rate13, item4);
+      open();
+    } else if (LEGAL_RA10693.includes(legal)) {
+      this.set(`txtPg1${a}ScAI4`, "2.0");
+      this.set(rate13, this.g(`txtPg1${a}ScAI4`));
+    } else {
+      this.set(rate13, item4);
+      const one = this.scheduleBox(a, "I");
+      const ia = this.scheduleBox(a, "IA");
+      for (const b of [...one, ...ia]) this.set(b.id, "0");
+      for (const b of ia) if (!b.numbertext) this.set(b.id, "");
+      for (const b of [...one, ...ia]) this.dis[b.id] = true;
+    }
+    this.blur(rate13);
+  }
+  /** disableAttachColumns(true, kind): the main form's exempt (A) / special-rate (B) column is cleared and locked. */
+  disableAttachColumns(kind: Kind): void {
+    const letter = kind === "EX" ? "A" : "B";
+    let itemsFromModal = 0;
+    for (const id of COLUMN["1702MXv2018C"][letter]) {
+      if (id.includes("Pg2Pt4")) {
+        if (this.g(id).length > 0) {
+          this.set(id, "");
+          this.blur(id);
+        }
+        this.dis[id] = true;
+      } else {
+        if (this.g(id) !== "0") {
+          this.set(id, "0");
+          this.blur(id);
+        }
+        if (id.includes("Col")) itemsFromModal++;
+        this.dis[id] = true; // BIR keeps a few boxes disabled either way: disable is always true here
+      }
+    }
+    this.attachmentChecking(itemsFromModal);
+    if (kind === "SP") this.changeSpecialTaxRate();
+  }
+  attachmentChecking(itemsFromModal: number): void {
+    this.checkNullRow_OnBlur4("txtPg6Sc6I1description", "txtPg6Sc6I1legal", "txtPg6Sc6I2description,txtPg6Sc6I2legal,txtPg6Sc6I2CA,txtPg3Sc6I2CB,txtPg6Sc6I2CC");
+    this.checkNullRow_OnBlur4("txtPg6Sc6I2description", "txtPg6Sc6I2legal", "txtPg6Sc6I3description,txtPg6Sc6I3legal,txtPg6Sc6I3CA,txtPg4Sc6I3CB,txtPg6Sc6I3CC");
+    this.checkNullRow_OnBlur4("txtPg6Sc6I3description", "txtPg6Sc6I3legal", "txtPg3Sc6I4description,txtPg3Sc6I4legal,txtPg3Sc6I4CA,txtPg3Sc6I4CB,txtPg3Sc6I4CC");
+    if (this.g("txtPg3Sc6I4description") !== "OTHERS" && this.g("txtPg3Sc6I4description") !== "")
+      this.checkNullRow_OnBlur4("txtPg6Sc6I3description", "txtPg6Sc6I3legal", "txtPg3Sc6I4description,txtPg3Sc6I4legal,txtPg3Sc6I4CA,txtPg3Sc6I4CB,txtPg3Sc6I4CC");
+    if (itemsFromModal > 0) for (const m of MODAL) if (Number(this.g(m.counter)) > 0) this.saveModal(m);
+  }
+  /** saveAttachmentIterationData: each copy's description rows enable the next, then its rate is re-derived. */
+  saveAttachmentIterationData(): void {
+    for (const a of [...this.copy.EX, ...this.copy.SP]) {
+      this.checkNullRow_OnBlur3(`txtPg3${a}ScFI1other`, `txtPg3${a}ScFI2other,txtPg3${a}ScFI2C1`);
+      this.checkNullRow_OnBlur3(`txtPg3${a}ScFI2other`, `txtPg3${a}ScFI3other,txtPg3${a}ScFI3C1`);
+      this.checkNullRow_OnBlur(`txtPg2${a}ScDI17iother`, `txtPg2${a}ScDI25`);
+      this.checkNullRow_OnBlur3(`txtPg3${a}ScGI3other`, `txtPg3${a}ScGI4other,txtPg3${a}ScGI4C1`);
+      this.checkNullRow_OnBlur3(`txtPg4${a}ScGI36other`, `txtPg4${a}ScGI37other,txtPg4${a}ScGI37C1`);
+      this.checkNullRow_OnBlur3(`txtPg4${a}ScGI37other`, `txtPg4${a}ScGI38other,txtPg4${a}ScGI38C1`);
+      this.checkNullRow_OnBlur3(`txtPg4${a}ScGI38other`, `txtPg4${a}ScGI39other,txtPg4${a}ScGI39C1`);
+      this.checkNullRow_OnBlur4(`txtPg4${a}ScHI1C1`, `txtPg4${a}ScHI1C2`, `txtPg4${a}ScHI2C1,txtPg4${a}ScHI2C2,txtPg4${a}ScHI2C3`);
+      this.checkNullRow_OnBlur4(`txtPg4${a}ScHI2C1`, `txtPg4${a}ScHI2C2`, `txtPg4${a}ScHI3C1,txtPg4${a}ScHI3C2,txtPg4${a}ScHI3C3`);
+      this.checkNullRow_OnBlur4(`txtPg4${a}ScHI3C1`, `txtPg4${a}ScHI3C2`, `txtPg4${a}ScHI4C1,txtPg4${a}ScHI4C2,txtPg4${a}ScHI4C3`);
+      this.populatePg1AttachScBI13(a);
+    }
   }
 }
 
@@ -1016,6 +1204,11 @@ function reopen(s: Sim): void {
   s.dis = {};
   for (const id of PAGE_TEXT) s.dis[id] = !enabledAtBlank(id, s.edition);
   s.dis.ddlPg1I2Date = true;
+  // loadData: addAttachment per counted copy, then disableAttachColumns(true, kind) before the values load
+  for (const kind of KIND) {
+    for (const copy of s.copy[kind]) s.resetCopyDisabled(copy);
+    if (s.copy[kind].length) for (const id of COLUMN["1702MXv2018C"][kind === "EX" ? "A" : "B"]) s.dis[id] = true;
+  }
   // init()'s checkFilingYear ran on the BLANK page (calendar, not amended): only its 27A–C disabling survives the load
   s.disableField("txtPg2Sc3It27A,txtPg2Sc3It27B,txtPg2Sc3It27C");
   // checkEnableManual
@@ -1025,16 +1218,27 @@ function reopen(s: Sim): void {
   for (const name of ["sc6_4", "sc3_31", "sc10_3", "sc10_6", "sc10_8"]) if (Number(s.g(modalOf(name).counter)) > 0) s.saveModal(modalOf(name));
   if (s.g("txtPg3Sc6I4description") !== "OTHERS")
     s.checkNullRow_OnBlur4("txtPg6Sc6I3description", "txtPg6Sc6I3legal", "txtPg3Sc6I4description,txtPg3Sc6I4legal,txtPg3Sc6I4CA,txtPg3Sc6I4CB,txtPg3Sc6I4CC");
+  s.saveAttachmentIterationData();
   s.recomputeSchedule1();
 }
 
 /** A filer tabbing through pages 1–4: every enabled text input changed and left, in DOM order. */
-function fill(s: Sim): void {
+function fill(s: Sim, copyInput: Record<string, string> = {}): void {
   for (const id of PAGE_TEXT) {
     if (s.dis[id] || INVISIBLE.has(id)) continue;
     s.change(id);
     s.blur(id);
   }
+  // the Part V copies sit after the main form's boxes in BIR's DOM
+  for (const copy of [...s.copy.EX, ...s.copy.SP])
+    for (const b of BOX["1702MXv2018C"]) {
+      if (b.type === "radio") continue;
+      const id = copyId(b.id, copy);
+      if (id in copyInput) s.v[id] = copyInput[id]!;
+      if (s.dis[id]) continue;
+      s.change(id);
+      s.blur(id);
+    }
 }
 
 /** parityCheck's page-1 pass: every enabled page-1 text input left (blurred), in DOM order. */
@@ -1047,6 +1251,8 @@ export interface Model {
   value: Record<string, string>;
   checked: Record<string, boolean>;
   table: Record<string, string[][]>;
+  /** The Part V copies in use ("EX1", "SP1" ...). */
+  copy: { EX: string[]; SP: string[] };
 }
 
 /** Run BIR on the native inputs: the filer types them into the blank form, OKs the modals and tabs through twice
@@ -1069,6 +1275,25 @@ export function run1702MX(read: Read, groups: GroupState, edition: Edition, now 
   s.dis.ddlPg1I2Date = !s.chk.rdoPg1I1Fiscal && !s.chk.rdoPg1I4ShortPeriodYes;
   // clicking "Amended: Yes" (checkFilingYear) is what enables 27A–C
   if (s.chk.rdoPg1I3AmendedYes) s.enableField("txtPg2Sc3It27A,txtPg2Sc3It27B,txtPg2Sc3It27C");
+  // Part V: the filer added the copies first (addAttachment, then disableAttachColumns clears and locks that column)
+  const copyInput: Record<string, string> = {};
+  for (const kind of KIND) {
+    const count = Math.min(MAX, Math.max(0, parseInt(read(countField(kind)), 10) || 0));
+    for (let n = 0; n < count; n++) {
+      const copy = s.addAttachment(kind);
+      for (const b of BOX["1702MXv2018C"]) {
+        const id = copyId(b.id, copy);
+        const typed = read(`${P}${id}`);
+        if (roleOf("1702MXv2018C", b) === "typed" && typed !== "") copyInput[id] = typed;
+      }
+    }
+  }
+  for (const kind of KIND)
+    if (s.copy[kind].length) {
+      s.disableAttachColumns(kind);
+      // the column is locked: nothing can be typed there while a copy of that kind exists
+      for (const id of COLUMN["1702MXv2018C"][kind === "EX" ? "A" : "B"]) delete input[id];
+    }
   // the filer types every input in DOM order (each change + blur fires while later fields are still blank); a field
   // BIR keeps disabled cannot be typed, but a loaded value stays, so it is set as loadData would
   for (const id of PAGE_TEXT) {
@@ -1091,9 +1316,9 @@ export function run1702MX(read: Read, groups: GroupState, edition: Edition, now 
     for (const m of MODAL) if ((s.tbl[m.name] ?? []).length) s.summation(m), s.saveModal(m);
   };
   okModals();
-  fill(s);
+  fill(s, copyInput);
   okModals();
-  fill(s);
+  fill(s, copyInput);
   // the overpayment choice is made last: computePg1Pt2I21 clears (and disables) it whenever item 16 is not negative
   const over = ["rdoPg1Pt2I21Refund", "rdoPg1Pt2I21IssueTCC", "rdoPg1Pt2I21CarriedOver"];
   if (!s.dis[over[0]!]) for (const x of over) s.chk[x] = read(`${P}${x}`) === "true";
@@ -1101,13 +1326,15 @@ export function run1702MX(read: Read, groups: GroupState, edition: Edition, now 
   reopen(s);
   tabPage1(s);
   tabPage1(s);
-  return { value: s.v, checked: s.chk, table: s.tbl };
+  for (const kind of KIND) s.v[countField(kind).slice(P.length)] = String(s.copy[kind].length);
+  return { value: s.v, checked: s.chk, table: s.tbl, copy: s.copy };
 }
 
 // ── schema ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /** The keys the model reads (BIR's inputs); the cache is keyed on their values. */
-const INPUT_KEY = TEMPLATE.map(([k]) => k).filter((k) => k.startsWith(P) && !isComputed(bare(k)));
+const COPY_FIELD = copyField("1702MXv2018C", (_id, f) => (f.compute ? { compute: () => 0 } : {}));
+const INPUT_KEY = [...TEMPLATE.map(([k]) => k).filter((k) => k.startsWith(P) && !isComputed(bare(k))), ...COPY_FIELD.filter((f) => !f.compute).map((f) => f.id), ...KIND.map(countField)];
 const cache = new Map<string, Model>();
 function model(read: Read, groups: GroupState, edition: Edition): Model {
   const key = JSON.stringify([edition, INPUT_KEY.map((k) => (isComputed(bare(k), edition) ? "" : read(k))), groups]);
@@ -1130,7 +1357,7 @@ export function savedValue(id: string, value: string): string {
   return VERBATIM.has(id) ? value : value.toUpperCase();
 }
 
-const UNMODELLED = /^(txtPg1Pt1I12Email|txtCurrentPage|txtMaxPage|txtPg1Pt1I(2[6-9])\w*|txtPg1Pt2(Title|TIN)ofSignatory2?|txtPg1Pt2AuthorizedRepresentative|txtPg1Pt2Treasurer|.*AttM.*|attachment\w*|totalEXAttach|totalSPAttach|txtPg9Sc13I_SubTotal|txtPg5Sc[45]I\d_SubTotal\w*|txtPg6Sc5I39_SubTotal\w*)$/;
+const UNMODELLED = /^(txtPg1Pt1I12Email|txtCurrentPage|txtMaxPage|txtPg1Pt1I(2[6-9])\w*|txtPg1Pt2(Title|TIN)ofSignatory2?|txtPg1Pt2AuthorizedRepresentative|txtPg1Pt2Treasurer|.*AttM.*|attachment\w*|txtPg9Sc13I_SubTotal|txtPg5Sc[45]I\d_SubTotal\w*|txtPg6Sc5I39_SubTotal\w*)$/;
 
 export function fieldList(record: TemplateRecord[]): FieldJson[] {
   return record
@@ -1156,6 +1383,11 @@ export function make1702MX2018(code: string, edition: Edition, record: TemplateR
     const f = field.find((x) => x.id === `${P}${id}`);
     if (f) f.required = true;
   }
+  // the Part V copies: inputs the filer types, BIR's own figures (read-only) for the rest
+  for (const f of COPY_FIELD) {
+    const id = bare(f.id);
+    field.push(f.compute ? { ...f, derive: (r: Read) => { const m = model(r, {}, edition); return f.kind === "radio" ? String(!!m.checked[id]) : savedValue(id, m.value[id] ?? ""); } } : f); // prettier-ignore
+  }
   return {
     form_code: code,
     title: "Annual Income Tax — Corporations (Mixed Income)",
@@ -1163,6 +1395,10 @@ export function make1702MX2018(code: string, edition: Edition, record: TemplateR
     group: MODAL_GROUP,
     extra_record: (state, groups) => derivedRecord(state, groups, edition, json),
     typed: addCommas1702MXValue,
+    attachment: attachmentSpec("1702MXv2018C", "attachmentTotal"),
+    attachment_record: (state, groups) => copyRecord(state, groups, edition),
+    // a special-rate copy empties #atcContainer: BIR's save has no special-rate drop-down then
+    attachment_omit: (state, groups) => (model((id) => state[id] ?? "", groups, edition).copy.SP.length ? [`${P}drpPg3Sc1I11CB`] : []),
   };
 }
 
@@ -1181,10 +1417,27 @@ function derivedRecord(state: FormState, groups: GroupState, edition: Edition, j
       out.push({ key: f.id, value: ESCAPED.has(id) ? legacyEscape(v) : v });
     }
   }
+  // viewAttachments(kind): the viewer's box shows the last added kind and its count (SP is added after EX)
+  const shown = m.copy.SP.length ? m.copy.SP.length : m.copy.EX.length;
+  out.push({ key: "attachmentCurrent", value: String(shown) }, { key: "attachmentTotal", value: String(shown) });
   for (const mo of MODAL) {
     out.push({ key: `${P}${mo.counter}`, value: m.value[mo.counter] ?? "0" });
     (m.table[mo.name] ?? []).forEach((row, i) => row.forEach((cell, j) => out.push({ key: `${P}${mo.stem}${i + 1}Col${j + 1}`, value: mo.text.includes(j + 1) ? cell.toUpperCase() : savedValue("x", cell) })));
   }
+  return out;
+}
+
+/** The Part V copies' boxes as BIR's saveXML writes them, EX copies then SP copies, each in the copy's DOM order. */
+function copyRecord(state: FormState, groups: GroupState, edition: Edition): SaveRecord[] {
+  const m = model((id) => state[id] ?? "", groups, edition);
+  const out: SaveRecord[] = [];
+  for (const kind of KIND)
+    for (const copy of m.copy[kind])
+      for (const b of BOX["1702MXv2018C"]) {
+        const id = copyId(b.id, copy);
+        if (b.type === "radio") out.push({ key: `${P}${id}`, value: String(!!m.checked[id]) });
+        else out.push({ key: `${P}${id}`, value: savedValue(id, m.value[id] ?? b.value) });
+      }
   return out;
 }
 

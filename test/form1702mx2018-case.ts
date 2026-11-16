@@ -144,3 +144,28 @@ export const OSD_ORDER: Record<string, string> = {
   [id("txtPg6Sc6I5CD")]: "computePg6Sc6I5 totals the row D's before re-summing them: after the reload's OSD zeroing the modal row's stale 300 is in",
 };
 export const allow = (r: { diff: string[] }, key: Record<string, string>) => r.diff.filter((d) => !Object.keys(key).some((k) => d.startsWith(`${k}:`)));
+
+/** Part V: one exempt (EX1) and one special-rate (SP1) copy of BIR's attachment pages, on the itemized case. */
+export const withCopy: FormState = {
+  ...itemized,
+  [id("chkPg2Pt4I30MoreThanOne")]: "true",
+  [id("totalEXAttach")]: "1",
+  [id("totalSPAttach")]: "1",
+  // EX1: Schedule D gross 500,000 less 100,000, Schedule E1 10,000, Schedule G 50,000 + 20,000, Schedule H
+  [id("txtPg1EX1ScAI1")]: "ecozone",
+  [id("txtPg1EX1ScBI1")]: "500,000",
+  [id("txtPg1EX1ScBI2")]: "100,000",
+  [id("txtPg2EX1ScDI9")]: "10,000",
+  [id("txtPg2EX1ScDI10")]: "20,000",
+  [id("txtPg4EX1ScHI1C1")]: "SUPPLIES",
+  [id("txtPg4EX1ScHI1C2")]: "RA 1",
+  [id("txtPg4EX1ScHI1C3")]: "30,000",
+  // SP1: a PEZA activity at 5%
+  [id("txtPg1SP1ScAI1")]: "peza",
+  [id("txtPg1SP1ScAI2")]: "ra 7916",
+  [id("txtPg1SP1ScAI4")]: "5",
+  [id("txtPg1SP1ScBI1")]: "2,000,000",
+  [id("txtPg1SP1ScBI2")]: "300,000",
+  [id("txtPg2SP1ScDI9")]: "20,000",
+  [id("txtPg2SP1ScDI10")]: "100,000",
+};
