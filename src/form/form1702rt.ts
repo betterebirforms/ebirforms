@@ -26,6 +26,7 @@ import { validate as validateRequired, type FieldJson, type FieldSpec, type Form
 import { domPeso, formatPeso, nolcoRows, numWithParenthesis, out, product, validIncorporationDate, wholeNum } from "./form1702rtv2018c.ts";
 import { legacyEscape, type SaveRecord } from "@/lib/savefile.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
+import { typedRT } from "./typed1702.ts";
 
 const P = "frm1702RT:";
 type Read = (id: string) => string;
@@ -398,6 +399,7 @@ export const FORM_1702RT: FormSchema = {
   }),
   group: [...MODAL_RT_GROUP, SC6A_7_GROUP, SC12_4_GROUP, ...DIV_RT_GROUP],
   format: formatPeso,
+  typed: typedRT,
   extra_record: (state, groups) => derivedRT(state, groups),
 };
 

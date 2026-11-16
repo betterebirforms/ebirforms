@@ -37,6 +37,7 @@
 // rows, then fills them by id). With rows, the item's own line shows their subtotal (C1 "OTHERS" from 2 rows up).
 // The Sch IIIA row-7 modal is not modelled: it has no CtrModal, so BIR can neither save its count nor reload it.
 
+import { typedRT } from "./typed1702.ts";
 import frozen from "./template/1702RTv2018C.json";
 import { liveTemplate } from "./clock.ts";
 
@@ -449,6 +450,7 @@ export function make1702RT2018(code: string, edition: Edition, record: TemplateR
     field,
     group: MODAL_GROUP,
     format: formatPeso,
+    typed: typedRT,
     extra_record: (state, groups) => derivedRecord(state, groups, edition, json),
   };
 }

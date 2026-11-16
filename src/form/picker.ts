@@ -18,6 +18,7 @@ import { F1600PT } from "./form1600ptv2018.ts";
 import { pickList2550M } from "./form2550m.ts";
 import { pickList2550Q } from "./form2550q.ts";
 import { atcInfo, atcPickList } from "./atc.ts";
+import { GATE_EX, GATE_EX2018, GATE_RT, GATE_RT2018, gateOn, type Gate } from "./gate1702.ts";
 
 export type Picker =
   | { kind: "field"; field: string; list: (state: FormState) => AtcPick[]; need?: (state: FormState) => string | null; fill?: (a: AtcPick) => FormState }
@@ -143,11 +144,10 @@ const ADD_MORE_1707 = {
 
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
  *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
-/** BIR's "(Add more...)" buttons that open an item's own pop-up table (1702-RT / 1702-EX families): button id → the group
- *  and the pop-up's title. BIR keeps the button greyed until the item's line is filled; the web version keeps it
- *  open, because the editor adds the first row itself. */
-const more = (...entry: Array<[button: string, group: string, title: string]>): Record<string, { group: string; title: string; on: () => boolean }> =>
-  Object.fromEntries(entry.map(([id, group, title]) => [id, { group, title, on: () => true }]));
+/** BIR's "(Add more...)" buttons that open an item's own pop-up table (1702-RT / 1702-EX families): button id → the group,
+ *  the pop-up's title and when BIR turns the button on (src/form/gate1702.ts; no gate = never greyed out in BIR). */
+const more = (gate: Record<string, Gate>, edition: "RT" | "EX", ...entry: Array<[button: string, group: string, title: string]>): Record<string, { group: string; title: string; on: (groups: GroupState, state: FormState) => boolean }> =>
+  Object.fromEntries(entry.map(([id, group, title]) => [id, { group, title, on: gate[id] ? gateOn(gate[id]!, group, edition) : () => true }]));
 export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?: string; on?: (groups: GroupState, state: FormState) => boolean }>> = {
   // 2552 Part III: BIR's script adds its rows (AddTransactionNoTax), so none are on the page to find the table by
   "2552": {
@@ -205,7 +205,7 @@ export const BUTTON_ACTION: Record<string, Record<string, { on?: (groups: GroupS
 
 // 1702-RT and 1702-EX: the "(Add more...)" tables of their schedules. The 2018 editions of each family share one set
 // of buttons (the superseded and the current edition carry the same ids).
-const RT2018 = more(
+const RT2018 = more(GATE_RT2018, "RT",
   ["btnPg2Pt4I54More", "credit54", "Part IV item 54: other tax credits"],
   ["btnPg3Sc1I17iMore", "sc1_17i", "Schedule 1 item 17i: other ordinary allowable deductions"],
   ["btnPg3Sc2I4More", "sc2_4", "Schedule 2 item 4: other special allowable deductions"],
@@ -213,7 +213,7 @@ const RT2018 = more(
   ["btnPg4Sc5I6More", "sc5_6", "Schedule 5 item 6: reconciliation"],
   ["btnPg4Sc5I8More", "sc5_8", "Schedule 5 item 8: reconciliation"],
 );
-const EX2018 = more(
+const EX2018 = more(GATE_EX2018, "EX",
   ["btnPg3Pt6S1I17More", "sc1_17", "Schedule 1 item 17: other ordinary allowable deductions"],
   ["btnPg3Pt6S2I4More", "sc2_4", "Schedule 2 item 4: other special allowable deductions"],
   ["btnPg3Pt6S3I3More", "sc3_3", "Schedule 3 item 3: reconciliation"],
@@ -221,7 +221,7 @@ const EX2018 = more(
   ["btnPg3Pt6S3I8More", "sc3_8", "Schedule 3 item 8: reconciliation"],
 );
 Object.assign(BUTTON_GROUP, {
-  "1702RT": more(
+  "1702RT": more(GATE_RT, "RT",
     ["btnPg4Sc3I3More", "sc3_3", "Schedule 3 item 3: other taxable income"],
     ["btnPg4Sc4I4More", "sc4_4", "Schedule 4 item 4"],
     ["btnPg5Sc4I39More", "sc4_39", "Schedule 4 item 39: other ordinary allowable deductions"],
@@ -240,7 +240,7 @@ Object.assign(BUTTON_GROUP, {
   ),
   "1702RTv2018": RT2018,
   "1702RTv2018C": RT2018,
-  "1702EX": more(
+  "1702EX": more(GATE_EX, "EX",
     ["btnPg4S3I3More", "sc3_3", "Schedule 3 item 3"],
     ["btnPg4S4I4More", "sc4_4", "Schedule 4 item 4"],
     ["btnPg5S4I39More", "sc4_39", "Schedule 4 item 39"],

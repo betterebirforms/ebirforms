@@ -8,6 +8,9 @@ import { extname, join } from "node:path";
 import type { AddressInfo } from "node:net";
 import { chromium, type Browser } from "playwright";
 import { BUTTON_GROUP } from "@/form/picker.ts";
+import { GATE_EX, GATE_EX2018, GATE_RT, GATE_RT2018 } from "@/form/gate1702.ts";
+
+const GATE: Record<string, Record<string, { text: string[]; amount: string[] }>> = { "1702RT": GATE_RT, "1702RTv2018": GATE_RT2018, "1702RTv2018C": GATE_RT2018, "1702EX": GATE_EX, "1702EXv2018": GATE_EX2018, "1702EXv2018C": GATE_EX2018 };
 
 const WEB = "dist-web";
 const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".gif": "image/gif", ".svg": "image/svg+xml", ".webp": "image/webp" };
@@ -42,9 +45,25 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
     await page.locator(".bir-layout").waitFor();
     await page.waitForTimeout(800);
+    const fillHidden = (box: string, value: string) =>
+      page.locator(`[id="${box}"]`).first().evaluate((e: HTMLInputElement, v: string) => {
+        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(e, v);
+        e.dispatchEvent(new Event("input", { bubbles: true }));
+        e.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+      }, value);
     const entry = Object.entries(BUTTON_GROUP[code] ?? {});
     expect(entry.length).toBeGreaterThan(4);
     for (const [id, { title }] of entry) {
+      // greyed out on a blank form, as BIR's is; it opens once its own boxes hold what BIR's condition asks for
+      const gate = GATE[code]?.[id];
+      if (gate) {
+        expect(await page.locator(`[id="${id}"]`).first().isDisabled(), `${id} blank`).toBe(true);
+        for (const box of [...gate.text, ...gate.amount]) {
+          // the box sits on a page that is not showing: set it the way React hears a typed value, then leave it
+          await fillHidden(box, gate.amount.includes(box) ? "1000" : /Date/.test(box) ? "03/15/2017" : "ITEM");
+        }
+        await expect.poll(() => page.locator(`[id="${id}"]`).first().isDisabled(), { message: `${id} filled` }).toBe(false);
+      }
       await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
       await expect.poll(() => page.locator(".schedule-modal h3").first().textContent(), { message: id }).toBe(title);
       await page.locator(".schedule-modal button", { hasText: /^(Close|Done|OK)/ }).first().click();
@@ -63,6 +82,15 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.waitForTimeout(800);
     const value = (id: string) => page.locator(`[id="${id}"]`).first().inputValue();
     const open = async (id: string) => {
+      // the link is greyed out until its own boxes hold what BIR asks for: type them first, as a filer would
+      for (const box of [...(GATE["1702RT"]![id]?.text ?? []), ...(GATE["1702RT"]![id]?.amount ?? [])]) {
+        await page.locator(`[id="${box}"]`).first().evaluate((e: HTMLInputElement, v: string) => {
+          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(e, v);
+          e.dispatchEvent(new Event("input", { bubbles: true }));
+          e.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+        }, GATE["1702RT"]![id]!.amount.includes(box) ? "1000" : "OTHERS");
+      }
+      await expect.poll(() => page.locator(`[id="${id}"]`).first().isDisabled(), { message: id }).toBe(false);
       await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
       await page.locator(".schedule-modal").waitFor();
     };
@@ -81,7 +109,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await open("frm1702RT:btnModalPg8Sc12II");
     await fill(["LOT 1", "LOT 2", "T-1", "T-2", "C-1", "C-2", "900000", "800000", "54000", "48000"]);
     await done();
-    await expect.poll(() => value("frm1702RT:txtSc12I19TotalFinalTaxWitheld")).toBe("112,000");
+    await expect.poll(() => value("frm1702RT:txtSc12I19TotalFinalTaxWitheld")).toBe("114,000"); // 112,000 from the rows, 2,000 from the two amount boxes the link's own condition made us fill
     await open("btnPg5Sc6AI7More");
     await fill(["2014", "100000", "10000", "5000", "20000"]);
     await done();
