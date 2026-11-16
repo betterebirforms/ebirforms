@@ -5,6 +5,10 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Fixed: on the web version, the 1700's "(add more...)" for Part IV employers hid the whole form. It now opens the table of employers, and a row's amounts open once its employer's name and TIN are in, as in BIR's app.
+- On the web version, the 1701 (2018) attachments show their tax regime ticked and greyed, as BIR's app sets it.
+- On the 2000 (2018), DS112 is listed twice as in BIR's app, and picking the pre-need plans entry fills its own rate.
+- On the 1702-RT, "(To Schedule 7 Item 4)" now takes you back up the page.
 - On the web version, the tables of extra rows now show BIR's drop-downs and ticks: treaty codes and ATCs on the 1602 and 1601-F (picking an ATC fills its rate), the ATC list on the 2000 (2018), PS or CS on the 1700, 1701, 1702-EX and 1702-RT, the class and RDO lists on the 1801 (2018), and Taxpayer or Spouse on the 1700 and 1700 (2018).
 - On the 1700 and 1700 (2018), unticking an employer row empties it as BIR's app does, and its boxes stay greyed until Taxpayer or Spouse is ticked.
 - On the 1701, 1700, 1700 (2018) and 1701-A, each "(add more...)" link turns on only when BIR's app turns it on.
