@@ -648,14 +648,16 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     }
     // a button that opens a group's editor (1707A "(more...)"), and BIR's "Read CSV File" into a schedule
     for (const [id, { group, title }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
-      const b = root.getElementById(id) as HTMLInputElement | null;
       const g = (schema.group ?? []).find((x) => x.name === group);
-      if (!b || !g) continue;
-      b.dataset.ebfPopup = "editor";
-      on(b, "click", (e) => {
-        e.preventDefault();
-        if (!b.disabled) setOpenGroup({ name: g.name, title: title ?? titleOf(b, g), label: labelOf(g) });
-      });
+      if (!g) continue;
+      // BIR can repeat one id (2550Q's btnNewSched1 sits on three pages), so every one of them opens the editor
+      for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) {
+        b.dataset.ebfPopup = "editor";
+        on(b, "click", (e) => {
+          e.preventDefault();
+          if (!b.disabled) setOpenGroup({ name: g.name, title: title ?? titleOf(b, g), label: labelOf(g) });
+        });
+      }
     }
     for (const [id, sched] of Object.entries(CSV_BUTTON[form_code] ?? {})) {
       const b = root.getElementById(id) as HTMLInputElement | null;
@@ -875,8 +877,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
     const lock = lockOf(form_code);
     for (const [id, { on: enabled }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
-      const b = root.getElementById(id) as HTMLInputElement | null;
-      if (b && enabled && !validated) b.disabled = !enabled(groups);
+      if (enabled && !validated) for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) b.disabled = !enabled(groups);
     }
     // a link to a group's pop-up that BIR hides until that group has rows ("Other Selected ATC" past 6 picks)
     for (const [box, name] of Object.entries(POPUP_GROUP[form_code] ?? {})) {

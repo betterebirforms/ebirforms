@@ -23,7 +23,7 @@
 
 import fieldJson from "./fields/2200Av2020.json";
 import { parseMoney, type Centavo } from "./money.ts";
-import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type Problem } from "./schema.ts";
+import { buildSchema, validate as validateRequired, type FieldJson, type FieldSpec, type FormState, type GroupSpec, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
 
 const P = "frm2200Av2020:";
@@ -80,8 +80,28 @@ const fixedDue = (r: Read, stem: string, rate: string): Centavo => rowDue(rate, 
 /** calculate_Sched1_TotalDue, from the row INPUTS (item 16 sits above Schedule 1 in the DOM, so it can't read the
  *  computed Due cells, which come later in the one-pass compute). */
 const sched1Total = (r: Read): Centavo =>
+  parseMoney(r("_sched1moreDue")) +
   SCHED1_ROW.reduce((s, [stem, , , rate]) => s + fixedDue(r, stem, rate), 0) +
   OTHER_ROW.reduce((s, i) => s + parseMoney(blockNegative(r(`${P}txtSched1_xa_others${i}_Due`))), 0);
+// "Add" rows (BIR's addFieldsForSched1): others rows 4, 5, ... under the same ids, saved after the 3 on the page; BIR's
+// loadData rebuilds only those 3, so a reopened file drops the extra rows and keeps what they fed (the totals).
+const MORE = (c: string) => `${P}txtSched1_xa_others{i}_${c}`;
+export const SCHED1_MORE_2200A: GroupSpec = {
+  name: "sched1more",
+  first_index: 4,
+  not_reloaded: true,
+  row: [
+    { id: MORE("Check"), kind: "checkbox" },
+    { id: MORE("Atc"), kind: "text" },
+    { id: MORE("Desc"), kind: "text" },
+    { id: MORE("Bracket"), kind: "text" },
+    { id: MORE("Rate"), kind: "text" },
+    { id: MORE("Export"), kind: "money", derive: (_r, v) => blockNegative(v) },
+    { id: MORE("Taxable"), kind: "money", derive: (_r, v) => blockNegative(v) },
+    { id: MORE("Due"), kind: "money", derive: (_r, v) => blockNegative(v) },
+  ],
+  total: { into: "_sched1moreDue", of: MORE("Due") },
+};
 const block: Partial<FieldSpec> = { ...money, derive: (_r, v) => (v === "" ? "" : blockNegative(v)) };
 
 const override: Record<string, Partial<FieldSpec>> = {
@@ -137,6 +157,7 @@ const override: Record<string, Partial<FieldSpec>> = {
 };
 
 export const FORM_2200AV2020 = buildSchema("2200Av2020", "Excise Tax — Alcohol Products", fieldJson as FieldJson[], override);
+FORM_2200AV2020.group = [SCHED1_MORE_2200A];
 
 /** BIR's validateForm (the checks a native save can fail), plus the Others-row checks of isValidDataOnSched1. */
 export function validate2200Av2020(state: FormState): Problem[] {

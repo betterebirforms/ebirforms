@@ -194,7 +194,7 @@ describe("1702Qv2018C Schedule 4 pop-up (Add)", () => {
     expect(o.resultOtherSpecify).toBe("111.00");
     const base = computeForm(FORM_1702Qv2018C, ctx, {});
     // item 4 credits: row b was 10 whole pesos before, 111 after
-    expect(parseMoney(o[`${P}Sched4:txtTax7`]) - parseMoney(base[`${P}Sched4:txtTax7`])).toBe(10100);
+    expect(parseMoney(o[`${P}Sched4:txtTax7`] ?? "") - parseMoney(base[`${P}Sched4:txtTax7`] ?? "")).toBe(10100);
     expect(o[`${P}txtTax19`]).toBe(o[`${P}Sched4:txtTax7`]);
   });
   it("1 row: row b keeps its description, its amount is the row rounded", () => {

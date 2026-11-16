@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { computeAll, formRecords, type FormState } from "@/form/schema.ts";
+import { computeAll, computeForm, formRecords, groupsFromSavefile, type FormState, type GroupRow } from "@/form/schema.ts";
 import { blockNegative, FORM_2200AV2020, rowDue, SCHED1_ROW, validate2200Av2020 } from "@/form/form2200av2020.ts";
 import { legacyUnescape } from "@/lib/savefile.ts";
 import { hasForm, startOracle, type Oracle } from "./oracle.ts";
@@ -179,5 +179,59 @@ describe.skipIf(!hasForm("2200Av2020"))("native 2200Av2020 is 1:1 with BIR's own
     const r = await parityCheck(oracle, FORM_2200AV2020, state, "84653210700000-2200Av2020-03152024.xml");
     expect(parityProblem(r)).toEqual([]);
     expect(r.key_count).toBe(274);
+  }, 120_000);
+});
+
+// BIR's "Add" (addFieldsForSched1): others rows 4, 5, ... under the same ids; Delete (deleteFieldForSched1) drops ticked ones
+const moreRow = (atc: string, desc: string, taxable: string, due: string): GroupRow => ({
+  [other(0, "Check").replace("others0", "others{i}")]: "false",
+  [other(0, "Atc").replace("others0", "others{i}")]: atc,
+  [other(0, "Desc").replace("others0", "others{i}")]: desc,
+  [other(0, "Bracket").replace("others0", "others{i}")]: "PER LITER",
+  [other(0, "Rate").replace("others0", "others{i}")]: "2.5",
+  [other(0, "Export").replace("others0", "others{i}")]: "0.00",
+  [other(0, "Taxable").replace("others0", "others{i}")]: taxable,
+  [other(0, "Due").replace("others0", "others{i}")]: due,
+});
+const addRow = [moreRow("111", "GIN", "100.00", "250.00"), moreRow("222", "RUM", "40.00", "100.50")];
+describe("2200Av2020 Schedule 1 Add rows (others 4+)", () => {
+  it("rows 4+ save under BIR's ids after the three, and their Due joins the schedule total and item 16", () => {
+    const base = computeForm(FORM_2200AV2020, state, {});
+    const o = computeForm(FORM_2200AV2020, state, { sched1more: addRow });
+    expect(parseFloat(o[`${P}txtSched1_TotalDue`]!.replace(/,/g, "")) - parseFloat(base[`${P}txtSched1_TotalDue`]!.replace(/,/g, ""))).toBeCloseTo(350.5, 2);
+    expect(o[`${P}txtExciseDue`]).toBe(o[`${P}txtSched1_TotalDue`]);
+    const record = new Map(formRecords(FORM_2200AV2020, state, { sched1more: addRow }).map((r) => [r.key, r.value]));
+    expect(record.get(other(4, "Desc"))).toBe("GIN");
+    expect(record.get(other(5, "Due"))).toBe("100.50");
+    expect(record.has(other(4, "Check"))).toBe(true);
+  });
+  it("a reopened file drops the rows, as BIR's loadData does", () => {
+    const record = formRecords(FORM_2200AV2020, state, { sched1more: addRow });
+    expect(groupsFromSavefile(FORM_2200AV2020, { record, trailer_year: 2014, is_final_copy: false }, "2200Av2020").sched1more).toBeUndefined();
+  });
+});
+describe.skipIf(!hasForm("2200Av2020"))("native 2200Av2020 Add rows match the legacy form", () => {
+  let oracle: Awaited<ReturnType<typeof startOracle>>;
+  beforeAll(async () => { oracle = await startOracle(); }, 120_000);
+  afterAll(() => oracle?.stop());
+  it("is 1:1 with BIR's own Add button (addFieldsForSched1) filled with the same two rows", async () => {
+    const native = new Map(formRecords(FORM_2200AV2020, state, { sched1more: addRow }).map((r) => [r.key, r.value]));
+    const { page, error } = await oracle.openSaved(FORM_2200AV2020, state, "84653210700000-2200Av2020-03152024.xml");
+    const legacy = await page.evaluate(`((rows) => {
+      const w = window;
+      const set = (id, v) => { const el = document.getElementById(id); el.value = v; el.dispatchEvent(new Event("change")); el.dispatchEvent(new FocusEvent("blur")); };
+      rows.forEach(([atc, desc, taxable, due], k) => {
+        w.addFieldsForSched1();
+        const n = 4 + k;
+        const id = (c) => "frm2200Av2020:txtSched1_xa_others" + n + "_" + c;
+        set(id("Atc"), atc); set(id("Desc"), desc); set(id("Bracket"), "PER LITER"); set(id("Rate"), "2.5"); set(id("Taxable"), taxable); set(id("Due"), due);
+      });
+      const all = Array.from(document.getElementById("frmMain").elements);
+      return all.filter((el) => /others[4-9]_|TotalDue$|txtExciseDue$/.test(el.id)).map((el) => [el.id, el.type === "checkbox" ? String(el.checked) : el.value]);
+    })(${JSON.stringify([["111", "GIN", "100.00", "250.00"], ["222", "RUM", "40.00", "100.50"]])})`) as Array<[string, string]>;
+    await page.close();
+    expect(legacy.length).toBeGreaterThan(10);
+    for (const [key, value] of legacy) expect([key, native.get(key)]).toEqual([key, value]);
+    expect(error).toEqual([]);
   }, 120_000);
 });

@@ -159,6 +159,12 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: () => true },
     btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: () => true },
   },
+  // 2550Q (2024) Schedule 1 (input tax on capital goods): three links share the id btnNewSched1 (showNewSched1), all open it
+  "2550Qv2024": { btnNewSched1: { group: "sched1", title: "Schedule 1 Input Tax on Capital Goods", on: () => true } },
+  // 1601C (2018) and 2200A (2020) Add / Delete rows, 1702Q (CREATE) Schedule 4's "Add" pop-up
+  "1601Cv2018": { "frm1601c:btnAdd": { group: "sched1", title: "Schedule 1 Adjustments", on: () => true }, "frm1601c:btnDelete": { group: "sched1", title: "Schedule 1 Adjustments", on: () => true } },
+  "2200Av2020": { "frm2200Av2020:btnAdd": { group: "sched1more", title: "Schedule 1 Other Rows", on: () => true }, "frm2200Av2020:btnDelete": { group: "sched1more", title: "Schedule 1 Other Rows", on: () => true } },
+  "1702Qv2018C": { "frm1702q:Sched4:btnAdd": { group: "sched4more", title: "Other Tax Credits / Payments", on: () => true } },
   "1707Av2021": {
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },

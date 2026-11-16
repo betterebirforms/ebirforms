@@ -280,6 +280,49 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 120_000);
 
+  // the "(add more...)" / Add / Delete links of the rebuilt forms open their group's editor, and a row typed there lands on the page
+  it("Add More, Add and Delete links open their schedule editors", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    const go = async (code: string) => {
+      await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+    };
+    const click = (id: string) => page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+    const editor = () => page.locator(".schedule-modal h3").first().textContent();
+    const closeEditor = () => page.reload({ waitUntil: "networkidle" }).then(() => page.locator(".bir-layout").waitFor());
+    const open: Array<[string, string, string]> = [
+      ["1707v2018", "btnPg2Pt4Sch2More", "Schedule 2 Add More"],
+      ["1707v2021", "btnPg2Pt4Sch3More", "Schedule 3 Add More"],
+      ["2552v2018", "btnPg2Pt5Sch1More", "Schedule 1 Add More"],
+      ["2552v2018", "btnPg2Pt5Sch3More", "Schedule 3 Add More"],
+      ["1601Cv2018", "frm1601c:btnAdd", "Schedule 1 Adjustments"],
+      ["1601Cv2018", "frm1601c:btnDelete", "Schedule 1 Adjustments"],
+      ["1702Qv2018C", "frm1702q:Sched4:btnAdd", "Other Tax Credits / Payments"],
+      ["2200Av2020", "frm2200Av2020:btnAdd", "Schedule 1 Other Rows"],
+      ["2200Av2020", "frm2200Av2020:btnDelete", "Schedule 1 Other Rows"],
+      ["2550Qv2024", "btnNewSched1", "Date Purchased/Imported"],
+    ];
+    for (const [code, id, title] of open) {
+      await go(code);
+      await click(id);
+      await expect.poll(editor, { message: `${code} ${id}` }).toContain(title);
+      await closeEditor();
+    }
+    // 1707Av2021: its CSV reader fills rows 1-3, row 4 becomes OTHERS once "(more...)" is in use, and the button then opens
+    await go("1707Av2021");
+    const csv = Array.from({ length: 6 }, (_, i) => `01/0${i + 1}/2021,STOCK ${String.fromCharCode(65 + i)},${1000 + i},500,${500 + i},${75 + i}`).join("\n");
+    const chooser = page.waitForEvent("filechooser");
+    await click("btnOpenSched1CSV");
+    await (await chooser).setFiles({ name: "sched1.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
+    const value = (id: string) => page.locator(`[id="${id}"]`).inputValue();
+    await expect.poll(() => value("frm1707Av2021:txtS1C2NameOfCorporateStockI1")).toBe("STOCK A");
+    await expect.poll(() => value("frm1707Av2021:txtS1C2NameOfCorporateStockI4")).toBe("OTHERS");
+    await click("btnSched1More");
+    await expect.poll(() => page.locator(".schedule-modal tbody tr").count()).toBe(3);
+    await page.close();
+  }, 240_000);
+
   // a pop-up's own buttons BIR runs from its script: Clear resets its boxes as BIR's clearSched5Modal does
   it("2550M: Clear in schedule 5 resets its boxes to 0.00", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
