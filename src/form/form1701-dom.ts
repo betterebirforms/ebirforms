@@ -23,6 +23,8 @@ export class Elem {
   readonly anc: string[];
   className: string;
   readOnly = false;
+  /** the attachment copy this element belongs to ("EX1", "SP2"); "" on the main pages and BIR's source block */
+  copy = "";
   style: Record<string, string> = { display: "" };
   innerHTML = "";
   private ml: string;
@@ -322,17 +324,46 @@ export abstract class Dom1701 {
   readonly Custom = { check: (): void => {}, pushed: (): void => {} };
   readonly $: ((sel: unknown) => JQ) & { trim: (s: unknown) => string; inArray: (v: unknown, a: unknown[]) => number };
 
-  constructor() {
-    for (const [id, type, name, cls, ml, dis, v, chk, anc, b, c, h, f, vis] of DOM.el)
-      this.all.push(new Elem(this, id, type, name, cls, ml, dis === 1, v, chk === 1, DOM.anc[anc] ?? "", b, c, h, f === 1, vis === 1));
+  /** `copies`: how many attachment copies of each kind BIR's addAttachment had cloned from its source block
+   *  (attachmentPages_TEMP, and the pop-up source attachmentModalsSource). They sit, like BIR's containers, just before
+   *  the source block (DOM order = the saveXML order): all EX copies, then all SP. */
+  constructor(copies: { EX: number; SP: number } = { EX: 0, SP: 0 }) {
+    const name = (kind: "EX" | "SP"): string[] => Array.from({ length: copies[kind] }, (_, i) => `${kind}${i + 1}`);
+    const copy = [...name("EX"), ...name("SP")];
+    const rep = (s: string, n: string): string => s.replace(/TYPE/g, n);
+    const REGION = [/\battachmentPages_TEMP\b/, /\battachmentModalsSource\b/];
+    const made = [false, false];
+    const make = (row: (typeof DOM.el)[number], c = "", anc = DOM.anc[row[8]] ?? ""): Elem => {
+      const [id, type, nm, cls, ml, dis, v, chk, , b, cl, h, f, vis] = row;
+      const e = new Elem(this, c ? rep(id, c) : id, type, c ? rep(nm, c) : nm, cls, ml, dis === 1, v, chk === 1, anc, b, cl, h, f === 1, vis === 1);
+      e.copy = c;
+      return e;
+    };
+    for (const row of DOM.el) {
+      const region = REGION.findIndex((re) => re.test(DOM.anc[row[8]] ?? ""));
+      if (region >= 0 && !made[region]) {
+        made[region] = true;
+        const block = DOM.el.filter((o) => REGION[region]!.test(DOM.anc[o[8]] ?? ""));
+        for (const c of copy) {
+          const kind = c.slice(0, 2);
+          for (const o of block) {
+            // the container's ancestors: BIR appends the clone to #attachmentEX / #attachmentModalEX, not the source block
+            const anc = (DOM.anc[o[8]] ?? "").split(" ").map((a) => rep(a, c)).flatMap((a) => (a === "attachmentPages_TEMP" ? [`attachment${kind}`, "AttachmentContainer"] : a === "attachmentModalsSource" ? [`attachmentModal${kind}`] : [a]));
+            this.all.push(make(o, c, anc.join(" ")));
+          }
+        }
+      }
+      this.all.push(make(row));
+    }
     for (const e of this.all) {
-      if (e.id) this.elem.set(e.id, e);
+      if (e.id && (!this.elem.has(e.id) || !e.copy)) this.elem.set(e.id, e);
       if (e.name) this.nameIndex.set(e.name, [...(this.nameIndex.get(e.name) ?? []), e]);
       for (const a of e.anc) this.insideIndex.set(a, [...(this.insideIndex.get(a) ?? []), e]);
     }
     for (const b of DOM.box) {
       const [tag, id] = b.split(" ") as [string, string];
       this.boxTag.set(id, tag);
+      if (id.includes("TYPE")) for (const c of copy) this.boxTag.set(rep(id, c), tag);
     }
     const $ = (sel: unknown): JQ => this.query(sel);
     this.$ = Object.assign($, { trim: (s: unknown) => String(s ?? "").trim(), inArray: (v: unknown, a: unknown[]) => (a ? a.indexOf(v) : -1) });
@@ -341,7 +372,7 @@ export abstract class Dom1701 {
       totalEXArray: [], totalSPArray: [], totalEXbyPerson: {}, totalSPbyPerson: {}, TYPE: "", PERSON: "",
       isOnAttachment: false, disabledID: [], counterDisabled: -1, isValidToClose: true, isReload: false,
       atcCounterTaxFiler: 0, atcCounterSpouse: 0, deletedRowCount: 0, enabledinputIDs: [], scheduleErrorList: [],
-      disabledinputIDs: [], enabledlinkIDs: [], MaxPage: 12,
+      disabledinputIDs: [], enabledlinkIDs: [], MaxPage: 12, currentAttachmentPage: "", previousAttachmentPage: "", attachmentEnabledSpouse: [], attachmentEnabledSpouseAddCount: -1,
     });
   }
 
@@ -387,7 +418,7 @@ export abstract class Dom1701 {
 
   query(sel: unknown): JQ {
     if (sel instanceof Elem || sel instanceof Box) return JQ.of2([sel]);
-    if (typeof sel !== "string") return new JQ();
+    if (typeof sel !== "string" || sel === "#") return new JQ(); // jQuery 1.7 in IE answers `$("#")` with nothing
     const s = steps(sel);
     const last = parseCompound(s[s.length - 1]!);
     let pool: Array<Elem | Box>;

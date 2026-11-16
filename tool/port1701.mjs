@@ -18,6 +18,8 @@ const HTA = `${ROOT_DIR}vendor/original/forms/BIR-Form1701.hta`;
 const OUT = `${ROOT_DIR}src/form/form1701-bir.ts`;
 /** loadData's own calls (not reachable from a handler) */
 const RELOAD = ["HidePage12Part9", "disableEnableFieldsOnReload", "validateModalState", "validateAttachmentPerson"];
+/** what addAttachment (hand-written in form1701-sim.ts: the copies are built into the DOM) calls after it clones the block */
+const ATTACHMENT = ["showAttachments", "setView", "displayAttachmentByNumber", "disablePage5mSchedJItem6", "disableSpouseForAttachments", "attachmentTypes_Update", "processBack"];
 
 if (process.argv[2] === "page") page(process.argv[3]);
 else if (process.argv[2] === "port") port();
@@ -91,8 +93,10 @@ function port() {
   const dom = JSON.parse(fs.readFileSync(PAGE, "utf8"));
   const BUILTIN = new Set("undefined,NaN,Infinity,Math,parseInt,parseFloat,isNaN,String,Number,Array,Object,Date,RegExp,escape,unescape,isFinite,arguments,console".split(","));
   const isMain = (anc) => /\b(Page\d+Content|tblPart7A)\b/.test(anc);
+  // the attachment block's boxes (pages 1m–5m, copied per EX / SP): their handlers too, buttons aside (pop-up chrome)
+  const isCopy = (anc) => /\b(attachmentPages_TEMP|attachmentModalsSource)\b/.test(anc);
   const hMain = new Set();
-  for (const e of dom.el) for (const h of [e[9], e[10], e[11]]) if (h >= 0 && isMain(dom.anc[e[8]])) hMain.add(h);
+  for (const e of dom.el) for (const h of [e[9], e[10], e[11]]) if (h >= 0 && (isMain(dom.anc[e[8]]) || (isCopy(dom.anc[e[8]]) && e[1] !== "button"))) hMain.add(h);
 
   const walk = (n, cb, parent, key) => {
     if (!n || typeof n.type !== "string") return;
@@ -104,7 +108,7 @@ function port() {
       else if (v && typeof v === "object" && typeof v.type === "string") walk(v, cb, n, k);
     }
   };
-  const rewrite = (text, owner, prefix, thisTo, calls) => {
+  const rewrite = (text, owner, prefix, thisTo, calls, token) => {
     const root = parseAst(text).body[0];
     const declared = new Set(root.params.map((p) => p.name));
     walk(root.body, (n) => {
@@ -118,6 +122,8 @@ function port() {
     const edit = [];
     walk(root.body, (n, parent, key) => {
       if (n.type === "ThisExpression" && thisTo) edit.push([n.start, n.end, thisTo]);
+      // a handler's string with BIR's TYPE token: addAttachment replaced it in the cloned HTML, so here it is the copy's name (T)
+      if (token && n.type === "Literal" && typeof n.value === "string" && n.value.includes("TYPE")) edit.push([n.start, n.end, `${text.slice(n.start, n.end)}.replace(/TYPE/g, T)`]);
       if (n.type !== "Identifier") return;
       if (parent?.type === "MemberExpression" && key === "property" && !parent.computed) return;
       if (parent?.type === "Property" && key === "key" && !parent.computed) return;
@@ -143,13 +149,13 @@ function port() {
     return out;
   };
 
-  const seed = new Set(RELOAD);
+  const seed = new Set([...RELOAD, ...ATTACHMENT]);
   const hOut = dom.handler.map((s, i) => {
     if (!hMain.has(i)) return "null";
     const calls = new Set();
-    const body = rewrite(`function __h() {${s}\n}`, `handler#${i}`, "S.", "el", calls);
+    const body = rewrite(`function __h() {${s}\n}`, `handler#${i}`, "S.", "el", calls, true);
     for (const c of calls) seed.add(c);
-    return "(S, el) => {" + body.replace(/^function __h\(\) \{/, "").replace(/\n\}$/, "") + "\n}";
+    return "(S, el, T = \"TYPE\") => {" + body.replace(/^function __h\(\) \{/, "").replace(/\n\}$/, "") + "\n}";
   });
   const done = new Map();
   const q = [...seed];
@@ -171,7 +177,7 @@ import { Dom1701 } from "./form1701-dom.ts";
 
 export class Bir1701 extends Dom1701 {\n`;
   for (const n of names) out += `  // BIR ${n}\n  ` + done.get(n).replace(/\n/g, "\n  ") + "\n\n";
-  out += `}\n\n/** BIR's inline onblur / onclick / onchange attributes (index = page/1701.json handler index), \`this\` = the element. */\nexport const HANDLER: Array<((S: Bir1701, el: any) => void) | null> = [\n${hOut.join(",\n")}\n];\n`;
+  out += `}\n\n/** BIR's inline onblur / onclick / onchange attributes (index = page/1701.json handler index), \`this\` = the element. */\nexport const HANDLER: Array<((S: Bir1701, el: any, T?: string) => void) | null> = [\n${hOut.join(",\n")}\n];\n`;
   fs.writeFileSync(OUT, out);
   console.error("methods", names.length, "handlers", hMain.size, "/", dom.handler.length, "lines", out.split("\n").length);
 }

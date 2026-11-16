@@ -14,15 +14,17 @@
 //            balance sheet, reconciliation, final-tax income) and Part IX (per-regime consolidation).
 //
 // Every value is what BIR's own page logic leaves (form1701-sim.ts runs it over the native state): amounts are
-// whole pesos, saved bare like BIR's saveXML ("1234", "-1234"). The add-more modals and the Part IX attachments
-// are not modelled (their counters stay 0).
+// whole pesos, saved bare like BIR's saveXML ("1234", "-1234"). The add-more modals are not modelled (their counters
+// stay 0). The Part IX attachments are: up to 5 exempt (EX1..EX5) and 5 special-rate (SP1..SP5) copies of BIR's page
+// 1m-5m block, each box a field named like the source box with TYPE replaced by the copy ("frm1701:txtPg1mTIN1EX1");
+// frm1701:txtAttachmentTypes ("EX2,SP1", BIR's own counter) says how many are saved.
 
 import frozen from "./template/1701.json";
 import { liveTemplate } from "./clock.ts";
 
 const template = liveTemplate("1701", frozen as Array<[string, string, string?]>);
 import dom from "./page/1701.json";
-import { ESCAPED, PFX, simulate, type SimResult } from "./form1701-sim.ts";
+import { ESCAPED, MAX_COPY, PFX, simulate, type SimResult } from "./form1701-sim.ts";
 import { parseMoney } from "./money.ts";
 import { validate as validateRequired, type FieldSpec, type FormSchema, type FormState, type Problem } from "./schema.ts";
 import { TinStatus, validateTin } from "@/lib/tin.ts";
@@ -50,13 +52,31 @@ export const run = (r: Read): SimResult => {
   return hit;
 };
 
-const field: FieldSpec[] = (template as TemplateRecord[]).map(([id, value, radio]): FieldSpec => {
-  const type = PAGE.get(id)?.[1];
+const COPY = ["EX", "SP"].flatMap((kind) => Array.from({ length: MAX_COPY }, (_, i) => `${kind}${i + 1}`));
+/** a copy's box -> BIR's source box in the page block ("...EX2" -> "...TYPE"); a main-page id has none */
+const SOURCE = new Map<string, string>();
+const withCopy = (list: TemplateRecord[]): TemplateRecord[] => [
+  ...list,
+  ...COPY.flatMap((c) =>
+    list
+      .filter(([id]) => id.includes("TYPE"))
+      .map(([id, value, radio]): TemplateRecord => {
+        const copy_id = id.replace(/TYPE/g, c);
+        SOURCE.set(copy_id, id);
+        const copy_value = value.replace(/TYPE/g, c);
+        return radio === undefined ? [copy_id, copy_value] : [copy_id, copy_value, radio.replace(/TYPE/g, c)];
+      }),
+  ),
+];
+
+const field: FieldSpec[] = withCopy(template as TemplateRecord[]).map(([id, value, radio]): FieldSpec => {
+  const box = SOURCE.get(id) ?? id;
+  const type = PAGE.get(box)?.[1];
   const derive = (r: Read) => run(r).value[id] ?? value;
   if (radio) return { id, kind: "radio", derive };
   if (type === "checkbox") return { id, kind: "checkbox", derive };
   if (type === "select-one") return { id, kind: "select", derive };
-  if (isMoney(id)) return { id, kind: "money", derive, ...(isComputed(id) ? { compute: (r: Read) => parseMoney(run(r).value[id] ?? "0") } : {}) };
+  if (isMoney(box)) return { id, kind: "money", derive, ...(isComputed(box) ? { compute: (r: Read) => parseMoney(run(r).value[id] ?? "0") } : {}) };
   return { id, kind: "text", derive, ...(ESCAPED.includes(id) ? { escaped: true } : {}) };
 });
 const REQUIRED = ["txtPg1Pt1I5TIN1", "txtPg1Pt1I5TIN2", "txtPg1Pt1I5TIN3", "txtPg1Pt1I8TaxFiler", "txtPg1I1Year"].map((x) => P + x);
@@ -66,6 +86,15 @@ export const FORM_1701: FormSchema = {
   form_code: "1701",
   title: "Annual Income Tax — Individuals, Estates and Trusts (2013)",
   field,
+  attachment: {
+    template: "attachmentPages_TEMP",
+    token: "TYPE",
+    max: MAX_COPY,
+    kind: [
+      { code: "EX", container: "attachmentEX", count_field: `${PFX}txtAttachmentTypes`, add_button: `${PFX}btnAddAttachmentEX` },
+      { code: "SP", container: "attachmentSP", count_field: `${PFX}txtAttachmentTypes`, add_button: `${PFX}btnAddAttachmentSP` },
+    ],
+  },
 };
 
 export function validate1701(state: FormState): Problem[] {

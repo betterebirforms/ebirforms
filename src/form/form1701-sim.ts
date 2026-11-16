@@ -13,8 +13,11 @@
 //      enabled state comes back from the two lists — the name lock), then every enabled text input of pages 1–12 is
 //      blurred twice: what test/parity.ts does to the saved file in WebKit (it blurs page 1, the visible one).
 //
-// The result is what BIR's own page shows (and saves again) after the native file is reopened in it. Not modelled
-// (v1): the add-more modals (txtCtrmodal* stay 0 — each schedule's fixed rows only) and the Part IX attachments.
+// The result is what BIR's own page shows (and saves again) after the native file is reopened in it. The Part IX
+// attachments (frm1701:txtAttachmentTypes "EX2,SP1") are copies of BIR's page 1m–5m block, built into the page like
+// BIR's addAttachment builds them (form1701-dom.ts) and typed / blurred like any page, with TYPE = the copy; the
+// filer is then taken back to the main form (processBack), which recomputes the main pages from them. Not modelled:
+// the add-more modals (txtCtrmodal* stay 0 — each schedule's fixed rows only, on the main pages and in the copies).
 
 import { Bir1701, HANDLER } from "./form1701-bir.ts";
 import type { Elem } from "./form1701-dom.ts";
@@ -25,15 +28,70 @@ type Read = (id: string) => string;
 /** saveXML escape()s these (and loadData unescapes every text value) */
 export const ESCAPED = ["txtPg1Pt1I8TaxFiler", "txtPg1Pt1I8TaxFilerFirstName", "txtPg1Pt1I8TaxFilerMiddleName", "txtPg1Pt1I17Business", "txtPg1Pt1I10Address"].map((x) => PFX + x);
 
+/** Copies modelled per kind (the schema's attachment.max). */
+export const MAX_COPY = 5;
+/** Copies the filer added of each kind, from BIR's saved counter "EX2,SP1" (what attachmentTypes_Update writes). */
+export function attachmentCount(types: string): { EX: number; SP: number } {
+  const n = (kind: string): number => Number(new RegExp(`${kind}(\\d+)`).exec(types)?.[1] ?? 0);
+  return { EX: Math.min(n("EX"), MAX_COPY), SP: Math.min(n("SP"), MAX_COPY) };
+}
+const COUNTER = `${PFX}txtAttachmentTypes`;
+
 class Sim extends Bir1701 {
+  /** BIR's addAttachment(type), whose clone of the source block is already in the page (form1701-dom.ts) */
+  addAttachment(type: "EX" | "SP"): void {
+    const g = this as unknown as Record<string, any>;
+    const list: string[] = g[`total${type}Array`];
+    const by: Record<string, number> = g[`total${type}byPerson`];
+    const total = list.length + 1;
+    const other = g.PERSON === "TF" ? "S" : "TF";
+    list.push(type + total);
+    by[g.PERSON] = by[g.PERSON] == null ? 1 : by[g.PERSON]! + 1;
+    by[other] = (by[other] ?? 0) !== 0 ? by[g.PERSON]! : 0;
+    g.showAttachments(true, type);
+    g.setView(type, total, total);
+    g.displayAttachmentByNumber();
+    g.attachmentTypes_Update();
+    g.disablePage5mSchedJItem6();
+    this.exemptRule();
+  }
+  /** the 03/13/2014 rule in addAttachment: an exempt copy's Schedule A item 4 rate boxes are 0.0 and locked */
+  private exemptRule(): void {
+    if (!this.el(`${PFX}rdoPg1mExempt${this.TYPE}`).checked) return;
+    for (const c of ["C1", "C2"]) {
+      const e = this.el(`${PFX}txtPg1mScAI4ISpecialTaxRate${c}${this.TYPE}`);
+      e.value = "0.0";
+      e.disabled = true;
+    }
+  }
+  /** every copy, EX first then SP, each added by the person whose "Yes" asked for it (item 22 / 107, 23 / 108) */
+  addAll(copy: { EX: number; SP: number }, read: Read): void {
+    for (const type of ["EX", "SP"] as const) {
+      const [tf, spouse] = type === "EX" ? ["rdoPg1Pt1I22IncomeExemptYes", "rdoPg4Pt7I107Yes"] : ["rdoPg1Pt1I23IncomeSpecialYes", "rdoPg4Pt7I108Yes"];
+      (this as unknown as { PERSON: string }).PERSON = read(PFX + tf) !== "true" && read(PFX + spouse) === "true" ? "S" : "TF";
+      for (let i = 0; i < copy[type]; i++) this.addAttachment(type);
+    }
+  }
   fire(el: Elem, handler: number): void {
     const h = HANDLER[handler];
     if (!h) return;
     try {
-      h(this, el);
+      if (el.copy) this.TYPE = el.copy; // the attachment copy the filer is viewing (BIR's setView)
+      h(this, el, el.copy || "TYPE");
     } catch (e) {
       this.fault.push({ where: el.id, message: e instanceof Error ? e.message : String(e) });
     }
+  }
+  /** BIR's view state: on a copy the page-number boxes are locked and isOnAttachment is set (showAttachments); on the
+   *  main pages they are not (processBack's enablePaging). Handlers read both (getSpouseIDviaTaxfilerID, ...). */
+  view(e: Elem): void {
+    const on = e.copy !== "";
+    this.el(`${PFX}txtCurrentPage`).disabled = on;
+    this.el(`${PFX}txtMaxPage`).disabled = on;
+    (this as unknown as { isOnAttachment: boolean }).isOnAttachment = on;
+  }
+  guard(where: string, f: () => void): void {
+    this.call(where, f);
   }
   el(id: string): Elem {
     const e = this.elem.get(id);
@@ -81,7 +139,8 @@ export interface SimResult {
 }
 
 export function simulate(read: Read): SimResult {
-  const s = new Sim();
+  const copy = attachmentCount(read(COUNTER));
+  const s = new Sim(copy);
   const page = new Map(s.all.map((e) => [e, pageOf(e)]));
   const current = s.el(`${PFX}txtCurrentPage`);
 
@@ -94,13 +153,17 @@ export function simulate(read: Read): SimResult {
   // loadBGData also sets the hidden branch code, which saveXML writes and createXMLFileName names the file by
   const tin4 = read(`${PFX}txtTIN4`);
   if (tin4 !== "") s.el(`${PFX}txtTIN4`).value = tin4;
-  const live = (e: Elem) => saved(e) && !e.disabled && (page.get(e)! > 0 || e.visible);
+  s.addAll(copy, read);
+  s.enablePaging();
+  (s as unknown as { isOnAttachment: boolean }).isOnAttachment = false;
+  const live = (e: Elem) => saved(e) && !e.disabled && (page.get(e)! > 0 || e.visible || e.copy !== "");
   const typed = new Set<Elem>();
   const controls = () => {
     for (const e of s.all) {
       if (!live(e) || e.type === "text") continue;
       const want = read(e.id);
       current.value = String(page.get(e) || 1);
+      s.view(e);
       if (e.type === "radio") {
         if (want === "true" && !e.checked) {
           e.checked = true;
@@ -121,6 +184,7 @@ export function simulate(read: Read): SimResult {
     for (const e of s.all) {
       if (e.type !== "text" || !live(e) || e.id === current.id || e.id === `${PFX}txtMaxPage`) continue;
       current.value = String(page.get(e) || 1);
+      s.view(e);
       if (!typed.has(e)) {
         typed.add(e);
         const want = read(e.id);
@@ -137,6 +201,8 @@ export function simulate(read: Read): SimResult {
   controls();
   typing();
   current.value = "1";
+  // "Back to Main Form": the main pages take the copies' figures
+  if (copy.EX + copy.SP > 0) s.guard("processBack", () => s.processBack());
 
   // saveXML
   s.el(`${PFX}txtMaxPage`).value = "12";
@@ -148,8 +214,9 @@ export function simulate(read: Read): SimResult {
   for (const e of s.all) if (saved(e)) file.set(e.id, isAmount(e) && e.value === "" ? "0.00" : savedValue(e));
 
   // reopen: loadXML (isReload, then loadData) on a fresh page
-  const r = new Sim();
+  const r = new Sim(copy);
   r.isReload = true;
+  r.addAll(copy, read);
   for (const e of r.all) {
     if (!e.inForm || e.type === "hidden") continue;
     const v = file.get(e.id);
@@ -165,6 +232,7 @@ export function simulate(read: Read): SimResult {
       r.fault.push({ where: "loadData", message: e instanceof Error ? e.message : String(e) });
     }
   };
+  if (copy.EX + copy.SP > 0) call(() => r.processBack());
   call(() => r.validateAttachmentPerson());
   call(() => r.validateModalState(true));
   call(() => r.HidePage12Part9());
@@ -191,7 +259,11 @@ export function simulate(read: Read): SimResult {
 
   const rpage = new Map(r.all.map((e) => [e, pageOf(e)]));
   for (let pass = 0; pass < 2; pass++)
-    for (const e of r.all) if (e.type === "text" && saved(e) && !e.disabled && (rpage.get(e)! > 0 || e.visible)) e.onblur?.();
+    for (const e of r.all) if (e.type === "text" && saved(e) && !e.disabled && (rpage.get(e)! > 0 || e.visible)) {
+        r.view(e);
+        e.onblur?.();
+      }
+  r.enablePaging();
 
   const value: Record<string, string> = {};
   const disabled = new Set<string>();

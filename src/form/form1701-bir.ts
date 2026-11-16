@@ -235,6 +235,60 @@ export class Bir1701 extends Dom1701 {
   	this.attachmentTypes_Update();
   }
 
+  // BIR showAttachments
+  showAttachments(bool?: any, type?: any): any {
+  
+  	//SHOW
+  	if (bool === true) {
+  		
+  		this.isOnAttachment = true;
+  		
+  		//show 'Back to Main Form' button
+  		this.d.getElementById("frm1701:lnkViewAttachments").style.display = 'none';
+  		this.d.getElementById("frm1701:btnBack").style.display = "inline";
+  		
+  		var total = (type === "EX") ? (this.totalEXArray.length) : (this.totalSPArray.length);
+  		
+  		//show Attachment depending on type
+  		if (type === "EX") {
+  			//$("#attachmentHeader").html("Viewing 'EXEMPT TAX REGIME' Attachments");
+  			this.$("#attachmentEX").show();
+  			this.$("#attachmentSP").hide();
+  			this.totalEXbyPerson[this.PERSON] = total;
+  
+  		}
+  		else{
+  			//$("#attachmentHeader").html("Viewing 'SPECIAL RATE TAX REGIME' Attachments");
+  			this.$("#attachmentSP").show();
+  			this.$("#attachmentEX").hide();
+  			this.totalSPbyPerson[this.PERSON] = total;
+  		}
+  		
+  		//show ATTACHMENT div && hide mainPages
+  		this.$("#ATTACHMENT").show();
+  		this.$("#mainPages").hide();
+  		
+  		this.setView(type, 1, total);
+  	}
+  	
+  	//HIDE
+  	else if (bool === false) {
+  		
+  		//hide ATTACHMENT div && show mainPages
+  		this.$("#mainPages").show("fade");
+  		this.$("#ATTACHMENT").hide();
+  		this.d.getElementById("frm1701:lnkViewAttachments").style.display = 'inline';
+  		this.d.getElementById("frm1701:btnBack").style.display = "none";
+  	}
+  	
+  	//enable disable footer paging buttons
+  	this.d.getElementById('mainPageGoToNavigation').style.display = "none";
+  	this.d.getElementById('frm1701:btnPrev').disabled = bool;
+  	this.d.getElementById('frm1701:btnNext').disabled = bool;
+  	this.d.getElementById('frm1701:txtMaxPage').disabled = bool;
+  	this.d.getElementById('frm1701:txtCurrentPage').disabled = bool;
+  }
+
   // BIR validateAttachmentPerson
   validateAttachmentPerson(): any {
   
@@ -250,6 +304,85 @@ export class Bir1701 extends Dom1701 {
   	
   	this.totalSPbyPerson["TF"] = (rdoSP_YES_TF.checked) ? this.totalSPArray.length : 0;
   	this.totalSPbyPerson["S"] = (rdoSP_YES_S.checked) ? this.totalSPArray.length : 0;
+  }
+
+  // BIR disablePage5mSchedJItem6
+  disablePage5mSchedJItem6(): any {
+  
+      var isAmended = (this.d.getElementById('frm1701:rdoPg1I2AmmendYes').checked) ? true : false;
+  
+      if (this.PERSON === "S") {
+          this.$("input[id*='txtPg5mScJI6TaxPaid'][name='frm1701\\:Spouse']").attr('disabled', !isAmended);
+      } else {
+          this.$("input[id*='txtPg5mScJI6TaxPaid'][name!='frm1701\\:Spouse']").attr('disabled', !isAmended);
+      }
+  }
+
+  // BIR setView
+  setView(type?: any, current?: any, total?: any): any {
+  
+  	this.d.getElementById("currentTypeView").value = type.toString() + current.toString();
+  	this.d.getElementById("attachmentCurrent").value = current;
+  	this.d.getElementById("attachmentTotal").value = total;
+  
+  	//$("#total").html("Total EXEMPT Attachments: " + totalEXArray.length + " Total SPECIAL Attachments: " + totalSPArray.length);
+  	this.TYPE = type.toString() + current.toString();
+  	
+  	if (type === "EX") {
+  
+  		this.tryGetElementById("frm1701:rdoPg1mExempt" + type.toString() + total.toString()).checked = true;
+  		//hide btnAddAttachmentSP, show btnAddAttachmentEX
+  		this.d.getElementById("frm1701:btnAddAttachmentSP").style.display = "none";
+  		this.d.getElementById("frm1701:btnAddAttachmentEX").style.display = "inline";
+  
+  	}else if(type==="SP"){
+  
+  		this.tryGetElementById("frm1701:rdoPg1mSpecialRate" + type.toString() + total.toString()).checked = true;
+  		//hide btnAddAttachmentEX, show btnAddAttachmentSP
+  		this.d.getElementById("frm1701:btnAddAttachmentEX").style.display = "none";
+  		this.d.getElementById("frm1701:btnAddAttachmentSP").style.display = "inline";
+  		
+  	}
+  }
+
+  // BIR displayAttachmentByNumber
+  displayAttachmentByNumber(): any {
+  	
+  	var currentType = this.d.getElementById("currentTypeView").value;
+  
+  	var goTo = parseInt(this.d.getElementById("attachmentCurrent").value);
+  	var total = parseInt(this.d.getElementById("attachmentTotal").value);
+  	var type = "";
+  
+  	if (goTo <= total) {
+  
+  		type = ((currentType.substring(0, 2)) === "EX") ? "EX" : "SP";
+  
+  		var gotoType = type.toString() + goTo.toString();
+  
+  		this.setView(type, goTo, total);
+  		this.displayAttachmentByPage(1);
+  
+  	} else {
+  		this.d.getElementById("attachmentCurrent").value = (currentType.substring(3, 2));
+  		this.alert("Invalid attachment number.")
+  	}
+  	
+  	if (!this.d.getElementById('frm1701:btnValidate').disabled){
+  		
+  		this.disableSpouseForAttachments(this.PERSON);
+  	}
+  	
+  	this.disablePage5mSchedJItem6();
+  
+  	//03/13/2014 added rule on Page1m ScheduleA Item4
+  	//if EXEMPT, disable Schedule A.Item 4A, Item 4B
+  	if (this.d.getElementById('frm1701:rdoPg1mExempt' + this.TYPE).checked) {
+  	    this.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC1' + this.TYPE).value = "0.0";
+  	    this.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC1' + this.TYPE).disabled = true;
+  	    this.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC2' + this.TYPE).value = "0.0";
+  	    this.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC2' + this.TYPE).disabled = true;
+  	}
   }
 
   // BIR updateAttachemntModalCounter
@@ -319,6 +452,96 @@ export class Bir1701 extends Dom1701 {
   			}
   		}
   	}
+  }
+
+  // BIR displayAttachmentByPage
+  displayAttachmentByPage(pageNum?: any): any {
+  
+  	var currentType = this.d.getElementById("currentTypeView").value;
+  
+  	this.previousAttachmentPage = this.currentAttachmentPage;
+  	this.currentAttachmentPage = "Page" + pageNum + "m" + currentType + "Content";
+  
+  	this.hideCurrentPage(this.previousAttachmentPage);
+  
+  	this.$("#" + this.currentAttachmentPage).show("blind");
+  	this.$("#attachmentPage" + pageNum).prop('disabled', true);
+  }
+
+  // BIR hideCurrentPage
+  hideCurrentPage(attachmentPage?: any): any {
+  
+  	var buttonPage = -1;
+  	buttonPage = attachmentPage.substring(4, 5);
+  	this.$("#" + attachmentPage).hide("blind");
+  	this.$("#attachmentPage" + buttonPage).prop('disabled', false);
+  
+  }
+
+  // BIR disableSpouseForAttachments
+  disableSpouseForAttachments(person?: any): any {
+  
+  	this.PERSON = person;
+  
+  	var isSpouse = (person.toUpperCase()==="S") ? true : false;
+  	
+  	var allSpouse = this.d.getElementById(this.TYPE).getElementsByTagName('input');
+  	
+  	//get all enabled spouse ONCE for each TYPE
+  	if (this.attachmentEnabledSpouseAddCount !== 1){
+  		for (var i=0; i < (allSpouse.length); i++) {
+  			
+  			if (   (allSpouse[i].name === "frm1701:Spouse")&&(allSpouse[i].disabled === false)   ){
+  				this.attachmentEnabledSpouse.push(allSpouse[i]);
+  			}
+  			if (i === (allSpouse.length-1) ){
+  				this.attachmentEnabledSpouseAddCount = 1;
+  			}
+  		}
+  	}
+  
+  	//changeID
+  	//anyway, 'EX1' lang naman ung difference nila sa ID ^_^
+  	//C1 for taxFiler , C2 for Spouse
+  	for (var i=0; i < (this.attachmentEnabledSpouse.length); i++) {
+  
+  		var typeIndex = (this.attachmentEnabledSpouse[i].id.indexOf('EX')>0) ? (this.attachmentEnabledSpouse[i].id.indexOf('EX')) : this.attachmentEnabledSpouse[i].id.indexOf('SP');
+  			
+  		var idSpouse= this.attachmentEnabledSpouse[i].id.substring(0, typeIndex);
+  
+  		//disable enable all spouseControls
+  		this.d.getElementById(idSpouse + this.TYPE).disabled = !isSpouse;
+  
+  		//disable enable all taxFilerControls
+  		var idTaxpayer = idSpouse.substring(0,idSpouse.length-1);	
+  		var num = idSpouse.substring(idSpouse.length-1,idSpouse.length) ;
+  		idTaxpayer = idTaxpayer+(num-1)+this.TYPE;
+  
+  		if (this.d.getElementById(idTaxpayer)!= null){
+  			this.d.getElementById(idTaxpayer).disabled = isSpouse;
+  		}
+  		
+  	}
+  	
+  	this.validateModalState(false);
+  	this.disableAddMoreLinkPg5m(person);
+  
+      //Close inputs in a row if OTHERS 05/08/2014
+  	this.closeOthersRow();
+  }
+
+  // BIR closeOthersRow
+  closeOthersRow(): any {
+      var othersFields = this.$('#ATTACHMENT input[type=text][value="OTHERS"]:disabled').not('[name*= "1m"]');
+      
+      for (this.i = 0; this.i < othersFields.length; this.i++) { 
+          var inputID = othersFields[this.i].name .split("C1")[0];
+          var type = othersFields[this.i].id .split("C1")[1];
+          
+          if(this.d.getElementById(inputID + "C2" + type)  !== null) { this.d.getElementById(inputID + "C2" + type).disabled = true; }
+          if(this.d.getElementById(inputID + "C3" + type)  !== null) { this.d.getElementById(inputID + "C3" + type).disabled = true; }
+          if(this.d.getElementById(inputID + "C4" + type)  !== null) { this.d.getElementById(inputID + "C4" + type).disabled = true; }
+      }
   }
 
   // BIR clearValue
@@ -428,6 +651,32 @@ export class Bir1701 extends Dom1701 {
   	this.enabledlinkIDs.splice(deletedLink, 1);
   	//update frm1701:txtDisabledInputs after deletion
   	this.storeEnabledlinkIDs();
+  }
+
+  // BIR disableAddMoreLinkPg5m
+  disableAddMoreLinkPg5m(person?: any): any {
+  
+  	var i3LinkID = 'frm1701:lnkPg5mScK1I3More'+this.TYPE;
+  	var i6LinkID = 'frm1701:lnkPg5mScK1I6More'+this.TYPE;
+  	var i8LinkID = 'frm1701:lnkPg5mScK1I8More'+this.TYPE;
+  	
+  	var pg5LinkID1 = 'frm1701:lnkPg5mScK';
+  	var pg5LinkID2  ='More'+this.TYPE;
+  	
+  	var addID = (person === "S") ? "1I" : "2I" ;
+  
+  	//disabale all spouse links
+  	for(var i=3; i< 9 ; i++){
+  		
+  		//control itertion
+  		//do only numbers : 3, 6, & 8
+  		var counter = (i==3) ? 2 : 1;
+  		
+  		var id = pg5LinkID1+addID+i+pg5LinkID2;
+  		this.d.getElementById(id).disabled = true;
+  		
+  		i += counter ;
+  	}
   }
 
   // BIR isAmountValid
@@ -2586,6 +2835,28 @@ export class Bir1701 extends Dom1701 {
   	}
   }
 
+  // BIR tryGetElementById
+  tryGetElementById(find?: any): any {
+  
+  	var control;
+  
+  	control = this.d.getElementById(find);
+  
+  	if (control===null){
+  
+  		var dummyObject = {} ;
+  		dummyObject.value = 0;
+  		dummyObject.checked = false;
+  		dummyObject.disabled = false;
+  		dummyObject.id = "dummyObject.see_tryGetElementById()";
+  		dummyObject.name = "dummyObject.see_tryGetElementById()";
+  		control = dummyObject;
+  		//alert("Element not found. returning dummy object.")
+  	}
+  
+  	return control
+  }
+
   // BIR summation
   summation(containerFrom?: any, from?: any, to?: any): any {
           var toArray = to.split(',');
@@ -3140,6 +3411,32 @@ export class Bir1701 extends Dom1701 {
          
       }
 
+  // BIR validateDateFromNotGreaterThanTo
+  validateDateFromNotGreaterThanTo(element?: any, FromDate?: any, ToDate?: any): any {
+          var fromSplit = this.d.getElementById(FromDate).value.split('/');
+          var toSplit = this.d.getElementById(ToDate).value.split('/');
+  
+          if (this.d.getElementById(FromDate).value != "" && this.d.getElementById(ToDate).value != "") {
+              var fromDate = new Date(fromSplit[2], fromSplit[0] - 1, fromSplit[1]);
+              var toDate = new Date(toSplit[2], toSplit[0] - 1, toSplit[1]);
+  
+              if (fromDate > toDate) {
+                  this.alert("From Date Cannot be greater than the To Date");
+                  element.value = '';
+                  element.focus();
+              }
+          } 
+      }
+
+  // BIR computeTaxRate
+  computeTaxRate(incomeID?: any, taxRateID?: any, outputToID?: any): any {
+          var taxRateIDValue = this.convertToFloat(this.removeCommaParenthesis(taxRateID) / 100);
+          var taxRate = 0;
+          taxRate = Math.round(this.convertToFloat(this.removeCommaParenthesis(incomeID) * taxRateIDValue));
+  
+          this.d.getElementById(outputToID).value = this.NegativeValue(this.formatCurrencyWOC(taxRate));
+      }
+
   // BIR computeTaxDueRegular
   computeTaxDueRegular(from?: any, to?: any): any {
           var totalTaxableIncome = Math.round(this.removeCommaParenthesis(from));
@@ -3279,6 +3576,89 @@ export class Bir1701 extends Dom1701 {
   // BIR isNumeric
   isNumeric(num?: any): any {
           return !isNaN(num)
+      }
+
+  // BIR checkLegalBasis
+  checkLegalBasis(senderValue?: any): any {
+          var legalBasis = ["RA7227", "RA.7227", "R.A7227", "R.A.7227", "RA 7227", "RA. 7227", "R.A 7227", "R.A. 7227", "7227", "RA9400", "RA.9400", "R.A9400", "R.A.9400", "RA 9400", "RA. 9400", "R.A 9400", "R.A. 9400", "9400", "RA7916", "RA.7916", "R.A7916", "R.A.7916", "RA 7916", "RA. 7916", "R.A 7916", "R.A. 7916", "7916", "RA8748", "RA.8748", "R.A8748", "R.A.8748", "RA 8748", "RA. 8748", "R.A 8748", "R.A. 8748", "8748", "RA7922", "RA.7922", "R.A7922", "R.A.7922", "RA 7922", "RA. 7922", "R.A 7922", "R.A. 7922", "7922", "RA7903", "RA.7903", "R.A7903", "R.A.7903", "RA 7903", "RA. 7903", "R.A 7903", "R.A. 7903", "7903", "RA9490", "RA.9490", "R.A9490", "R.A.9490", "RA 9490", "RA. 9490", "R.A 9490", "R.A. 9490", "9490", "RA10083", "RA.10083", "R.A10083", "R.A.10083", "RA 10083", "RA. 10083", "R.A 10083", "R.A. 10083", "10083", "RA9728", "RA.9728", "R.A9728", "R.A.9728", "RA 9728", "RA. 9728", "R.A 9728", "R.A. 9728", "9728", "RA9593", "RA.9593", "R.A9593", "R.A.9593", "RA 9593", "RA. 9593", "R.A 9593", "R.A. 9593", "9593"];
+          var isLegalBasis = (this.$.inArray(senderValue, legalBasis) > -1) ? true : false;
+          return isLegalBasis;
+       }
+
+  // BIR checkIPA
+  checkIPA(senderValue?: any): any {
+           var IPA = ['PEZA', 'ECOZONE', 'BCDA', 'SBMA', 'CDC', 'PPMC', 'JHsEZ', 'MSEZ', 'CEZA', 'ZCSEZA', 'APECO', 'AFAB', 'TEZ', 'EPZA', 'MEPZA'];
+           var isIPA = (this.$.inArray(senderValue, IPA) > -1) ? true : false;
+           return isIPA;
+       }
+
+  // BIR checkPercentageValue
+  checkPercentageValue(senderID?: any, isReturn?: any): any {
+          var item1Pg1m = this.d.getElementById('frm1701:txtPg1mScAI1InvestmentPromotion' + senderID.id.substring(35, 37) + this.TYPE).value;
+          var item2Pg1m = this.d.getElementById('frm1701:txtPg1mScAI2LegalBasis' + senderID.id.substring(35, 37) + this.TYPE).value;
+  
+          var isIPA = this.checkIPA(item1Pg1m);
+          var isLegalBasis = this.checkLegalBasis(item2Pg1m);
+          var errorMessage = "";
+  
+          if (this.isNumeric(senderID.value)) {
+              if ((isIPA || isLegalBasis) && (senderID.value * 1) != 5 && (senderID.value * 1) != 0 && this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+                  errorMessage = "Percentage on Attachment " + senderID.id.split("SP")[1] + " Page 1m Item 4 must be 5%.";
+              }
+              else if (senderID.value > 32) {
+                  errorMessage = "Percentage on Attachment " + senderID.id.split("SP")[1] + " Page 1m Item 4 cannot be greater than 32%.";
+              }
+              else {
+                  var rounded = Math.round(senderID.value * 10) / 10;
+                  senderID.value = rounded.toFixed(1);
+                  //senderID.value = (convertToNumber(rounded.toFixed(1).split('.')[1]) > 4 ) ? Math.round(rounded).toFixed(1) : rounded.toFixed(1);
+              }
+          }
+          else {
+              senderID.value = "0.0";
+          }
+  
+          if (isReturn) {
+              return errorMessage;
+          } else if (!isReturn && errorMessage != "") {
+              this.alert(errorMessage);
+              senderID.value = "0.0";
+              senderID.focus();
+          }
+      }
+
+  // BIR enablePaging
+  enablePaging(): any {
+          //enable paging
+          this.d.getElementById('frm1701:btnPrev').disabled = false;
+          this.d.getElementById('frm1701:btnNext').disabled = false;
+          this.d.getElementById('frm1701:txtCurrentPage').disabled = false;
+          this.d.getElementById('frm1701:txtMaxPage').disabled = false;
+          this.d.getElementById('frm1701:txtMaxPage').readOnly = true;
+          this.d.getElementById('frm1701:btnBack').disabled = false;
+          this.d.getElementById('frm1701:lnkViewAttachments').disabled = false;
+  	
+  	var display = (   (this.totalEXArray.length ===0 )&&(this.totalSPArray.length===0)   ) ? "none" : "inline";
+  
+  	this.d.getElementById('frm1701:lnkViewAttachments').style.display = display;
+  
+  	
+  	//if inside attachment
+  	//hide footer
+  	if (this.d.getElementById('mainPages').style.display == "none"){
+  	
+  		this.d.getElementById('mainPageGoToNavigation').style.display = "none";
+  		this.d.getElementById('frm1701:lnkViewAttachments').style.display = "none";
+  		
+  	}else{
+  	
+  		this.d.getElementById('mainPageGoToNavigation').style.display = "inline";
+  	}
+  	
+  	
+  	
+  
+  			
       }
 
   // BIR employerTinRequired
@@ -4875,6 +5255,751 @@ export class Bir1701 extends Dom1701 {
   		this.d.getElementById(toID).value = this.NegativeValue(this.formatCurrencyWOC(Math.round(total)));
   	}
 
+  // BIR computePage1mScheduleB
+  computePage1mScheduleB(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 3 (Sum of Items 1 & 2)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'txtPg1mScBI1NetSalesC1,txtPg1mScBI2AddOtherIncomeC1', 'frm1701:txtPg1mScBI3TotalSalesC1'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4)
+  	        this.differenceOfElements('frm1701:txtPg1mScBI3TotalSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI5GrossIncomeC1'+this.TYPE);
+  
+  	        //Item 7 (sum of Items 5 & 6)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'ScBI5GrossIncomeC1,ScBI6AddNonOperatingIncomeC1', 'frm1701:txtPg1mScBI7TotalGrossIncomeC1'+this.TYPE);
+  
+  	        //Item 10 (Sum of Items 8 & 9) (To Part 9 Item 11)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'ScBI8OrdinaryAllowableDeductionsC1,ScBI9SpecialAllowableDeductionsC1', 'frm1701:txtPg1mScBI10TotalAllowableDeductionsC1'+this.TYPE);
+  
+  	        //Item 11 (Item 7 Less Item 10) (To Schedule C1 Item 1) (To Part 9 Item 13)
+  	        this.differenceOfElements('frm1701:txtPg1mScBI7TotalGrossIncomeC1' + this.TYPE, 'frm1701:txtPg1mScBI10TotalAllowableDeductionsC1' + this.TYPE, 'frm1701:txtPg1mScBI11TotalIncomeC1' + this.TYPE);
+  
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  	            this.moveValue('frm1701:txtPg1mScBI11TotalIncomeC1' + this.TYPE, 'frm1701:txtPg1mScC1I1TaxableIncomeC1' + this.TYPE);
+  	        }
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC1'+TYPE, 'frm1701:txtPg12Pt9I11TotalAllowableC2');
+  	            //moveValue('frm1701:txtPg1mScC1I1TaxableIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I13TaxableC2');
+  	            this.computeCollectedValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I11TotalAllowableC2');
+  	            this.computeCollectedValue('frm1701:txtPg1mScC1I1TaxableIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I13TaxableC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC1'+TYPE, 'frm1701:txtPg12Pt9I11TotalAllowableC3');	
+  	            //moveValue('frm1701:txtPg1mScC1I1TaxableIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I13TaxableC3');
+  	            this.computeCollectedValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I11TotalAllowableC3');
+  	            this.computeCollectedValue('frm1701:txtPg1mScC1I1TaxableIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I13TaxableC3');
+  	        }
+  
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 3 (Sum of Items 1 & 2)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'txtPg1mScBI1NetSalesC2,txtPg1mScBI2AddOtherIncomeC2', 'frm1701:txtPg1mScBI3TotalSalesC2'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4)
+  	        this.differenceOfElements('frm1701:txtPg1mScBI3TotalSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI5GrossIncomeC2'+this.TYPE);
+  
+  	        //Item 7 (sum of Items 5 & 6)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'ScBI5GrossIncomeC2,ScBI6AddNonOperatingIncomeC2', 'frm1701:txtPg1mScBI7TotalGrossIncomeC2'+this.TYPE);
+  
+  	        //Item 10 (Sum of Items 8 & 9) (To Part 9 Item 11)
+  	        this.summation('Page1m'+this.TYPE+'Content', 'ScBI8OrdinaryAllowableDeductionsC2,ScBI9SpecialAllowableDeductionsC2', 'frm1701:txtPg1mScBI10TotalAllowableDeductionsC2'+this.TYPE);
+  
+  	        //Item 11 (Item 7 Less Item 10) (To Schedule C1 Item 1) (To Part 9 Item 13)
+  	        this.differenceOfElements('frm1701:txtPg1mScBI7TotalGrossIncomeC2' + this.TYPE, 'frm1701:txtPg1mScBI10TotalAllowableDeductionsC2' + this.TYPE, 'frm1701:txtPg1mScBI11TotalIncomeC2' + this.TYPE);
+  
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  	            this.moveValue('frm1701:txtPg1mScBI11TotalIncomeC2'+this.TYPE, 'frm1701:txtPg1mScC1I1TaxableIncomeC2'+this.TYPE);
+              }
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC2'+TYPE, 'frm1701:txtPg12Pt9I11TotalAllowableC6');
+  	            //moveValue('frm1701:txtPg1mScC1I1TaxableIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I13TaxableC6');
+  	            this.computeCollectedValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC2' + this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I11TotalAllowableC6');
+  	            this.computeCollectedValue('frm1701:txtPg1mScC1I1TaxableIncomeC2' + this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I13TaxableC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC2'+TYPE, 'frm1701:txtPg12Pt9I11TotalAllowableC7');
+  	            //moveValue('frm1701:txtPg1mScC1I1TaxableIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I13TaxableC7');
+  	            this.computeCollectedValue('frm1701:txtPg1mScBI10TotalAllowableDeductionsC2'+this.TYPE.substring(0,2), 'frm1701:txtPg12Pt9I11TotalAllowableC7');
+  	            this.computeCollectedValue('frm1701:txtPg1mScC1I1TaxableIncomeC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I13TaxableC7');
+  	        }
+  	    }
+  		
+  		this.computePage1mScheduleC(person);
+  		
+  	}
+
+  // BIR computePage1mScheduleC
+  computePage1mScheduleC(person?: any): any {
+  	    var column = (person == 'TaxPayer') ? 'C1' : 'C2';
+  	    var item1Pg1m = this.d.getElementById('frm1701:txtPg1mScAI1InvestmentPromotion' + column + this.TYPE).value;
+  	    var item2Pg1m = this.d.getElementById('frm1701:txtPg1mScAI2LegalBasis' + column + this.TYPE).value;
+  
+  	    var isIPA = this.checkIPA(item1Pg1m);
+  	    var isLegalBasis = this.checkLegalBasis(item2Pg1m);
+  
+  	if (person.toString() === "TaxPayer") {
+  		//Check the Tax Regime
+  	    if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  
+  	        //Item 3 (Sum of Items 1 & 2)
+  	        this.summation('Page1m' + this.TYPE + 'Content', 'ScC1I1TaxableIncomeC1,ScC1I2AddSpecialAllowableDeductionsC1', 'frm1701:txtPg1mScC1I3SubTotalC1' + this.TYPE);
+  
+  	        //Item 4 (Item 3 x Applicable Tax Rate per Tax Table)
+  	        //computeTaxRate('frm1701:txtPg1mScC1I3SubTotalC1', 'frm1701:txtPg1mScC2I10ApplicableTaxRateC1', 'frm1701:txtPg1mScC1I4RegularIncomeTaxC1');
+  	        var taxableIncome = this.convertToFloat(this.removeCommaParenthesis('frm1701:txtPg1mScC1I3SubTotalC1' + this.TYPE));
+  	        var taxRate = this.applicableTaxRatePerTaxTable(taxableIncome);
+  	        var regularIncomeTaxDue = taxableIncome * this.convertToFloat(taxRate / 100);
+  	        //d.getElementById('frm1701:txtPg1mScC1I4RegularIncomeTaxC1'+TYPE).value = NegativeValue(formatCurrencyWOC(regularIncomeTaxDue));
+  
+  	        this.computeTaxDueRegular('frm1701:txtPg1mScC1I3SubTotalC1' + this.TYPE, 'frm1701:txtPg1mScC1I4RegularIncomeTaxC1' + this.TYPE);
+  
+  	        if (isIPA || isLegalBasis) {
+  	            //Item 5 (Schedule B Item 7 x Applicable Special Rate)
+  	            this.computeTaxRate('frm1701:txtPg1mScBI7TotalGrossIncomeC1' + this.TYPE, 'frm1701:txtPg1mScAI4ISpecialTaxRateC1' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE);
+  	        } else {
+                  //Schedule C1.Item 5B = Schedule B.Item 11 x Schedule A.Item 4A
+  	            this.computeTaxRate('frm1701:txtPg1mScBI11TotalIncomeC1' + this.TYPE, 'frm1701:txtPg1mScAI4ISpecialTaxRateC1' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE);
+  	        }
+  
+  	        //Bug #3273 Item 5 as of 05/06/2014
+  	        var item5 = (this.removeCommaParenthesis('frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE) < 0) ? 0 : this.d.getElementById('frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE).value
+  	        this.d.getElementById('frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE).value = item5;
+  
+  	        //Item 6 (Item 4 Less Item 5)
+  	        this.differenceOfElements('frm1701:txtPg1mScC1I4RegularIncomeTaxC1' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC1' + this.TYPE, 'frm1701:txtPg1mScC1I6TaxReliefAvailmentC1' + this.TYPE);
+  
+  	        //Item 8 (sum of Items 6 & 7) (To Part 9 Item 21B/21F)
+  	        this.summation('Page1m' + this.TYPE + 'Content', 'ScC1I6TaxReliefAvailmentC1,ScC1I7AddSpecialTaxCreditsC1', 'frm1701:txtPg1mScC1I8TotalTaxReliefAvailmentC1' + this.TYPE);
+  		
+  			this.computeCollectedValue('frm1701:txtPg1mScC1I8TotalTaxReliefAvailmentC1' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I21TaxReliefC2');
+  			this.moveValue('frm1701:txtPg12Pt9I21TaxReliefC2', 'frm1701:txtPg3Pt5I91SpecialTaxC1');
+  			
+  			//=================================================================================================  
+  			//PAGE 12 ITEM 18 : TAXFILER
+  			//=================================================================================================  
+  			//for page 12 item 18 // added computation 03/12/14 //revised computation 03/13/14
+  			//SP=1 (page12Item17 * item4_specialTaxRate)
+  			//SP>1 (page1mSchedBItem11 * item4_specialTaxRate * 0.10)
+  			
+  			//call this to get updated Item 17 from page 12
+  			this.computePg12FromAttachement(person);
+  
+  			//Added as of 3/19/2014 for PEZA rules
+  //			var item1Pg1m = d.getElementById('frm1701:txtPg1mScAI1InvestmentPromotionC1' + TYPE).value;
+  //			var item2Pg1m = d.getElementById('frm1701:txtPg1mScAI2LegalBasisC1' + TYPE).value;
+  
+  //			var isIPA = checkIPA(item1Pg1m);
+  //			var isLegalBasis = checkLegalBasis(item2Pg1m);
+  			
+  			var item4_specialTaxRate = this.removeCommaParenthesis('frm1701:txtPg1mScAI4ISpecialTaxRateC1'+this.TYPE) / 100;
+  
+  			//var multiplyValue = (totalSPArray.length <= 1) ? 'frm1701:txtPg12Pt9I17TotalTaxableC2' : 'frm1701:txtPg1mScBI11TotalIncomeC1'+TYPE;
+  			//var multiplyValue = (totalSPArray.length <= 1) ? 'frm1701:txtPg12Pt9I17TotalTaxableC2' : ((isIPA && isLegalBasis) ? 'txtPg1mScBI7TotalGrossIncomeC1' + TYPE : 'frm1701:txtPg1mScBI11TotalIncomeC1' + TYPE);
+  			
+  			var computedOutput = 0;
+  			
+              if ((isIPA || isLegalBasis) && item4_specialTaxRate == 0.05) {
+  			    computedOutput = (this.removeCommaParenthesis('frm1701:txtPg1mScBI7TotalGrossIncomeC1' + this.TYPE) * item4_specialTaxRate);
+  			} else if (!isIPA && !isLegalBasis) {
+  			    computedOutput = (this.removeCommaParenthesis('frm1701:txtPg1mScBI11TotalIncomeC1' + this.TYPE) * item4_specialTaxRate);
+  			}
+  
+  			//alert("["+(totalSPArray.length)+ "TF] "+removeCommaParenthesis(multiplyValue) +" * "+ item4_specialTaxRate  + " >> " +computedOutput );
+  			
+  			this.d.getElementById('frm1701:txtPg12Pt9I18TaxfilerSPOutput'+this.TYPE).value = computedOutput;
+  			this.computeCollectedValue('frm1701:txtPg12Pt9I18TaxfilerSPOutput' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I18TotalIncomeC2');
+  			
+  			//added 03/14/14 //MOVE VALUE TO PAGE 3 ITEM 69
+  			this.moveValue('frm1701:txtPg12Pt9I18TotalIncomeC2', 'frm1701:txtPg3Pt5I69SpecialRateC1');
+  			//================================================================================================= END PAGE 12 ITEM 18 
+  
+              } else if (this.d.getElementById('frm1701:rdoPg1mExempt' + this.TYPE).checked) {
+                  //Item 9 (Sum of Schedule B Items 11 & 9) 
+                  this.summation('Page1m' + this.TYPE + 'Content', 'ScBI9SpecialAllowableDeductionsC1,ScBI11TotalIncomeC1', 'frm1701:txtPg1mScC2I9TaxableIncomeC1' + this.TYPE);
+  
+                  //Item 10 (Based on Item 9)
+                  var taxableIncome = this.convertToFloat(this.removeCommaParenthesis('frm1701:txtPg1mScC2I9TaxableIncomeC1' + this.TYPE));
+                  var taxRate = this.applicableTaxRatePerTaxTable(taxableIncome);
+                  var regularIncomeTaxDue = taxableIncome * this.convertToFloat(taxRate / 100);
+  
+                  this.d.getElementById('frm1701:txtPg1mScC2I10ApplicableTaxRateC1' + this.TYPE).value = taxRate + ".0";
+  
+                  //computeTaxDueRegular('frm1701:txtPg1mScC2I10ApplicableTaxRateC1' + TYPE, 'frm1701:txtPg1mScC2I10ApplicableTaxRateC1' + TYPE);
+                  this.computeTaxDueRegular('frm1701:txtPg1mScC2I9TaxableIncomeC1' + this.TYPE, 'frm1701:txtPg1mScC2I11TaxReliefAvailmentC1' + this.TYPE);
+                  //Item 11 (Item 9 x Item 10) (To Part 9 Item 21C/21G)
+                  //d.getElementById('frm1701:txtPg1mScC2I11TaxReliefAvailmentC1' + TYPE).value = NegativeValue(formatCurrencyWOC(Math.round(regularIncomeTaxDue)));
+                  //computeTaxRate('frm1701:txtPg1mScC2I9TaxableIncomeC1' + TYPE, 'frm1701:txtPg1mScC2I10ApplicableTaxRateC1' + TYPE, 'frm1701:txtPg1mScC2I11TaxReliefAvailmentC1' + TYPE);
+  
+  		        this.computeCollectedValue('frm1701:txtPg1mScC2I11TaxReliefAvailmentC1' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I21TaxReliefC3');
+  		        this.moveValue('frm1701:txtPg12Pt9I21TaxReliefC3', 'frm1701:txtPg3Pt5I92ExemptTaxC1');
+  		}
+  		
+  		}else if (person.toString() === "Spouse") {
+  			//Check the Tax Regime
+  		    if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  		        //Item 3 (Sum of Items 1 & 2)
+  		        this.summation('Page1m' + this.TYPE + 'Content', 'ScC1I1TaxableIncomeC2,ScC1I2AddSpecialAllowableDeductionsC2', 'frm1701:txtPg1mScC1I3SubTotalC2' + this.TYPE);
+  
+  		        //Item 4 (Item 3 x Applicable Tax Rate per Tax Table)
+  		        //computeTaxRate('frm1701:txtPg1mScC1I3SubTotalC2', 'frm1701:txtPg1mScC2I10ApplicableTaxRateC2', 'frm1701:txtPg1mScC1I4RegularIncomeTaxC2');
+  		        var taxableIncome = this.convertToFloat(this.removeCommaParenthesis('frm1701:txtPg1mScC1I3SubTotalC2' + this.TYPE));
+  		        var taxRate = this.applicableTaxRatePerTaxTable(taxableIncome);
+  		        var regularIncomeTaxDue = taxableIncome * this.convertToFloat(taxRate / 100);
+  		        //d.getElementById('frm1701:txtPg1mScC1I4RegularIncomeTaxC2'+TYPE).value = NegativeValue(formatCurrencyWOC(regularIncomeTaxDue));
+  
+  
+  		        this.computeTaxDueRegular('frm1701:txtPg1mScC1I3SubTotalC2' + this.TYPE, 'frm1701:txtPg1mScC1I4RegularIncomeTaxC2' + this.TYPE);
+  
+  		        if (isIPA || isLegalBasis) {
+  		            //Item 5 (Schedule B Item 7 x Applicable Special Rate)
+  		            this.computeTaxRate('frm1701:txtPg1mScBI7TotalGrossIncomeC2' + this.TYPE, 'frm1701:txtPg1mScAI4ISpecialTaxRateC2' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE);
+  		        } else {
+  		            //Schedule C1.Item 5B = Schedule B.Item 11 x Schedule A.Item 4A
+  		            this.computeTaxRate('frm1701:txtPg1mScBI11TotalIncomeC2' + this.TYPE, 'frm1701:txtPg1mScAI4ISpecialTaxRateC2' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE);
+  		        }
+  
+  		        //Bug #3273 Item 5 as of 05/06/2014
+  		        var item5 = (this.removeCommaParenthesis('frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE) < 0) ? 0 : this.d.getElementById('frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE).value
+  		        this.d.getElementById('frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE).value = item5;
+  
+  		        //Item 6 (Item 4 Less Item 5)
+  		        this.differenceOfElements('frm1701:txtPg1mScC1I4RegularIncomeTaxC2' + this.TYPE, 'frm1701:txtPg1mScC1I5LessIncomeTaxC2' + this.TYPE, 'frm1701:txtPg1mScC1I6TaxReliefAvailmentC2' + this.TYPE);
+  
+  		        //Item 8 (sum of Items 6 & 7) (To Part 9 Item 21B/21F)
+  		        this.summation('Page1m' + this.TYPE + 'Content', 'ScC1I6TaxReliefAvailmentC2,ScC1I7AddSpecialTaxCreditsC2', 'frm1701:txtPg1mScC1I8TotalTaxReliefAvailmentC2' + this.TYPE);
+  			
+  				this.computeCollectedValue('frm1701:txtPg1mScC1I8TotalTaxReliefAvailmentC2' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I21TaxReliefC6');
+  				this.moveValue('frm1701:txtPg12Pt9I21TaxReliefC6', 'frm1701:txtPg3Pt5I91SpecialTaxC2');
+  				
+  				//=================================================================================================  
+  				//PAGE 12 ITEM 18 : SPOUSE
+  				//=================================================================================================  
+  				//for page 12 item 18 // added computation 03/12/14 //revised computation 03/13/14
+  				//SP=1 (page12Item17 * item4_specialTaxRate)
+  				//SP>1 (page1mSchedBItem11 * item4_specialTaxRate)
+  				
+  				//call this to get updated Item 17 from page 12
+  				this.computePg12FromAttachement(person);
+  
+  				//Added as of 3/19/2014 for PEZA rules
+  //				var item1Pg1m = d.getElementById('frm1701:txtPg1mScAI1InvestmentPromotionC2' + TYPE).value;
+  //				var item2Pg1m = d.getElementById('frm1701:txtPg1mScAI2LegalBasisC2' + TYPE).value;
+  
+  //				var isIPA = checkIPA(item1Pg1m);
+  //				var isLegalBasis = checkLegalBasis(item2Pg1m);
+  
+  				var item4_specialTaxRate = this.removeCommaParenthesis('frm1701:txtPg1mScAI4ISpecialTaxRateC2'+this.TYPE) / 100;
+  
+  				//var multiplyValue = (totalSPArray.length <= 1) ? 'frm1701:txtPg12Pt9I17TotalTaxableC6' : 'frm1701:txtPg1mScBI11TotalIncomeC2'+TYPE;
+  				//var multiplyValue = (totalSPArray.length <= 1) ? 'frm1701:txtPg12Pt9I17TotalTaxableC6' : ((isIPA && isLegalBasis) ? 'txtPg1mScBI7TotalGrossIncomeC2' + TYPE : 'frm1701:txtPg1mScBI11TotalIncomeC2' + TYPE);
+                  var computedOutput = 0;
+  
+  				if ((isIPA || isLegalBasis) && item4_specialTaxRate == 0.05) {
+  				    computedOutput = (this.removeCommaParenthesis('frm1701:txtPg1mScBI7TotalGrossIncomeC2' + this.TYPE) * item4_specialTaxRate);
+  				} else if (!isIPA && !isLegalBasis) {
+  				    computedOutput = (this.removeCommaParenthesis('frm1701:txtPg1mScBI11TotalIncomeC2' + this.TYPE) * item4_specialTaxRate);
+  				}
+  				
+  				//alert("["+(totalSPArray.length)+ "S] "+removeCommaParenthesis(multiplyValue) +" * "+ item4_specialTaxRate  + " >> " +computedOutput );
+  
+  				this.d.getElementById('frm1701:txtPg12Pt9I18SpouseSPOutput'+this.TYPE).value = computedOutput;
+  				this.computeCollectedValue('frm1701:txtPg12Pt9I18SpouseSPOutput' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I18TotalIncomeC6');
+  				
+  				//added 03/14/14 //MOVE VALUE TO PAGE 3 ITEM 69
+  				this.moveValue('frm1701:txtPg12Pt9I18TotalIncomeC6', 'frm1701:txtPg3Pt5I69SpecialRateC2');
+  				//================================================================================================= 
+  
+          } else if (this.d.getElementById('frm1701:rdoPg1mExempt' + this.TYPE).checked) {
+              //Item 9 (Sum of Schedule B Items 11 & 9) 
+              this.summation('Page1m' + this.TYPE + 'Content', 'ScBI9SpecialAllowableDeductionsC2,ScBI11TotalIncomeC2', 'frm1701:txtPg1mScC2I9TaxableIncomeC2' + this.TYPE);
+  
+              //Item 10 (Based on Item 9)
+              var taxableIncome = this.convertToFloat(this.removeCommaParenthesis('frm1701:txtPg1mScC2I9TaxableIncomeC2' + this.TYPE));
+              var taxRate = this.applicableTaxRatePerTaxTable(taxableIncome);
+              var regularIncomeTaxDue = taxableIncome * this.convertToFloat(taxRate / 100);
+              this.d.getElementById('frm1701:txtPg1mScC2I10ApplicableTaxRateC2' + this.TYPE).value = taxRate + ".0";
+  
+              //computeTaxDueRegular('frm1701:txtPg1mScC2I10ApplicableTaxRateC2' + TYPE, 'frm1701:txtPg1mScC2I10ApplicableTaxRateC2' + TYPE);
+              this.computeTaxDueRegular('frm1701:txtPg1mScC2I9TaxableIncomeC2' + this.TYPE, 'frm1701:txtPg1mScC2I11TaxReliefAvailmentC2' + this.TYPE);
+              //Item 11 (Item 9 x Item 10) (To Part 9 Item 21C/21G)
+              //d.getElementById('frm1701:txtPg1mScC2I11TaxReliefAvailmentC2' + TYPE).value = NegativeValue(formatCurrencyWOC(Math.round(regularIncomeTaxDue)));
+              //computeTaxRate('frm1701:txtPg1mScC2I9TaxableIncomeC2' + TYPE, 'frm1701:txtPg1mScC2I10ApplicableTaxRateC2' + TYPE, 'frm1701:txtPg1mScC2I11TaxReliefAvailmentC2' + TYPE);
+  
+  			    this.computeCollectedValue('frm1701:txtPg1mScC2I11TaxReliefAvailmentC2' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I21TaxReliefC7');
+  			    this.moveValue('frm1701:txtPg12Pt9I21TaxReliefC7', 'frm1701:txtPg3Pt5I92ExemptTaxC2');
+  			}
+          }
+  
+  	this.computePage3Part6('TaxPayer');this.computePage3Part6('Spouse');
+  	//computePage3Part5(person);
+  	//computePage2Part4(person);
+  	//computePage1Part2();
+  	}
+
+  // BIR computePage2mScheduleD
+  computePage2mScheduleD(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 3 (Sum of Items 1 & 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'Pg2mScDI1TotalSalesC1,Pg2mScDI2GrossSalesC1', 'frm1701:txtPg2mScDI3TotalSalesC1'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4) (To Schedule B Item 1A/1B) (To Part 9 Item 1)
+  	        this.differenceOfElements('frm1701:txtPg2mScDI3TotalSalesC1'+this.TYPE, 'frm1701:txtPg2mScDI4LessSalesReturnsC1'+this.TYPE, 'frm1701:txtPg2mScDI5NetSalesC1'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg2mScDI5NetSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI1NetSalesC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScDI5NetSalesC1'+TYPE, 'frm1701:txtPg12Pt9I1SalesC2');
+  	            this.computeCollectedValue('frm1701:txtPg2mScDI5NetSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I1SalesC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScDI5NetSalesC1'+TYPE, 'frm1701:txtPg12Pt9I1SalesC3');
+  	            this.computeCollectedValue('frm1701:txtPg2mScDI5NetSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I1SalesC3');	
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 3 (Sum of Items 1 & 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'Pg2mScDI1TotalSalesC2,Pg2mScDI2GrossSalesC2', 'frm1701:txtPg2mScDI3TotalSalesC2'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4) (To Schedule B Item 1A/1B) (To Part 9 Item 1)
+  	        this.differenceOfElements('frm1701:txtPg2mScDI3TotalSalesC2'+this.TYPE, 'frm1701:txtPg2mScDI4LessSalesReturnsC2'+this.TYPE, 'frm1701:txtPg2mScDI5NetSalesC2'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg2mScDI5NetSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI1NetSalesC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScDI5NetSalesC2'+TYPE, 'frm1701:txtPg12Pt9I1SalesC6');
+  	            this.computeCollectedValue('frm1701:txtPg2mScDI5NetSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I1SalesC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScDI5NetSalesC2'+TYPE, 'frm1701:txtPg12Pt9I1SalesC7');
+  	            this.computeCollectedValue('frm1701:txtPg2mScDI5NetSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I1SalesC7');
+  	        }
+  	    }
+  	}
+
+  // BIR computePage2mScheduleE
+  computePage2mScheduleE(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 3 (Sum of Items 1 & 2) (To Schedule B Item 2A/2B) (To Part 9 Item 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'txtPg2mScEI1C2,txtPg2mScEI2C2', 'frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+this.TYPE, 'frm1701:txtPg1mScBI2AddOtherIncomeC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I2OtherC2');
+  	            this.computeCollectedValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I2OtherC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I2OtherC3');
+  	            this.computeCollectedValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I2OtherC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 3 (Sum of Items 1 & 2) (To Schedule B Item 2A/2B) (To Part 9 Item 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'txtPg2mScEI1C3,txtPg2mScEI2C3', 'frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+this.TYPE, 'frm1701:txtPg1mScBI2AddOtherIncomeC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	           //moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I2OtherC6');
+  	           this.computeCollectedValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I2OtherC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	          //moveValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I2OtherC7');
+  	          this.computeCollectedValue('frm1701:txtPg2mScEI3TotalOtherTaxableIncomeC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I2OtherC7');
+  	        }
+  	    }
+  		
+  		
+  	}
+
+  // BIR computePage2mScheduleF1
+  computePage2mScheduleF1(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 3 (sum of Items 1 & 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF1I1MerchandiseInventoryC1,ScF1I2AddPurchaseofMerchandiseC1', 'frm1701:txtPg2mScF1I3TotalMerchandiseC1'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4) (To Item 27)
+  	        this.differenceOfElements('frm1701:txtPg2mScF1I3TotalMerchandiseC1'+this.TYPE, 'frm1701:txtPg2mScF1I4LessMerchandiseInventoryC1'+this.TYPE, 'frm1701:txtPg2mScF1I5CostofSalesC1'+this.TYPE);
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC1,ScF2I19CostofGoodsManufacturedandSoldC1,ScF3I26CostOfServicesC1', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE);
+  
+  	        //Item 4 sschedule B (To Part 9 Item 4)
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC2');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC3');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 3 (sum of Items 1 & 2)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF1I1MerchandiseInventoryC2,ScF1I2AddPurchaseofMerchandiseC2', 'frm1701:txtPg2mScF1I3TotalMerchandiseC2'+this.TYPE);
+  
+  	        //Item 5 (Item 3 Less Item 4) (To Item 27)
+  	        this.differenceOfElements('frm1701:txtPg2mScF1I3TotalMerchandiseC2'+this.TYPE, 'frm1701:txtPg2mScF1I4LessMerchandiseInventoryC2'+this.TYPE, 'frm1701:txtPg2mScF1I5CostofSalesC2'+this.TYPE);
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC2,ScF2I19CostofGoodsManufacturedandSoldC2,ScF3I26CostOfServicesC2', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE);
+  
+  	        //Item 4 Schedule B (To Part 9 Item 4)
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC6');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC7');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC7');
+  	        }
+  	    }
+  		
+  		//call this to update page 1m's summation & difference
+  		this.computePage1mScheduleB(person);
+  	}
+
+  // BIR computePage2mScheduleF2
+  computePage2mScheduleF2(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 8 (Sum of Items 6 & 7)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I6DirectMaterialsC1,ScF2I7AddPurchasesofDirectMaterialsC1', 'frm1701:txtPg2mScF2I8MaterialAvailableC1'+this.TYPE);
+  
+  	        //Item 10 (item 8 Less Item 9)
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I8MaterialAvailableC1'+this.TYPE, 'frm1701:txtPg2mScF2I9LessDirectMaterialsC1'+this.TYPE, 'frm1701:txtPg2mScF2I10RawMaterialsC1'+this.TYPE);
+  
+  	        //Item 13 (Sum of Items 10 to 12)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I10RawMaterialsC1,ScF2I11DirectLaborC1,ScF2I12ManufacturingOverheadC1', 'frm1701:txtPg2mScF2I13TotalManufacturingCostC1'+this.TYPE);
+  
+  	        //Item 16 (Sum of Items 13 & 14 Less Item 15)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I13TotalManufacturingCostC1,ScF2I14AddWorkInProcessC1', 'frm1701:txtPg2mScF2I16CostofGoodsManufacturedC1'+this.TYPE);
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I16CostofGoodsManufacturedC1'+this.TYPE, 'frm1701:txtPg2mScF2I15LessWorkInProcessC1'+this.TYPE, 'frm1701:txtPg2mScF2I16CostofGoodsManufacturedC1'+this.TYPE);
+  
+  	        //Item 19 (Sum of Items 16 & 17 Less Item 18)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I16CostofGoodsManufacturedC1,ScF2I17AddFinishedGoodsC1', 'frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC1'+this.TYPE);
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC1'+this.TYPE, 'frm1701:txtPg2mScF2I18LessFinishedGoodsC1'+this.TYPE, 'frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC1'+this.TYPE);
+  
+  	        //Schedule F Item 27
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC1,ScF2I19CostofGoodsManufacturedandSoldC1,ScF3I26CostOfServicesC1', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE);
+  
+  	        //Item 4 schedule B (To Part 9 Item 4)
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC2');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC3');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 8 (Sum of Items 6 & 7)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I6DirectMaterialsC2,ScF2I7AddPurchasesofDirectMaterialsC2', 'frm1701:txtPg2mScF2I8MaterialAvailableC2'+this.TYPE);
+  
+  	        //Item 10 (item 8 Less Item 9)
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I8MaterialAvailableC2'+this.TYPE, 'frm1701:txtPg2mScF2I9LessDirectMaterialsC2'+this.TYPE, 'frm1701:txtPg2mScF2I10RawMaterialsC2'+this.TYPE);
+  
+  	        //Item 13 (Sum of Items 10 to 12)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I10RawMaterialsC2,ScF2I11DirectLaborC2,ScF2I12ManufacturingOverheadC2', 'frm1701:txtPg2mScF2I13TotalManufacturingCostC2'+this.TYPE);
+  
+  	        //Item 16 (Sum of Items 13 & 14 Less Item 15)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I13TotalManufacturingCostC2,ScF2I14AddWorkInProcessC2', 'frm1701:txtPg2mScF2I16CostofGoodsManufacturedC2'+this.TYPE);
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I16CostofGoodsManufacturedC2'+this.TYPE, 'frm1701:txtPg2mScF2I15LessWorkInProcessC2'+this.TYPE, 'frm1701:txtPg2mScF2I16CostofGoodsManufacturedC2'+this.TYPE);
+  
+  	        //Item 19 (Sum of Items 16 & 17 Less Item 18)
+  	        this.summation('Page2m'+this.TYPE+'Content', 'ScF2I16CostofGoodsManufacturedC2,ScF2I17AddFinishedGoodsC2', 'frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC2'+this.TYPE);
+  	        this.differenceOfElements('frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC2'+this.TYPE, 'frm1701:txtPg2mScF2I18LessFinishedGoodsC2'+this.TYPE, 'frm1701:txtPg2mScF2I19CostofGoodsManufacturedandSoldC2'+this.TYPE);
+  
+  	        //Schedule F Item 27
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC2,ScF2I19CostofGoodsManufacturedandSoldC2,ScF3I26CostOfServicesC2', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE);
+  
+  	        //Item 4 schedule B (To Part 9 Item 4)
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC6');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC7');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC7');
+  	        }
+  	    }
+  		
+  		
+  		//call this to update page 1m's summation & difference
+  		this.computePage1mScheduleB(person);
+  	}
+
+  // BIR computePage3mScheduleF3
+  computePage3mScheduleF3(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 26 (Sum of Items 20 to 25)
+  	        this.summation('Page3m'+this.TYPE+'Content', 'ScF3I20DirectChargesC1,ScF3I21DirectChargesC1,ScF3I22DirectChargesC1,ScF3I23DirectChargesC1,ScF3I24DirectChargesC1,ScF3I25DirectChargesC1', 'frm1701:txtPg3mScF3I26CostOfServicesC1'+this.TYPE);
+  
+  	        //Scheule F Item 27 (Sum of Items 5, 19 & 26) (To Schedule B Item 4A/4B) (To Part 9 Item 4)
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC1,ScF2I19CostofGoodsManufacturedandSoldC1,ScF3I26CostOfServicesC1', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC2');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC3');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 26 (Sum of Items 20 to 25)
+  	        this.summation('Page3m'+this.TYPE+'Content', 'ScF3I20DirectChargesC2,ScF3I21DirectChargesC2,ScF3I22DirectChargesC2,ScF3I23DirectChargesC2,ScF3I24DirectChargesC2,ScF3I25DirectChargesC2', 'frm1701:txtPg3mScF3I26CostOfServicesC2'+this.TYPE);
+  
+  	        //Schedule F Item 27 (Sum of Items 5, 19 & 26) (To Schedule B Item 4A/4B) (To Part 9 Item 4)
+  	        this.summation('Page2m'+this.TYPE+'Content,Page3m'+this.TYPE+'Content', 'ScF1I5CostofSalesC2,ScF2I19CostofGoodsManufacturedandSoldC2,ScF3I26CostOfServicesC2', 'frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE, 'frm1701:txtPg1mScBI4LessCostOfSalesC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC6');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+TYPE, 'frm1701:txtPg12Pt9I4LessCostC7');
+  	            this.computeCollectedValue('frm1701:txtPg3mScF3I27TotalCostOfSalesC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I4LessCostC7');
+  	        }
+  	    }
+  	}
+
+  // BIR computePage3mScheduleG
+  computePage3mScheduleG(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 6 (Sum of Items 1 to 5) (To Schedule B Item 6A/6B) (To Part 9 Item 6)
+  	        this.summation('Page3m'+this.TYPE+'Content', 'ScGI1C2,ScGI2C2,ScGI3C2,ScGI4C2,ScGI5C2', 'frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+this.TYPE, 'frm1701:txtPg1mScBI6AddNonOperatingIncomeC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I6AddNonC2');
+  	            this.computeCollectedValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I6AddNonC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+TYPE, 'frm1701:txtPg12Pt9I6AddNonC3');
+  	            this.computeCollectedValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I6AddNonC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 6 (Sum of Items 1 to 5) (To Schedule B Item 6A/6B) (To Part 9 Item 6)
+  	        this.summation('Page3m'+this.TYPE+'Content', 'ScGI1C3,ScGI2C3,ScGI3C3,ScGI4C3,ScGI5C3', 'frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+this.TYPE, 'frm1701:txtPg1mScBI6AddNonOperatingIncomeC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I6AddNonC6');
+  	            this.computeCollectedValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I6AddNonC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+TYPE, 'frm1701:txtPg12Pt9I6AddNonC7');
+  	            this.computeCollectedValue('frm1701:txtPg3mScGI6TotalNonOperatingIncomeC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I6AddNonC7');
+  	        }
+  	    }
+  	}
+
+  // BIR computePage3mScheduleH
+  computePage3mScheduleH(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 40 (Sum of Items 1 to 39) (To Schedule B Item 8A/8B) (To Part 9 Item 8)
+  	        this.summation('Page3m'+this.TYPE+'Content,Page4m'+this.TYPE+'Content', 'ScHI1AdvertisingC1,ScHI2AmortizationC2,ScHI3AmortizationC2,ScHI4AmortizationC2,ScHI5BadDebtsC1,ScHI6CharitableContributionsC1,ScHI7CommissionsC1,ScHI8CommunicationC1,ScHI9DepletionC1,ScHI10DepreciationC1,ScHI11DirectorsFeeC1,ScHI12FringeBenefitsC1,ScHI13FuelC1,ScHI14InsuranceC1,ScHI15InterestC1,ScHI6JanitorialC1,ScHI7LossesC1,ScHI8ManagementC1,ScHI9MiscellaneousC1,ScHI20OfficeSuppliesC1,ScHI21OtherServicesC1,ScHI22ProfessionalFeesC1,ScHI23RentalC1,ScHI24RepairsC1,ScHI25RepairsC1,ScHI26RepresentationC1,ScHI27ResearchC1,ScHI28RoyaltiesC1,ScHI29SalariesC1,ScHI30SecurityServicesC1,ScHI31SSSC1,ScHI32TaxesAndLicensesC1,ScHI33TollingFeesC1,ScHI34TrainingAndSeminarsC1,ScHI35TransportationC1,ScHOtherTransportationC1,ScHI36C2,ScHI37C2,ScHI38C2,ScHI39C2', 'frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+this.TYPE, 'frm1701:txtPg1mScBI8OrdinaryAllowableDeductionsC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+TYPE, 'frm1701:txtPg12Pt9I8OrdinaryC2');
+  	            this.computeCollectedValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I8OrdinaryC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+TYPE, 'frm1701:txtPg12Pt9I8OrdinaryC3');
+  	            this.computeCollectedValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I8OrdinaryC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 40 (Sum of Items 1 to 39) (To Schedule B Item 8A/8B) (To Part 9 Item 8)
+  	        this.summation('Page3m'+this.TYPE+'Content,Page4m'+this.TYPE+'Content', 'ScHI1AdvertisingC2,ScHI2AmortizationC3,ScHI3AmortizationC3,ScHI4AmortizationC3,ScHI5BadDebtsC2,ScHI6CharitableContributionsC2,ScHI7CommissionsC2,ScHI8CommunicationC2,ScHI9DepletionC2,ScHI10DepreciationC2,ScHI11DirectorsFeeC2,ScHI12FringeBenefitsC2,ScHI13FuelC2,ScHI14InsuranceC2,ScHI15InterestC2,ScHI6JanitorialC2,ScHI7LossesC2,ScHI8ManagementC2,ScHI9MiscellaneousC2,ScHI20OfficeSuppliesC2,ScHI21OtherServicesC2,ScHI22ProfessionalFeesC2,ScHI23RentalC2,ScHI24RepairsC2,ScHI25RepairsC2,ScHI26RepresentationC2,ScHI27ResearchC2,ScHI28RoyaltiesC2,ScHI29SalariesC2,ScHI30SecurityServicesC2,ScHI31SSSC2,ScHI32TaxesAndLicensesC2,ScHI33TollingFeesC2,ScHI34TrainingAndSeminarsC2,ScHI35TransportationC2,ScHOtherTransportationC2,ScHI36C3,ScHI37C3,ScHI38C3,ScHI39C3', 'frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+this.TYPE);
+  	        this.moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+this.TYPE, 'frm1701:txtPg1mScBI8OrdinaryAllowableDeductionsC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+TYPE, 'frm1701:txtPg12Pt9I8OrdinaryC6');
+  	            this.computeCollectedValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I8OrdinaryC6');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+TYPE, 'frm1701:txtPg12Pt9I8OrdinaryC7');
+  	            this.computeCollectedValue('frm1701:txtPg4mScHI40TotalOrdinaryDeductionC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I8OrdinaryC7');
+  	        }
+  	    }
+  	}
+
+  // BIR computePage4mScheduleI
+  computePage4mScheduleI(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 5 (Sum of Items 1 to 4)
+  	        this.summation('Page4m'+this.TYPE+'Content', 'ScII1C3,ScII2C3,ScII3C3,ScII4C3', 'frm1701:txtPg4mScII5TotalSpecialDeductionsC1'+this.TYPE);
+  
+  	        //Item 9 Schedule B (To Part 9 Item 9)
+  	        this.moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC1'+this.TYPE, 'frm1701:txtPg1mScBI9SpecialAllowableDeductionsC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC1'+TYPE, 'frm1701:txtPg12Pt9I9SpecialC2');
+  	            this.computeCollectedValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC1' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I9SpecialC2');
+  
+  	            //Item 2 Schedule C1 
+  	            this.moveValue('frm1701:txtPg1mScBI9SpecialAllowableDeductionsC1' + this.TYPE, 'frm1701:txtPg1mScC1I2AddSpecialAllowableDeductionsC1' + this.TYPE);
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC1'+TYPE, 'frm1701:txtPg12Pt9I9SpecialC3');
+  	            this.computeCollectedValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I9SpecialC3');
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 5 (Sum of Items 1 to 4)
+  	        this.summation('Page4m'+this.TYPE+'Content', 'ScII1C4,ScII2C4,ScII3C4,ScII4C4', 'frm1701:txtPg4mScII5TotalSpecialDeductionsC2'+this.TYPE);
+  
+  	        //Item 9 Schedule B (To Part 9 Item 9)
+  	        this.moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC2'+this.TYPE, 'frm1701:txtPg1mScBI9SpecialAllowableDeductionsC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC2'+TYPE, 'frm1701:txtPg12Pt9I9SpecialC6');
+  	            this.computeCollectedValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC2' + this.TYPE.substring(0, 2), 'frm1701:txtPg12Pt9I9SpecialC6');
+  
+  	            //Item 2 Schedule C1 
+  	            this.moveValue('frm1701:txtPg1mScBI9SpecialAllowableDeductionsC2' + this.TYPE, 'frm1701:txtPg1mScC1I2AddSpecialAllowableDeductionsC2' + this.TYPE);
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC2'+TYPE, 'frm1701:txtPg12Pt9I9SpecialC7');
+  	            this.computeCollectedValue('frm1701:txtPg4mScII5TotalSpecialDeductionsC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I9SpecialC7');
+  	        }
+  	    }
+  	}
+
+  // BIR computePage5mScheduleJ
+  computePage5mScheduleJ(person?: any): any {
+  
+  	    if (person.toString() === "TaxPayer") {
+  
+  	        //Item 10 (Sum of Items 1 to 9) (To Part 9 Item 19)
+  	        this.summation('Page5m'+this.TYPE+'Content', 'ScJI1PriorYearsExcessCreditsC1,ScJI2TaxPaymentsC1,ScJI3CreditableTaxThreeQuartersC1,ScJI4CreditableTaxFourthQuarterC1,ScJI5TaxWithheldC1,ScJI6TaxPaidC1,ScJI7ForeignTaxCreditsC1,ScJI8SpecialTaxCreditsC1,ScJI9OtherPaymentsC1', 'frm1701:txtPg5mScJI10TotalTaxCreditsC1'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  			//moveValue('frm1701:txtPg5mScJI10TotalTaxCreditsC1'+TYPE, 'frm1701:txtPg12Pt9I19TotalTaxCreditsC2');
+  			this.computeCollectedValue('frm1701:txtPg5mScJI10TotalTaxCreditsC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I19TotalTaxCreditsC2');
+  			//03/14/14 :: Bug #1645
+  			this.moveValue('frm1701:txtPg12Pt9I19TotalTaxCreditsC2','frm1701:txtPg3Pt5I74SpecialC1');
+  		}
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  			//moveValue('frm1701:txtPg5mScJI10TotalTaxCreditsC1'+TYPE, 'frm1701:txtPg12Pt9I19TotalTaxCreditsC3');
+  			this.computeCollectedValue('frm1701:txtPg5mScJI10TotalTaxCreditsC1'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I19TotalTaxCreditsC3');	
+  			//03/14/14 :: just added
+  			this.moveValue('frm1701:txtPg12Pt9I19TotalTaxCreditsC3','frm1701:txtPg3Pt5I75ExemptC1');
+  	        }
+  
+  	        //Item 7 Sch C1
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  	            this.moveValue('frm1701:txtPg5mScJI8SpecialTaxCreditsC1' + this.TYPE, 'frm1701:txtPg1mScC1I7AddSpecialTaxCreditsC1' + this.TYPE);
+  	        }
+  	    }
+  	    else if (person.toString() === "Spouse") {
+  
+  	        //Item 10 (Sum of Items 1 to 9) (To Part 9 Item 19)
+  	        this.summation('Page5m'+this.TYPE+'Content', 'ScJI1PriorYearsExcessCreditsC2,ScJI2TaxPaymentsC2,ScJI3CreditableTaxThreeQuartersC2,ScJI4CreditableTaxFourthQuarterC2,ScJI5TaxWithheldC2,ScJI6TaxPaidC2,ScJI7ForeignTaxCreditsC2,ScJI8SpecialTaxCreditsC2,ScJI9OtherPaymentsC2', 'frm1701:txtPg5mScJI10TotalTaxCreditsC2'+this.TYPE);
+  
+  	        //Check the Tax Regime
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate'+this.TYPE).checked) {
+  	            //moveValue('frm1701:txtPg5mScJI10TotalTaxCreditsC2'+TYPE, 'frm1701:txtPg12Pt9I19TotalTaxCreditsC6');
+  			this.computeCollectedValue('frm1701:txtPg5mScJI10TotalTaxCreditsC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I19TotalTaxCreditsC6');
+  			//03/14/14 :: Bug #1645
+  			this.moveValue('frm1701:txtPg12Pt9I19TotalTaxCreditsC6','frm1701:txtPg3Pt5I74SpecialC2');
+  	        }
+  	        else if (this.d.getElementById('frm1701:rdoPg1mExempt'+this.TYPE).checked) {
+  			//moveValue('frm1701:txtPg5mScJI10TotalTaxCreditsC2'+TYPE, 'frm1701:txtPg12Pt9I19TotalTaxCreditsC7');
+  			this.computeCollectedValue('frm1701:txtPg5mScJI10TotalTaxCreditsC2'+this.TYPE.substring(0,2) , 'frm1701:txtPg12Pt9I19TotalTaxCreditsC7');
+  			//03/14/14 :: just added
+  			this.moveValue('frm1701:txtPg12Pt9I19TotalTaxCreditsC7','frm1701:txtPg3Pt5I75ExemptC2');
+  	        }
+  
+  	        //Item 7 Sch C1
+  	        if (this.d.getElementById('frm1701:rdoPg1mSpecialRate' + this.TYPE).checked) {
+  	            this.moveValue('frm1701:txtPg5mScJI8SpecialTaxCreditsC2' + this.TYPE, 'frm1701:txtPg1mScC1I7AddSpecialTaxCreditsC2' + this.TYPE);
+  	        }
+  	    }
+  	}
+
+  // BIR computePage5mScheduleK1
+  computePage5mScheduleK1(): any {
+  
+  	    //Item 4 (Sum of Items 1 to 3)
+  	    this.summation('Page5m'+this.TYPE+'Content', 'ScKI1NetIncomeC1,ScKI2C1,ScKI3C1', 'frm1701:txtPg5mScKI4TotalC1'+this.TYPE);
+  
+  	    //Item 9 (Sum of Items 5 to 8)
+  	    this.summation('Page5m'+this.TYPE+'Content', 'ScKI5C1,ScKI6C1,ScKI7C1,ScKI8C1', 'frm1701:txtPg5mScKI9TotalC1'+this.TYPE);
+  
+  	    //Item 10 (Item 4 Less Item 9)
+  	    this.differenceOfElements('frm1701:txtPg5mScKI4TotalC1'+this.TYPE, 'frm1701:txtPg5mScKI9TotalC1'+this.TYPE, 'frm1701:txtPg5mScKI10NetTaxableIncomeLossC1'+this.TYPE);
+  
+  	}
+
+  // BIR computePage5mScheduleK2
+  computePage5mScheduleK2(): any {
+  
+  	    //Item 4 (Sum of Items 1 to 3)
+  	    this.summation('Page5m'+this.TYPE+'Content', 'ScKI1NetIncomeC2,ScKI2C2,ScKI3C2', 'frm1701:txtPg5mScKI4TotalC2'+this.TYPE);
+  
+  	    //Item 9 (Sum of Items 5 to 8)
+  	    this.summation('Page5m'+this.TYPE+'Content', 'ScKI5C2,ScKI6C2,ScKI7C2,ScKI8C2', 'frm1701:txtPg5mScKI9TotalC2'+this.TYPE);
+  
+  	    //Item 10 (Item 4 Less Item 9)
+  	    this.differenceOfElements('frm1701:txtPg5mScKI4TotalC2'+this.TYPE, 'frm1701:txtPg5mScKI9TotalC2'+this.TYPE, 'frm1701:txtPg5mScKI10NetTaxableIncomeLossC2'+this.TYPE);
+  
+  	}
+
   // BIR copyValueToItem65
   copyValueToItem65(): any {
   	   this.d.getElementById('frm1701:txtPg2Pt4I65LessExcessC1').value = this.d.getElementById('frm1701:txtPg2Pt4I49ExcessDeductC1').value;
@@ -5737,6 +6862,121 @@ export class Bir1701 extends Dom1701 {
   	this.computePg6Sc5('TaxPayer');
   	this.computePg6Sc5('Spouse');
       }
+
+  // BIR computePage3mScheduleGModal
+  computePage3mScheduleGModal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage3mScheduleG"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg3mScGI5_C1'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg3mScGI5_C2'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage3mScheduleG"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg3mScGI5C2'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg3mScGI5C3'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var taxPayerFilerSummation = 0;
+  	    var spouseSummation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	        spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+  	    subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute textboxes outside modal
+  	    this.computePage3mScheduleG('TaxPayer');
+  	    this.computePage3mScheduleG('Spouse');
+  	}
+
+  // BIR computePage4mScheduleHModal
+  computePage4mScheduleHModal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage4mScheduleHI39"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg4mScHI39_C1'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg4mScHI39_C2'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage4mScheduleHI39"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg4mScHI39C2'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg4mScHI39C3'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var taxPayerFilerSummation = 0;
+  	    var spouseSummation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[2].children[0].id));
+  	        spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+  	    subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	    //compute other textboxes
+  	    this.computePage3mScheduleH('TaxPayer');
+  	    this.computePage3mScheduleH('Spouse');
+  
+  	}
+
+  // BIR computePage4mScheduleIModal
+  computePage4mScheduleIModal(bool?: any): any {
+  	
+  	var tableID = "";
+  	var  subtotalTextboxA ;
+  	var  subtotalTextboxB ;
+  	
+  	// if true, set subtotal inside modal
+  	if (bool === true){
+  		tableID = "tblPage4mScheduleI"+this.TYPE;
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg4mScII4_C1'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg4mScII4_C2'+this.TYPE);
+  	}
+  	// if false, set subtotal outside modal 
+  	else{
+  		tableID = "tblPage4mScheduleI"+this.TYPE+"Repository";
+  		subtotalTextboxA = this.d.getElementById('frm1701:txtPg4mScII4C3'+this.TYPE);
+  		subtotalTextboxB = this.d.getElementById('frm1701:txtPg4mScII4C4'+this.TYPE);
+  	}
+  	
+  	    var tableSize = this.d.getElementById(tableID).rows.length;
+  	    var table = this.d.getElementById(tableID);
+  	    var taxPayerFilerSummation = 0;
+  	    var spouseSummation = 0;
+  
+  	    for (var i = 0; i < tableSize; i++) {
+  	        taxPayerFilerSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[3].children[0].id));
+  	        spouseSummation += this.convertToNumber(this.removeCommaParenthesis(table.rows[i].cells[4].children[0].id));
+  	    }
+  
+  	    subtotalTextboxA.value = this.NegativeValue(this.formatCurrencyWOC(taxPayerFilerSummation));
+  	    subtotalTextboxB.value = this.NegativeValue(this.formatCurrencyWOC(spouseSummation));
+  
+  	//compute other textboxes
+  	    this.computePage4mScheduleI('TaxPayer');
+  	    this.computePage4mScheduleI('Spouse');
+  	}
 
   // BIR disableLinkIfEmpty
   disableLinkIfEmpty(e?: any, linkID?: any): any {
@@ -6706,6 +7946,28 @@ export class Bir1701 extends Dom1701 {
   	return description;
   }
 
+  // BIR processBack
+  processBack(): any {
+  	
+  		this.$('#ATTACHMENT').hide();
+  		
+  		this.$('#mainPages').show('blind');
+  		this.enablePaging();
+  		
+  		//this will recompute mainPage with values from attachment
+  		//just added recompute here because user will always trigger the button [Back To Main Form]
+  		//unless, the user triggered [Save],, then exit, then reloaded // add also recompute on [Save]
+  		if ( (!this.isReload) &&  (!this.d.getElementById('frm1701:btnValidate').disabled) ){
+  			this.recomputeValuesExtractedFromAttachment();
+  		}
+  		
+  		//d.getElementById('frm1701:txtCurrentPage').value = (PERSON === "S") ? "4" : "1";
+  		//currentPage = d.getElementById("frm1701:txtCurrentPage").value;
+  		
+  		this.d.getElementById('frm1701:txtMaxPage').value = "12";
+  		this.isOnAttachment = false;
+  	}
+
   // BIR validateYearEnd
   validateYearEnd(isReturn?: any): any {
   		var element = this.d.getElementById("frm1701:txtPg1I1Year");
@@ -6970,365 +8232,365 @@ export class Bir1701 extends Dom1701 {
 }
 
 /** BIR's inline onblur / onclick / onchange attributes (index = page/1701.json handler index), `this` = the element. */
-export const HANDLER: Array<((S: Bir1701, el: any) => void) | null> = [
+export const HANDLER: Array<((S: Bir1701, el: any, T?: string) => void) | null> = [
 null,
 null,
 null,
 null,
-(S, el) => {S.validateYearEnd(false);
+(S, el, T = "TYPE") => {S.validateYearEnd(false);
 },
-(S, el) => {S.computeQualifiedDependents();S.validateYearEnd(false);
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.validateYearEnd(false);
 },
-(S, el) => {S.checkFilingYear();S.disableEnableItem6Schedule9();
+(S, el, T = "TYPE") => {S.checkFilingYear();S.disableEnableItem6Schedule9();
 },
-(S, el) => {S.checkFilingYear();S.showPage1Item3ShortPeriodReturn();
+(S, el, T = "TYPE") => {S.checkFilingYear();S.showPage1Item3ShortPeriodReturn();
 },
-(S, el) => {S.checkFilingYear();
+(S, el, T = "TYPE") => {S.checkFilingYear();
 },
-(S, el) => {S.confirmCompensationIncome(el, true);S.disabledFields();S.confirmCompensationIncome(el);
+(S, el, T = "TYPE") => {S.confirmCompensationIncome(el, true);S.disabledFields();S.confirmCompensationIncome(el);
 },
-(S, el) => {S.disableATCTaxFiler();S.disabledFields(); S.disableATCTaxFiler();
+(S, el, T = "TYPE") => {S.disableATCTaxFiler();S.disabledFields(); S.disableATCTaxFiler();
 },
-(S, el) => {S.validateTIN(el, false);
+(S, el, T = "TYPE") => {S.validateTIN(el, false);
 },
-(S, el) => {S.disabledFields();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disabledFields();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.capitalize(el)
+(S, el, T = "TYPE") => {S.capitalize(el)
 },
-(S, el) => {S.validateDate(el,'No','Yes');S.computeQualifiedDependents();
+(S, el, T = "TYPE") => {S.validateDate(el,'No','Yes');S.computeQualifiedDependents();
 },
-(S, el) => {S.validateEmail(el);
+(S, el, T = "TYPE") => {S.validateEmail(el);
 },
-(S, el) => {S.disabledFields();S.HidePage12Part9();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disabledFields();S.HidePage12Part9();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.disabledFields();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();if (!S.isReload){S.alert('Please fill out Spouse Information on Page 4,Part VII - Other Relevant Information');}
+(S, el, T = "TYPE") => {S.disabledFields();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();if (!S.isReload){S.alert('Please fill out Spouse Information on Page 4,Part VII - Other Relevant Information');}
 },
-(S, el) => {S.disabledFields();S.claimingAdditionalExemption();S.claimingExemptionDisable();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disabledFields();S.claimingAdditionalExemption();S.claimingExemptionDisable();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.disabledFields();S.claimingAdditionalExemption();S.claimingExemptionDisable();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();S.alert('For Married Individuals that are Joint Filing, please make sure to accomplish Part VII - Other Relevant Information-SPOUSE. Select Method of Deduction in Part VII.Item 105 and select ATC in Part VII.Item 109 before proceeding to the Schedules');
+(S, el, T = "TYPE") => {S.disabledFields();S.claimingAdditionalExemption();S.claimingExemptionDisable();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();S.alert('For Married Individuals that are Joint Filing, please make sure to accomplish Part VII - Other Relevant Information-SPOUSE. Select Method of Deduction in Part VII.Item 105 and select ATC in Part VII.Item 109 before proceeding to the Schedules');
 },
-(S, el) => {S.methodOfDeductionsTriggers('Taxfiler');
+(S, el, T = "TYPE") => {S.methodOfDeductionsTriggers('Taxfiler');
 },
-(S, el) => {S.disabledFields();
+(S, el, T = "TYPE") => {S.disabledFields();
 },
-(S, el) => {S.verifyAddAttachment(true,el,true,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(true,el,true,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(false,el,true,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(false,el,true,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(true,el,false,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(true,el,false,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(false,el,false,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(false,el,false,'TAX FILER');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.disabledFields();S.claimingAdditionalExemption();S.computeQualifiedDependents();S.showPart7A();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disabledFields();S.claimingAdditionalExemption();S.computeQualifiedDependents();S.showPart7A();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.disabledFields();S.claimingAdditionalExemption();S.computeQualifiedDependents();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disabledFields();S.claimingAdditionalExemption();S.computeQualifiedDependents();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.disableAmountIfCTC();
+(S, el, T = "TYPE") => {S.disableAmountIfCTC();
 },
-(S, el) => {S.setEmpty(el);
+(S, el, T = "TYPE") => {S.setEmpty(el);
 },
-(S, el) => {if(S.d.getElementById('frm1701:rdoPg1I34GovID').checked){S.validateDate(el,'No','Yes');} else{S.validateCTCDate(el);}
+(S, el, T = "TYPE") => {if(S.d.getElementById('frm1701:rdoPg1I34GovID').checked){S.validateDate(el,'No','Yes');} else{S.validateCTCDate(el);}
 },
-(S, el) => {S.setToZeroIfEmpty(el);
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);
 },
-(S, el) => {S.capitalize(el);
+(S, el, T = "TYPE") => {S.capitalize(el);
 },
-(S, el) => {S.validateDate(el,'No','Yes');
+(S, el, T = "TYPE") => {S.validateDate(el,'No','Yes');
 },
-(S, el) => {S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage2Part4('TaxPayer'); S.copyValueToItem65(); S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2Part4('TaxPayer'); S.copyValueToItem65(); S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage2Part4('Spouse'); S.copyValueToItem65(); S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2Part4('Spouse'); S.copyValueToItem65(); S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage2Part4('TaxPayer'); S.copyValueToItem65(); S.computePage3Part5('TaxPayer');S.computePage1Part2();S.checkIfExceed('frm1701:txtPg2Pt4I44PremiumC1', 2400, 'Item 44 must not exceed P2,400/year');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2Part4('TaxPayer'); S.copyValueToItem65(); S.computePage3Part5('TaxPayer');S.computePage1Part2();S.checkIfExceed('frm1701:txtPg2Pt4I44PremiumC1', 2400, 'Item 44 must not exceed P2,400/year');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage2Part4('Spouse'); S.copyValueToItem65(); S.computePage3Part5('Spouse');S.computePage1Part2();S.checkIfExceed('frm1701:txtPg2Pt4I44PremiumC2', 2400, 'Item 44 must not exceed P2,400/year');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2Part4('Spouse'); S.copyValueToItem65(); S.computePage3Part5('Spouse');S.computePage1Part2();S.checkIfExceed('frm1701:txtPg2Pt4I44PremiumC2', 2400, 'Item 44 must not exceed P2,400/year');
 },
-(S, el) => {S.computePage2Part4('TaxPayer'); S.computePage3Part5('TaxPayer'); S.copyValueToItem65();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage2Part4('TaxPayer'); S.computePage3Part5('TaxPayer'); S.copyValueToItem65();S.computePage1Part2();
 },
-(S, el) => {S.computePage2Part4('Spouse'); S.computePage3Part5('Spouse'); S.copyValueToItem65();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage2Part4('Spouse'); S.computePage3Part5('Spouse'); S.copyValueToItem65();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.checkPercentageItem79('');S.computePage3Part5('TaxPayer');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.checkPercentageItem79('');S.computePage3Part5('TaxPayer');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.validateTIN(el, false);S.setMethodOfDeductionsDefault();
+(S, el, T = "TYPE") => {S.validateTIN(el, false);S.setMethodOfDeductionsDefault();
 },
-(S, el) => {S.methodOfDeductionsTriggers('Spouse');
+(S, el, T = "TYPE") => {S.methodOfDeductionsTriggers('Spouse');
 },
-(S, el) => {S.disableMethodOfAccounting();
+(S, el, T = "TYPE") => {S.disableMethodOfAccounting();
 },
-(S, el) => {S.verifyAddAttachment(true,el,true,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(true,el,true,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(false,el,true,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(false,el,true,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(true,el,false,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(true,el,false,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.verifyAddAttachment(false,el,false,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
+(S, el, T = "TYPE") => {S.verifyAddAttachment(false,el,false,'SPOUSE');S.HidePage12Part9();S.disableItem69Link();
 },
-(S, el) => {S.disableATCSpouse();S.disabledFields();S.disableATCSpouse();
+(S, el, T = "TYPE") => {S.disableATCSpouse();S.disabledFields();S.disableATCSpouse();
 },
-(S, el) => {S.claimingExemptionDisable();S.computeQualifiedDependents();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.claimingExemptionDisable();S.computeQualifiedDependents();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName1','frm1701:txtPg4Pt7AMonth1');
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName1','frm1701:txtPg4Pt7AMonth1');
 },
-(S, el) => {S.computeQualifiedDependents();S.capitalize(el);
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.capitalize(el);
 },
-(S, el) => {S.validateDateWithFilingYear(el,'No','Yes','No','Yes');S.computeQualifiedDependents(true);
+(S, el, T = "TYPE") => {S.validateDateWithFilingYear(el,'No','Yes','No','Yes');S.computeQualifiedDependents(true);
 },
-(S, el) => {S.computeQualifiedDependents(true);
+(S, el, T = "TYPE") => {S.computeQualifiedDependents(true);
 },
-(S, el) => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName2','frm1701:txtPg4Pt7AMonth2');
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName2','frm1701:txtPg4Pt7AMonth2');
 },
-(S, el) => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName3','frm1701:txtPg4Pt7AMonth3');
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName3','frm1701:txtPg4Pt7AMonth3');
 },
-(S, el) => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName4','frm1701:txtPg4Pt7AMonth4');
+(S, el, T = "TYPE") => {S.computeQualifiedDependents();S.capitalize(el);S.checkDependentLastName('frm1701:txtPg4Pt7ALastName4','frm1701:txtPg4Pt7AMonth4');
 },
-(S, el) => {S.validateDate(el,'Yes','No');S.computeQualifiedDependents();
+(S, el, T = "TYPE") => {S.validateDate(el,'Yes','No');S.computeQualifiedDependents();
 },
-(S, el) => {S.capitalize(el);S.employerTinRequired('1');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.capitalize(el);S.employerTinRequired('1');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.employerTinRequired('1');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.employerTinRequired('1');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.validateTIN(el, false);S.employerTinRequired('1');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.validateTIN(el, false);S.employerTinRequired('1');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.capitalize(el);S.employerTinRequired('2');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.capitalize(el);S.employerTinRequired('2');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.employerTinRequired('2');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.employerTinRequired('2');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.validateTIN(el, false);S.employerTinRequired('2');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.validateTIN(el, false);S.employerTinRequired('2');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.capitalize(el);S.employerTinRequired('3');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.capitalize(el);S.employerTinRequired('3');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.employerTinRequired('3');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.employerTinRequired('3');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage3Part5('TaxPayer'); S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.validateTIN(el, false);S.employerTinRequired('3');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.validateTIN(el, false);S.employerTinRequired('3');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.capitalize(el);S.employerTinRequired('4');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.capitalize(el);S.employerTinRequired('4');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.employerTinRequired('4');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.employerTinRequired('4');S.sumTaxSpouseIterate();S.computePage2Part4('TaxPayer');S.computePage2Part4('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.validateTIN(el, false);S.employerTinRequired('4');S.disabledAddMoreLinkSchedule1();
+(S, el, T = "TYPE") => {S.validateTIN(el, false);S.employerTinRequired('4');S.disabledAddMoreLinkSchedule1();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc2('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc2('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc2('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc2('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.capitalize(el);S.computePg5Sc3('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg5Sc3('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg5Sc3('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg5Sc3('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc3('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc3('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc3('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc3('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc3('TaxPayer');S.computePage123('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc3('TaxPayer');S.computePage123('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc3('Spouse');S.computePage123('Spouse');S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc3('Spouse');S.computePage123('Spouse');S.disableLinkIfEmpty('frm1701:txtPg5Sc3I1Description,frm1701:txtPg5Sc3I1TaxPayerC1,frm1701:txtPg5Sc3I2Description,frm1701:txtPg5Sc3I2TaxPayerC1', 'frm1701:lnkPg5Sc3I2More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc4A('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc4A('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg5Sc4A('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg5Sc4A('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc4B('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc4B('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc4B('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc4B('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc4C('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc4C('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc4C('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc4C('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.capitalize(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
 },
-(S, el) => {S.disableLinkIfEmpty(el,'frm1701:lnkPg6Sc5I5More');S.capitalize(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty(el,'frm1701:lnkPg6Sc5I5More');S.capitalize(el);S.computePg6Sc5('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg6Sc5('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc5I1NatureOfIncome,frm1701:txtPg6Sc5I1TaxPayerC1,frm1701:txtPg6Sc5I2NatureOfIncome,frm1701:txtPg6Sc5I2TaxPayerC1,frm1701:txtPg6Sc5I3NatureOfIncome,frm1701:txtPg6Sc5I3TaxPayerC1,frm1701:txtPg6Sc5I4NatureOfIncome,frm1701:txtPg6Sc5I4TaxPayerC1,frm1701:txtPg6Sc5I5NatureOfIncome,frm1701:txtPg6Sc5I5TaxPayerC1', 'frm1701:lnkPg6Sc5I5More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
 },
-(S, el) => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
 },
-(S, el) => {S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.capitalize(el);S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
+(S, el, T = "TYPE") => {S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.capitalize(el);S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg6Sc6I2Amortizations,frm1701:txtPg6Sc6I2TaxSumPayerC1,frm1701:txtPg6Sc6I3Amortizations,frm1701:txtPg6Sc6I3TaxSumPayerC1,frm1701:txtPg6Sc6I4Amortizations,frm1701:txtPg6Sc6I4TaxSumPayerC1', 'frm1701:lnkPg6Sc6I4More');
 
 },
-(S, el) => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');S.capitalize(el);S.summation('Page7Content,Page6Content','TaxSumPayerC1','frm1701:txtPg7Sc6I40TaxTotalPayerC1');S.moveValueToItem57();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.summation('Page7Content,Page6Content','SpouseSumC2','frm1701:txtPg7Sc6I40TotalSpouseC2');S.moveValueToItem57();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg7Sc6I36Description,frm1701:txtPg7Sc6I36TaxSumPayerC1,frm1701:txtPg7Sc6I37Description,frm1701:txtPg7Sc6I37TaxPayerC1,frm1701:txtPg7Sc6I38Description,frm1701:txtPg7Sc6I38TaxPayerC1,frm1701:txtPg7Sc6I39Description,frm1701:txtPg7Sc6I39TaxSumPayerC1', 'frm1701:lnkPg7Sc6I39More');
 },
-(S, el) => {S.capitalize(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');S.capitalize(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg8Sc7I1Description,frm1701:txtPg8Sc7I1LegalBasis,frm1701:txtPg8Sc7I1TaxPayer,frm1701:txtPg8Sc7I2Description,frm1701:txtPg8Sc7I2LegalBasis,frm1701:txtPg8Sc7I2TaxPayer,frm1701:txtPg8Sc7I3Description,frm1701:txtPg8Sc7I3LegalBasis,frm1701:txtPg8Sc7I3TaxPayer,frm1701:txtPg8Sc7I4Description,frm1701:txtPg8Sc7I4LegalBasis,frm1701:txtPg8Sc7I4TaxPayer', 'frm1701:lnkPg8Sc7I4More');S.capitalize(el);S.computePg8Sc7('TaxPayer');S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc7('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc7('TaxPayer');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc7('TaxPayer');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc7('Spouse');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc7('Spouse');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8A();S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8A();S.computePg8Sc8AI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8AI4E();
 },
-(S, el) => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc8AI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc8AI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8AI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8AI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8AI4E();
 },
-(S, el) => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
 },
-(S, el) => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.nolcoDateValidation(el,'frm1701:txtPg8Sc8A1YearIncurred','frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.validateSchedule8('PG8SC8A1T2', 'PG8SC8A1T4', 0, 3, 0);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();S.computePg8Sc8AI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8AI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8AI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8AI4E();S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8AI4E();S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc8AI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidation(el);S.computePg8Sc8A1();S.computePage2Part4('TaxPayer');S.computePage3Part5('TaxPayer');S.computePg8Sc8AI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8B();S.computePg8Sc8BI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8B();S.computePg8Sc8BI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8B();S.computePg8Sc8BI4E()
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8B();S.computePg8Sc8BI4E()
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8BI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8BI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8BI4E()
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8BI4E()
 },
-(S, el) => {S.nolcoDateValidationSpouse(el,'frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.nolcoDateValidationSpouse(el,'frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8BI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8BI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8BI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8BI4E();
 },
-(S, el) => {S.nolcoDateValidationSpouse(el,'frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.nolcoDateValidationSpouse(el,'frm1701:txtPg1I1Year');S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.validateSchedule8('PG8SC8B1T2', 'PG8SC8B1T4', 0, 3, 0);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.computePg8Sc8BI4E();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.computePg8Sc8BI4E();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.nolcoInputValidationSpouse(el);S.computePg8Sc8B1();S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePg8Sc8BI4E();S.computePage1Part2();
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc9('TaxPayer');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc9('TaxPayer');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc9('Spouse');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc9('Spouse');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc9('TaxPayer');S.moveValueToItem89('TaxPayer');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc9('TaxPayer');S.moveValueToItem89('TaxPayer');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc9('Spouse');S.moveValueToItem89('Spouse');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc9('Spouse');S.moveValueToItem89('Spouse');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Assets');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Assets');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Assets');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Assets');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Liabilities');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Liabilities');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Liabilities');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Liabilities');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Capital');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('TaxPayer','Capital');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Capital');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg9Sc10('Spouse','Capital');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');S.capitalize(el);S.computePg10Sc11A('TaxPayer');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11AI3More');S.capitalize(el);S.computePg10Sc11A('TaxPayer');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');S.capitalize(el);S.computePg10Sc11A('TaxPayer');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI5NonTaxableIncomeC1,frm1701:txtPg10Sc11AI5NonTaxableIncomeC2,frm1701:txtPg10Sc11AI6NonTaxableIncomeC1,frm1701:txtPg10Sc11AI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11AI6More');S.capitalize(el);S.computePg10Sc11A('TaxPayer');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI7SpecialDeductionsC1,frm1701:txtPg10Sc11AI7SpecialDeductionsC2,frm1701:txtPg10Sc11AI8SpecialDeductionsC1,frm1701:txtPg10Sc11AI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11AI8More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI7SpecialDeductionsC1,frm1701:txtPg10Sc11AI7SpecialDeductionsC2,frm1701:txtPg10Sc11AI8SpecialDeductionsC1,frm1701:txtPg10Sc11AI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11AI8More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI7SpecialDeductionsC1,frm1701:txtPg10Sc11AI7SpecialDeductionsC2,frm1701:txtPg10Sc11AI8SpecialDeductionsC1,frm1701:txtPg10Sc11AI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11AI8More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg10Sc11AI7SpecialDeductionsC1,frm1701:txtPg10Sc11AI7SpecialDeductionsC2,frm1701:txtPg10Sc11AI8SpecialDeductionsC1,frm1701:txtPg10Sc11AI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11AI8More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');S.capitalize(el);S.computePg10Sc11A('Spouse');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1,frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2', 'frm1701:lnkPg10Sc11BI3More');S.capitalize(el);S.computePg10Sc11A('Spouse');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');S.capitalize(el);S.computePg10Sc11A('Spouse');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI5NonTaxableIncomeC1,frm1701:txtPg10Sc11BI5NonTaxableIncomeC2,frm1701:txtPg10Sc11BI6NonTaxableIncomeC1,frm1701:txtPg10Sc11BI6NonTaxableIncomeC2', 'frm1701:lnkPg10Sc11BI6More');S.capitalize(el);S.computePg10Sc11A('Spouse');
 },
-(S, el) => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePg10Sc11A('Spouse');S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');
 },
-(S, el) => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');S.capitalize(el);S.computePg10Sc11A('Spouse');
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg10Sc11BI7SpecialDeductionsC1,frm1701:txtPg10Sc11BI7SpecialDeductionsC2,frm1701:txtPg10Sc11BI8SpecialDeductionsC1,frm1701:txtPg10Sc11BI8SpecialDeductionsC2', 'frm1701:lnkPg10Sc11BI8More');S.capitalize(el);S.computePg10Sc11A('Spouse');
 },
-(S, el) => { S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
+(S, el, T = "TYPE") => { S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
 },
-(S, el) => {S.capitalize(el); S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI7DescriptionOfPropertyC1,frm1701:txtPg11Sc12AI7DescriptionOfPropertyC2,frm1701:txtPg11Sc12AI8OCTC1,frm1701:txtPg11Sc12AI8OCTC2,frm1701:txtPg11Sc12AI9CARNoC1,frm1701:txtPg11Sc12AI9CARNoC2,frm1701:txtPg11Sc12AI10ActualAmountC1,frm1701:txtPg11Sc12AI10ActualAmountC2,frm1701:txtPg11Sc12AI11FinalTaxC1,frm1701:txtPg11Sc12AI11FinalTaxC2', 'frm1701:lnkPg11Sc12APt2I11More');
+(S, el, T = "TYPE") => {S.capitalize(el); S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI7DescriptionOfPropertyC1,frm1701:txtPg11Sc12AI7DescriptionOfPropertyC2,frm1701:txtPg11Sc12AI8OCTC1,frm1701:txtPg11Sc12AI8OCTC2,frm1701:txtPg11Sc12AI9CARNoC1,frm1701:txtPg11Sc12AI9CARNoC2,frm1701:txtPg11Sc12AI10ActualAmountC1,frm1701:txtPg11Sc12AI10ActualAmountC2,frm1701:txtPg11Sc12AI11FinalTaxC1,frm1701:txtPg11Sc12AI11FinalTaxC2', 'frm1701:lnkPg11Sc12APt2I11More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI7DescriptionOfPropertyC1,frm1701:txtPg11Sc12AI7DescriptionOfPropertyC2,frm1701:txtPg11Sc12AI8OCTC1,frm1701:txtPg11Sc12AI8OCTC2,frm1701:txtPg11Sc12AI9CARNoC1,frm1701:txtPg11Sc12AI9CARNoC2,frm1701:txtPg11Sc12AI10ActualAmountC1,frm1701:txtPg11Sc12AI10ActualAmountC2,frm1701:txtPg11Sc12AI11FinalTaxC1,frm1701:txtPg11Sc12AI11FinalTaxC2', 'frm1701:lnkPg11Sc12APt2I11More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI7DescriptionOfPropertyC1,frm1701:txtPg11Sc12AI7DescriptionOfPropertyC2,frm1701:txtPg11Sc12AI8OCTC1,frm1701:txtPg11Sc12AI8OCTC2,frm1701:txtPg11Sc12AI9CARNoC1,frm1701:txtPg11Sc12AI9CARNoC2,frm1701:txtPg11Sc12AI10ActualAmountC1,frm1701:txtPg11Sc12AI10ActualAmountC2,frm1701:txtPg11Sc12AI11FinalTaxC1,frm1701:txtPg11Sc12AI11FinalTaxC2', 'frm1701:lnkPg11Sc12APt2I11More');
 },
-(S, el) => {S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
+(S, el, T = "TYPE") => {S.summation('Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4','FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20', 'frm1701:txtPg11Sc12AI21TotalFinalTaxC1');
 },
-(S, el) => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
 },
-(S, el) => {S.validateDateWithFilingYear(el, 'No', 'Yes', 'No', 'No');S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
+(S, el, T = "TYPE") => {S.validateDateWithFilingYear(el, 'No', 'Yes', 'No', 'No');S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI12KindPSCSC1,frm1701:txtPg11Sc12AI12KindPSCSC2,frm1701:txtPg11Sc12AI13CARNoC1,frm1701:txtPg11Sc12AI13CARNoC2,frm1701:txtPg11Sc12AI14NumberOfSharesC1,frm1701:txtPg11Sc12AI14NumberOfSharesC2,frm1701:txtPg11Sc12AI16ActualAmountC1,frm1701:txtPg11Sc12AI16ActualAmountC2,frm1701:txtPg11Sc12AI17FinalTaxC1,frm1701:txtPg11Sc12AI17FinalTaxC2', 'frm1701:lnkPg11Sc12APt3I17More');
 },
-(S, el) => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI18OtherIncomeC1,frm1701:txtPg11Sc12AI18OtherIncomeC2,frm1701:txtPg11Sc12AI19ActualAmountC1,frm1701:txtPg11Sc12AI19ActualAmountC2,frm1701:txtPg11Sc12AI20FinalTaxC1,frm1701:txtPg11Sc12AI20FinalTaxC2', 'frm1701:lnkPg11Sc12APt4I20More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI18OtherIncomeC1,frm1701:txtPg11Sc12AI18OtherIncomeC2,frm1701:txtPg11Sc12AI19ActualAmountC1,frm1701:txtPg11Sc12AI19ActualAmountC2,frm1701:txtPg11Sc12AI20FinalTaxC1,frm1701:txtPg11Sc12AI20FinalTaxC2', 'frm1701:lnkPg11Sc12APt4I20More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI18OtherIncomeC1,frm1701:txtPg11Sc12AI18OtherIncomeC2,frm1701:txtPg11Sc12AI19ActualAmountC1,frm1701:txtPg11Sc12AI19ActualAmountC2,frm1701:txtPg11Sc12AI20FinalTaxC1,frm1701:txtPg11Sc12AI20FinalTaxC2', 'frm1701:lnkPg11Sc12APt4I20More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12AI18OtherIncomeC1,frm1701:txtPg11Sc12AI18OtherIncomeC2,frm1701:txtPg11Sc12AI19ActualAmountC1,frm1701:txtPg11Sc12AI19ActualAmountC2,frm1701:txtPg11Sc12AI20FinalTaxC1,frm1701:txtPg11Sc12AI20FinalTaxC2', 'frm1701:lnkPg11Sc12APt4I20More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2', 'Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9', 'frm1701:txtPg11Sc12BI10TotalIncomeC1');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.summation('Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2', 'Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9', 'frm1701:txtPg11Sc12BI10TotalIncomeC1');
 },
-(S, el) => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI4DescriptionOfPropertyC1,frm1701:txtPg11Sc12BI4DescriptionOfPropertyC2,frm1701:txtPg11Sc12BI5ModeOfTransferC1,frm1701:txtPg11Sc12BI5ModeOfTransferC2,frm1701:txtPg11Sc12BI6CARNoC1,frm1701:txtPg11Sc12BI6CARNoC2,frm1701:txtPg11Sc12BI7ActualAmountC1,frm1701:txtPg11Sc12BI7ActualAmountC2', 'frm1701:lnkPg11Sc12BPt1I7More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI4DescriptionOfPropertyC1,frm1701:txtPg11Sc12BI4DescriptionOfPropertyC2,frm1701:txtPg11Sc12BI5ModeOfTransferC1,frm1701:txtPg11Sc12BI5ModeOfTransferC2,frm1701:txtPg11Sc12BI6CARNoC1,frm1701:txtPg11Sc12BI6CARNoC2,frm1701:txtPg11Sc12BI7ActualAmountC1,frm1701:txtPg11Sc12BI7ActualAmountC2', 'frm1701:lnkPg11Sc12BPt1I7More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI4DescriptionOfPropertyC1,frm1701:txtPg11Sc12BI4DescriptionOfPropertyC2,frm1701:txtPg11Sc12BI5ModeOfTransferC1,frm1701:txtPg11Sc12BI5ModeOfTransferC2,frm1701:txtPg11Sc12BI6CARNoC1,frm1701:txtPg11Sc12BI6CARNoC2,frm1701:txtPg11Sc12BI7ActualAmountC1,frm1701:txtPg11Sc12BI7ActualAmountC2', 'frm1701:lnkPg11Sc12BPt1I7More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI4DescriptionOfPropertyC1,frm1701:txtPg11Sc12BI4DescriptionOfPropertyC2,frm1701:txtPg11Sc12BI5ModeOfTransferC1,frm1701:txtPg11Sc12BI5ModeOfTransferC2,frm1701:txtPg11Sc12BI6CARNoC1,frm1701:txtPg11Sc12BI6CARNoC2,frm1701:txtPg11Sc12BI7ActualAmountC1,frm1701:txtPg11Sc12BI7ActualAmountC2', 'frm1701:lnkPg11Sc12BPt1I7More');
 },
-(S, el) => {S.summation('Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2', 'Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9', 'frm1701:txtPg11Sc12BI10TotalIncomeC1');
+(S, el, T = "TYPE") => {S.summation('Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2', 'Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9', 'frm1701:txtPg11Sc12BI10TotalIncomeC1');
 },
-(S, el) => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI8OtherExemptIncomeC1,frm1701:txtPg11Sc12BI8OtherExemptIncomeC2,frm1701:txtPg11Sc12BI9ActualAmountC1,frm1701:txtPg11Sc12BI9ActualAmountC2', 'frm1701:lnkPg11Sc12BPt2I9More');
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI8OtherExemptIncomeC1,frm1701:txtPg11Sc12BI8OtherExemptIncomeC2,frm1701:txtPg11Sc12BI9ActualAmountC1,frm1701:txtPg11Sc12BI9ActualAmountC2', 'frm1701:lnkPg11Sc12BPt2I9More');
 },
-(S, el) => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI8OtherExemptIncomeC1,frm1701:txtPg11Sc12BI8OtherExemptIncomeC2,frm1701:txtPg11Sc12BI9ActualAmountC1,frm1701:txtPg11Sc12BI9ActualAmountC2', 'frm1701:lnkPg11Sc12BPt2I9More');
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmptyControls('frm1701:txtPg11Sc12BI8OtherExemptIncomeC1,frm1701:txtPg11Sc12BI8OtherExemptIncomeC2,frm1701:txtPg11Sc12BI9ActualAmountC1,frm1701:txtPg11Sc12BI9ActualAmountC2', 'frm1701:lnkPg11Sc12BPt2I9More');
 },
-(S, el) => {S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage3Part5('Spouse');S.computePage1Part2();
 },
-(S, el) => {S.computePage3Part6('TaxPayer');S.computePage2Part4('Taxpayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage3Part6('TaxPayer');S.computePage2Part4('Taxpayer');S.computePage3Part5('TaxPayer');S.computePage1Part2();
 },
-(S, el) => {S.computePage3Part6('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
+(S, el, T = "TYPE") => {S.computePage3Part6('Spouse');S.computePage2Part4('Spouse');S.computePage3Part5('Spouse');S.computePage1Part2();
 },
 null,
 null,
@@ -7341,82 +8603,158 @@ null,
 null,
 null,
 null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
+(S, el, T = "TYPE") => {S.capitalize(el);S.checkPercentageValue(S.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC1TYPE'.replace(/TYPE/g, T)), false);S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.checkPercentageValue(S.d.getElementById('frm1701:txtPg1mScAI4ISpecialTaxRateC2TYPE'.replace(/TYPE/g, T)), false);S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.checkPercentageValue(el, false);S.computePage1mScheduleC('TaxPayer'); 
+},
+(S, el, T = "TYPE") => {S.checkPercentageValue(el, false);S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.validateDate(el,'No','Yes');S.validateDateFromNotGreaterThanTo(el,'frm1701:txtPg1mScAI5EffectivityDateMonthC1TYPE'.replace(/TYPE/g, T), 'frm1701:txtPg1mScAI6EffectivityDateMonthC1TYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.validateDateWithFilingYear(el,'Yes','Yes','Yes','No');S.validateDateFromNotGreaterThanTo(el,'frm1701:txtPg1mScAI5EffectivityDateMonthC1TYPE'.replace(/TYPE/g, T), 'frm1701:txtPg1mScAI6EffectivityDateMonthC1TYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.validateDateWithFilingYear(el,'Yes','Yes','Yes','No');
+},
+(S, el, T = "TYPE") => {S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleD('TaxPayer');S.computePage1mScheduleB('TaxPayer');S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleD('Spouse');S.computePage1mScheduleB('Spouse');S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleD('TaxPayer'); S.computePage1mScheduleB('TaxPayer');S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleD('Spouse'); S.computePage1mScheduleB('Spouse');S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg2mScEI1DescriptionC1TYPE,frm1701:txtPg2mScEI1C2TYPE,frm1701:txtPg2mScEI2DescriptionC1TYPE,frm1701:txtPg2mScEI2C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg2mScEI2MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleE('TaxPayer'); S.computePage1mScheduleB('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg2mScEI1DescriptionC1TYPE,frm1701:txtPg2mScEI1C2TYPE,frm1701:txtPg2mScEI2DescriptionC1TYPE,frm1701:txtPg2mScEI2C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg2mScEI2MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleE('Spouse'); S.computePage1mScheduleB('Spouse');S.disableLinkIfEmpty('frm1701:txtPg2mScEI1DescriptionC1TYPE,frm1701:txtPg2mScEI1C2TYPE,frm1701:txtPg2mScEI2DescriptionC1TYPE,frm1701:txtPg2mScEI2C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg2mScEI2MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF1('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF1('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF1('TaxPayer'); S.computePage3mScheduleF3('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF1('Spouse'); S.computePage3mScheduleF3('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('TaxPayer'); S.computePage3mScheduleF3('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); 
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('Spouse'); S.computePage3mScheduleF3('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); 
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('TaxPayer'); S.computePage3mScheduleF3('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage2mScheduleF2('Spouse'); S.computePage3mScheduleF3('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleF3('TaxPayer'); S.computePage1mScheduleB('TaxPayer');  S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleF3('Spouse'); S.computePage1mScheduleB('Spouse');  S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI1C2TYPE,frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI2C2TYPE,frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI3C2TYPE,frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI4C2TYPE,frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI5C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScGI6MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleG('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage3mScheduleGModal(true);S.disableLinkIfEmpty('frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI1C2TYPE,frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI2C2TYPE,frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI3C2TYPE,frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI4C2TYPE,frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI5C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScGI6MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleG('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); S.computePage3mScheduleGModal(true);S.disableLinkIfEmpty('frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI1C2TYPE,frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI2C2TYPE,frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI3C2TYPE,frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI4C2TYPE,frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI5C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScGI6MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleG('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI1C2TYPE,frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI2C2TYPE,frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI3C2TYPE,frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI4C2TYPE,frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI5C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScGI6MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleG('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');S.disableLinkIfEmpty('frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI1C2TYPE,frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI2C2TYPE,frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI3C2TYPE,frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI4C2TYPE,frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE,frm1701:txtPg3mScGI5C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScGI6MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage4mScheduleHModal(true);
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); S.computePage4mScheduleHModal(true);
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg3mScHI2AmortizationC1TYPE,frm1701:txtPg3mScHI2AmortizationC2TYPE,frm1701:txtPg3mScHI3AmortizationC1TYPE,frm1701:txtPg3mScHI3AmortizationC2TYPE,frm1701:txtPg3mScHI4AmortizationC1TYPE,frm1701:txtPg3mScHI4AmortizationC2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScHI4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage4mScheduleHModal(true);S.disableLinkIfEmpty('frm1701:txtPg3mScHI2AmortizationC1TYPE,frm1701:txtPg3mScHI2AmortizationC2TYPE,frm1701:txtPg3mScHI3AmortizationC1TYPE,frm1701:txtPg3mScHI3AmortizationC2TYPE,frm1701:txtPg3mScHI4AmortizationC1TYPE,frm1701:txtPg3mScHI4AmortizationC2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScHI4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); S.computePage4mScheduleHModal(true);S.disableLinkIfEmpty('frm1701:txtPg3mScHI2AmortizationC1TYPE,frm1701:txtPg3mScHI2AmortizationC2TYPE,frm1701:txtPg3mScHI3AmortizationC1TYPE,frm1701:txtPg3mScHI3AmortizationC2TYPE,frm1701:txtPg3mScHI4AmortizationC1TYPE,frm1701:txtPg3mScHI4AmortizationC2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScHI4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg3mScHI2AmortizationC1TYPE,frm1701:txtPg3mScHI2AmortizationC2TYPE,frm1701:txtPg3mScHI3AmortizationC1TYPE,frm1701:txtPg3mScHI3AmortizationC2TYPE,frm1701:txtPg3mScHI4AmortizationC1TYPE,frm1701:txtPg3mScHI4AmortizationC2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScHI4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');S.disableLinkIfEmpty('frm1701:txtPg3mScHI2AmortizationC1TYPE,frm1701:txtPg3mScHI2AmortizationC2TYPE,frm1701:txtPg3mScHI3AmortizationC1TYPE,frm1701:txtPg3mScHI3AmortizationC2TYPE,frm1701:txtPg3mScHI4AmortizationC1TYPE,frm1701:txtPg3mScHI4AmortizationC2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg3mScHI4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage4mScheduleHModal(true);S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); S.computePage4mScheduleHModal(true);S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage4mScheduleHModal();S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage3mScheduleH('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');S.disableLinkIfEmpty('frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI36C2TYPE,frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI37C2TYPE,frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI38C2TYPE,frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE,frm1701:txtPg4mScHI39C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScHI40MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg4mScII1DescriptionC1TYPE,frm1701:txtPg4mScII1LegalBasisC2TYPE,frm1701:txtPg4mScII1C3TYPE,frm1701:txtPg4mScII2DescriptionC1TYPE,frm1701:txtPg4mScII2LegalBasisC2TYPE,frm1701:txtPg4mScII2C3TYPE,frm1701:txtPg4mScII3DescriptionC1TYPE,frm1701:txtPg4mScII3LegalBasisC2TYPE,frm1701:txtPg4mScII3C3TYPE,frm1701:txtPg4mScII4DescriptionC1TYPE,frm1701:txtPg4mScII4LegalBasisC2TYPE,frm1701:txtPg4mScII4C3TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScII4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage4mScheduleI('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer'); S.computePage4mScheduleIModal(true);S.disableLinkIfEmpty('frm1701:txtPg4mScII1DescriptionC1TYPE,frm1701:txtPg4mScII1LegalBasisC2TYPE,frm1701:txtPg4mScII1C3TYPE,frm1701:txtPg4mScII2DescriptionC1TYPE,frm1701:txtPg4mScII2LegalBasisC2TYPE,frm1701:txtPg4mScII2C3TYPE,frm1701:txtPg4mScII3DescriptionC1TYPE,frm1701:txtPg4mScII3LegalBasisC2TYPE,frm1701:txtPg4mScII3C3TYPE,frm1701:txtPg4mScII4DescriptionC1TYPE,frm1701:txtPg4mScII4LegalBasisC2TYPE,frm1701:txtPg4mScII4C3TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScII4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage4mScheduleI('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse'); S.computePage4mScheduleIModal(true);S.disableLinkIfEmpty('frm1701:txtPg4mScII1DescriptionC1TYPE,frm1701:txtPg4mScII1LegalBasisC2TYPE,frm1701:txtPg4mScII1C3TYPE,frm1701:txtPg4mScII2DescriptionC1TYPE,frm1701:txtPg4mScII2LegalBasisC2TYPE,frm1701:txtPg4mScII2C3TYPE,frm1701:txtPg4mScII3DescriptionC1TYPE,frm1701:txtPg4mScII3LegalBasisC2TYPE,frm1701:txtPg4mScII3C3TYPE,frm1701:txtPg4mScII4DescriptionC1TYPE,frm1701:txtPg4mScII4LegalBasisC2TYPE,frm1701:txtPg4mScII4C3TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScII4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage4mScheduleI('TaxPayer'); S.computePage1mScheduleB('TaxPayer'); S.computePage1mScheduleC('TaxPayer');S.disableLinkIfEmpty('frm1701:txtPg4mScII1DescriptionC1TYPE,frm1701:txtPg4mScII1LegalBasisC2TYPE,frm1701:txtPg4mScII1C3TYPE,frm1701:txtPg4mScII2DescriptionC1TYPE,frm1701:txtPg4mScII2LegalBasisC2TYPE,frm1701:txtPg4mScII2C3TYPE,frm1701:txtPg4mScII3DescriptionC1TYPE,frm1701:txtPg4mScII3LegalBasisC2TYPE,frm1701:txtPg4mScII3C3TYPE,frm1701:txtPg4mScII4DescriptionC1TYPE,frm1701:txtPg4mScII4LegalBasisC2TYPE,frm1701:txtPg4mScII4C3TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScII4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage4mScheduleI('Spouse'); S.computePage1mScheduleB('Spouse'); S.computePage1mScheduleC('Spouse');S.disableLinkIfEmpty('frm1701:txtPg4mScII1DescriptionC1TYPE,frm1701:txtPg4mScII1LegalBasisC2TYPE,frm1701:txtPg4mScII1C3TYPE,frm1701:txtPg4mScII2DescriptionC1TYPE,frm1701:txtPg4mScII2LegalBasisC2TYPE,frm1701:txtPg4mScII2C3TYPE,frm1701:txtPg4mScII3DescriptionC1TYPE,frm1701:txtPg4mScII3LegalBasisC2TYPE,frm1701:txtPg4mScII3C3TYPE,frm1701:txtPg4mScII4DescriptionC1TYPE,frm1701:txtPg4mScII4LegalBasisC2TYPE,frm1701:txtPg4mScII4C3TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg4mScII4MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleJ('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleJ('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleJ('TaxPayer')
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleJ('TaxPayer');  S.computePage1mScheduleC('TaxPayer');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleJ('Spouse');  S.computePage1mScheduleC('Spouse');
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleK1();
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC1TYPE,frm1701:txtPg5mScKI2C1TYPE,frm1701:txtPg5mScKI3DescC1TYPE,frm1701:txtPg5mScKI3C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I3MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC1TYPE,frm1701:txtPg5mScKI2C1TYPE,frm1701:txtPg5mScKI3DescC1TYPE,frm1701:txtPg5mScKI3C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I3MoreTYPE'.replace(/TYPE/g, T));;S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC1TYPE,frm1701:txtPg5mScKI2C1TYPE,frm1701:txtPg5mScKI3DescC1TYPE,frm1701:txtPg5mScKI3C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I3MoreTYPE'.replace(/TYPE/g, T));S.computePage5mScheduleK1();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC1TYPE,frm1701:txtPg5mScKI6DescC1TYPE,frm1701:txtPg5mScKI5C1TYPE,frm1701:txtPg5mScKI6C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I6MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el)
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC1TYPE,frm1701:txtPg5mScKI6DescC1TYPE,frm1701:txtPg5mScKI5C1TYPE,frm1701:txtPg5mScKI6C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I6MoreTYPE'.replace(/TYPE/g, T));S.computePage5mScheduleK1();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC1TYPE,frm1701:txtPg5mScKI6DescC1TYPE,frm1701:txtPg5mScKI5C1TYPE,frm1701:txtPg5mScKI6C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I6MoreTYPE'.replace(/TYPE/g, T));;S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC1TYPE,frm1701:txtPg5mScKI8DescC1TYPE,frm1701:txtPg5mScKI7C1TYPE,frm1701:txtPg5mScKI8C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I8MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el)
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC1TYPE,frm1701:txtPg5mScKI8DescC1TYPE,frm1701:txtPg5mScKI7C1TYPE,frm1701:txtPg5mScKI8C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I8MoreTYPE'.replace(/TYPE/g, T));S.computePage5mScheduleK1();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC1TYPE,frm1701:txtPg5mScKI8DescC1TYPE,frm1701:txtPg5mScKI7C1TYPE,frm1701:txtPg5mScKI8C1TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK1I8MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleK2();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC2TYPE,frm1701:txtPg5mScKI3DescC2TYPE,frm1701:txtPg5mScKI2C2TYPE,frm1701:txtPg5mScKI3C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I3MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el)
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC2TYPE,frm1701:txtPg5mScKI3DescC2TYPE,frm1701:txtPg5mScKI2C2TYPE,frm1701:txtPg5mScKI3C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I3MoreTYPE'.replace(/TYPE/g, T));S.computePage5mScheduleK2();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI2DescC2TYPE,frm1701:txtPg5mScKI3DescC2TYPE,frm1701:txtPg5mScKI2C2TYPE,frm1701:txtPg5mScKI3C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I3MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC2TYPE,frm1701:txtPg5mScKI6DescC2TYPE,frm1701:txtPg5mScKI5C2TYPE,frm1701:txtPg5mScKI6C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I6MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el)
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC2TYPE,frm1701:txtPg5mScKI6DescC2TYPE,frm1701:txtPg5mScKI5C2TYPE,frm1701:txtPg5mScKI6C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I6MoreTYPE'.replace(/TYPE/g, T));S.computePage5mScheduleK2();
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI5DescC2TYPE,frm1701:txtPg5mScKI6DescC2TYPE,frm1701:txtPg5mScKI5C2TYPE,frm1701:txtPg5mScKI6C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I6MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC2TYPE,frm1701:txtPg5mScKI8DescC2TYPE,frm1701:txtPg5mScKI7C2TYPE,frm1701:txtPg5mScKI8C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I8MoreTYPE'.replace(/TYPE/g, T));S.capitalize(el);
+},
+(S, el, T = "TYPE") => {S.setToZeroIfEmpty(el);S.computePage5mScheduleK2();S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC2TYPE,frm1701:txtPg5mScKI8DescC2TYPE,frm1701:txtPg5mScKI7C2TYPE,frm1701:txtPg5mScKI8C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I8MoreTYPE'.replace(/TYPE/g, T));
+},
+(S, el, T = "TYPE") => {S.capitalize(el);S.disableLinkIfEmpty('frm1701:txtPg5mScKI7DescC2TYPE,frm1701:txtPg5mScKI8DescC2TYPE,frm1701:txtPg5mScKI7C2TYPE,frm1701:txtPg5mScKI8C2TYPE'.replace(/TYPE/g, T), 'frm1701:lnkPg5mScK2I8MoreTYPE'.replace(/TYPE/g, T));
+},
 null,
 null,
 null,
