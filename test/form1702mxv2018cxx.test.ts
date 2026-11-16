@@ -11,7 +11,7 @@ describe("1702MXv2018Cxx compute (BIR's test fork of v2018C)", () => {
     for (const [s, g] of [[itemized, groups], [osd, groups], [loss, {}], [invalid, groups]] as const)
       expect(formRecords(FORM_1702MXv2018Cxx, s, g)).toEqual(formRecords(FORM_1702MXv2018C, s, g));
     expect(validate1702MXv2018Cxx(itemized, groups)).toEqual([]);
-  });
+  }, 30_000); // eight full compute + save passes (attachments included): 2.4s here, past 5s on the CI runner
 });
 
 describe.skipIf(!hasForm("1702MXv2018Cxx"))("native 1702MXv2018Cxx is 1:1 with BIR's form", () => {
