@@ -877,7 +877,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
     const lock = lockOf(form_code);
     for (const [id, { on: enabled }] of Object.entries(BUTTON_GROUP[form_code] ?? {})) {
-      if (enabled && !validated) for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) b.disabled = !enabled(groups);
+      if (enabled && !validated) for (const b of Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`))) b.disabled = !enabled(groups, state);
     }
     // a link to a group's pop-up that BIR hides until that group has rows ("Other Selected ATC" past 6 picks)
     for (const [box, name] of Object.entries(POPUP_GROUP[form_code] ?? {})) {

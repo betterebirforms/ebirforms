@@ -292,10 +292,6 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const editor = () => page.locator(".schedule-modal h3").first().textContent();
     const closeEditor = () => page.reload({ waitUntil: "networkidle" }).then(() => page.locator(".bir-layout").waitFor());
     const open: Array<[string, string, string]> = [
-      ["1707v2018", "btnPg2Pt4Sch2More", "Schedule 2 Add More"],
-      ["1707v2021", "btnPg2Pt4Sch3More", "Schedule 3 Add More"],
-      ["2552v2018", "btnPg2Pt5Sch1More", "Schedule 1 Add More"],
-      ["2552v2018", "btnPg2Pt5Sch3More", "Schedule 3 Add More"],
       ["1601Cv2018", "frm1601c:btnAdd", "Schedule 1 Adjustments"],
       ["1601Cv2018", "frm1601c:btnDelete", "Schedule 1 Adjustments"],
       ["1702Qv2018C", "frm1702q:Sched4:btnAdd", "Other Tax Credits / Payments"],
@@ -303,6 +299,12 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
       ["2200Av2020", "frm2200Av2020:btnDelete", "Schedule 1 Other Rows"],
       ["2550Qv2024", "btnNewSched1", "Date Purchased/Imported"],
     ];
+    // 1707 / 2552 "(Add More...)" start greyed out, as BIR's Check_Pg2Pt4S2 / Check_Pg2Pt5AddMore leave them on a blank
+    // form (the rows-filled condition itself: test/picker-add-more.test.ts)
+    for (const [code, id] of [["1707v2018", "btnPg2Pt4Sch2More"], ["1707v2021", "btnPg2Pt4Sch3More"], ["2552v2018", "btnPg2Pt5Sch1More"]] as const) {
+      await go(code);
+      await expect.poll(() => page.locator(`[id="${id}"]`).first().isDisabled(), { message: `${code} ${id}` }).toBe(true);
+    }
     for (const [code, id, title] of open) {
       await go(code);
       await click(id);

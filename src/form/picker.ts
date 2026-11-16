@@ -129,9 +129,20 @@ export const POPUP_NEED: Record<string, Record<string, (state: FormState) => str
   "2200T": { "frm2200T:btnSchedule1": (s) => (s["frm2200T:chkPymntManner_1"] === "true" ? null : "") },
 };
 
+/** BIR's "row is filled" checks: text not blank ($.trim(v) == ""), amount not zero (v * 1 == 0, so blank is zero too). */
+type RowCheck = (s: FormState) => boolean;
+const notBlank = (id: string): RowCheck => (s) => (s[id] ?? "").trim() !== "";
+const notEmpty = (id: string): RowCheck => (s) => (s[id] ?? "") !== ""; // BIR's check without $.trim
+const amount = (id: string): RowCheck => (s) => { const v = (s[id] ?? "").trim(); return v !== "" && Number(v) !== 0; };
+const full = (s: FormState, rows: number, check: (i: number) => RowCheck[]) => Array.from({ length: rows }, (_, i) => check(i + 1)).every((c) => c.every((f) => f(s)));
+const ADD_MORE_1707 = {
+  btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: (g: GroupState, s: FormState) => (g.sched2more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch2NameOfCorpStock${i}`), amount(`frm1707:txtPg2P4Sch2NoOfShares${i}`), notEmpty(`frm1707:txtPg2P4Sch2StockCertNo${i}`), amount(`frm1707:txtPg2P4Sch2TaxBaseSellPrice${i}`)]) },
+  btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: (g: GroupState, s: FormState) => (g.sched3more ?? []).length > 0 || full(s, 4, (i) => [notBlank(`frm1707:txtPg2P4Sch3Particulars${i}`), amount(`frm1707:txtPg2P4Sch3Amount${i}`)]) },
+};
+
 /** A button that opens a group's editor (BIR's own pop-up for it is a separate page section), and when BIR turns
  *  it on. 1707A's "(more...)": on once the schedule's pop-up holds 2 rows or more (BIR's addToTable). */
-export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?: string; on?: (groups: GroupState) => boolean }>> = {
+export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?: string; on?: (groups: GroupState, state: FormState) => boolean }>> = {
   // 2552 Part III: BIR's script adds its rows (AddTransactionNoTax), so none are on the page to find the table by
   "2552": {
     "frm2552:buttAdd": { group: "partIII", title: "Part III Summary of Transactions not subject to Tax" },
@@ -146,19 +157,11 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
   },
-  // 2552 (2018) Part V Schedules 1 to 3 "(Add More...)": BIR enables the live schedule's once its rows 1 to 5 are full;
-  // the button's state can't see the boxes, so the web version keeps all three open
-  "2552v2018": Object.fromEntries([1, 2, 3].map((n) => [`btnPg2Pt5Sch${n}More`, { group: `sched${n}more`, title: `Schedule ${n} Add More`, on: () => true }])),
-  // 1707 (2018, 2021) Part IV Schedules 2 and 3 "(Add More...)": BIR enables it only once rows 1 to 4 are all filled in
-  // (Check_Pg2Pt4S2); the button's state can't see the boxes, so the web version keeps it open
-  "1707v2018": {
-    btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: () => true },
-    btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: () => true },
-  },
-  "1707v2021": {
-    btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: () => true },
-    btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: () => true },
-  },
+  // 2552 (2018) Part V Schedules 1 to 3 "(Add More...)": BIR's Check_Pg2Pt5AddMore turns it on once rows 1 to 5 are full
+  "2552v2018": Object.fromEntries([1, 2, 3].map((n) => [`btnPg2Pt5Sch${n}More`, { group: `sched${n}more`, title: `Schedule ${n} Add More`, on: (g: GroupState, s: FormState) => (g[`sched${n}more`] ?? []).length > 0 || full(s, 5, (i) => [...["Date", "Seller", "Buyer", "Corp"].map((c) => notBlank(`frm2552:txtPg2Pt5Sch${n}${c}${i}`)), ...["NumShares", "TaxBase", "TaxRate"].map((c) => amount(`frm2552:txtPg2Pt5Sch${n}${c}${i}`))]) }])),
+  // 1707 (2018, 2021) Part IV Schedules 2 and 3 "(Add More...)": BIR's Check_Pg2Pt4S2 / S3 turn it on once rows 1 to 4
+  // are all filled in
+  ...Object.fromEntries(["1707v2018", "1707v2021"].map((code) => [code, ADD_MORE_1707])),
   // 2550Q (2024) Schedule 1 (input tax on capital goods): three links share the id btnNewSched1 (showNewSched1), all open it
   "2550Qv2024": { btnNewSched1: { group: "sched1", title: "Schedule 1 Input Tax on Capital Goods", on: () => true } },
   // 1601C (2018) and 2200A (2020) Add / Delete rows, 1702Q (CREATE) Schedule 4's "Add" pop-up
