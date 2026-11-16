@@ -50,7 +50,8 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     for (const id of link) {
       await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
       await page.locator(".bir-layout").waitFor();
-      await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+      // the links are greyed out until BIR's boxes are in (test/web-add-more-link.test.ts, gate-*-link tests): switch it on here
+      await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
       await page.waitForTimeout(400);
       if ((await page.locator(".schedule-modal h3").count()) !== 1) dead.push(id);
     }
@@ -80,7 +81,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await expect.poll(() => page.locator('[id="frm1701:txtPg1mRegisteredNameEX1"]').count()).toBeGreaterThan(0);
     for (const m of (modal1701 as Array<{ link: string }>).filter((x) => x.link.includes("TYPE"))) {
       const id = m.link.replace("TYPE", "EX1");
-      await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+      await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
       await expect.poll(() => page.locator(".schedule-modal h3").count(), { message: id }).toBe(1);
       await page.locator(".schedule-modal button", { hasText: /close|cancel|done|ok/i }).first().click();
       await expect.poll(() => page.locator(".schedule-modal").count(), { message: `${id} closes` }).toBe(0);

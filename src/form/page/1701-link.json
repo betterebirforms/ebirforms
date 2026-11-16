@@ -1,0 +1,1024 @@
+[
+ {
+  "link": "frm1701:lnkPg5Sc3I2More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg5Sc3I1Description",
+   "frm1701:txtPg5Sc3I1TaxPayerC1",
+   "frm1701:txtPg5Sc3I2Description",
+   "frm1701:txtPg5Sc3I2TaxPayerC1"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5Sc3I1Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5Sc3I1TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg5Sc3I1SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg5Sc3I1SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg5Sc3I1TaxPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg5Sc3I2Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5Sc3I2TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg5Sc3I2SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg5Sc3I2SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg5Sc3I2TaxPayerC1"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg6Sc5I5More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg6Sc5I1NatureOfIncome",
+   "frm1701:txtPg6Sc5I1TaxPayerC1",
+   "frm1701:txtPg6Sc5I2NatureOfIncome",
+   "frm1701:txtPg6Sc5I2TaxPayerC1",
+   "frm1701:txtPg6Sc5I3NatureOfIncome",
+   "frm1701:txtPg6Sc5I3TaxPayerC1",
+   "frm1701:txtPg6Sc5I4NatureOfIncome",
+   "frm1701:txtPg6Sc5I4TaxPayerC1",
+   "frm1701:txtPg6Sc5I5NatureOfIncome",
+   "frm1701:txtPg6Sc5I5TaxPayerC1"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg6Sc5I1NatureOfIncome",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I1TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I1SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I1SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I1TaxPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I2NatureOfIncome",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I2TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I2SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I2SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I2TaxPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I3NatureOfIncome",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I3TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I3SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I3SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I3TaxPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I4NatureOfIncome",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I4TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I4SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I4SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I4TaxPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I5NatureOfIncome",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I5TaxPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I5SpouseC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc5I5SpouseC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc5I5TaxPayerC1"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg6Sc6I4More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg6Sc6I2Amortizations",
+   "frm1701:txtPg6Sc6I2TaxSumPayerC1",
+   "frm1701:txtPg6Sc6I3Amortizations",
+   "frm1701:txtPg6Sc6I3TaxSumPayerC1",
+   "frm1701:txtPg6Sc6I4Amortizations",
+   "frm1701:txtPg6Sc6I4TaxSumPayerC1"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg6Sc6I2Amortizations",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I2TaxSumPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I2SpouseSumC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I2SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I2TaxSumPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I3Amortizations",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I3TaxSumPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I3SpouseSumC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I3SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I3TaxSumPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I4Amortizations",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I4TaxSumPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I4SpouseSumC2"
+   },
+   {
+    "id": "frm1701:txtPg6Sc6I4SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg6Sc6I4TaxSumPayerC1"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg7Sc6I39More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg7Sc6I36Description",
+   "frm1701:txtPg7Sc6I36TaxSumPayerC1",
+   "frm1701:txtPg7Sc6I37Description",
+   "frm1701:txtPg7Sc6I37TaxPayerC1",
+   "frm1701:txtPg7Sc6I38Description",
+   "frm1701:txtPg7Sc6I38TaxPayerC1",
+   "frm1701:txtPg7Sc6I39Description",
+   "frm1701:txtPg7Sc6I39TaxSumPayerC1"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg7Sc6I36Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I36TaxSumPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I36SpouseSumC2"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I36SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I36TaxSumPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I37Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I37SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I37TaxSumPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I38Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I38SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I38TaxSumPayerC1"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I39Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I39TaxSumPayerC1",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I39SpouseSumC2"
+   },
+   {
+    "id": "frm1701:txtPg7Sc6I39SpouseSumC2",
+    "kind": "amount",
+    "partner": "frm1701:txtPg7Sc6I39TaxSumPayerC1"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg8Sc7I4More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg8Sc7I1Description",
+   "frm1701:txtPg8Sc7I1LegalBasis",
+   "frm1701:txtPg8Sc7I1TaxPayer",
+   "frm1701:txtPg8Sc7I2Description",
+   "frm1701:txtPg8Sc7I2LegalBasis",
+   "frm1701:txtPg8Sc7I2TaxPayer",
+   "frm1701:txtPg8Sc7I3Description",
+   "frm1701:txtPg8Sc7I3LegalBasis",
+   "frm1701:txtPg8Sc7I3TaxPayer",
+   "frm1701:txtPg8Sc7I4Description",
+   "frm1701:txtPg8Sc7I4LegalBasis",
+   "frm1701:txtPg8Sc7I4TaxPayer"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg8Sc7I1Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I1LegalBasis",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I1TaxPayer",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I1Spouse"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I1Spouse",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I1TaxPayer"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I2Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I2LegalBasis",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I2TaxPayer",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I2Spouse"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I2Spouse",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I2TaxPayer"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I3Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I3LegalBasis",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I3TaxPayer",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I3Spouse"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I3Spouse",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I3TaxPayer"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I4Description",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I4LegalBasis",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I4TaxPayer",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I4Spouse"
+   },
+   {
+    "id": "frm1701:txtPg8Sc7I4Spouse",
+    "kind": "amount",
+    "partner": "frm1701:txtPg8Sc7I4TaxPayer"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI3More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2",
+   "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11AI2TaxableOtherIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI2TaxableOtherIncomeC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI3TaxableOtherIncomeC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI6More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11AI5NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11AI5NonTaxableIncomeC2",
+   "frm1701:txtPg10Sc11AI6NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11AI6NonTaxableIncomeC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11AI5NonTaxableIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI5NonTaxableIncomeC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI6NonTaxableIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI6NonTaxableIncomeC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11AI8More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11AI7SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11AI7SpecialDeductionsC2",
+   "frm1701:txtPg10Sc11AI8SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11AI8SpecialDeductionsC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11AI7SpecialDeductionsC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI7SpecialDeductionsC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI8SpecialDeductionsC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11AI8SpecialDeductionsC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI3More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2",
+   "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1",
+   "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11BI2TaxableOtherIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI2TaxableOtherIncomeC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI3TaxableOtherIncomeC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI6More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11BI5NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11BI5NonTaxableIncomeC2",
+   "frm1701:txtPg10Sc11BI6NonTaxableIncomeC1",
+   "frm1701:txtPg10Sc11BI6NonTaxableIncomeC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11BI5NonTaxableIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI5NonTaxableIncomeC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI6NonTaxableIncomeC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI6NonTaxableIncomeC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg10Sc11BI8More",
+  "attachment": false,
+  "id": [
+   "frm1701:txtPg10Sc11BI7SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11BI7SpecialDeductionsC2",
+   "frm1701:txtPg10Sc11BI8SpecialDeductionsC1",
+   "frm1701:txtPg10Sc11BI8SpecialDeductionsC2"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg10Sc11BI7SpecialDeductionsC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI7SpecialDeductionsC2",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI8SpecialDeductionsC1",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg10Sc11BI8SpecialDeductionsC2",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg2mScEI2MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg2mScEI1DescriptionC1TYPE",
+   "frm1701:txtPg2mScEI1C2TYPE",
+   "frm1701:txtPg2mScEI2DescriptionC1TYPE",
+   "frm1701:txtPg2mScEI2C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg2mScEI1DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg2mScEI1C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg2mScEI1C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg2mScEI1C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg2mScEI1C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg2mScEI2DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg2mScEI2C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg2mScEI2C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg2mScEI2C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg2mScEI2C2TYPE"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg3mScGI6MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI1C2TYPE",
+   "frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI2C2TYPE",
+   "frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI3C2TYPE",
+   "frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI4C2TYPE",
+   "frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE",
+   "frm1701:txtPg3mScGI5C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg3mScGI1NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI1C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI1C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI1C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI1C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI2NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI2C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI2C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI2C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI2C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI3NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI3C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI3C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI3C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI3C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI4NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI4C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI4C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI4C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI4C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI5NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI5C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI5C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScGI5C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScGI5C2TYPE"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg3mScHI4MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg3mScHI2AmortizationC1TYPE",
+   "frm1701:txtPg3mScHI2AmortizationC2TYPE",
+   "frm1701:txtPg3mScHI3AmortizationC1TYPE",
+   "frm1701:txtPg3mScHI3AmortizationC2TYPE",
+   "frm1701:txtPg3mScHI4AmortizationC1TYPE",
+   "frm1701:txtPg3mScHI4AmortizationC2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg3mScHI2AmortizationC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI2AmortizationC2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI2AmortizationC3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI2AmortizationC3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI2AmortizationC2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI3AmortizationC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI3AmortizationC2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI3AmortizationC3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI3AmortizationC3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI3AmortizationC2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI4AmortizationC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI4AmortizationC2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI4AmortizationC3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg3mScHI4AmortizationC3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg3mScHI4AmortizationC2TYPE"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg4mScHI40MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE",
+   "frm1701:txtPg4mScHI36C2TYPE",
+   "frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE",
+   "frm1701:txtPg4mScHI37C2TYPE",
+   "frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE",
+   "frm1701:txtPg4mScHI38C2TYPE",
+   "frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE",
+   "frm1701:txtPg4mScHI39C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg4mScHI36NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI36C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI36C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI36C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI36C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI37NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI37C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI37C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI37C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI37C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI38NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI38C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI38C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI38C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI38C2TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI39NatureOfIncomeC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI39C2TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI39C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScHI39C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScHI39C2TYPE"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg4mScII4MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg4mScII1DescriptionC1TYPE",
+   "frm1701:txtPg4mScII1LegalBasisC2TYPE",
+   "frm1701:txtPg4mScII1C3TYPE",
+   "frm1701:txtPg4mScII2DescriptionC1TYPE",
+   "frm1701:txtPg4mScII2LegalBasisC2TYPE",
+   "frm1701:txtPg4mScII2C3TYPE",
+   "frm1701:txtPg4mScII3DescriptionC1TYPE",
+   "frm1701:txtPg4mScII3LegalBasisC2TYPE",
+   "frm1701:txtPg4mScII3C3TYPE",
+   "frm1701:txtPg4mScII4DescriptionC1TYPE",
+   "frm1701:txtPg4mScII4LegalBasisC2TYPE",
+   "frm1701:txtPg4mScII4C3TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg4mScII1DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII1LegalBasisC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII1C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII1C4TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII1C4TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII1C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII2DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII2LegalBasisC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII2C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII2C4TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII2C4TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII2C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII3DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII3LegalBasisC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII3C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII3C4TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII3C4TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII3C3TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII4DescriptionC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII4LegalBasisC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg4mScII4C3TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII4C4TYPE"
+   },
+   {
+    "id": "frm1701:txtPg4mScII4C4TYPE",
+    "kind": "amount",
+    "partner": "frm1701:txtPg4mScII4C3TYPE"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I3MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI2DescC1TYPE",
+   "frm1701:txtPg5mScKI2C1TYPE",
+   "frm1701:txtPg5mScKI3DescC1TYPE",
+   "frm1701:txtPg5mScKI3C1TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI2DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI2C1TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI3DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI3C1TYPE",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I6MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI5DescC1TYPE",
+   "frm1701:txtPg5mScKI6DescC1TYPE",
+   "frm1701:txtPg5mScKI5C1TYPE",
+   "frm1701:txtPg5mScKI6C1TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI5DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI6DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI5C1TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI6C1TYPE",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK1I8MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI7DescC1TYPE",
+   "frm1701:txtPg5mScKI8DescC1TYPE",
+   "frm1701:txtPg5mScKI7C1TYPE",
+   "frm1701:txtPg5mScKI8C1TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI7DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI8DescC1TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI7C1TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI8C1TYPE",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I3MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI2DescC2TYPE",
+   "frm1701:txtPg5mScKI3DescC2TYPE",
+   "frm1701:txtPg5mScKI2C2TYPE",
+   "frm1701:txtPg5mScKI3C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI2DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI3DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI2C2TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI3C2TYPE",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I6MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI5DescC2TYPE",
+   "frm1701:txtPg5mScKI6DescC2TYPE",
+   "frm1701:txtPg5mScKI5C2TYPE",
+   "frm1701:txtPg5mScKI6C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI5DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI6DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI5C2TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI6C2TYPE",
+    "kind": "amount"
+   }
+  ]
+ },
+ {
+  "link": "frm1701:lnkPg5mScK2I8MoreTYPE",
+  "attachment": true,
+  "id": [
+   "frm1701:txtPg5mScKI7DescC2TYPE",
+   "frm1701:txtPg5mScKI8DescC2TYPE",
+   "frm1701:txtPg5mScKI7C2TYPE",
+   "frm1701:txtPg5mScKI8C2TYPE"
+  ],
+  "box": [
+   {
+    "id": "frm1701:txtPg5mScKI7DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI8DescC2TYPE",
+    "kind": "text"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI7C2TYPE",
+    "kind": "amount"
+   },
+   {
+    "id": "frm1701:txtPg5mScKI8C2TYPE",
+    "kind": "amount"
+   }
+  ]
+ }
+]
