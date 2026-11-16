@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, the 2200-A (2013 edition) Schedule 1 calculators now work like BIR's app: each Calculator link opens its calculator, rows can be added, deleted and cleared, Compute fills the Schedule 1 box with BIR's own arithmetic and alerts, and the rows save and reopen in the same file.
 - Fixed: on the web version, the 1700's "(add more...)" for Part IV employers hid the whole form. It now opens the table of employers, and a row's amounts open once its employer's name and TIN are in, as in BIR's app.
 - On the web version, the 1701 (2018) attachments show their tax regime ticked and greyed, as BIR's app sets it.
 - On the 2000 (2018), DS112 is listed twice as in BIR's app, and picking the pre-need plans entry fills its own rate.
