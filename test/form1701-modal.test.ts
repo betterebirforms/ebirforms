@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { computeForm, formRecords, type FormState, type GroupRow, type GroupState } from "@/form/schema.ts";
 import { FORM_1701 } from "@/form/form1701.ts";
-import { MODAL, forCopy, modalCopy, simulate } from "@/form/form1701-sim.ts";
+import { COLUMN, MODAL, SCHED1, forCopy, modalCopy, simulate } from "@/form/form1701-sim.ts";
 import { hasForm, startOracle } from "./oracle.ts";
 import { allPageParityCheck } from "./parity-page.ts";
 import { parityProblem } from "./parity.ts";
-import { bizItemized, id } from "./form1701-case.ts";
+import { bizItemized, compensation, id } from "./form1701-case.ts";
 
 // 1701's "(add more...)" pop-ups: BIR's table of extra rows for one schedule item. Two or more rows give the item's
 // boxes "OTHERS" and the rows' total, and BIR saves the rows, the pop-up's own subtotal box and a row counter.
@@ -16,6 +16,18 @@ const rows = (name: string, copy: string, cell: string[][]): GroupState => {
   const m = modal(name);
   return { [forCopy(name, copy)]: cell.map((c): GroupRow => Object.fromEntries(m.cell.map((x, k) => [forCopy(x.stem, copy), c[k] ?? ""]))) };
 };
+/** a Schedule 12 pop-up's blocks (page 11): each box by its layout order, money 100 + block number unless given */
+const block = (name: string, cell: Array<Record<number, string>>): GroupState => {
+  const c = COLUMN.find((x) => x.modal === name)!;
+  return { [name]: cell.map((o, b): GroupRow => Object.fromEntries(c.cell.map((x, k) => [x.stem, o[k] ?? (x.ml === 12 ? String(100 + b) : x.select ? "CS" : x.date ? "01/02/2020" : `box${k}`)]))) };
+};
+/** Schedule 1's employers (page 5): [name, taxpayer or spouse, three TIN boxes, branch, income, tax withheld] */
+const employer = (cell: string[][]): GroupState => ({
+  [SCHED1.modal]: cell.map(([name, who, t1, t2, t3, t4, income, tax]): GroupRow => {
+    const v = [name, String(who === "T"), String(who === "S"), t1, t2, t3, t4, income, tax];
+    return Object.fromEntries(SCHED1.cell.map(([stem], k) => [stem, v[k] ?? ""]));
+  }),
+});
 const at = (state: FormState, group: GroupState) => {
   const record = formRecords(FORM_1701, state, group);
   return (k: string) => record.find((r) => r.key === id(k))?.value;
@@ -38,6 +50,15 @@ const CASE: Array<[string, FormState, GroupState]> = [
   ["Schedule 3 item 2 (two rows, two columns)", sched3, rows("modalPage5Schedule3", "", [["Employer A", "1000", "500"], ["Employer B", "2000", "0"]])],
   ["Schedule 11A item 3 with one row", item3, rows("modalPage10Schedule11AI3", "", [["gift", "250"]])],
   ["exempt copy EX1, Schedule E item 2 (two rows)", exempt, rows("modalPage2mScheduleETYPE", "EX1", [["Rental", "500", "0"], ["Fees", "700", "100"]])],
+  ["Schedule 3 (two rows) then Schedule 11A item 3 (one row)", { ...sched3, ...item3 }, { ...rows("modalPage5Schedule3", "", [["Employer A", "1000", "500"], ["Employer B", "2000", "0"]]), ...rows("modalPage10Schedule11AI3", "", [["gift", "250"]]) }],
+  ["Schedule 1 (two employers)", compensation, employer([["acme two", "T", "111", "222", "333", "000", "120000", "12000"], ["beta", "T", "444", "555", "666", "000", "30000", "3000"]])],
+  ["Schedule 1 (three employers, one the spouse's)", compensation, employer([["acme two", "T", "111", "222", "333", "000", "120000", "12000"], ["beta", "S", "444", "555", "666", "000", "30000", "3000"], ["gamma", "T", "777", "888", "999", "000", "5000", "500"]])],
+  ["Schedule 1 (one employer goes back to item 4)", compensation, employer([["acme two", "T", "111", "222", "333", "000", "120000", "12000"]])],
+  ["Schedule 12A Part 1 (two rows)", bizItemized, block("modalPage11Schedule12APt1", [{ 0: "payor a" }, { 0: "payor b" }])],
+  ["Schedule 12A Part 2 (two blocks)", bizItemized, block("modalPage11Schedule12APt2", [{}, {}])],
+  ["Schedule 12A Part 3 (two blocks, a date)", bizItemized, block("modalPage11Schedule12APt3", [{}, { 0: "PS" }])],
+  ["Schedule 12A Part 4 (one block)", bizItemized, block("modalPage11Schedule12APt4", [{}])],
+  ["Schedule 12B Parts 1 and 2", bizItemized, { ...block("modalPage11Schedule12BPt1", [{}, {}]), ...block("modalPage11Schedule12BPt2", [{}]) }],
 ];
 
 describe("1701 (add more...) pop-ups", () => {
@@ -45,7 +66,7 @@ describe("1701 (add more...) pop-ups", () => {
     expect(MODAL.filter((m) => !m.modal.includes("TYPE")).length).toBe(11);
     expect(MODAL.filter((m) => m.modal.includes("TYPE")).length).toBe(11);
     expect(MODAL.flatMap((m) => modalCopy(m, { EX: 5, SP: 5 })).length).toBe(11 + 11 * 10);
-    expect(FORM_1701.group!.length).toBe(11 + 11 * 10);
+    expect(FORM_1701.group!.length).toBe(11 + 11 * 10 + 1 + COLUMN.length);
   });
 
   it("two or more rows: the item reads OTHERS and the rows' total, the counter is the row count", () => {
@@ -58,6 +79,16 @@ describe("1701 (add more...) pop-ups", () => {
   it("one row is not a pop-up: the counter stays 0 and the item shows the row", () => {
     const v = at(item3, rows("modalPage10Schedule11AI3", "", [["gift", "250"]]));
     expect([v("txtPg10Sc11AI3TaxableOtherIncomeC1"), v("txtPg10Sc11AI3TaxableOtherIncomeC2"), v("txtCtrmodalPage10Schedule11AI3"), v("txtPg10Sc11AI3_1C1")]).toEqual(["GIFT", "250", "0", "GIFT"]);
+  });
+
+  it("a one-row pop-up closed after a two-row one runs BIR's enableParentInput: its splice(-1) drops the earlier pop-up's locked input", () => {
+    const state = { ...sched3, ...item3 };
+    const two = rows("modalPage5Schedule3", "", [["Employer A", "1000", "500"], ["Employer B", "2000", "0"]]);
+    const one = rows("modalPage10Schedule11AI3", "", [["gift", "250"]]);
+    const locked = (group: GroupState) => computeForm(FORM_1701, state, group)[id("txtDisabledInputs")] ?? "";
+    expect(locked(two)).toContain("txtPg5Sc3I2Description");
+    expect(locked(one)).toBe("");
+    expect(locked({ ...two, ...one })).toBe("");
   });
 
   it("no rows leaves the form as it was", () => {
@@ -79,11 +110,14 @@ const PAGE = "[id^=Page][id$=Content]";
 const IE_TOLERANT: Array<[string, string]> = [
   ['var currentAttachmentPage = "";', 'var currentAttachmentPage = "Page1mXContent";'],
   ["function addFocusBlurEvent(tableID) {", "function addFocusBlurEvent(tableID) { return;"],
+  // IE's innerHTML carries a typed value; WebKit's carries the attribute, so write the property into it first
+  ["function saveRowCol(modalID, bool){", 'function saveRowCol(modalID, bool){ for (const e of document.querySelectorAll("#" + modalID + " input[type=text]")) e.setAttribute("value", e.value); for (const o of document.querySelectorAll("#" + modalID + " option")) o.toggleAttribute("selected", o.selected);'],
+  ["function copyModalPg5Sc1(opt){", 'function copyModalPg5Sc1(opt){ for (const e of document.querySelectorAll("#modalPage5Schedule1 input")) { if (e.type === "radio") e.toggleAttribute("checked", e.checked); else e.setAttribute("value", e.value); }'],
 ];
 // Harness artifact, not a form difference: BIR copies the pop-up between its tables with innerHTML. IE writes a typed
 // value into it; WebKit writes the value ATTRIBUTE, so after loadData fills the rows (the property) the copy holds the
 // blanks. The counter, the subtotal and every box the rows feed are still compared.
-const cellKey = (group: GroupState): string[] => Object.values(group).flatMap((row) => row.flatMap((r, i) => Object.keys(r).map((k) => k.replace("{i}", String(i + 1)))));
+const cellKey = (group: GroupState): string[] => Object.entries(group).filter(([name]) => name !== SCHED1.modal && !COLUMN.some((c) => c.kind === "column" && c.modal === name)).map(([, row]) => row).flatMap((row) => row.flatMap((r, i) => Object.keys(r).map((k) => k.replace("{i}", String(i + 1)))));
 
 describe.skipIf(!hasForm("1701"))("native 1701 pop-ups are 1:1 with BIR's form", () => {
   let oracle: Awaited<ReturnType<typeof startOracle>>;

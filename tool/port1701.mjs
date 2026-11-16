@@ -19,7 +19,7 @@ const OUT = `${ROOT_DIR}src/form/form1701-bir.ts`;
 /** loadData's own calls (not reachable from a handler) */
 const RELOAD = ["HidePage12Part9", "disableEnableFieldsOnReload", "validateModalState", "validateAttachmentPerson"];
 /** what addAttachment (hand-written in form1701-sim.ts: the copies are built into the DOM) calls after it clones the block */
-const MODAL = ["disableParentInput"];
+const MODAL = ["disableParentInput", "enableParentInput"];
 const ATTACHMENT = ["showAttachments", "setView", "displayAttachmentByNumber", "disablePage5mSchedJItem6", "disableSpouseForAttachments", "attachmentTypes_Update", "processBack"];
 
 if (process.argv[2] === "page") page(process.argv[3]);

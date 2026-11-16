@@ -1,0 +1,450 @@
+[
+ {
+  "kind": "row",
+  "link": "frm1701:lnkPg11Sc12AI6More",
+  "modal": "modalPage11Schedule12APt1",
+  "table": "tblPage11Schedule12APt1",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12APt1",
+  "cell": [
+   {
+    "stem": "frm1701:txtPg11ScAPt1I6_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11ScAPt1I6_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11ScAPt1I6_{i}C3",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "compute": "computePage11Schedule12Part1Modal"
+ },
+ {
+  "kind": "column",
+  "link": "frm1701:lnkPg11Sc12APt2I11More",
+  "modal": "modalPage11Schedule12APt2",
+  "table": "tblSc12APt2",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12APt2",
+  "cell": [
+   {
+    "stem": "frm1701:txtPg11Sc12AI7DescriptionOfProperty_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI7DescriptionOfProperty_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI8OCT_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI8OCT_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI9CARNo_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI9CARNo_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI10ActualAmount_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI10ActualAmount_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI11FinalTax_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI11FinalTax_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "summation": [
+   "Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4",
+   "FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20",
+   "frm1701:txtPg11Sc12AI21TotalFinalTaxC1"
+  ]
+ },
+ {
+  "kind": "column",
+  "link": "frm1701:lnkPg11Sc12APt3I17More",
+  "modal": "modalPage11Schedule12APt3",
+  "table": "tblSc12APt3",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12APt3",
+  "cell": [
+   {
+    "stem": "frm1701:ddlPg11Sc12AI12KindPSCS_{i}C1",
+    "select": true,
+    "ml": 0,
+    "upper": false,
+    "date": false,
+    "value": "",
+    "option": [
+     "PS",
+     "CS"
+    ]
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI12KindPSCS_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:ddlPg11Sc12AI12KindPSCS_{i}C2",
+    "select": true,
+    "ml": 0,
+    "upper": false,
+    "date": false,
+    "value": "",
+    "option": [
+     "PS",
+     "CS"
+    ]
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI12KindPSCS_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI13CARNo_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI13CARNo_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI14NumberOfShares_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI14NumberOfShares_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI15DateOfIssueMonth_{i}C1",
+    "select": false,
+    "ml": 10,
+    "upper": false,
+    "date": true,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI15DateOfIssueMonth_{i}C2",
+    "select": false,
+    "ml": 10,
+    "upper": false,
+    "date": true,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI16ActualAmount_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI16ActualAmount_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI17FinalTax_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI17FinalTax_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "summation": [
+   "Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4",
+   "FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20",
+   "frm1701:txtPg11Sc12AI21TotalFinalTaxC1"
+  ]
+ },
+ {
+  "kind": "column",
+  "link": "frm1701:lnkPg11Sc12APt4I20More",
+  "modal": "modalPage11Schedule12APt4",
+  "table": "tblSc12APt4",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12APt4",
+  "cell": [
+   {
+    "stem": "frm1701:txtPg11Sc12AI18OtherIncome_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI18OtherIncome_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI19ActualAmount_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI19ActualAmount_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI20FinalTax_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12AI20FinalTax_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "summation": [
+   "Page11Content,modalPage11Schedule12APt1,modalPage11Schedule12APt2,modalPage11Schedule12APt3,modalPage11Schedule12APt4",
+   "FinalTaxWithheldC3,FinalTaxWithheldC2,I11,I17,I20",
+   "frm1701:txtPg11Sc12AI21TotalFinalTaxC1"
+  ]
+ },
+ {
+  "kind": "column",
+  "link": "frm1701:lnkPg11Sc12BPt1I7More",
+  "modal": "modalPage11Schedule12BPt1",
+  "table": "tblSc12BPt1",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12BPt1",
+  "cell": [
+   {
+    "stem": "frm1701:txtPg11Sc12BI4DescriptionOfProperty_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI4DescriptionOfProperty_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI5ModeOfTransfer_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI5ModeOfTransfer_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI6CARNo_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI6CARNo_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI7ActualAmount_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI7ActualAmount_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "summation": [
+   "Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2",
+   "Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9",
+   "frm1701:txtPg11Sc12BI10TotalIncomeC1"
+  ]
+ },
+ {
+  "kind": "column",
+  "link": "frm1701:lnkPg11Sc12BPt2I9More",
+  "modal": "modalPage11Schedule12BPt2",
+  "table": "tblSc12BPt2",
+  "counter": "frm1701:txtCtrmodalPage11Schedule12BPt2",
+  "cell": [
+   {
+    "stem": "frm1701:txtPg11Sc12BI8OtherExemptIncome_{i}C1",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI8OtherExemptIncome_{i}C2",
+    "select": false,
+    "ml": 20,
+    "upper": true,
+    "date": false,
+    "value": ""
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI9ActualAmount_{i}C1",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   },
+   {
+    "stem": "frm1701:txtPg11Sc12BI9ActualAmount_{i}C2",
+    "select": false,
+    "ml": 12,
+    "upper": false,
+    "date": false,
+    "value": "0"
+   }
+  ],
+  "summation": [
+   "Page11Content,modalPage11Schedule12BPt1,modalPage11Schedule12BPt2",
+   "Sc12BI1Proceeds,Sc12BI2,Sc12BI3,Sc12BI7,Sc12BI9",
+   "frm1701:txtPg11Sc12BI10TotalIncomeC1"
+  ]
+ }
+]

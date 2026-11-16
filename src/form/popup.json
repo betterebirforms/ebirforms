@@ -270,15 +270,6 @@
   }
  },
  "1701": {
-  "frm1701:lnkPg5Sc1More": {
-   "show": [
-    "Sc1I4rdoTable",
-    "Sc1I4rdoSpanOther"
-   ],
-   "hide": [
-    "formPaper"
-   ]
-  },
   "frm1701:btnAddAttachmentEX": {
    "show": [
     "attachmentEX",

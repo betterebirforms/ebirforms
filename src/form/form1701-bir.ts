@@ -8648,6 +8648,132 @@ export class Bir1701 extends Dom1701 {
   	return description;
   }
 
+  // BIR enableParentInput
+  enableParentInput(btn?: any): any {
+  	
+  	var linkDescription = this.getDesription(btn, "More");
+  	//get : 'Pg10Sc11AI59'
+  	var linkMainID = linkDescription[0];
+  	//get : 'EX1'
+  	var linkAttachementType = linkDescription[1];
+  
+  	var enabledIndex = -1;
+  	
+  	for (var i=0; i < this.disabledinputIDs.length; i++) {
+  
+  		//get all disabledInputs when transferToModal() was triggered
+  		var disabledInputs = [];
+  		disabledInputs = this.disabledinputIDs[i];
+  
+  		for (var x=0; x < disabledInputs.length; x++) {
+  			
+  			if (disabledInputs[x] != null){
+  				
+  				//find inputs that will match to (ex. is 'Pg10Sc11AI3') then enable them again
+  				var id = disabledInputs[x].toString().split(':')[1];
+  				
+  				//get : 'txtPg10Sc11AI' 
+  				var untillCharI = (id.indexOf("I"))+1;
+  				
+  				//get letterIndex after "I"
+  				var letterIndex = -1;
+  				var afterI = id.substring(untillCharI, id.length);
+  				
+  				for (var z=0; z < afterI.length; z++) {
+  				
+  					if (isNaN( afterI.charAt(z))){
+  					
+  						letterIndex = z;
+  						z =  afterI.length;
+  					}
+  				}	
+  
+  				//get : 'TaxpayerEX1' in'txtPg10Sc11AI59TaxpayerEX1' 
+  				var desc = (id.substring((untillCharI+letterIndex), id.length));
+  
+  				var textboxDescription = this.getDesription(disabledInputs[x].toString(), desc);
+  				//get : 'Pg10Sc11AI59'
+  				var textboxMainID = textboxDescription[0];
+  				//get : 'EX1'
+  				var textboxAttachementType = textboxDescription[1];
+  				
+  				//conflict with page 5m,
+  				//add customize code for page 5m
+  				if (this.currentAttachmentPage.toString().indexOf("Page5m") > -1){
+  
+  					var isLinkScK1 = (linkMainID.indexOf("K1")>-1) ? true : false;
+  					var isTextboxK1 = (desc.indexOf("C1") > -1) ? true : false; 
+  					var id1 = "";
+  					var id2  = "";
+  					//if link and id is in the same sched,
+  					//reformat textboxMainID
+  					if ( (isLinkScK1) &&  (isTextboxK1) ) {
+  					
+  						id1 = textboxMainID.substring(0,textboxMainID.indexOf("K") + 1);
+  						id2 = textboxMainID.substring(textboxMainID.indexOf("K") + 1,textboxMainID.length);
+  						textboxMainID = (id1 + "1" + id2);
+  						
+  					}else if ((isLinkScK1===false) &&  (isTextboxK1===false)) {
+  						
+  						id1 = textboxMainID.substring(0,textboxMainID.indexOf("K") + 1);
+  						id2 = textboxMainID.substring(textboxMainID.indexOf("K") + 1,textboxMainID.length);
+  						textboxMainID = (id1 + "2" + id2);
+  					}
+  					
+  				}
+  				
+  				if (  textboxMainID === linkMainID   ){
+  					
+  					var isTaxfilerDisabled = (this.d.getElementById('frm1701:txtIsTaxFilerDisabled').value.toString() === "true") ? true : false;
+  					var isSpouseDisabled = (this.d.getElementById('frm1701:txtIsSpouseDisabled').value.toString() === "true") ? true : false;
+  					
+  					var ctrl = this.d.getElementById(disabledInputs[x]);
+  					
+  					//for attachments && mainpages
+  					if (   (linkAttachementType!=="")&&(linkAttachementType === textboxAttachementType) ||  (linkAttachementType==="")  ){
+  						
+  						//for description, just enable
+  						if (ctrl.maxLength !== 12){
+  							
+  							ctrl.disabled = false;
+  							
+  						//for amount, check isTaxfilerDisabled && isSpouseDisabled if it should be enabled
+  						}else{
+  							
+  							//attachment
+  							if (linkAttachementType.toString().trim()  !== ""){
+  								
+  								isSpouseDisabled = (this.PERSON === "S") ? false : true;
+  								isTaxfilerDisabled = (this.PERSON === "S") ? true : false;
+  							}
+  							
+  							//spouse textbox
+  							if (ctrl.name === "frm1701:Spouse"){
+  							
+  								ctrl.disabled = (isSpouseDisabled) ? true : false;
+  							//taxpayer textbox
+  							}else{
+  								
+  								ctrl.disabled = (isTaxfilerDisabled) ? true : false;
+  							}
+  						}
+  						
+  						if (!ctrl.disabled){
+  							
+  							ctrl.style.backgroundColor = "#ffffff";
+  						}
+  						
+  						enabledIndex = i;
+  					}
+  				}
+  			};
+  		}
+  	};
+  	
+  	this.disabledinputIDs.splice(enabledIndex,1);
+  	this.storeDisabledinputIDs();
+    }
+
   // BIR disableParentInput
   disableParentInput(activeInput?: any): any {
   
