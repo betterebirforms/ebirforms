@@ -3,12 +3,14 @@
 // "Legal": government works, bundled freely). Re-run after importing a newer BIR package.
 //   - header.png       the "Republic of the Philippines / Bureau of Internal Revenue" banner with the seal
 //   - barcode/<DIR>/   the per-page barcode BIR prints on every form page (img/<DIR>_BarCode/), e.g. "1601-FQ 01/18 P1"
+//   - print.css, print-note.json   what BIR prints with (tool/print-extract.mjs)
 //   - barcode.json     form code → its barcode images in page order, read from the <img> tags of each form page
 //                      (BIR's file names don't encode the page reliably; the form that prints them does)
 //   node tool/asset-extract.mjs [vendor/original]
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { extractPrint } from "./print-extract.mjs";
 
 const root = resolve(process.argv[2] ?? "vendor/original");
 const img = join(root, "img");
@@ -48,3 +50,4 @@ for (const file of readdirSync(join(root, "forms")).filter((f) => /^BIR-Form.+\.
 }
 writeFileSync(join(out, "barcode.json"), JSON.stringify(barcode, null, 1) + "\n");
 console.log(`${count} BIR image → asset/bir/ ; barcode pages for ${Object.keys(barcode).length} form`);
+console.log(`print.css + ${extractPrint(root, out)} paper notes → asset/bir/`);

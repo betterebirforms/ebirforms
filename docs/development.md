@@ -56,7 +56,7 @@ mod of yours, point both at the same folder (`EBF_MOD_DIR=.mod`).
 
 ```sh
 npm run extract -- ~/Downloads/<new package>.zip
-npm run asset                                              # BIR's banner and barcodes → asset/bir/
+npm run asset                                              # BIR's banner, barcodes and print stylesheet → asset/bir/
 EBF_CAPTURE=1 npx vitest run test/capture-template.test.ts      # each form's blank save
 EBF_CAPTURE_UPPER=1 npx vitest run test/capture-template.test.ts  # which fields BIR upper-cases
 EBF_CAPTURE_CLOCK=1 npx vitest run test/capture-template.test.ts  # which blank-form boxes BIR fills from today's date
@@ -102,6 +102,7 @@ A `v*` tag builds all three platforms in CI (`.github/workflows/build.yml`) and 
 | `EBF_MOD_DIR` | (none) | The same, for the Rust host run with `--example host` |
 | `EBIRFORMS_GOLDEN_SAVEFILE` | (none) | A real savefile to round-trip byte for byte |
 | `EBIRFORMS_HOST_URL` / `EBIRFORMS_HOST_DATA` | (none) | Run the 0605 end-to-end test against another server, such as the desktop app's |
+| `EBF_NO_KEY_FETCH` | (none) | Set: the desktop app does not download BIR's package for the sending keys at start-up (sending is on by default) |
 | `EBF_PARITY` | (none) | Run the 1:1 scoreboard: `1` for every form, or a list of form codes |
 | `EBF_PARITY_STRICT` | (none) | Treat an empty box and `0.00` as different, as BIR's Validate does |
 | `EBF_CAPTURE` / `EBF_CAPTURE_UPPER` | (none) | Re-capture each form's blank save / upper-casing from BIR's forms |

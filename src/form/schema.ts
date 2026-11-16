@@ -325,11 +325,26 @@ export interface Problem {
   message: string;
 }
 
+/** A field's name for a message, from BIR's id: "frm0605:txtReturnPeriodMonth" → "Return Period Month",
+ *  "frm0605:txtTIN1" → "TIN 1", "frm0605:txtRDOCode" → "RDO Code". */
+export function fieldName(id: string): string {
+  return id
+    .replace(/^frm[^:]*:/, "")
+    .replace(/:_?\d+$/, "")
+    .replace(/^(txt|item|cmb|chk|rdo|opt|sel|lst|drp)(?=[A-Z])/, "")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .replace(/([A-Za-z])(\d)/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** Required-field validation. Form-specific rules (TIN check, etc.) are layered by the caller. */
 export function validate(schema: FormSchema, state: FormState): Problem[] {
   const problem: Problem[] = [];
   for (const f of schema.field) {
-    if (f.required && !(state[f.id] ?? "").trim()) problem.push({ id: f.id, message: `${f.id} is required` });
+    if (f.required && !(state[f.id] ?? "").trim()) problem.push({ id: f.id, message: `${fieldName(f.id)} is required` });
   }
   return problem;
 }

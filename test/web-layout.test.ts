@@ -68,6 +68,53 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.close();
   }, 60_000);
 
+  // BIR's Validate locks the form and opens Edit, Print and Submit; Edit opens it again. Print opens BIR's Print
+  // Preview (read-only boxes, buttons hidden, File swapped for Print / Cancel Print); Cancel Print puts it back.
+  it("0605: Validate locks the form, Edit opens it, Print Preview and Cancel Print as in BIR's app", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const alert: string[] = [];
+    page.on("dialog", (d) => void (alert.push(d.message()), d.accept()));
+    await page.goto(`${base}/form/0605`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const box = (id: string) => page.locator(`[id="${id}"]`);
+    expect(await box("frm0605:cmdEdit").isDisabled()).toBe(true);
+    expect(await box("btnPrint").isDisabled()).toBe(true);
+    expect(await box("frm0605:btnFinalCopy").isDisabled()).toBe(true);
+    const typed = { "frm0605:txtReturnPeriodMonth": "10", "frm0605:txtReturnPeriodDay": "15", "frm0605:txtReturnPeriodYear": "2026", "frm0605:txtTIN1": "846", "frm0605:txtTIN2": "532", "frm0605:txtTIN3": "107", "frm0605:txtBranchCode": "00000", "frm0605:txtTaxPayerName": "JUAN DELA CRUZ" };
+    for (const [id, v] of Object.entries(typed)) await box(id).fill(v);
+    await box("frm0605:txtRDOCode").selectOption({ index: 1 });
+    await box("frm0605:cmdValidate").click();
+    await expect.poll(() => alert.at(-1)).toMatch(/^Validation successful/);
+    await expect.poll(() => box("frm0605:cmdValidate").isDisabled()).toBe(true);
+    expect(await box("frm0605:txtReturnPeriodDay").isDisabled()).toBe(true);
+    expect(await box("frm0605:cmdEdit").isDisabled()).toBe(false);
+    expect(await box("frm0605:btnFinalCopy").isDisabled()).toBe(false);
+    // Submit says how to file: the browser can't send
+    await box("frm0605:btnFinalCopy").click();
+    await expect.poll(() => alert.at(-1)).toMatch(/can't send returns to BIR/);
+    // Print: BIR's preview
+    await box("btnPrint").click();
+    await expect.poll(() => box("printMenu").isVisible()).toBe(true);
+    expect(await box("formMenu").isVisible()).toBe(false);
+    expect(await box("btnSave").isVisible()).toBe(false);
+    expect(await box("frm0605:txtTaxPayerName").evaluate((e: HTMLInputElement) => [e.disabled, e.readOnly, e.value])).toEqual([false, true, "JUAN DELA CRUZ"]);
+    await page.locator("#printMenu a.toplevel").click();
+    await page.locator("#printMenu a", { hasText: "Cancel Print" }).click();
+    await expect.poll(() => box("printMenu").isVisible()).toBe(false);
+    expect(await box("btnSave").isVisible()).toBe(true);
+    expect(await box("frm0605:txtReturnPeriodDay").isDisabled()).toBe(true);
+    // Edit: open again, Validate back, Print / Submit off
+    await box("frm0605:cmdEdit").click();
+    await expect.poll(() => box("frm0605:cmdValidate").isDisabled()).toBe(false);
+    expect(await box("frm0605:txtReturnPeriodDay").isDisabled()).toBe(false);
+    expect(await box("btnPrint").isDisabled()).toBe(true);
+    expect(await box("frm0605:btnFinalCopy").isDisabled()).toBe(true);
+    // printing shows BIR's page only, nothing of the app around it
+    await page.emulateMedia({ media: "print" });
+    expect(await page.evaluate(() => Array.from(document.querySelectorAll("#root > :not(.bir-layout)")).every((e) => getComputedStyle(e).display === "none"))).toBe(true);
+    await page.close();
+  }, 60_000);
+
   // every form: each box BIR greys out (and the capture found a way to open) starts greyed out on the web too
   it("a new form greys out each box BIR greys out, on every form", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });

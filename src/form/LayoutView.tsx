@@ -1,10 +1,12 @@
 // The web version's form screen: BIR's own page LAYOUT (captured by test/capture-layout.test.ts, no BIR code in it)
 // inside a shadow root, so BIR's stylesheet can't touch the app and the app's can't touch BIR's page. The native
 // engine (schema.ts) drives every field it knows by BIR's own id: values in, computed totals out, read-only where
-// BIR's are. BIR's buttons do what they say: Validate, Save, Prev / Next, File > Main Menu.
+// BIR's are. BIR's buttons do what they say: Validate (locks the form) and Edit (opens it again), Save, Print and
+// File > Print Preview (BIR's printme(), then the browser's print), Prev / Next, File > Main Menu. Submit / Final
+// Copy is BIR's online send, which a browser can't make: it says how to file instead.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
-import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
+import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { formatMoney, parseMoney } from "./money.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
@@ -19,6 +21,20 @@ const imageFile = import.meta.glob("../../asset/bir/layout/img/*", { eager: true
 // pages by test/capture-lock.test.ts). A box not listed stays as the engine says.
 const lockFile = import.meta.glob("./lock/*.json", { eager: true, import: "default" }) as Record<string, Record<string, string[]>>;
 const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock/${form_code}.json`] ?? {};
+
+// BIR's print stylesheet (css/print.css, media="print" on every form page) and the paper-size message its Print
+// Preview shows first on 15 forms (tool/print-extract.mjs)
+import printCss from "../../asset/bir/print.css?raw";
+import printNoteJson from "../../asset/bir/print-note.json";
+const printNote = printNoteJson as Record<string, string>;
+
+/** What Submit / Final Copy says on the web: BIR's button sends the return online, which a browser can't do. */
+export const WEB_SUBMIT_NOTE =
+  "The web version can't send returns to BIR. BIR's Submit uploads the return over a connection a web page is not allowed to open.\n\n" +
+  "To file this return, click Save first, then do one of these:\n" +
+  "1. Print it, and file and pay at your bank or RDO.\n" +
+  "2. In the desktop app (Mac, Windows or Linux), put the saved file in its savefile folder (Go > Show Saved Returns), open it, and click Submit / Final Copy there.\n" +
+  "3. In BIR's eBIRForms on Windows, put it in C:\\eBIRForms\\savefile, open it, and click Submit / Final Copy.";
 
 const layoutKey = (form_code: string) => `../../asset/bir/layout/${form_code}.html`;
 /** Whether BIR's layout was captured for this form (else the web version shows the plain native form). */
@@ -44,7 +60,8 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
       // system's dark mode (style.css `color-scheme: light dark`), which a shadow root inherits: in dark mode the
       // labels went light on BIR's grey and typed text white on its white fields. The desktop never had this
       // (BIR's pages don't opt into dark mode there), so pin the layout to IE's defaults.
-      shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style>${html}`;
+      // BIR's print stylesheet applies when printing, as on BIR's pages; the phone fit (zoom) is for the screen only
+      shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style><style media="print">${printCss}\n:host{min-height:0} .bir-body{zoom:1 !important;min-height:0}</style>${html}`;
       setRoot(shadow);
     });
     return () => {
@@ -109,6 +126,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   });
   const [groups, setGroups] = useState<GroupState>(() => initial?.groups ?? Object.fromEntries((schema.group ?? []).map((g) => [g.name, [] as GroupRow[]])));
   const computed = useMemo(() => computeForm(schema, state, groups), [schema, state, groups]);
+  // BIR's Validate locks the form and opens Edit, Print and Submit; Edit opens the form again
+  const [validated, setValidated] = useState(false);
   const latest = useRef({ state, computed, groups });
   const groupBox = useRef(new Map<Element, { group: GroupSpec; row: number; id: string }>());
   latest.current = { state, computed, groups };
@@ -173,10 +192,19 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     };
     if (pageCount > 1) showPage(1);
 
+    // BIR's way with a problem: say it, then put the cursor in the box (on its page)
+    const showProblem = (problem: Problem[]) => {
+      window.alert(problem.map((p) => p.message).join("\n"));
+      const el = problem.map((p) => byId(root, p.id)).find((e) => e && !e.disabled);
+      if (!el) return;
+      const n = pageOf(el);
+      if (n && n !== current) showPage(n);
+      el.focus();
+    };
     const save = async () => {
       const { state: s, computed: c, groups: g } = latest.current;
       const problem = validate(c, g);
-      if (problem.length > 0) return window.alert(problem.map((p) => p.message).join("\n"));
+      if (problem.length > 0) return showProblem(problem);
       const { name, text } = SAVEFILE_ADAPTER.build({ form_code, state: s, groups: g, profile });
       if (IS_WEB) {
         try {
@@ -189,25 +217,84 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       window.alert(`BIR Form saved successfully as : savefile/${name}`);
       onSaved();
     };
+    // BIR's Print Preview (printme()): the page as it prints, boxes read-only on white, lists as plain text, the
+    // signature footer and barcode shown, buttons hidden, and File swapped for BIR's print menu (Print, Cancel Print).
+    // Cancel Print puts every element back as it was.
+    let undo: Array<() => void> | null = null;
+    const keep = (el: Element) => {
+      const h = el as HTMLInputElement;
+      const style = h.getAttribute("style"), cls = h.getAttribute("class"), disabled = h.disabled, readOnly = h.readOnly;
+      undo!.push(() => {
+        if (style === null) h.removeAttribute("style");
+        else h.setAttribute("style", style);
+        if (cls === null) h.removeAttribute("class");
+        else h.setAttribute("class", cls);
+        if ("disabled" in h) h.disabled = disabled;
+        if ("readOnly" in h) h.readOnly = readOnly;
+      });
+      return h;
+    };
+    const preview = () => {
+      if (undo) return;
+      const note = printNote[form_code];
+      if (note) window.alert(note);
+      undo = [];
+      const css = (sel: string, style: Partial<CSSStyleDeclaration>) => root.querySelectorAll(sel).forEach((el) => Object.assign(keep(el).style, style));
+      css("#bg", { display: "none" });
+      css(".printSignFooterClass", { maxWidth: "94%", margin: "15px auto 0", display: "block", position: "relative", overflow: "visible", pageBreakBefore: "always", background: "#ffffff", width: "", height: "", top: "", left: "" });
+      css(".imgClass", { margin: "auto", display: "block", position: "relative", overflow: "visible" });
+      css("#formPaper", { border: "#000 3px solid" });
+      for (const el of Array.from(root.querySelectorAll("input, select, textarea")) as HTMLInputElement[]) {
+        if (el.type === "hidden" || /:txtCurrentPage$/.test(el.id)) continue;
+        if (el.type === "button" || el.type === "submit") {
+          keep(el).classList.add("previewButtonClass");
+        } else if (el.type === "radio" || el.type === "checkbox") {
+          keep(el).disabled = true;
+        } else if (el instanceof HTMLSelectElement) {
+          keep(el).style.display = "none";
+          const label = document.createElement("div");
+          label.className = "labels";
+          label.innerHTML = `${(el.options[el.selectedIndex]?.textContent ?? "").replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`)}&nbsp;`;
+          el.after(label);
+          undo.push(() => label.remove());
+        } else {
+          const h = keep(el);
+          h.disabled = false;
+          h.readOnly = true;
+          h.style.backgroundColor = "#FFFFFF";
+          h.style.color = "#000000";
+        }
+      }
+      css("#printMenu", { display: "block" });
+      css("#formMenu", { display: "none" });
+    };
+    const cancelPreview = () => {
+      for (const f of (undo ?? []).reverse()) f();
+      undo = null;
+    };
+    off.push(cancelPreview);
     const button = Array.from(root.querySelectorAll("input[type=button], button")) as HTMLInputElement[];
     for (const b of button) {
       const v = (b.value || b.textContent || "").trim();
       if (v === "Validate")
         on(b, "click", () => {
           const problem = validate(latest.current.computed, latest.current.groups);
-          window.alert(problem.length ? problem.map((p) => p.message).join("\n") : "Validation successful. Click on Edit if you wish to modify your entries.");
+          if (problem.length) return showProblem(problem);
+          setValidated(true);
+          window.alert("Validation successful. Click on Edit if you wish to modify your entries.");
         });
+      else if (v === "Edit") on(b, "click", () => setValidated(false));
       else if (v === "Save") on(b, "click", () => void save());
       else if (v === "Prev") on(b, "click", () => showPage(current - 1));
       else if (v === "Next") on(b, "click", () => showPage(current + 1));
       else if (v === "Main Menu" || v === "Exit") on(b, "click", onClose);
-      else if (v === "Submit / Final Copy" || v === "Print") {
-        b.disabled = true;
-        b.title = v === "Print" ? "Print from the desktop app" : "The web version saves drafts only. Nothing is sent to BIR.";
-      }
+      // BIR's Print button opens its Print Preview; the plain "Print" of its header prints straight away
+      else if (v === "Print") on(b, "click", b.id === "btnPrint" ? preview : () => window.print());
+      else if (v === "Submit / Final Copy") on(b, "click", () => window.alert(WEB_SUBMIT_NOTE));
     }
-    // BIR's File / Help menu: File opens its list (Main Screen, Save, Print Preview, Exit)
-    wireMenu(root, on, { "Main Screen": onClose, Save: () => void save() }, ["Print Preview", "Exit"]);
+    // BIR's File / Help menu: File opens its list (Main Screen, Save, Print Preview, Exit); in Print Preview, BIR's
+    // print menu (Print, Cancel Print)
+    wireMenu(root, on, { "Main Screen": onClose, Save: () => void save(), "Print Preview": preview, Print: () => window.print(), "Cancel Print": cancelPreview }, ["Exit"]);
     const pageBox = root.querySelector("input[id$=':txtCurrentPage']") as HTMLInputElement | null;
     if (pageBox) on(pageBox, "change", () => showPage(Number(pageBox.value)));
     // BIR's page-jump links: "btnNavigatePage<N>_…" goes to page N, Next / Prev page by one, and a "(To / From …
@@ -327,6 +414,16 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // BIR's buttons follow Validate: before it only Validate (and Save) work; after it Edit, Print and Submit do
+  useEffect(() => {
+    if (!root) return;
+    for (const b of Array.from(root.querySelectorAll("input[type=button], button")) as HTMLInputElement[]) {
+      const v = (b.value || b.textContent || "").trim();
+      if (v === "Validate") b.disabled = validated;
+      else if (v === "Edit" || v === "Submit / Final Copy" || (v === "Print" && b.id === "btnPrint")) b.disabled = !validated;
+    }
+  }, [root, validated]);
+
   // engine → page: write every known field's value, and lock what BIR locks
   useEffect(() => {
     if (!root) return;
@@ -390,7 +487,25 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       else if (el !== focused && el.value !== value && (value !== "" || at.rows[r.row])) el.value = value;
       if (sub.row_compute) el.readOnly = true;
     }
-  }, [root, schema, state, computed, groups]); // eslint-disable-line react-hooks/exhaustive-deps
+    // a validated return is locked until Edit, as BIR's disableAllControl() does
+    if (validated) {
+      for (const f of schema.field) {
+        const el = byId(root, f.id);
+        if (el && !f.secret) el.disabled = true;
+      }
+      for (const box of groupBox.current.keys()) {
+        const el = box as HTMLInputElement;
+        if (!el.disabled) el.dataset.validated = "";
+        el.disabled = true;
+      }
+    } else
+      for (const box of groupBox.current.keys()) {
+        const el = box as HTMLInputElement;
+        if (!("validated" in el.dataset)) continue;
+        el.disabled = false;
+        delete el.dataset.validated;
+      }
+  }, [root, schema, state, computed, groups, validated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const open = openGroup && (schema.group ?? []).find((g) => g.name === openGroup.name);
   return (

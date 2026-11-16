@@ -106,6 +106,10 @@ select {
   .donate {
     display: none;
   }
+  /* a BIR form prints its page only (BIR's print.css, inside the layout, hides its buttons and menus) */
+  body:has(.bir-layout[data-form]:not([data-form="main"])) #root > :not(.bir-layout) {
+    display: none !important;
+  }
 }
 .empty {
   max-width: 34rem;

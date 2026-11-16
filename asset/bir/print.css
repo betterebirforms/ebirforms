@@ -1,0 +1,150 @@
+.printButtonClass{ display : none !important; }
+body,html { background:none; padding:0;}
+.printSignFooterClass { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.imgClass { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass table { width:98% !important; max-width:98% !important;} /*8.3in, 98%*/
+/*.printSignFooterClass div{ border:0 !important; } */
+.printSignFooterClass td, .printSignFooterClass tr { border:1px !important; } /*0.1*/
+.printSignFooterClass input, .printSignFooterClass select .printSignFooterClass label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 7px !important; padding: 1px !important;}
+
+.printSignFooterClass_2550Q { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.imgClass { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_2550Q table { width:98% !important; max-width:98% !important; padding: 0px !important;} /*8.3in, 98%*/
+.printSignFooterClass_2550Q td, .printSignFooterClass_2550Q tr { border:1px solid !important; padding: 0px !important;} /*0.1*/
+.printSignFooterClass_2550Q input, .printSignFooterClass_2550Q select .printSignFooterClass_2550Q label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 7px !important; padding: 0px !important;}
+
+.printSignFooterClass_2552 { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_2552 table { width:98% !important; max-width:98% !important;} /*8.3in, 98%*/
+.printSignFooterClass_2552 td, .printSignFooterClass_2552 tr { border:1px !important; padding:0px; } /*0.1*/
+.printSignFooterClass_2552 input, .printSignFooterClass_2552 select .printSignFooterClass_2552 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 1px !important;}
+
+.printSignFooterClass_1707 { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1707 table { width:98% !important; max-width:98% !important;} /*8.3in, 98%*/
+.printSignFooterClass_1707 td, .printSignFooterClass_1707 tr { padding:0px !important; } /*0.1*/
+.printSignFooterClass_1707 input, .printSignFooterClass_1707 select .printSignFooterClass_1707 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 1px !important;}
+
+.printSignFooterClass_1702Q { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1702Q table { width:98% !important; max-width:98% !important;} /*8.3in, 98%*/
+.printSignFooterClass_1702Q td, .printSignFooterClass_1702Q tr { padding:0px !important; } /*0.1*/
+.printSignFooterClass_1702Q input, .printSignFooterClass_1702Q select .printSignFooterClass_1702Q label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 1px !important;}
+
+.printSignFooterClass_1801 { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1801 table { width:98% !important; max-width:98% !important;} /*8.3in, 98%*/
+.printSignFooterClass_1801 td, .printSignFooterClass_1801 tr { padding:0px !important; } /*0.1*/
+.printSignFooterClass_1801 input, .printSignFooterClass_1801 select .printSignFooterClass_1801 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 10px !important; padding: 1px !important;}
+
+.printSignFooterClass_1704  { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1704  table { width:98% !important; max-width:98% !important;}
+.printSignFooterClass_1704  td, .printSignFooterClass_1704  tr { border:1px !important; } 
+.printSignFooterClass_1704 input, .printSignFooterClass_1704 select .printSignFooterClass_1704 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; padding: 1px !important;}
+.printSignFooterClass_1704 td { padding:0px; }
+
+.printSignFooterClass_1800  { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1800  table { width:98% !important; max-width:98% !important;}
+.printSignFooterClass_1800  td, .printSignFooterClass_1800  tr { border:1px !important; } 
+.printSignFooterClass_1800 input, .printSignFooterClass_1800 select .printSignFooterClass_1800 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 1px !important;}
+/*.printSignFooterClass_1800 input, .printSignFooterClass_1800 select .printSignFooterClass_1800 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; padding: 1px !important;}*/
+.printSignFooterClass_1800 td { padding:0px; }
+
+.printSignFooterClass_1706  { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_1706  table { width:98% !important; max-width:98% !important;}
+.printSignFooterClass_1706  td, .printSignFooterClass_1706  tr { border:1px !important; } 
+.printSignFooterClass_1706 input, .printSignFooterClass_1706 select .printSignFooterClass_1706 label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 0px !important;}
+.printSignFooterClass_1706 td { padding:0px; }
+
+.printSignFooterClass_2200M  { display:block !important; position:relative !important; overflow:visible !important; page-break-before:avoid !important; }
+.printSignFooterClass_2200M table { width:98% !important; max-width:98% !important;}
+.printSignFooterClass_2200M  td, .printSignFooterClass_2200M  tr { border:1px !important; } 
+.printSignFooterClass_2200M input, .printSignFooterClass_2200M select .printSignFooterClass_2200M label{ border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; padding: 1px !important;}
+.printSignFooterClass_2200M td { padding:0px; }
+
+/*.printSignFooterClass label{ color:#CCC !important; border:0 !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 9px !important; font-weight:bold !important;}*/
+.printSignFooterClass td { padding:0px; }
+.printBodyClass table { width:8.3in !important; max-width:8.3in !important; height:12.5in !important;}
+input, select, label { color:#000 !important;  /*border:0 !important;*/ }
+
+#container { margin-top:0 !important; }
+#frmMain { width: 100% !important; height: 100% !important; }
+
+.landscape { 
+    width: 100%; 
+    height: 100%; 
+    margin: 0% 0% 0% 0%; 
+	filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=1); 
+	-ms-filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=1); 
+
+	/*margin: 0% 0% 0% 0%; -ms-transform: rotate(-90deg);*/
+} 
+
+.modalContent {
+font-weight:normal;
+font-family:Arial, sans-serif, Helvetica;
+font-size:7px;
+}
+
+.modalColumnHeader {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:10px !important;
+color:#000 !important;
+}
+.modalHeader {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:9.5px !important;
+color:#000 !important;
+}
+
+.modalContent_1800 { 
+font-weight:normal;
+font-family:Arial, sans-serif, Helvetica;
+font-size:9px;
+}
+.modalColumnHeader_1800 {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:10px !important;
+color:#000 !important;
+}
+.modalHeader_1800 {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:12px !important;
+color:#000 !important;
+}
+
+.modalContent_1707 { 
+font-weight:normal;
+font-family:Arial, sans-serif, Helvetica;
+font-size:9px;
+}
+.modalColumnHeader_1707 {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:10px !important;
+color:#000 !important;
+}
+.modalHeader_1707 {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:12px !important;
+color:#000 !important;
+}
+
+.modalContent_2200M { 
+font-weight:normal;
+font-family:Arial, sans-serif, Helvetica;
+font-size:10px;
+}
+.modalColumnHeader_2200M {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:11px !important;
+color:#000 !important;
+}
+.modalHeader_2200M {
+font-weight:bold !important;
+font-family:Arial, sans-serif, Helvetica;
+font-size:12px !important;
+color:#000 !important;
+}
