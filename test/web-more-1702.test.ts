@@ -52,4 +52,41 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     }
     await page.close();
   }, 120_000);
+
+  // what a row typed in the editor feeds: Sch 12 item 4's final tax and a Sch 12 II div both reach item 19, and the
+  // Sch 6A item 7 rows turn the line into OTHERS with their subtotals
+  it("1702RT: rows typed in the editors feed Sch 12 item 19 and Sch 6A item 7", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    page.on("dialog", (d) => void d.accept());
+    await page.goto(`${base}/form/1702RT`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    await page.waitForTimeout(800);
+    const value = (id: string) => page.locator(`[id="${id}"]`).first().inputValue();
+    const open = async (id: string) => {
+      await page.locator(`[id="${id}"]`).first().evaluate((e: HTMLElement) => e.click());
+      await page.locator(".schedule-modal").waitFor();
+    };
+    const fill = async (cell: string[]) => {
+      await page.locator(".schedule-modal button", { hasText: /^(Add|\+)/ }).first().click();
+      const box = page.locator(".schedule-modal tbody tr").last().locator("input");
+      for (const [i, v] of cell.entries()) await box.nth(i).fill(v);
+    };
+    const done = async () => {
+      await page.locator(".schedule-modal button", { hasText: /^Done/ }).click();
+      await expect.poll(() => page.locator(".schedule-modal").count()).toBe(0);
+    };
+    await open("btnPg8Sc12I4More");
+    await fill(["ROYALTIES", "100000", "10000", "10000"]);
+    await done();
+    await open("frm1702RT:btnModalPg8Sc12II");
+    await fill(["LOT 1", "LOT 2", "T-1", "T-2", "C-1", "C-2", "900000", "800000", "54000", "48000"]);
+    await done();
+    await expect.poll(() => value("frm1702RT:txtSc12I19TotalFinalTaxWitheld")).toBe("112,000");
+    await open("btnPg5Sc6AI7More");
+    await fill(["2014", "100000", "10000", "5000", "20000"]);
+    await done();
+    await expect.poll(() => value("frm1702RT:txtPg5Sc6AI7C1")).toBe("OTHERS");
+    expect(await value("frm1702RT:txtPg5Sc6AI7C6")).toBe("65,000");
+    await page.close();
+  }, 120_000);
 });

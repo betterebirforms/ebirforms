@@ -1,0 +1,15 @@
+{
+  "title": "1702-RT keeps what you typed in its Schedule 12 and 13 pop-ups",
+  "about": "Old Internet Explorer copied what you typed along with the HTML. The 1702-RT pop-ups for Schedule 12 parts II to IV and Schedule 13 parts I and II rely on that to keep their rows when you press Save. Newer browsers copy only the blank HTML, so the rows came back empty. The shim copies the typed values too.",
+  "on": true,
+  "file": "form",
+  "form": [
+    "1702RT"
+  ],
+  "rule": [
+    {
+      "find": "return \\$\\(\"#(tempModalDivPg8Sc\\w+)\"\\)\\.html\\(\\);",
+      "to": "return window.__ebfLiveHtml(document.getElementById(\"$1\"));"
+    }
+  ]
+}

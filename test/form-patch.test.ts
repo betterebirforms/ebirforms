@@ -242,6 +242,13 @@ describe("1700 reopen compat mods (compat/load-data-div, empty-table-body, live-
     expect(patchForm("forms/BIR-Form2551M.hta", table)).toBe(table);
   });
 
+  it("1702-RT copies what was typed in its Schedule 12 / 13 pop-up divs, other forms are untouched", () => {
+    const copy = 'return $("#tempModalDivPg8Sc12II").html();';
+    expect(patchForm("forms/BIR-Form1702RT.hta", copy)).toBe('return window.__ebfLiveHtml(document.getElementById("tempModalDivPg8Sc12II"));');
+    expect(patchForm("forms/BIR-Form1702RT.hta", 'return $("#mainModalDivPg8Sc12II").html();')).toBe('return $("#mainModalDivPg8Sc12II").html();');
+    expect(patchForm("forms/BIR-Form1701.hta", copy)).toBe(copy);
+  });
+
   it("1700 copies typed values with the pop-up rows, other forms are untouched", () => {
     const copy = '$("#" + mainTable.id).html(function () { return $("#" + tempTable.id).html(); });';
     expect(patchForm("forms/BIR-Form1700.hta", copy)).toBe(
