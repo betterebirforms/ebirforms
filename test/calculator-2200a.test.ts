@@ -24,8 +24,11 @@ describe("calculator arithmetic, worked by hand", () => {
     const { c, read } = run({ calcXA061: [row("XA061", { 2: "wine", 3: "20", 4: "12", 6: "0.75" })] });
     expect(c.CalcSubTotalXA061).toBe("180.00");
     expect(calcSubTotal(read, "XA061")).toBe("180.00");
-    expect(c[`${P}xa2_taxable1`]).toBe("180.00");
-    expect(c[`${P}xa2_exciseTaxDue1`]).toBe("54,748.80"); // 304.16 x 180 = 54,748.8
+    // a typed row moves only the sub-total; Compute (computeToSchedule1) writes it into the Schedule 1 box
+    expect(c[`${P}xa2_taxable1`]).toBe("0.00");
+    const after = computeForm(FORM_2200A, { ...state, [calcRoute("XA061").target]: calcSubTotal(read, "XA061") }, { calcXA061: [row("XA061", { 2: "wine", 3: "20", 4: "12", 6: "0.75" })] });
+    expect(after[`${P}xa2_taxable1`]).toBe("180.00");
+    expect(after[`${P}xa2_exciseTaxDue1`]).toBe("54,748.80"); // 304.16 x 180 = 54,748.8
   });
   it("XA035 Bottle: 10 x 12 = 120 bottles, strength 40 -> proof 0.80, 120 x 350.75 x 0.80 = 33,672.00", () => {
     const { c, cell } = run({ calcXA035Bottle: [row("XA035Bottle", { 2: "brandy", 3: "10", 4: "12", 6: "350.75", 7: "40" })] });
@@ -40,7 +43,8 @@ describe("calculator arithmetic, worked by hand", () => {
     expect([9, 10].map((n) => cell("XA036Bottle", 1, n))).toEqual(["0.600", "72.00"]);
     expect([3, 5, 6].map((n) => cell("XA036Bulk", 1, n))).toEqual(["1,000.500", "0.90", "900.45"]);
     expect(calcSubTotal(read, "XA036")).toBe("972.45");
-    expect(c[`${P}xa1_taxable2`]).toBe("972.45");
+    expect(c[`${P}xa1_taxable2`]).toBe("0.00"); // until Compute writes it
+    expect(calcRoute("XA036Bulk").target).toBe(`${P}xa1_taxable2`);
   });
   it("a typed volume is cut (not rounded) to two decimals: 0.339 L -> 0.33, so 3 x 7 x 0.33 = 6.93", () => {
     const { cell } = run({ calcXA070: [row("XA070", { 2: "w", 3: "3", 4: "7", 6: "0.339" })] });

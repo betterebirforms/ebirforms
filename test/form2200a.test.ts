@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { computeForm, formRecords, rowFieldId, type FormState, type GroupRow, type GroupState } from "@/form/schema.ts";
-import { FORM_2200A, pct, rateFor, roundDown, validate2200A, vol, woc } from "@/form/form2200a.ts";
+import { calcRoute, calcSubTotal, FORM_2200A, pct, rateFor, roundDown, validate2200A, vol, woc } from "@/form/form2200a.ts";
 import { parseMoney } from "@/form/money.ts";
 import { legacyUnescape } from "@/lib/savefile.ts";
 import { hasForm, startOracle, type Oracle } from "./oracle.ts";
@@ -36,7 +36,7 @@ const groups: GroupState = {
     other({ Atc: "XA098", Desc: "MEAD", TaxBracket: "PER LITER", AppRate: "5.00", Taxable: "10.00" }),
   ],
 };
-const state: FormState = {
+const typed: FormState = {
   ...identity,
   [`${P}amendedRtn_1`]: "true", [`${P}amendedRtn_2`]: "false", [`${P}txtSheets`]: "2",
   [`${P}optTreaty_1`]: "true", [`${P}optTreaty_2`]: "false", [`${P}lstTaxTreaty`]: "2",
@@ -47,6 +47,12 @@ const state: FormState = {
   [`${P}txtTax19A`]: "1,000.00", [`${P}txtTax21`]: "500.00",
   [`${P}txtTax23A`]: "100.00", [`${P}txtTax23B`]: "50.00", [`${P}txtTax23C`]: "25.00", [`${P}txtTax25A`]: "185,357.27",
 };
+// the filer pressed Compute in each calculator in use: computeToSchedule1 wrote its sub-total into the Schedule 1 box
+const state: FormState = (() => {
+  const c = computeForm(FORM_2200A, typed, groups);
+  const source = [...new Set(Object.entries(groups).filter(([n, rows]) => n.startsWith("calc") && rows.length > 0).map(([n]) => calcRoute(n.slice(4)).source))];
+  return { ...typed, ...Object.fromEntries(source.map((x) => [calcRoute(x).target, calcSubTotal((id) => c[id] ?? "", x)])) };
+})();
 
 describe("2200A helpers (string-util2014.js) and the year → rate table", () => {
   it("roundDownComputation truncates after toPrecision(14); setPercentage / xa036VolumeChecker / formatCurrencyWOC", () => {
@@ -126,7 +132,8 @@ describe("2200A calculators → Schedule 1 → item 18 → Part II", () => {
   it("validates sched1OK's XA035/XA036 pairing, the Others rows and the date", () => {
     const id = (s: FormState, g: GroupState = groups) => validate2200A(computeForm(FORM_2200A, s, g), g).map((p) => p.id);
     expect(id(state)).toEqual([]);
-    expect(id(state, { ...groups, calcXA036Bottle: [], calcXA036Bulk: [] })).toEqual([`${P}xa1_taxable2`]);
+    // Clear on both XA036 calculators writes their (now zero) sub-total into the box
+    expect(id({ ...state, [`${P}xa1_taxable2`]: "0.00" }, { ...groups, calcXA036Bottle: [], calcXA036Bulk: [] })).toEqual([`${P}xa1_taxable2`]);
     expect(id(state, { ...groups, other: [...groups.other!, other({ Atc: "XA", Desc: "X" })] })).toEqual([`${P}sched1Atc3`]);
     expect(id({ ...state, [`${P}txtForYr`]: "2012" })).toEqual([`${P}txtForYr`]);
   });

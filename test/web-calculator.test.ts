@@ -127,11 +127,13 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await cell(page, "XA061", 1, 5).inputValue()).toBe("240");
     expect(await cell(page, "XA061", 1, 7).inputValue()).toBe("180.00");
     expect(await page.locator('.bir-layout [id="CalcSubTotalXA061"]').inputValue()).toBe("180.00");
+    // a typed row moves only the sub-total: BIR writes the Schedule 1 box on Compute
+    expect(await box(page, "xa2_taxable1").inputValue()).toBe("0.00");
     // Compute writes the sub-total into the taxable box, and its 2018 rate (304.16) gives the due
     await (await calcButton(page, "XA061", "Compute")).click();
     expect(said.at(-1)).toBe("You are advised to print this computation.");
-    expect(await box(page, "xa2_taxable1").inputValue()).toBe("180.00");
-    expect(await box(page, "xa2_exciseTaxDue1").inputValue()).toBe("54,748.80");
+    await expect.poll(() => box(page, "xa2_taxable1").inputValue()).toBe("180.00");
+    await expect.poll(() => box(page, "xa2_exciseTaxDue1").inputValue()).toBe("54,748.80");
     expect((await page.locator('.bir-layout [id="dateComputedXA061"]').textContent())?.trim()).toMatch(/^\d{1,2}\/\d{1,2}\/\d{4} {2}\d\d:\d\d [ap]m$/);
     // a second, empty row: Compute refuses with BIR's words, and Delete takes out the ticked row
     await add.click();
@@ -177,7 +179,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await (await calcButton(page, "XA061", "Clear")).click();
     expect(said.at(-1)).toBe("Values inputted will be deleted. Do you want to continue?");
     await expect.poll(() => rows(page, "XA061")).toBe(0);
-    expect(await box(page, "xa2_taxable1").inputValue()).toBe("0.00");
+    await expect.poll(() => box(page, "xa2_taxable1").inputValue()).toBe("0.00");
     await page.close();
   }, 90_000);
 
@@ -199,7 +201,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await fill("XA035Bulk", [[2, "gin"], [3, "10000"], [4, "45"]]);
     await expect.poll(() => cell(page, "XA035Bulk", 1, 6).inputValue()).toBe("9,000.00");
     await (await calcButton(page, "XA035Bulk", "Compute")).click();
-    expect(await box(page, "xa1_taxable1").inputValue()).toBe("9,000.00");
+    await expect.poll(() => box(page, "xa1_taxable1").inputValue()).toBe("9,000.00");
     await (await calcButton(page, "XA035Bulk", "Close")).click();
     await link(page, 2).click(); // XA036 Bottle now opens
     await fill("XA036Bottle", [[2, "brandy"], [3, "10"], [4, "12"], [6, "0.75"], [7, "40"]]);
@@ -207,7 +209,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await cell(page, "XA036Bottle", 1, 10).inputValue()).toBe("72.00");
     // XA036's one Schedule 1 box takes Bottle + Bulk: 72.00 + 900.45
     await (await calcButton(page, "XA036Bottle", "Compute")).click();
-    expect(await box(page, "xa1_taxable2").inputValue()).toBe("972.45");
+    await expect.poll(() => box(page, "xa1_taxable2").inputValue()).toBe("972.45");
     await page.close();
   }, 90_000);
 
@@ -241,6 +243,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     }
     await print.click();
     expect(await page.evaluate(() => (window as unknown as { __printed: unknown[] }).__printed)).toEqual([{ title: true, button: false }]);
+    expect(said.at(-1)).toMatch(/^This form must be printed on Legal Size Paper\./);
     // after printing, the calculator is back as it was: title hidden, buttons shown, the TIN filled in
     expect(await shown(page, "TitleCalculatorXA061")).toBe(false);
     expect(await print.isVisible()).toBe(true);

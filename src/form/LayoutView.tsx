@@ -78,6 +78,11 @@ export async function loadLayout(name: string): Promise<string> {
 const reflow = (name: string) => name === "main" || name.startsWith("help-");
 
 /** A shadow root holding BIR's layout; resolves once it is in the page. */
+/** BIR's printModal notice, word for word (a calculator's Print). */
+const LEGAL_PAPER =
+  "This form must be printed on Legal Size Paper. Please update your Printer Settings (Set Paper Size to Legal under Preferences -> Advanced) to ensure the correct printout of the form.\n\n" +
+  "If applicable, open Internet Explorer, go to File -> Page Setup and change Page Size to Legal, all Margins must be 0.166, Enable Shrink-to-Fit must be unchecked, and all Headers & Footers must be set to empty.";
+
 export function useLayoutRoot(name: string, attachment?: AttachmentSpec): [React.RefObject<HTMLDivElement | null>, ShadowRoot | null] {
   const host = useRef<HTMLDivElement>(null);
   const [root, setRoot] = useState<ShadowRoot | null>(null);
@@ -688,6 +693,28 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         const header = root.getElementById(`CalcCheck${name}`) as HTMLInputElement | null;
         // selectAll: the header's tick box ticks or unticks every row
         if (header) on(header, "change", () => setGroups((s) => ({ ...s, [g.name]: (s[g.name] ?? []).map((r) => ({ ...r, [tick(name)]: String(header.checked) })) })));
+        // printModal: an empty or unfinished table is refused as Compute refuses it; else BIR's legal-paper notice, and
+        // the calculator prints alone with its title (the TIN and the date computed), its buttons hidden, and comes
+        // back as it was (cancelPrintOCR)
+        const printCalc = () => {
+          if (rowOf(name).length === 0) return window.alert("Please provide valid data.");
+          const bad = calc.table_alert(name, shownRow(name));
+          if (bad) return window.alert(bad);
+          const c = latest.current.computed;
+          const tin = ["txtTIN1", "txtTIN2", "txtTIN3", "txtBranchCode"].map((x) => c[`frm2200A:${x}`] ?? "").join("-");
+          for (const span of Array.from(div.querySelectorAll<HTMLElement>('span[name="calcTIN"]'))) span.textContent = tin;
+          const title = root.getElementById(`TitleCalculator${name}`) as HTMLElement | null;
+          const button = Array.from(div.querySelectorAll<HTMLElement>("input[type=button]"));
+          window.alert(LEGAL_PAPER);
+          title?.style.setProperty("display", "block");
+          for (const x of button) x.style.setProperty("visibility", "hidden");
+          try {
+            window.print();
+          } finally {
+            title?.style.setProperty("display", "none");
+            for (const x of button) x.style.removeProperty("visibility");
+          }
+        };
         for (const b of Array.from(div.querySelectorAll<HTMLInputElement>("input[type=button]"))) {
           const v = (b.value || "").trim();
           if (!/^(?:Add|Delete|Clear|Compute|Close|Print)$/.test(v)) continue;
@@ -722,31 +749,14 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
                   lastRow = -1;
                 } else {
                   set({ [target]: calc.sub_total(read, source) });
-                  if (window.confirm("You are advised to print this computation.")) window.print();
+                  if (window.confirm("You are advised to print this computation.")) printCalc();
                 }
               }
               // setCalcDate: the "Date computed" line, whatever came of it
               const stamp = root.getElementById(`dateComputed${name}`);
               if (stamp) stamp.textContent = dateToday();
             } else if (v === "Print") {
-              // printModal: an empty or unfinished table is refused as Compute refuses it; else the calculator prints
-              // alone with its title (the TIN and the date computed), its buttons hidden, and comes back as it was
-              if (row.length === 0) return window.alert("Please provide valid data.");
-              const bad = calc.table_alert(name, shownRow(name));
-              if (bad) return window.alert(bad);
-              const c = latest.current.computed;
-              const tin = ["txtTIN1", "txtTIN2", "txtTIN3", "txtBranchCode"].map((x) => c[`frm2200A:${x}`] ?? "").join("-");
-              for (const span of Array.from(div.querySelectorAll<HTMLElement>('span[name="calcTIN"]'))) span.textContent = tin;
-              const title = root.getElementById(`TitleCalculator${name}`) as HTMLElement | null;
-              const button = Array.from(div.querySelectorAll<HTMLElement>("input[type=button]"));
-              title?.style.setProperty("display", "block");
-              for (const x of button) x.style.setProperty("visibility", "hidden");
-              try {
-                window.print();
-              } finally {
-                title?.style.setProperty("display", "none");
-                for (const x of button) x.style.removeProperty("visibility");
-              }
+              printCalc();
             } else {
               // cancelCalcu: the pop-up behind comes back
               div.style.setProperty("display", "none");

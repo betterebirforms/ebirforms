@@ -196,11 +196,10 @@ const sub = (r: Read, name: string): number => num(r(`CalcSubTotal${name}`) || "
 /** The sub-total computeToSchedule1 copies into a row's taxable (XA035 / XA036 combine Bottle + Bulk). */
 const calcTotal = (r: Read, name: string): number =>
   name === "XA035" || name === "XA036" ? num(roundDown(sub(r, `${name}Bottle`) + sub(r, `${name}Bulk`))) : sub(r, name);
-/** A row's taxable: its calculator's sub-total when the calculator has one, else the entered amount. */
-const taxable = (r: Read, id: string, calc: string): number => {
-  const c = calcTotal(r, calc);
-  return c > 0 ? c : num(r(id) || "0");
-};
+/** A row's taxable: the box's own value. BIR writes a calculator's sub-total into it only on Compute, on Clear, or when
+ *  Delete empties the calculator (computeToSchedule1 / computeToSchedule1WithNoAlertAndPrint); a row typed into the
+ *  calculator moves only the calculator's sub-total, and a reload keeps the saved box. */
+const taxable = (r: Read, id: string, _calc: string): number => num(r(id) || "0");
 
 /** computeToSchedule1's route for a calculator: the sub-total it copies (XA035 / XA036 combine Bottle + Bulk) and the
  *  Schedule 1 taxable box it writes. */
