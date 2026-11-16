@@ -146,6 +146,19 @@ export const BUTTON_GROUP: Record<string, Record<string, { group: string; title?
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
   },
+  // 2552 (2018) Part V Schedules 1 to 3 "(Add More...)": BIR enables the live schedule's once its rows 1 to 5 are full;
+  // the button's state can't see the boxes, so the web version keeps all three open
+  "2552v2018": Object.fromEntries([1, 2, 3].map((n) => [`btnPg2Pt5Sch${n}More`, { group: `sched${n}more`, title: `Schedule ${n} Add More`, on: () => true }])),
+  // 1707 (2018, 2021) Part IV Schedules 2 and 3 "(Add More...)": BIR enables it only once rows 1 to 4 are all filled in
+  // (Check_Pg2Pt4S2); the button's state can't see the boxes, so the web version keeps it open
+  "1707v2018": {
+    btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: () => true },
+    btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: () => true },
+  },
+  "1707v2021": {
+    btnPg2Pt4Sch2More: { group: "sched2more", title: "Schedule 2 Add More", on: () => true },
+    btnPg2Pt4Sch3More: { group: "sched3more", title: "Schedule 3 Add More", on: () => true },
+  },
   "1707Av2021": {
     btnSched1More: { group: "sched1more", on: (g) => (g.sched1more ?? []).length >= 2 },
     btnSched2More: { group: "sched2more", on: (g) => (g.sched2more ?? []).length >= 2 },
