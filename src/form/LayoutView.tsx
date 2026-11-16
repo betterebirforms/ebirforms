@@ -7,13 +7,14 @@
 // app makes when there is no internet), locked, for the desktop app or BIR's app to send.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
-import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
+import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type AttachmentSpec, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { AtcPicker, natureOf } from "./AtcPicker.tsx";
 import { BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
 import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
 import { formatMoney, parseMoney } from "./money.ts";
+import { deleteCopy, prepareCopy, showCopy } from "./attachment.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
 import { IS_WEB, readText, writeText } from "@/lib/vfs";
 import { parseSavefile } from "@/lib/savefile.ts";
@@ -75,7 +76,7 @@ export async function loadLayout(name: string): Promise<string> {
 const reflow = (name: string) => name === "main" || name.startsWith("help-");
 
 /** A shadow root holding BIR's layout; resolves once it is in the page. */
-export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | null>, ShadowRoot | null] {
+export function useLayoutRoot(name: string, attachment?: AttachmentSpec): [React.RefObject<HTMLDivElement | null>, ShadowRoot | null] {
   const host = useRef<HTMLDivElement>(null);
   const [root, setRoot] = useState<ShadowRoot | null>(null);
   useEffect(() => {
@@ -90,6 +91,8 @@ export function useLayoutRoot(name: string): [React.RefObject<HTMLDivElement | n
       // (BIR's pages don't opt into dark mode there), so pin the layout to IE's defaults.
       // BIR's print stylesheet applies when printing, as on BIR's pages; the phone fit (zoom) is for the screen only
       shadow.innerHTML = `<style>:host{display:block;min-height:100vh;color-scheme:light only;color:#000;background:#fff} .bir-body{min-height:100vh}</style><style media="print">${printCss}\n:host{min-height:0} .bir-body{zoom:1 !important;min-height:0} .ebf-zoom{display:none !important}</style>${html}${reflow(name) ? `<style>${phoneCss}</style>` : ""}`;
+      // BIR's attachments: every copy the engine models, on the page before the boxes are bound
+      if (attachment) prepareCopy(shadow, attachment);
       setRoot(shadow);
     });
     return () => {
@@ -168,7 +171,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   const { schema, validate } = def;
   // Validate and Submit also run the checks BIR leaves out of Save
   const validateFull = (c: FormState, g: GroupState) => [...validate(c, g), ...(def.validate_only?.(c, g) ?? [])];
-  const [host, root] = useLayoutRoot(form_code);
+  const [host, root] = useLayoutRoot(form_code, NATIVE_FORM[form_code]!.schema.attachment);
 
   const [state, setState] = useState<FormState>(() => {
     if (initial) return initial.state;
@@ -189,6 +192,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
 
   // the schedule pop-up open now (BIR's "Add more…" / "View Details"), with its column labels read off BIR's page
   const [openGroup, setOpenGroup] = useState<{ name: string; title: string; label: Record<string, string> } | null>(null);
+  // the attachment on screen (BIR's ATTACHMENT frame): which copy and which of its pages; null = the return itself
+  const [copyView, setCopyView] = useState<{ code: string; n: number; page: number } | null>(null);
   // BIR's ATC pick list open now (picker.ts), and the payee row it is for (-1: a Part II table)
   const [pick, setPick] = useState<{ picker: Picker; row: number; title: string } | null>(null);
   const setRow = (group: string, i: number, id: string, value: string) =>
@@ -553,6 +558,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       // BIR's attachments (one 5-page copy of the return per exempt or special-rate activity) are not modelled by
       // the engine, so their boxes would never be saved: say so rather than open them (ROADMAP)
       const attachment = opening && !choice && fx.show.some((x) => /^(?:ATTACHMENT|attachmentModalVIEW|addAttachment)$/.test(x));
+      if (attachment && schema.attachment) continue;
       if (attachment) {
         el.dataset.ebfPopup = "later";
         on(el, "click", (e) => {
@@ -743,6 +749,95 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     groupBox.current = rowBox;
     return () => off.forEach((f) => f());
   }, [root, schema, form_code, validate, profile, onClose, onSaved, host]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // BIR's attachments (schema.attachment): its add buttons add a copy and show it, its frame's page buttons, Go and
+  // Delete move around the copies, its view buttons open the first copy, its back button returns to the return
+  useEffect(() => {
+    const spec = schema.attachment;
+    if (!root || !spec) return;
+    const off: Array<() => void> = [];
+    const on = (el: Element | null, fn: (e: Event) => void) => {
+      if (!el) return;
+      const run = (e: Event) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!(el as HTMLInputElement).disabled) fn(e);
+      };
+      el.addEventListener("click", run, true);
+      off.push(() => el.removeEventListener("click", run, true));
+    };
+    const count = (code: string) => Number(latest.current.state[spec.kind.find((k) => k.code === code)?.count_field ?? ""] || 0);
+    for (const kind of spec.kind)
+      on(root.getElementById(kind.add_button), () => {
+        const n = count(kind.code);
+        if (n >= spec.max) return window.alert(`The web version keeps up to ${spec.max} attachments of this kind.`);
+        setState((s) => ({ ...s, [kind.count_field]: String(n + 1) }));
+        setCopyView({ code: kind.code, n: n + 1, page: 1 });
+      });
+    const frame = root.getElementById("ATTACHMENT");
+    for (const b of Array.from(root.querySelectorAll<HTMLInputElement>("input[type=button], button, a"))) {
+      const id = b.id;
+      const v = (b.value || b.textContent || "").replace(/\s+/g, " ").trim();
+      const page = id.match(/^attachmentPage(\d)/)?.[1];
+      if (page) on(b, () => setCopyView((x) => (x ? { ...x, page: Number(page) } : x)));
+      else if (id === "attachmentGo")
+        on(b, () =>
+          setCopyView((x) => {
+            if (!x) return x;
+            const n = Number((root.getElementById("attachmentCurrent") as HTMLInputElement | null)?.value);
+            if (!(n >= 1 && n <= count(x.code))) {
+              window.alert("Invalid attachment number.");
+              return { ...x };
+            }
+            return { ...x, n, page: 1 };
+          }),
+        );
+      else if (id === "attachmentDelete")
+        on(b, () => {
+          const x = copyViewRef.current;
+          if (!x || !window.confirm("Are you sure you want to delete this attachment? This is irreversible. ")) return;
+          setState((s) => deleteCopy(s, schema.field, spec, x.code, x.n));
+          const left = count(x.code) - 1;
+          setCopyView(left > 0 ? { code: x.code, n: Math.min(x.n, left), page: 1 } : null);
+        });
+      else if (/view/i.test(id) && /attach/i.test(id)) {
+        const code = /special|SP/.test(id) ? "SP" : /exempt|EX/.test(id) ? "EX" : null;
+        on(b, () => {
+          const pick = code ?? spec.kind.find((k) => count(k.code) > 0)?.code;
+          if (!pick || count(pick) === 0) return window.alert("There are no attachments yet.");
+          setCopyView({ code: pick, n: 1, page: 1 });
+        });
+      } else if (frame?.contains(b) && !b.closest("[data-ebf-copy]") && /back|main|close/i.test(`${id} ${v}`)) on(b, () => setCopyView(null));
+    }
+    return () => off.forEach((f) => f());
+  }, [root, schema]); // eslint-disable-line react-hooks/exhaustive-deps
+  const copyViewRef = useRef(copyView);
+  copyViewRef.current = copyView;
+  // what BIR's setView / displayAttachmentByPage leave on screen for the copy in view
+  useEffect(() => {
+    const spec = schema.attachment;
+    if (!root || !spec) return;
+    const show = (id: string, on: boolean) => (root.getElementById(id) as HTMLElement | null)?.style.setProperty("display", on ? "block" : "none");
+    show("ATTACHMENT", Boolean(copyView));
+    show("mainPages", !copyView);
+    for (const k of spec.kind) show(k.container, copyView?.code === k.code);
+    showCopy(root, copyView ? `${copyView.code}${copyView.n}` : null, copyView?.page ?? 1);
+    if (!copyView) return;
+    const kind = spec.kind.find((k) => k.code === copyView.code)!;
+    const put = (id: string, value: string) => {
+      const el = root.getElementById(id) as HTMLInputElement | null;
+      if (el) el.value = value;
+    };
+    put("attachmentTotal", state[kind.count_field] || "0");
+    put("attachmentCurrent", String(copyView.n));
+    put("currentTypeView", `${copyView.code}${copyView.n}`);
+    put("attachTypeView", copyView.code);
+    for (let p = 1; p <= 9; p++) {
+      const b = root.getElementById(`attachmentPage${p}`) as HTMLInputElement | null;
+      if (b) b.disabled = p === copyView.page;
+    }
+    host.current?.scrollIntoView();
+  }, [root, schema, copyView, state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // BIR's buttons follow Validate: before it only Validate (and Save) work; after it Edit, Print and Submit do. A
   // final copy keeps Print and Submit (which says how to send it) and nothing that changes it
