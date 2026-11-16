@@ -432,7 +432,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         for (let n = g.first_index ?? 1, el = byId(root, `${head}${n}${tail}`); el; n++, el = byId(root, `${head}${n}${tail}`)) {
           rowBox.set(el, { group: g, row: n - (g.first_index ?? 1), id: sub.id });
           const at = n - (g.first_index ?? 1);
-          if (sub.kind === "checkbox") on(el, "change", () => setRow(g.name, at, sub.id, String(el.checked)));
+          if (sub.kind === "checkbox" || sub.kind === "radio") on(el, "change", () => setRow(g.name, at, sub.id, String(el.checked)));
           else {
             on(el, sub.kind === "select" ? "change" : "input", () => setRow(g.name, at, sub.id, el.value));
             if (sub.kind === "money") on(el, "blur", () => !el.readOnly && setRow(g.name, at, sub.id, typedMoney(schema, el.value)));
@@ -558,6 +558,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       const rowsHere = div.some((d) => Array.from(rowBox.keys()).some((x) => d.contains(x)));
       const hinted = fx.show.map((x) => POPUP_GROUP[form_code]?.[x]).find(Boolean);
       const editor = opening && !rowsHere ? ((hinted ? (schema.group ?? []).find((g) => g.name === hinted) : null) ?? div.map(groupIn).find(Boolean) ?? null) : null;
+      // a link that opens the row editor (BUTTON_GROUP) and would here only show BIR's own table is left to the editor:
+      // the 1700's Part IV link would otherwise hide the whole form behind a table whose rows BIR's script builds
+      if (!editor && id in (BUTTON_GROUP[form_code] ?? {})) continue;
       // what it opens, for bench/web-parity.mjs: BIR's pop-up with its boxes, the schedule editor, or BIR's pop-up
       // with nothing the form keeps (a list BIR's script fills, still to do)
       // BIR's attachments (one 5-page copy of the return per exempt or special-rate activity) are not modelled by
@@ -982,8 +985,11 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       const sub = r.group.row.find((x) => x.id === r.id)!;
       const at = rowsOf.get(r.group.name)!;
       const value = sub.row_compute || sub.derive ? (at.computed[r.row]?.[r.id] ?? "") : (at.rows[r.row]?.[r.id] ?? "");
-      if (sub.kind === "checkbox") el.checked = value === "true";
-      else if (el !== focused && el.value !== value && (value !== "" || at.rows[r.row])) el.value = value;
+      if (sub.kind === "checkbox" || sub.kind === "radio") {
+        el.checked = value === "true";
+        // a radio BIR sets itself (1701's attachment regime, setTaxRegime) cannot be moved by the user
+        if (sub.kind === "radio" && sub.derive && !validated) el.disabled = true;
+      } else if (el !== focused && el.value !== value && (value !== "" || at.rows[r.row])) el.value = value;
       if (sub.row_compute) el.readOnly = true;
     }
     // a validated return is locked until Edit, as BIR's disableAllControl() does

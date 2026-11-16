@@ -52,6 +52,9 @@ export interface FieldSpec {
    *  stem (this row) or a form field's id (1602's and 1601F's ATC list follow the form's agent category). The web
    *  version's row editor draws it as a <select>. */
   option?: RowOption[] | ((read: (id: string) => string) => RowOption[]);
+  /** The row editor greys this box unless it holds for the row (1700: an employer's amounts open once its name and
+   *  TIN are in, enablePage2IterationFields). */
+  row_enabled?: (row: Record<string, string>) => boolean;
   /** A tick or radio the row editor shows (BIR saves it per row: 1700's Taxpayer / Spouse). Without this a checkbox
    *  sub-field stays hidden: BIR's own row-selection ticks (chk…Delete, sched1Chk) only drive its Delete button. */
   row_tick?: {
@@ -72,6 +75,9 @@ export interface RowOption {
   label?: string;
   /** Other sub-fields BIR fills in the row when this is picked (an ATC's rate): stem -> value. */
   fill?: Record<string, string>;
+  /** Tells apart two entries that save the same value (BIR's 2000 lists DS112 twice; the second fills the pre-need
+   *  rate). Reopened, the list shows the entry whose fill the row still holds. */
+  key?: string;
 }
 
 /** One gate condition: field `on` must equal `equals` for the gated field to be live — or, for a condition on a

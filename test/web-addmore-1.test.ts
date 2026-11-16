@@ -15,7 +15,7 @@ const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javasc
 const HAS_CHROMIUM = await chromium.launch().then((b) => (void b.close(), true), () => false);
 
 const LINK: Array<[string, string[]]> = [
-  ["1700", ["frm1700:lnkPg2Pt4I12ADDMore", "frm1700:lnkPg3Pt5I6ADDMore", "frm1700:lnkPg3Pt5I11ADDMore", "frm1700:lnkPg3Pt5I17ADDMore", "frm1700:lnkPg3Pt5I20ADDMore", "frm1700:lnkPg3Pt5I7ADDMore", "frm1700:lnkPg3Pt5I10ADDMore"]],
+  ["1700", ["frm1700:lnkPg2Pt4AddLink", "frm1700:lnkPg2Pt4I12ADDMore", "frm1700:lnkPg3Pt5I6ADDMore", "frm1700:lnkPg3Pt5I11ADDMore", "frm1700:lnkPg3Pt5I17ADDMore", "frm1700:lnkPg3Pt5I20ADDMore", "frm1700:lnkPg3Pt5I7ADDMore", "frm1700:lnkPg3Pt5I10ADDMore"]],
   ["1700v2018", ["addMoreSched1Link"]],
   ["1701A", ["frm1701A:lnkPartIVAMore", "frm1701A:lnkPartIVBMore"]],
   ["1701", [...(modal1701 as Array<{ link: string }>).filter((m) => !m.link.includes("TYPE")).map((m) => m.link), ...(column1701 as Array<{ link: string }>).map((c) => c.link)]],

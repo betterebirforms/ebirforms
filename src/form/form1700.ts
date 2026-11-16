@@ -151,6 +151,11 @@ export const MODAL_GROUP: GroupSpec[] = MODALS.map((m) => ({
   row: m.columns.map(([stem, kind]): FieldSpec => {
     const id = `${P}${stem}`;
     if (kind === "select") return { id, kind, option: PS_CS_OPTION }; // BIR's <select>: PS (selected) / CS
+    // Part IV's amounts open once the employer's name and TIN are in (enablePage2IterationFields)
+    if (m.name === "modalPage2Part4" && kind === "money") {
+      const filled = ["txtPg2Pt4I3NameOfEmployer{i}", "txtPg2Pt4I3EMPTIN1{i}", "txtPg2Pt4I3EMPTIN2{i}", "txtPg2Pt4I3EMPTIN3{i}"].map((c) => `${P}${c}`);
+      return { id, kind, row_enabled: (row) => filled.every((f) => (row[f] ?? "") !== "") };
+    }
     if (kind !== "check") return { id, kind };
     // BIR's Taxpayer / Spouse ticks (processTFEmployer / processSpEmployer): one or the other, and the Spouse one is
     // live only on a joint return (disableSingle)

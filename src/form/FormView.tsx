@@ -200,9 +200,12 @@ export function ScheduleTable({
       }
     });
   });
-  const pick = (i: number, sub: FieldSpec, value: string) => {
-    onSet(group.name, i, sub.id, value);
-    for (const [id, filled] of Object.entries(optionOf(sub, i).find((o) => o.value === value)?.fill ?? {})) onSet(group.name, i, id, filled);
+  const keyOf = (o: RowOption) => o.key ?? o.value;
+  const pick = (i: number, sub: FieldSpec, key: string) => {
+    const o = optionOf(sub, i).find((x) => keyOf(x) === key);
+    if (!o) return;
+    onSet(group.name, i, sub.id, o.value);
+    for (const [id, filled] of Object.entries(o.fill ?? {})) onSet(group.name, i, id, filled);
   };
   const tick = (i: number, sub: FieldSpec, on: boolean) => {
     onSet(group.name, i, sub.id, String(on));
@@ -218,10 +221,13 @@ export function ScheduleTable({
     const value = sub.row_compute || sub.derive ? (computed[i]![sub.id] ?? "") : (row[sub.id] ?? "");
     if (sub.kind === "select" && sub.option) {
       const list = optionOf(sub, i);
+      // the entry the row holds: of two that save one value, the one whose fill the row still carries
+      const same = list.filter((o) => o.value === value);
+      const shown = same.find((o) => Object.entries(o.fill ?? {}).every(([id, v]) => (computed[i]?.[id] ?? row[id] ?? "") === v)) ?? same[0] ?? list[0];
       return (
-        <select value={list.some((o) => o.value === value) ? value : (list[0]?.value ?? "")} onChange={(e) => pick(i, sub, e.target.value)}>
+        <select value={shown ? keyOf(shown) : ""} onChange={(e) => pick(i, sub, e.target.value)}>
           {list.map((o) => (
-            <option key={o.value} value={o.value}>
+            <option key={keyOf(o)} value={keyOf(o)}>
               {o.label ?? o.value}
             </option>
           ))}
@@ -246,7 +252,7 @@ export function ScheduleTable({
         inputMode={sub.kind === "money" ? "decimal" : undefined}
         readOnly={Boolean(sub.row_compute)}
         className={sub.kind === "money" ? "money" : ""}
-        disabled={guarded(sub, row)}
+        disabled={guarded(sub, row) || (sub.row_enabled ? !sub.row_enabled(row) : false)}
         value={value}
         onChange={(e) => onSet(group.name, i, sub.id, e.target.value)}
         onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, typed(e.target.value)) : undefined}

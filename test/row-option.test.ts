@@ -73,6 +73,16 @@ describe("the lists", () => {
     expect(atc.length).toBeGreaterThan(20);
   });
 
+  it("2000v2018: DS112 is listed twice as in BIR's list, the second filling the pre-need plans rate", () => {
+    const ds112 = list(sub("2000v2018", "sched1", "drpATCCode")).filter((o) => o.value === "DS112");
+    expect(ds112.length).toBe(2);
+    expect(new Set(ds112.map((o) => o.key ?? o.value)).size).toBe(2);
+    const rate = ds112.map((o) => Object.values(o.fill ?? {})[0]);
+    expect(rate[0]).toBeTruthy();
+    expect(rate[1]).toBeTruthy();
+    expect(rate[0]).not.toBe(rate[1]);
+  });
+
   it("PS / CS in 1700, 1701, 1702EX and 1702RT, as BIR's markup lists them", () => {
     expect(PS_CS_OPTION).toEqual([{ value: "PS" }, { value: "CS" }]);
     expect(list(sub("1700", "Page3Part5ModalA3", "frm1700:drpPg3Pt5I12A1{i}"))).toEqual(PS_CS_OPTION);

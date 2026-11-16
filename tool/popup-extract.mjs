@@ -93,6 +93,13 @@ for (const file of readdirSync(FORM).filter((f) => /^BIR-Form.+\.hta$/i.test(f))
     const text = label(page.slice(m.index, end + 1), page.slice(end + 1).replace(/^(?:\s*<font[^>]*>)+/i, "").replace(/&nbsp;/g, " "));
     if (text) jump[text] ??= m[1].toLowerCase() === "next" ? "+1" : "-1";
   }
+  // a nav button that only scrolls (1702RT's "(To Schedule 7 Item 4)", window.scrollTo): its schedule is on the same
+  // page, so it goes to the top of the page it is on
+  for (const m of page.matchAll(/<input\b[^>]*\bname\s*=\s*"navButton"[^>]*\bonclick\s*=\s*"\s*window\.scrollTo\s*\(|<input\b[^>]*\bonclick\s*=\s*"\s*window\.scrollTo\s*\([^"]*"[^>]*\bname\s*=\s*"navButton"/gi)) {
+    const end = page.indexOf(">", m.index);
+    const text = label(page.slice(m.index, end + 1), page.slice(end + 1));
+    if (text) jump[text] ??= "+0";
+  }
   if (Object.keys(jump).length) pageLink[layoutFile.slice(0, -5)] = jump;
   for (const tag of page.matchAll(/<(?:input|a|button|img|span|td)\b[^>]*>/gi)) {
     const id = tag[0].match(/\bid\s*=\s*["']([^"']+)["']/i)?.[1];

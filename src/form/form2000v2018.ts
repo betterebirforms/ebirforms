@@ -47,10 +47,16 @@ export const modal2000v2018 = (r: Read): DstModal => ({
   month_count_132: r(`${P}numOfMonths132`) || "0",
 });
 
-const ATC_OPTION_2000V2018: RowOption[] = ATC_CHOICE_2000V2018.map((value) => ({
-  value,
-  label: value === "-" ? "-" : `${value} - ${value === "DS010" ? "GENERAL" : (DST_ATC.find((a) => a.atc_code === value)?.description ?? "")}`,
-}));
+// BIR lists DS112 twice (its DST table has two DS112 rows); picking the second writes the pre-need plans rate
+// (getATCdrpTaxRate's selectedIndex == j + 2), and both save "DS112"
+const ATC_OPTION_2000V2018: RowOption[] = ATC_CHOICE_2000V2018.flatMap((value): RowOption[] => {
+  if (value !== "DS112") return [{ value, label: value === "-" ? "-" : `${value} - ${value === "DS010" ? "GENERAL" : (DST_ATC.find((a) => a.atc_code === value)?.description ?? "")}` }];
+  const [plain, pre_need] = DST_ATC.filter((a) => a.atc_code === "DS112");
+  return [
+    { value, label: `${value} - ${plain!.description}`, fill: { [`${S1}txtTaxRate`]: rateText2000v2018("DS112", false) } },
+    { value, key: "DS112:pre-need", label: `${value} - ${pre_need!.description}`, fill: { [`${S1}txtTaxRate`]: rateText2000v2018("DS112", true) } },
+  ];
+});
 
 const atcOf = (r: Read): string => (r("drpATCCode") || "-").trim();
 const engine = (r: Read) => taxDue2000v2018(atcOf(r), m(r, `${S1}txtTaxBase`), r(`${S1}txtTaxRate`), modal2000v2018(r));
@@ -60,8 +66,8 @@ export const SCHED1_2000V2018: GroupSpec = {
   first_index: 0,
   row: [
     { id: "chkSchedule1Delete", kind: "checkbox", derive: () => "false" },
-    // BIR's list: "-", its hard-coded "DS010 - GENERAL", then every DST ATC (DS112 twice there: the pre-need entry
-    // has no value of its own, so the editor lists the code once and the rate box carries the pre-need text)
+    // BIR's list: "-", its hard-coded "DS010 - GENERAL", then every DST ATC (DS112 twice, the second filling the
+    // pre-need rate into the rate box)
     { id: "drpATCCode", kind: "select", option: ATC_OPTION_2000V2018, derive: (_r, v) => v.trim() || "-" },
     // DS130–DS132 range checks reset an out-of-range base to 0.00
     { id: `${S1}txtTaxBase`, kind: "money", derive: (r, v) => formatMoney(engine(r).tax_base ?? parseMoney(v)) },

@@ -109,4 +109,36 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await expect.poll(() => page.locator('.schedule-modal tbody tr input[type="checkbox"]').first().isChecked()).toBe(true);
     await page.close();
   }, 60_000);
+
+  it("1700 Part IV employers: amounts stay greyed until a tick is on and the name and TIN are in", async () => {
+    const page = await open("1700");
+    await click(page, "frm1700:lnkPg2Pt4AddLink");
+    await page.locator(".schedule-modal button", { hasText: "Add row" }).click();
+    const row = page.locator(".schedule-modal tbody tr").first();
+    const box = row.locator('input:not([type="checkbox"])');
+    const amount = box.nth(5);
+    expect(await amount.isDisabled()).toBe(true);
+    await row.locator('input[type="checkbox"]').first().check();
+    expect(await box.first().isDisabled()).toBe(false);
+    expect(await amount.isDisabled()).toBe(true); // a tick alone is not enough
+    await box.nth(0).fill("ACME CORP");
+    for (const [i, v] of [[1, "123"], [2, "456"], [3, "789"]] as const) await box.nth(i).fill(v);
+    expect(await amount.isDisabled()).toBe(false);
+    await page.close();
+  }, 60_000);
+
+  it("1701 (2018) attachment: BIR's regime radios are set by the attachment's kind and stay read-only", async () => {
+    const page = await open("1701v2018");
+    await page.locator('[id="frm1701:rdoPg1mOption2"]').first().evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await click(page, "frm1701:btnAddAttachmentEX");
+    const exempt = page.locator('[id="frm1701:rdoPg3mExemptEX1"]').first();
+    const special = page.locator('[id="frm1701:rdoPg3mSpecialRateEX1"]').first();
+    await expect.poll(() => exempt.count()).toBe(1);
+    await expect.poll(() => exempt.evaluate((e) => (e as HTMLInputElement).checked)).toBe(true);
+    expect(await special.evaluate((e) => (e as HTMLInputElement).checked)).toBe(false);
+    // the user cannot move the regime: both radios are greyed, as BIR's setTaxRegime leaves them
+    expect(await special.evaluate((e) => (e as HTMLInputElement).disabled)).toBe(true);
+    expect(await exempt.evaluate((e) => (e as HTMLInputElement).getAttribute("value"))).not.toBe("false");
+    await page.close();
+  }, 60_000);
 });
