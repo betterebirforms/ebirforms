@@ -207,6 +207,12 @@ export function ScheduleTable({
   const tick = (i: number, sub: FieldSpec, on: boolean) => {
     onSet(group.name, i, sub.id, String(on));
     if (on) for (const id of sub.row_tick?.exclude ?? []) onSet(group.name, i, id, "false");
+    else for (const [id, blank] of Object.entries(sub.row_tick?.clear ?? {})) onSet(group.name, i, id, blank);
+  };
+  // a box a tick governs (row_tick.clear) is greyed while none of the row's ticks is on
+  const guarded = (sub: FieldSpec, row: GroupRow) => {
+    const tick = group.row.filter((t) => t.row_tick?.clear && sub.id in t.row_tick.clear);
+    return tick.length > 0 && !tick.some((t) => row[t.id] === "true");
   };
   const cell = (sub: FieldSpec & { row_compute?: unknown }, row: GroupRow, i: number) => {
     const value = sub.row_compute || sub.derive ? (computed[i]![sub.id] ?? "") : (row[sub.id] ?? "");
@@ -240,6 +246,7 @@ export function ScheduleTable({
         inputMode={sub.kind === "money" ? "decimal" : undefined}
         readOnly={Boolean(sub.row_compute)}
         className={sub.kind === "money" ? "money" : ""}
+        disabled={guarded(sub, row)}
         value={value}
         onChange={(e) => onSet(group.name, i, sub.id, e.target.value)}
         onBlur={sub.kind === "money" && !sub.row_compute ? (e) => onSet(group.name, i, sub.id, typed(e.target.value)) : undefined}

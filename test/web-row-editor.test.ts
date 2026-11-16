@@ -87,8 +87,21 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const tick = page.locator('.schedule-modal tbody tr input[type="checkbox"]');
     expect(await tick.count()).toBe(2); // the row-selection tick BIR keeps for its Delete is not among them
     expect(await tick.nth(1).isDisabled()).toBe(true);
+    // a new row's boxes stay greyed until Taxpayer or Spouse is ticked (BIR's addRow_schedule1 adds them disabled)
+    const text = page.locator('.schedule-modal tbody tr input:not([type="checkbox"])');
+    expect(await text.first().isDisabled()).toBe(true);
     await tick.nth(0).check();
     expect(await tick.nth(0).isChecked()).toBe(true);
+    expect(await text.first().isDisabled()).toBe(false);
+    // unticking empties the row as enabledSched1ColumnField does: names and TIN blank, amounts 0.00, greyed again
+    await text.first().fill("ACME CORP");
+    await text.last().fill("1500");
+    await text.last().press("Tab");
+    await tick.nth(0).uncheck();
+    expect(await text.first().inputValue()).toBe("");
+    expect(await text.last().inputValue()).toBe("0.00");
+    expect(await text.first().isDisabled()).toBe(true);
+    await tick.nth(0).check();
     await page.locator(".schedule-modal button", { hasText: "Done" }).click();
     await click(page, link);
     await expect.poll(() => page.locator('.schedule-modal tbody tr input[type="checkbox"]').first().isChecked()).toBe(true);

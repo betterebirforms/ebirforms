@@ -156,7 +156,9 @@ export const MODAL_GROUP: GroupSpec[] = MODALS.map((m) => ({
     // live only on a joint return (disableSingle)
     const spouse = stem.endsWith("Spouse");
     const other = `${P}${stem.replace(spouse ? "Spouse" : "TaxFiler", spouse ? "TaxFiler" : "Spouse")}`;
-    return { id, kind: "checkbox", row_tick: { exclude: [other], ...(spouse ? { enabled: (read) => read(`${P}rdoPg1Pt1I3JointFilingYes`) === "true" } : {}) } };
+    // unticking empties the employer (processTFEmployer / processSpEmployer: name and TIN blank, branch "000", amounts "0")
+    const clear = Object.fromEntries(m.columns.filter(([, k]) => k === "text" || k === "money").map(([c, k]) => [`${P}${c}`, k === "money" ? "0" : c.includes("BranchCode") ? "000" : ""]));
+    return { id, kind: "checkbox", row_tick: { exclude: [other], clear, ...(spouse ? { enabled: (read) => read(`${P}rdoPg1Pt1I3JointFilingYes`) === "true" } : {}) } };
   }),
 }));
 

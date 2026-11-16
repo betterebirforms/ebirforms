@@ -161,16 +161,21 @@ const SCHED_CELL = { c: "REG", d: "CIFR", e: "TW" } as const;
 const cell = (col: "c" | "d" | "e", n: number | string): string => `${P}txtPg2ISched1${col}_${n}${SCHED_CELL[col]}`;
 // the pop-up money cells carry the item number AND the row index: txtPg2ISched1c_4_{i}REG
 const moreCell = (col: "c" | "d" | "e"): string => `${P}txtPg2ISched1${col}_4_${MORE}${SCHED_CELL[col]}`;
+// what BIR's enabledSched1ColumnField writes into the row when its tick is cleared (and greys until one is ticked)
+const MORE_CLEAR: Record<string, string> = {
+  ...Object.fromEntries(["EmployerName1", "EmployerName2", "EmployerTIN1", "EmployerTIN2", "EmployerTIN3", "EmployerBranchCode"].map((x) => [`${P}txtPg2I4_${MORE}PartVI${x}`, ""])),
+  ...Object.fromEntries((["c", "d", "e"] as const).map((c) => [moreCell(c), "0.00"])),
+};
 const sched1more: GroupSpec = {
   name: "sched1more",
   row: [
     // BIR's Taxpayer / Spouse ticks (enabledSched1ColumnField): ticking one clears the other; the Spouse one is live
     // only on a joint filing status (its add-row sets .disabled from rdoPg1I17FilingStatusJ)
-    { id: `${P}rdoPg2I4_${MORE}PartVIEmployeeT`, kind: "checkbox", row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeS`] } },
+    { id: `${P}rdoPg2I4_${MORE}PartVIEmployeeT`, kind: "checkbox", row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeS`], clear: MORE_CLEAR } },
     {
       id: `${P}rdoPg2I4_${MORE}PartVIEmployeeS`,
       kind: "checkbox",
-      row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeT`], enabled: (read) => read(`${P}rdoPg1I17FilingStatusJ`) === "true" },
+      row_tick: { exclude: [`${P}rdoPg2I4_${MORE}PartVIEmployeeT`], enabled: (read) => read(`${P}rdoPg1I17FilingStatusJ`) === "true", clear: MORE_CLEAR },
     },
     { id: `${P}txtPg2I4_${MORE}PartVIEmployerName1`, kind: "text" },
     { id: `${P}txtPg2I4_${MORE}PartVIEmployerName2`, kind: "text" },

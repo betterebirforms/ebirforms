@@ -59,6 +59,9 @@ export interface FieldSpec {
     exclude?: string[];
     /** The tick is live only while this holds (1700's Spouse tick needs a joint return). */
     enabled?: (read: (id: string) => string) => boolean;
+    /** The row's boxes this tick governs, with what BIR writes into them when it is cleared (1700 (2018)
+     *  enabledSched1ColumnField); they stay greyed while no tick in the row is on. */
+    clear?: Record<string, string>;
   };
 }
 
