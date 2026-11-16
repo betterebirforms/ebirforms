@@ -1,4 +1,4 @@
-//! Go > Send Returns to BIR (beta): the user's switch for online submission. Off by default. Turning it on warns
+//! Go > Send Returns to BIR (beta): the user's switch for online submission. On by default. Turning it back on warns
 //! plainly, fetches BIR's two keys from BIR's official package the first time (bir_key.rs), then saves the switch.
 
 use crate::{bir_key, submit_setting, update::ask};

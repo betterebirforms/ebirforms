@@ -40,7 +40,7 @@ pub struct Host {
     pub conn: std::sync::Mutex<std::collections::BTreeMap<String, dispatch::Connection>>,
 }
 
-/// What Submit says while sending to BIR is off (the default; Go > Send Returns to BIR turns it on).
+/// What Submit says while sending to BIR is off (the user turned it off in Go > Send Returns to BIR).
 const NO_SUBMIT: &str = "Sending returns to BIR is off, so nothing was sent. Your final copy is saved; file it through BIR's eBIRForms or eFPS, or turn on Go > Send Returns to BIR (beta).";
 
 type Reply = Response<std::io::Cursor<Vec<u8>>>;
@@ -326,7 +326,7 @@ impl Host {
             .map(PathBuf::from)
             .unwrap_or_else(|_| self.key_file("ebfSFTP.exe"));
         let image = fs::read(&exe).map_err(|_| {
-            "This copy of the package has no ebfSFTP.exe, so it can't ask BIR where to upload. Re-import from the full official installer (.zip), not BIRForms.exe alone — or set the connection details by hand.".to_string()
+            "The app doesn't have BIR's ebfSFTP.exe yet, so it can't ask BIR where to upload. It downloads it from BIR's site when it starts with an internet connection: restart the app while online, or turn Go > Send Returns to BIR off and on again.".to_string()
         })?;
         dispatch::passphrase_from_sftp_exe(&image)
             .ok_or_else(|| "could not read the SFTP passphrase from ebfSFTP.exe".to_string())
@@ -498,7 +498,7 @@ impl Host {
     }
 
     /// Whether Submit may reach BIR: a build with `bir-submit` AND the user's switch (settings/submit.json
-    /// `enabled`, off by default). Off, every op below behaves as the download always did: nothing leaves the machine.
+    /// `enabled`, on unless turned off). Off, every op below behaves as the download always did: nothing leaves the machine.
     pub fn submit_on(&self) -> bool {
         cfg!(feature = "bir-submit") && crate::submit_setting::enabled(&self.data)
     }
@@ -827,6 +827,8 @@ mod shareable_test {
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         let h = host(dir.clone());
+        assert!(h.submit_on(), "on by default");
+        crate::submit_setting::set_enabled(&dir, false).unwrap();
         assert!(!h.submit_on());
         crate::submit_setting::set_enabled(&dir, true).unwrap();
         assert!(h.submit_on());
@@ -881,6 +883,8 @@ mod shareable_test {
         let dir = std::env::temp_dir().join(format!("ebf-share-{}", std::process::id()));
         fs::create_dir_all(dir.join("IAF_RDO_Copy")).unwrap();
         fs::write(dir.join("IAF_RDO_Copy/r.xml"), b"<div>k=v</div>").unwrap();
+        // sending is on by default; this is the path once the user turns it off (and every build without bir-submit)
+        crate::submit_setting::set_enabled(&dir, false).unwrap();
         let h = host(dir.clone());
         let d = h.dispatch_op("123456789000", "1701Q");
         assert_eq!(d["mode"], "0");

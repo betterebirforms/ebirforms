@@ -68,15 +68,15 @@ Windows and `~/.local/share/io.github.betterebirforms.ebirforms` on Linux. Up to
 
 ## Online submission
 
-The downloads have it built in (the Rust build option `bir-submit`, on by default) but it is **off until the user
-turns it on** in Go > Send Returns to BIR (beta) (`submit_menu.rs`, saved in `<app data>/data/settings/submit.json`;
+The downloads have it built in (the Rust build option `bir-submit`, on by default) and it is **on unless the user
+turns it off** in Go > Send Returns to BIR (beta) (`submit_menu.rs`, saved in `<app data>/data/settings/submit.json`;
 `host.rs` `submit_on()`). Off, every submit operation behaves as before: nothing leaves the machine. On, it does what
 BIR's app does: asks BIR's dispatcher where to upload (`dispatch.rs`; plain HTTP with the 9-digit TIN in the query, as
 BIR's `environment.js` does, because birgovph.com refuses HTTPS; the answer is parsed as JSON, never run), encrypts the final copy the way `Encrypt.exe`
 does (`crypto.rs`), and uploads over SFTP with the server's key pinned (`submit.rs`).
 
 The two passphrases live inside BIR's own helpers (`Encrypt.exe`, `ebfSFTP.exe`), which are never in this repo or a
-package. When the user turns sending on, `bir_key.rs` downloads BIR's official zip from bir-cdn.bir.gov.ph, keeps only
+package. When sending is on (the default), `bir_key.rs` downloads BIR's official zip from bir-cdn.bir.gov.ph at start-up (or when the switch is turned back on), keeps only
 those two files under `<app data>/data/bir-key/`, checks that each yields its key, and reads them as data. They are
 never run. A test checks that the compiled code carries neither key.
 

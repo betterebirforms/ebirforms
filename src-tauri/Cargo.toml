@@ -55,7 +55,7 @@ block2 = "0.6"
 
 [features]
 # BIR's online submission: dispatcher, ebfSFTP / Encrypt.exe passphrases, SFTP upload, fetching BIR's zip for the keys.
-# Built into the downloads but OFF until the user turns on Go > Send Returns to BIR (settings/submit.json).
+# Built into the downloads and ON unless the user turns off Go > Send Returns to BIR (settings/submit.json).
 default = ["bir-submit"]
 bir-submit = ["dep:aes", "dep:cbc", "dep:sha2", "dep:sha1", "dep:hmac", "dep:pbkdf2", "dep:base64", "dep:flate2", "dep:russh", "dep:russh-sftp", "dep:tokio", "dep:reqwest", "dep:rustls"]
 

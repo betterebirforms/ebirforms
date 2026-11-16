@@ -1,5 +1,5 @@
-// What the downloads promise (README "Online Submit", the release page, the app's own messages): Submit sends
-// nothing to BIR until the user turns on Go > Send Returns to BIR (beta), and the package never carries BIR's
+// What the downloads promise (README "Online Submit", the release page, the app's own messages): Submit sends the
+// return to BIR unless the user turns off Go > Send Returns to BIR (beta), and the package never carries BIR's
 // helpers or the keys inside them (the app fetches those from BIR's own zip). This keeps both true.
 import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
@@ -21,12 +21,12 @@ describe("online submission in the downloads", () => {
     for (const f of readdirSync(dir)) expect(text(`${dir}/${f}`), f).not.toMatch(/tauri build|--features/);
   });
 
-  it("is off until the user turns it on: the page may submit only when the host says so", () => {
+  it("is on unless the user turns it off: the page may submit only when the host says so", () => {
     const host = text("src-tauri/src/host.rs");
     expect(host).toContain('data-submit="{}"');
     expect(host).toMatch(/if self\.submit_on\(\) \{ 1 \} else \{ 0 \}/);
     expect(host).toMatch(/cfg!\(feature = "bir-submit"\) && crate::submit_setting::enabled\(&self\.data\)/);
-    expect(text("src-tauri/src/submit_setting.rs")).toMatch(/\["enabled"\]\.as_bool\(\)\.unwrap_or\(false\)/);
+    expect(text("src-tauri/src/submit_setting.rs")).toMatch(/\["enabled"\]\.as_bool\(\)\.unwrap_or\(true\)/);
     expect(text("public/legacy-shim.js")).toContain('getAttribute("data-submit") === "1"');
   });
 
@@ -36,7 +36,7 @@ describe("online submission in the downloads", () => {
     expect(stage).toMatch(/\\\.\(exe\|dll\|pdb/);
   });
 
-  it("the keys come from BIR's own zip on bir.gov.ph, at the user's request", () => {
+  it("the keys come from BIR's own zip on bir.gov.ph", () => {
     expect(text("src-tauri/src/bir_key.rs")).toMatch(/BIR_ZIP_URL: &str = "https:\/\/bir-cdn\.bir\.gov\.ph\//);
   });
 

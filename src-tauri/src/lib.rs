@@ -432,7 +432,7 @@ pub fn run() {
                 let data = app.path().app_data_dir()?.join("data");
                 #[allow(unused_mut)]
                 let mut go = SubmenuBuilder::new(app, "Go").item(&main).item(&native).separator().item(&mods).item(&saved);
-                // online submission: off until the user turns it on here (submit_menu.rs)
+                // online submission: on unless the user turns it off here (submit_menu.rs)
                 #[cfg(feature = "bir-submit")]
                 let send = CheckMenuItemBuilder::with_id("submit_on", submit_menu::TITLE).checked(submit_setting::enabled(&data)).build(app)?;
                 #[cfg(feature = "bir-submit")]
@@ -462,6 +462,19 @@ pub fn run() {
                     "submit_on" => submit_menu::toggle(app.clone(), data.clone(), send.clone()),
                     id => go_to(app, id),
                 });
+            }
+            // sending is on by default: fetch BIR's two keys from BIR's own package in the background, so the first
+            // Submit can send (bir_key.rs; a failure leaves Submit making the final copy, and the next start retries)
+            #[cfg(feature = "bir-submit")]
+            {
+                let data = app.path().app_data_dir()?.join("data");
+                if submit_setting::enabled(&data) && !bir_key::ready(&data) && std::env::var("EBF_NO_KEY_FETCH").is_err() {
+                    tauri::async_runtime::spawn_blocking(move || {
+                        if let Err(e) = bir_key::fetch(&data) {
+                            eprintln!("BIR's keys for sending: {e}");
+                        }
+                    });
+                }
             }
             // a packaged build checks GitHub for a newer signed release once at start-up (update.rs)
             if !cfg!(debug_assertions) {

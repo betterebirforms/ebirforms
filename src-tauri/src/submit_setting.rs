@@ -1,4 +1,4 @@
-//! The user's switch for sending returns to BIR: `settings/submit.json` `enabled` (false when missing). The same file
+//! The user's switch for sending returns to BIR: `settings/submit.json` `enabled` (on unless the user turned it off). The same file
 //! holds BIR's optional proxy (`proxy_host`, `proxy_port`, read by host.rs), so a write keeps every other key.
 
 use serde_json::{json, Value};
@@ -13,9 +13,9 @@ fn read(data: &Path) -> Value {
     fs::read(path(data)).ok().and_then(|b| serde_json::from_slice(&b).ok()).filter(Value::is_object).unwrap_or_else(|| json!({}))
 }
 
-/// Off unless the user turned it on.
+/// On unless the user turned it off (Go > Send Returns to BIR). A missing or unreadable file means on.
 pub fn enabled(data: &Path) -> bool {
-    read(data)["enabled"].as_bool().unwrap_or(false)
+    read(data)["enabled"].as_bool().unwrap_or(true)
 }
 
 #[cfg_attr(not(feature = "bir-submit"), allow(dead_code))]
@@ -32,12 +32,14 @@ mod test {
     use super::*;
 
     #[test]
-    fn off_by_default_and_keeps_the_proxy() {
+    fn on_by_default_and_keeps_the_proxy() {
         let dir = std::env::temp_dir().join(format!("ebf-submit-setting-{}", std::process::id()));
         let _ = fs::remove_dir_all(&dir);
-        assert!(!enabled(&dir));
+        assert!(enabled(&dir));
         fs::create_dir_all(dir.join("settings")).unwrap();
         fs::write(dir.join("settings/submit.json"), r#"{"proxy_host":"p","proxy_port":8080}"#).unwrap();
+        assert!(enabled(&dir));
+        set_enabled(&dir, false).unwrap();
         assert!(!enabled(&dir));
         set_enabled(&dir, true).unwrap();
         assert!(enabled(&dir));
@@ -46,7 +48,7 @@ mod test {
         set_enabled(&dir, false).unwrap();
         assert!(!enabled(&dir));
         fs::write(dir.join("settings/submit.json"), "not json").unwrap();
-        assert!(!enabled(&dir), "a broken file means off");
+        assert!(enabled(&dir), "a broken file means the default, on");
         let _ = fs::remove_dir_all(&dir);
     }
 }
