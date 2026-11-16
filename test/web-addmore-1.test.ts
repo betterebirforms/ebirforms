@@ -18,7 +18,7 @@ const LINK: Array<[string, string[]]> = [
   ["1700", ["frm1700:lnkPg2Pt4I12ADDMore", "frm1700:lnkPg3Pt5I6ADDMore", "frm1700:lnkPg3Pt5I11ADDMore", "frm1700:lnkPg3Pt5I17ADDMore", "frm1700:lnkPg3Pt5I20ADDMore", "frm1700:lnkPg3Pt5I7ADDMore", "frm1700:lnkPg3Pt5I10ADDMore"]],
   ["1700v2018", ["addMoreSched1Link"]],
   ["1701A", ["frm1701A:lnkPartIVAMore", "frm1701A:lnkPartIVBMore"]],
-  ["1701", [...(modal1701 as Array<{ link: string }>).filter((m) => !m.link.includes("TYPE")).map((m) => m.link), "frm1701:lnkPg5Sc1More", ...(column1701 as Array<{ link: string }>).map((c) => c.link)]],
+  ["1701", [...(modal1701 as Array<{ link: string }>).filter((m) => !m.link.includes("TYPE")).map((m) => m.link), ...(column1701 as Array<{ link: string }>).map((c) => c.link)]],
 ];
 
 describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: (add more...) links open BIR's tables as row editors", () => {
@@ -57,6 +57,19 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(dead).toEqual([]);
     await page.close();
   }, 180_000);
+
+  // Schedule 1's link is greyed out until items 1 to 4 are filled, as BIR's disableLinkIfEmpty leaves it (the rule: test/picker-add-more.test.ts)
+  it("1701: Schedule 1's (add more...) starts greyed out and opens nothing", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    await page.goto(`${base}/form/1701`, { waitUntil: "networkidle" });
+    await page.locator(".bir-layout").waitFor();
+    const link = page.locator('[id="frm1701:lnkPg5Sc1More"]').first();
+    expect(await link.evaluate((e) => (e as HTMLInputElement).disabled)).toBe(true);
+    await link.evaluate((e: HTMLElement) => e.click());
+    await page.waitForTimeout(400);
+    expect(await page.locator(".schedule-modal").count()).toBe(0);
+    await page.close();
+  }, 60_000);
 
   it("1701: each of an exempt copy's eleven links opens its editor, rows add and save", async () => {
     const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
