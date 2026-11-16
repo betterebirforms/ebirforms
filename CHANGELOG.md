@@ -5,6 +5,9 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, a form's pop-ups open as in BIR's app: schedules, lists and sections show and close the same way, and OK copies your choice into the form.
+- On the web version, the ATC lists work: Add ATC on the 1600, 1600-VT, 1600-PT, 1601-E, 1601-F, 1601-EQ and 1601-FQ, Schedule 1 on the 2550-M and 2550-Q, items 14 to 18 on the 2551 and 2553, and the ATC on the 0605, 1702-Q and 2000-OT. Picks past the rows on the page go under Other Selected ATC, as in BIR's app.
+- The 0605 on the web version now asks for the Tax Type (item 8) and the ATC (item 6) and saves them, as BIR's app does.
 - On a phone, the web version's home screen and help pages fit the screen at a readable size, with bigger menus and boxes. A form keeps BIR's page shrunk to fit, and a Zoom in button shows it at full size.
 - On the web version, Help works: Help > a tax type > a form opens BIR's own help page for that form, from the home screen and from every form. A form asks first, as in BIR's app, since leaving it loses what you have not saved. For the few forms where BIR's package has no help page, it says so.
 - The README (English, Filipino and Cebuano) now shows the web version up front, explains how filing works in the app and on the web, and has a clearer Support section. The release page no longer says the app can't file returns.

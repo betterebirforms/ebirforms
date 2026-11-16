@@ -9,6 +9,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
+import { AtcPicker, natureOf } from "./AtcPicker.tsx";
+import { LIST_COPY, POPUP_GROUP, pickerOf, rateText, type Picker } from "./picker.ts";
+import { atcPickIndex } from "./atc.ts";
 import { formatMoney, parseMoney } from "./money.ts";
 import { SAVEFILE_ADAPTER } from "./export.ts";
 import { IS_WEB, readText, writeText } from "@/lib/vfs";
@@ -29,6 +32,10 @@ const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock
 // Preview shows first on 15 forms (tool/print-extract.mjs)
 import printCss from "../../asset/bir/print.css?raw";
 import phoneCss from "./phone.css?raw";
+import popupJson from "./popup.json";
+
+/** BIR's pop-ups per form: the button id → the divs its click shows and hides (tool/popup-extract.mjs). */
+const POPUP = popupJson as Record<string, Record<string, { show: string[]; hide: string[] }>>;
 import printNoteJson from "../../asset/bir/print-note.json";
 const printNote = printNoteJson as Record<string, string>;
 
@@ -155,6 +162,8 @@ export function wireMenu(root: ShadowRoot, on: (el: EventTarget, type: string, f
 export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { form_code: string; profile: Profile; initial?: { state: FormState; groups: GroupState; is_final_copy?: boolean } | undefined; onClose: () => void; onSaved: () => void }) {
   const def = NATIVE_FORM[form_code]!;
   const { schema, validate } = def;
+  // Validate and Submit also run the checks BIR leaves out of Save
+  const validateFull = (c: FormState, g: GroupState) => [...validate(c, g), ...(def.validate_only?.(c, g) ?? [])];
   const [host, root] = useLayoutRoot(form_code);
 
   const [state, setState] = useState<FormState>(() => {
@@ -176,6 +185,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
 
   // the schedule pop-up open now (BIR's "Add more…" / "View Details"), with its column labels read off BIR's page
   const [openGroup, setOpenGroup] = useState<{ name: string; title: string; label: Record<string, string> } | null>(null);
+  // BIR's ATC pick list open now (picker.ts), and the payee row it is for (-1: a Part II table)
+  const [pick, setPick] = useState<{ picker: Picker; row: number; title: string } | null>(null);
   const setRow = (group: string, i: number, id: string, value: string) =>
     setGroups((g) => {
       const rows = [...(g[group] ?? [])];
@@ -269,7 +280,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const finalCopy = async () => {
       if (isFinal.current) return window.alert(WEB_SUBMIT_NOTE);
       const { state: s, computed: c, groups: g } = latest.current;
-      const problem = validate(c, g);
+      const problem = validateFull(c, g);
       if (problem.length > 0) return showProblem(problem);
       if (!window.confirm(WEB_FINAL_COPY_ASK)) return;
       const { name, text } = SAVEFILE_ADAPTER.build({ form_code, state: s, groups: g, profile, is_final_copy: true });
@@ -341,10 +352,11 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     off.push(cancelPreview);
     const button = Array.from(root.querySelectorAll("input[type=button], button")) as HTMLInputElement[];
     for (const b of button) {
+      if (b.id in (POPUP[form_code] ?? {}) || pickerOf(form_code, b.id)) continue; // a pop-up's or picker's own button (below)
       const v = (b.value || b.textContent || "").trim();
       if (v === "Validate")
         on(b, "click", () => {
-          const problem = validate(latest.current.computed, latest.current.groups);
+          const problem = validateFull(latest.current.computed, latest.current.groups);
           if (problem.length) return showProblem(problem);
           setValidated(true);
           window.alert("Validation successful. Click on Edit if you wish to modify your entries.");
@@ -397,8 +409,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const rowBox = new Map<Element, { group: GroupSpec; row: number; id: string }>();
     for (const g of schema.group ?? []) {
       for (const sub of g.row) {
-        if (!sub.id.includes("{i}")) continue;
-        const [head, tail] = sub.id.split("{i}") as [string, string];
+        // a row box is the column's id with the row number in its {i} slot, or after it (naturePayment1)
+        const [head, tail = ""] = (sub.id.includes("{i}") ? sub.id.split("{i}") : [sub.id, ""]) as [string, string?];
         for (let n = g.first_index ?? 1, el = byId(root, `${head}${n}${tail}`); el; n++, el = byId(root, `${head}${n}${tail}`)) {
           rowBox.set(el, { group: g, row: n - (g.first_index ?? 1), id: sub.id });
           const at = n - (g.first_index ?? 1);
@@ -419,6 +431,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       // pop-up tables are empty until its script adds rows; their subtotals are named like the rows, e.g.
       // txtPg4Sc10Itm8_SubTotalCA for rows txtPg4Sc10Itm8_<i>Col<c>)
       for (const g of schema.group ?? []) if (box.querySelector(`[id="${g.size_field}"]`)) return g;
+      // and so does a total of its rows (BIR's pop-up shows the schedule's totals under its empty table)
+      for (const g of schema.group ?? []) if (groupAggs(g).some((a) => box.querySelector(`[id="${CSS.escape(a.into)}"]`))) return g;
       const ids = Array.from(box.querySelectorAll("[id]"), (x) => x.id);
       for (const g of schema.group ?? []) {
         const stem = g.row.map((r) => r.id.split("{i}")[0]!).filter((h, i, all) => r_ok(h) && all.indexOf(h) === i);
@@ -457,16 +471,106 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       return out;
     };
     // the pop-up's title: BIR's own heading in its modalDiv, else the link's words, else the schedule's name
-    const titleOf = (a: Element, g: GroupSpec) => {
+    const titleOf = (a: Element, g: GroupSpec, popupBox?: Element) => {
       const clean = (t: string | null | undefined) => (t ?? "").replace(/\s+/g, " ").replace(/^[\s(]+|[\s)]+$/g, "").trim();
       const modal = a.id.match(/btnModal(.+)$/)?.[1];
-      const box = modal ? root.getElementById(`modalDiv${modal}`) : null;
+      const box = popupBox ?? (modal ? root.getElementById(`modalDiv${modal}`) : null);
       const heading = box && Array.from(box.querySelectorAll("b, strong, th, td, span, font, div")).map((x) => clean(x.textContent)).find((t) => t.length > 3 && t.length < 120);
       const own = clean(a.textContent);
       return heading || (own && !/^(add more|view details)/i.test(own) ? own : `Schedule ${g.name}`);
     };
     const isPopup = (a: Element) => /btnModal|btnNewSched|part\d+btn/i.test(a.id) || /add more|view details/i.test(a.textContent ?? "") || !(a.textContent ?? "").trim();
+    // BIR's pop-ups (popup.json, read from BIR's pages by tool/popup-extract.mjs): a button shows a div on the page
+    // (modalAtc, modalSched1, …) and hides the page behind it, as BIR's own script does, and the pop-up's buttons
+    // put the page back. Its boxes are the form's fields, wired above. Cancel puts back what the boxes held when the
+    // pop-up opened, as BIR's temporary copies do.
+    // BIR's ATC pickers: the list BIR's script builds, listed from the form's pick list (picker.ts)
+    const picked = new Set<string>();
+    for (const el of Array.from(root.querySelectorAll("[id]")) as HTMLInputElement[]) {
+      const p = pickerOf(form_code, el.id);
+      if (!p) continue;
+      picked.add(el.id);
+      on(el, "click", (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (el.disabled) return;
+        const need = p.picker.kind === "row" ? null : (p.picker.need?.(latest.current.computed) ?? null);
+        if (need !== null) return need ? window.alert(need) : undefined;
+        setPick({ ...p, title: (el.value || el.textContent || "").replace(/\s+/g, " ").trim() || "ATC" });
+      });
+    }
+    const popup = Object.fromEntries(Object.entries(POPUP[form_code] ?? {}).filter(([id]) => !picked.has(id)));
+    // a pop-up is a div BIR's page starts with hidden; a button that shows one opens it, the rest close it
+    const hidden = (x: string) => {
+      const el = root.getElementById(x);
+      return !!el && getComputedStyle(el).display === "none";
+    };
+    let before: { state: FormState; groups: GroupState } | null = null;
+    // a pop-up whose rows BIR's script adds (its captured table is empty) opens the schedule editor instead
+    const bound = (div: Element) => schema.field.some((f) => div.querySelector(`[id="${CSS.escape(f.id)}"]`)) || Array.from(rowBox.keys()).some((x) => div.contains(x));
+    for (const [id, fx] of Object.entries(popup)) {
+      // BIR reuses an id (0605 has a btnOkPop in each pop-up): take the copy inside the pop-up this one closes
+      const same = Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${CSS.escape(id)}"]`));
+      const el = same.find((x) => fx.hide.some((h) => root.getElementById(h)?.contains(x))) ?? same[0];
+      if (!el) continue;
+      const opening = fx.show.some(hidden);
+      // a choice (radio, tick box) that shows a part of the page still ticks as usual
+      const choice = el.type === "radio" || el.type === "checkbox";
+      const div = fx.show.map((x) => root.getElementById(x)).filter((x): x is HTMLElement => !!x);
+      const rowsHere = div.some((d) => Array.from(rowBox.keys()).some((x) => d.contains(x)));
+      const hinted = fx.show.map((x) => POPUP_GROUP[form_code]?.[x]).find(Boolean);
+      const editor = opening && !rowsHere ? ((hinted ? (schema.group ?? []).find((g) => g.name === hinted) : null) ?? div.map(groupIn).find(Boolean) ?? null) : null;
+      // what it opens, for bench/web-parity.mjs: BIR's pop-up with its boxes, the schedule editor, or BIR's pop-up
+      // with nothing the form keeps (a list BIR's script fills, still to do)
+      if (opening && !choice) el.dataset.ebfPopup = editor ? "editor" : div.some(bound) || fx.show.some((x) => LIST_COPY[form_code]?.[x]) ? "bir" : "empty";
+      on(el, "click", (e) => {
+        if (!choice) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+        if (el.disabled) return;
+        if (editor) return setOpenGroup({ name: editor.name, title: titleOf(el, editor, div[0]), label: labelOf(editor) });
+        if (opening) before = { state: latest.current.state, groups: latest.current.groups };
+        else if (/cancel/i.test(el.value || el.textContent || "") && before) {
+          setState(before.state);
+          setGroups(before.groups);
+        }
+        // OK on a list BIR's page holds copies the ticked row into the form, as BIR's getATCCode does
+        if (!opening && !/cancel/i.test(el.value || el.textContent || ""))
+          for (const x of fx.hide) {
+            const patch = LIST_COPY[form_code]?.[x]?.(root);
+            if (patch) set(patch);
+          }
+        if (!opening) before = null;
+        for (const x of fx.hide) (root.getElementById(x) as HTMLElement | null)?.style.setProperty("display", "none");
+        for (const x of fx.show) (root.getElementById(x) as HTMLElement | null)?.style.setProperty("display", "block");
+        host.current?.scrollIntoView();
+      });
+      // a pop-up BIR closes from its script (a click on a row of its list) and no button: give it an OK that closes
+      // it and copies the choice, so the page behind it comes back
+      if (!opening || choice) continue;
+      for (const x of fx.show) {
+        const box = root.getElementById(x);
+        const closer = Object.values(popup).some((y) => y.hide.includes(x));
+        if (!box || closer || box.querySelector(".ebf-close")) continue;
+        const ok = document.createElement("input");
+        ok.type = "button";
+        ok.value = "OK";
+        ok.className = "printButtonClass ebf-close";
+        ok.style.cssText = "display:block;margin:12px auto;width:120px;height:30px";
+        box.appendChild(ok);
+        off.push(() => ok.remove());
+        on(ok, "click", () => {
+          const patch = LIST_COPY[form_code]?.[x]?.(root);
+          if (patch) set(patch);
+          box.style.display = "none";
+          for (const y of fx.hide) (root.getElementById(y) as HTMLElement | null)?.style.setProperty("display", "block");
+          before = null;
+        });
+      }
+    }
     for (const a of Array.from(root.querySelectorAll("[data-js]"))) {
+      if (a.id in popup || picked.has(a.id)) continue;
       // every other javascript: link (pickers, help) does nothing yet rather than navigating
       on(a, "click", (e) => {
         e.preventDefault();
@@ -501,6 +605,18 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     // what is saved; BIR's captured page default is only the fallback for a box the file doesn't carry
     const saved = new Map(formRecords(schema, state, groups).map((r) => [r.key, r.value]));
     const lock = lockOf(form_code);
+    // a link to a group's pop-up that BIR hides until that group has rows ("Other Selected ATC" past 6 picks)
+    for (const [box, name] of Object.entries(POPUP_GROUP[form_code] ?? {})) {
+      const has = (groups[name] ?? []).length > 0;
+      for (const [id, fx] of Object.entries(POPUP[form_code] ?? {})) {
+        if (!fx.show.includes(box)) continue;
+        for (let n = root.getElementById(id)?.parentElement; n && n !== (root as unknown as HTMLElement); n = n.parentElement)
+          if (n.style.visibility === "hidden" || n.dataset.ebfShown) {
+            n.style.visibility = has ? "visible" : "hidden";
+            n.dataset.ebfShown = "1";
+          }
+      }
+    }
     // greyed out as on BIR's page until something that opens it there holds: "<id>" a choice ticked,
     // "<id>=<value>" a list on that value, "<id>=*" anything typed or picked there (not the blank form's value)
     const now = (c: string) => (c in state ? computed[c] : (saved.get(c) ?? computed[c])) ?? "";
@@ -577,9 +693,52 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   }, [root, schema, state, computed, groups, validated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const open = openGroup && (schema.group ?? []).find((g) => g.name === openGroup.name);
+  // the picker's list and what is ticked now: a Part II table's rows, or the payee row's code
+  const pickList = pick ? pick.picker.list(computed) : [];
+  const pickNow = ((): number[] => {
+    if (!pick) return [];
+    const p = pick.picker;
+    if (p.kind === "field") return [pickList.findIndex((a) => a.atc_code === (computed[p.field] ?? "").trim())].filter((j) => j >= 0);
+    const rows = [...(groups[p.group] ?? []), ...(p.kind === "rows" && p.more ? (groups[p.more.group] ?? []) : [])];
+    if (p.kind === "row") return [pickList.findIndex((a) => a.atc_code === (rows[pick.row]?.[p.atc] ?? "").trim())].filter((j) => j >= 0);
+    return atcPickIndex(pickList, rows.map((r) => ({ atc_code: r[p.atc] ?? "", rate: p.rate ? (r[p.rate] ?? "") : "" }))).filter((j) => j >= 0);
+  })();
+  const pickOk = (index: number[]) => {
+    if (!pick) return;
+    const { picker, row } = pick;
+    if (picker.kind === "field") {
+      const a = pickList[index[0]!];
+      if (a) setState((s) => ({ ...s, ...(picker.fill ? picker.fill(a) : { [picker.field]: a.atc_code }) }));
+    } else if (picker.kind === "row") {
+      const a = pickList[index[0]!];
+      if (a) {
+        setRow(picker.group, row, picker.atc, a.atc_code);
+        setRow(picker.group, row, picker.nature, natureOf(a.atc_code));
+        setRow(picker.group, row, picker.rate, rateText(a.rate));
+      }
+    } else {
+      // one row per ticked code, in list order; a code already on the table keeps its row (and its tax base)
+      const pickRows = [...(groups[picker.group] ?? []), ...(picker.more ? (groups[picker.more.group] ?? []) : [])];
+      const was = atcPickIndex(pickList, pickRows.map((r) => ({ atc_code: r[picker.atc] ?? "", rate: picker.rate ? (r[picker.rate] ?? "") : "" })));
+      const next = index.map((j) => {
+        const k = was.indexOf(j);
+        return k >= 0 ? pickRows[k]! : { [picker.atc]: pickList[j]!.atc_code, ...(picker.rate ? { [picker.rate]: rateText(pickList[j]!.rate) } : {}) };
+      });
+      const { more } = picker;
+      setGroups((g) => (more ? { ...g, [picker.group]: next.slice(0, more.after), [more.group]: next.slice(more.after) } : { ...g, [picker.group]: next }));
+      // BIR's script draws these rows on the page; the captured page has none, so the tax bases go in the editor
+      const g = (schema.group ?? []).find((x) => x.name === picker.group);
+      const onPage = Array.from(groupBox.current.values()).some((r) => r.group.name === picker.group);
+      // column names from BIR's ids: frm1600:txtTaxBase → "Tax Base"
+      const words = (id: string) => id.replace(/^.*:/, "").replace(/^txt/, "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/Cde?$|Cd$/, "Code").trim();
+      if (g && next.length && !onPage) setOpenGroup({ name: g.name, title: pick.title, label: Object.fromEntries(g.row.map((r) => [r.id, r.id === picker.atc ? "ATC" : words(r.id)])) });
+    }
+    setPick(null);
+  };
   return (
     <>
       <div ref={host} className="bir-layout" data-form={form_code} />
+      {pick && <AtcPicker title={pick.title} list={pickList} multi={pick.picker.kind === "rows"} picked={pickNow} onOk={pickOk} onCancel={() => setPick(null)} />}
       {open && (
         <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setOpenGroup(null)}>
           <div className="modal schedule-modal" role="dialog" aria-label={openGroup.title}>

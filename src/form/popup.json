@@ -1,0 +1,4431 @@
+{
+ "1600": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode1": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode2": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode3": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode4": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode5": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode6": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode7": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode8": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode9": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600:dtSched:btnATCcode10": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSchedIIAtc"
+   ]
+  }
+ },
+ "1602": {
+  "btnSectionB": {
+   "show": [
+    "modalSectionB"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnSectionC": {
+   "show": [
+    "modalSectionC"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOkPopSecB": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalSectionB"
+   ]
+  },
+  "btnCancelPopSecB": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalSectionB"
+   ]
+  },
+  "btnOkPopSecC": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalSectionC"
+   ]
+  },
+  "btnCancelPopSecC": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalSectionC"
+   ]
+  }
+ },
+ "1700": {
+  "frm1700:rdoPg1Pt1I3JointFilingYes": {
+   "show": [
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:rdoPg1Pt1I3JointFilingNo": {
+   "show": [
+    "Page2Part4rdoSpanOther",
+    "Page2Part4rdoTable",
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:txtPg1Pt1I9AddressChangedInd": {
+   "show": [
+    "modalTable1"
+   ],
+   "hide": []
+  },
+  "frm1700:rdoPg1Pt1I14YesInd": {
+   "show": [
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:rdoPg1Pt1I14NoInd": {
+   "show": [
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:rdoPg1Pt1I21SpouseClaimAdditionalExemptionYes": {
+   "show": [
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:rdoPg1Pt1I21SpouseClaimAdditionalExemptionNo": {
+   "show": [
+    "modalTable2"
+   ],
+   "hide": []
+  },
+  "frm1700:lnkPg2Pt4AddLink": {
+   "show": [
+    "Page2Part4rdoSpanOther",
+    "Page2Part4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btntablepop": {
+   "show": [
+    "overlay2",
+    "dialog2"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg2Pt4I4Save": {
+   "show": [
+    "Page2Part4rdoSpanOther",
+    "Page2Part4rdoTable"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg2Pt4I4Cancel": {
+   "show": [
+    "Page2Part4rdoSpanOther",
+    "Page2Part4rdoTable"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg2Pt4I4Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalPage2Part4"
+   ]
+  },
+  "frm1700:btnPg3Pt5I12BSave": {
+   "show": [
+    "Page2Part4I12SpanOther"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I12BCancel": {
+   "show": [
+    "Page2Part4I12SpanOther"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I12BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I6BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I11AClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I17AClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3pt5I20AClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I7BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1700:btnPg3Pt5I10BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1701": {
+  "frm1701:rdoPg1Pt1I4Compensation": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I4Business": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I4Mixed": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I7TypeSingle": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I7TypeProfessional": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I7TypeEstate": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I7TypeTrust": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I14StatusSingle": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I14StatusMarried": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I14StatusSeparated": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I14StatusWidow": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I15WithIncome": {
+   "show": [
+    "attachmentModalADD",
+    "modalPart7A",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg1Pt1I15WithNoIncome": {
+   "show": [
+    "attachmentModalADD",
+    "modalPart7A",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg1Pt1I16Joint": {
+   "show": [
+    "attachmentModalADD",
+    "modalPart7A",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg1Pt1I16Separate": {
+   "show": [
+    "attachmentModalADD",
+    "modalPart7A",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg1Pt1I20DeductionItemized": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I20DeductionOSD": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I21Cash": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I21Accrual": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I21Others": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I22IncomeExemptYes": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I22IncomeExemptNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I23IncomeSpecialYes": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I23IncomeSpecialNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1Pt1I24ClaimingYes": {
+   "show": [
+    "attachmentModalADD",
+    "modalPart7A",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg1Pt1I24ClaimingNo": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I105Itemized": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I105OSD": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I107Yes": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I107No": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I108Yes": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I108No": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I109Compensation": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I109Business": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I109Mixed": {
+   "show": [
+    "attachmentModalADD",
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg4Pt7I110Yes": {
+   "show": [
+    "modalPart7A",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:rdoPg4Pt7I110No": {
+   "show": [
+    "modalPart7A",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:lnkPg5Sc1More": {
+   "show": [
+    "Sc1I4rdoTable",
+    "Sc1I4rdoSpanOther"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:btnAddAttachmentEX": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "frm1701:btnAddAttachmentSP": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "mainPages"
+   ],
+   "hide": [
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:btnBackToMain": {
+   "show": [
+    "mainPages"
+   ],
+   "hide": [
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:btnViewAttachments": {
+   "show": [
+    "attachmentModalVIEW",
+    "tblEXView",
+    "tblSPView"
+   ],
+   "hide": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ]
+  },
+  "frm1701:lnkViewAttachments": {
+   "show": [
+    "attachmentModalVIEW",
+    "tblEXView",
+    "tblSPView"
+   ],
+   "hide": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ]
+  },
+  "frm1701:btnPg2mScEI2SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg2mScEI2CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg3mScGI5SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg3mScGI5CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg3mScHI4SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg3mScHI4CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg4mScHI39SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg4mScHI39CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg4mScII4SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg4mScII4CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I3SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I3CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I6SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I6CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I8SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK1I8CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I3SaveAndCloseType": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I3CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I6SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I6CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I8SaveAndCloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5mScK2I8CloseTYPE": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnEXAdd": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnEXView": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnSPAdd": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnSPView": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnEXClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnSPClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnViewOnlyExemptAttachment": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnViewOnlySpecialAttachment": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnViewClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5Sc3I2SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5Sc3I2Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg6Sc5I5SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg6Sc5I5Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg6Sc6I4SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg6Sc6I4Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg7Sc6I39SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg7Sc6I39Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc7I4SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc7I4Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc8A1I7SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc8A1I7Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc8B1I7SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg8Sc8B1I7Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI3SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI3Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI6SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI6Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI8SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11AI8Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI3SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI3Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI6SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI6Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI8SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg10Sc11BI8Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5Sc1I4Save": {
+   "show": [
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5Sc1I4Cancel": {
+   "show": [
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg5Sc1I4SaveAndClose": {
+   "show": [
+    "Sc1I4rdoSpanOther",
+    "Sc1I4rdoTable",
+    "formPaper"
+   ],
+   "hide": [
+    "modalPage5Schedule1"
+   ]
+  },
+  "frm1701:btnPg5Sc1I4Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalPage5Schedule1"
+   ]
+  },
+  "frm1701:btnPg11ScAPt1I6SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg11ScAPt1I6Close": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI11SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI11BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI17SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI17BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI20BSaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12AI20BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12BI7SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg11Sc12BI7BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1Sc12BI9SaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnPg1ScB12I9BClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "mainPages",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "mainPages",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "mainPages",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "mainPages",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "mainPages",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1704": {
+  "frm1704:sch1": {
+   "show": [
+    "modalSchedule1"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1603:modalOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSchedule1"
+   ]
+  },
+  "frm1603:modalCancel": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSchedule1"
+   ]
+  }
+ },
+ "1706": {
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1706:Sched5btnOk": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "frm1706:modalCancel": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "1707": {
+  "btnSchedB": {
+   "show": [
+    "modalSched2"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop2": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched2"
+   ]
+  }
+ },
+ "1800": {
+  "btnSchedA": {
+   "show": [
+    "modalSchedA"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnSchedB": {
+   "show": [
+    "modalSchedB"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop2": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSchedB"
+   ]
+  }
+ },
+ "1801": {
+  "btnSched1": {
+   "show": [
+    "modalSched1X"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched2and3": {
+   "show": [
+    "modalSched2and3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched1b": {
+   "show": [
+    "modalSched1X"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched4": {
+   "show": [
+    "modalSched4"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched5": {
+   "show": [
+    "modalSched5"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnOkPop1": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched1X"
+   ]
+  },
+  "btnOkPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched2and3"
+   ]
+  },
+  "btnOkPop4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched4"
+   ]
+  },
+  "frm1801:Sched5btnOk": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5"
+   ]
+  }
+ },
+ "2000": {
+  "btnATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnSched1ATC": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPopAtc": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnCancelPopAtc": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2551": {
+  "frm2551:btn14B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2551:btn15B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2551:btn16B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2551:btn17B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2551:btn18B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2551:modalOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "frm2551:modalCancel": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  }
+ },
+ "2552": {
+  "btn12B": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn13B": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn13E": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn13H": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn14B": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn14E": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btn14H": {
+   "show": [
+    "modalTaxTransaction"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnDetailTrans": {
+   "show": [
+    "modalTransactionNoTax"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalTransactionNoTax"
+   ]
+  }
+ },
+ "2553": {
+  "frm2553:btn14B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2553:btn15B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2553:btn16B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2553:btn17B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2553:btn18B": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2553:modalOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "frm2553:modalCancel": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  }
+ },
+ "0605": {
+  "btnATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnTaxType": {
+   "show": [
+    "modalTaxTypeCode"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalTaxTypeCode"
+   ]
+  }
+ },
+ "1600PTv2018": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOtherTax": {
+   "show": [
+    "modalOtherAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1600VTv2018": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOtherTax": {
+   "show": [
+    "modalOtherAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1600WP": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode1": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode2": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode3": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode4": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode5": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode6": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode7": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode8": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode9": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1600WP:dtSched:btnATCcode10": {
+   "show": [
+    "modalSchedIIAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSchedIIAtc"
+   ]
+  }
+ },
+ "1601C": {
+  "btnSectionAMore": {
+   "show": [
+    "modalSectionA"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSectionA"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSectionA"
+   ]
+  }
+ },
+ "1601E": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  }
+ },
+ "1601EQ": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOtherTax": {
+   "show": [
+    "modalOtherAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  }
+ },
+ "1601F": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAddSchedI": {
+   "show": [
+    "modalScheduleI"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalScheduleI"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalScheduleI"
+   ]
+  }
+ },
+ "1601FQ": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Page1Content"
+   ]
+  },
+  "btnOtherTax": {
+   "show": [
+    "modalOtherAtc"
+   ],
+   "hide": [
+    "wrapper"
+   ]
+  },
+  "btnAddSchedI": {
+   "show": [
+    "Page2Content"
+   ],
+   "hide": [
+    "Page1Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Page1Content"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  }
+ },
+ "1700v2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "wrapper"
+   ],
+   "hide": []
+  }
+ },
+ "1701A": {
+  "frm1701A:btnModalPartIVASaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701A:btnModalPartIVAClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701A:btnModalPartIVBSaveAndClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701A:btnModalPartIVBClose": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": []
+  }
+ },
+ "1701MS": {
+  "part4btn10A": {
+   "show": [
+    "modalSched410A"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn10A1": {
+   "show": [
+    "modalSched410aSpouse"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn10B": {
+   "show": [
+    "modalsched410A1"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn10B1": {
+   "show": [
+    "modalsched410A2"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn13A": {
+   "show": [
+    "modalSched413A"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn13B": {
+   "show": [
+    "modalSched413B"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn20aTP": {
+   "show": [
+    "modalSched420A"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "part4btn20bSP": {
+   "show": [
+    "modalSched420B"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAddSpecifySched5No9": {
+   "show": [
+    "modalSched5No9"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAdd3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched420B"
+   ]
+  },
+  "btnAdd4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5No9"
+   ]
+  },
+  "btnAdd4Spouse": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched410aSpouse"
+   ]
+  },
+  "btnAdd5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5No9"
+   ]
+  }
+ },
+ "1701v2018": {
+  "frm1701:rdoPg1I19IncomeExemptYes": {
+   "show": [
+    "Page1mContent",
+    "CONSOLIDATED"
+   ],
+   "hide": [
+    "Page2mContent",
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:rdoPg1I19IncomeExemptNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg1I20IncomeSpecialYes": {
+   "show": [
+    "Page1mContent",
+    "CONSOLIDATED"
+   ],
+   "hide": [
+    "Page2mContent",
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:rdoPg1I20IncomeSpecialNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg2I10IncomeExemptYes": {
+   "show": [
+    "Page1mContent",
+    "CONSOLIDATED"
+   ],
+   "hide": [
+    "Page2mContent",
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:rdoPg2I10IncomeExemptNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm1701:rdoPg2I11IncomeSpecialYes": {
+   "show": [
+    "Page1mContent",
+    "CONSOLIDATED"
+   ],
+   "hide": [
+    "Page2mContent",
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:rdoPg2I11IncomeSpecialNo": {
+   "show": [
+    "attachmentModalADD"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "consolidatedPage1New": {
+   "show": [
+    "Page1mContent",
+    "Page2mContent"
+   ],
+   "hide": []
+  },
+  "consolidatedPage2New": {
+   "show": [
+    "Page1mContent",
+    "Page2mContent"
+   ],
+   "hide": []
+  },
+  "attachmentPage1New": {
+   "show": [
+    "ATTACHMENT",
+    "attachmentEX",
+    "attachmentSP",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "attachmentPage2New": {
+   "show": [
+    "ATTACHMENT",
+    "attachmentEX",
+    "attachmentSP",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "frm1701:btnBackToMainNew": {
+   "show": [
+    "mainPages"
+   ],
+   "hide": [
+    "CONSOLIDATED",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:btnViewAttachmentsNew": {
+   "show": [
+    "attachmentModalVIEW",
+    "tblEXView",
+    "tblSPView"
+   ],
+   "hide": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ]
+  },
+  "frm1701:btnAddAttachmentEX": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "frm1701:btnAddAttachmentSP": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "mainPages"
+   ],
+   "hide": [
+    "CONSOLIDATED",
+    "ATTACHMENT"
+   ]
+  },
+  "consolidatedPage1": {
+   "show": [
+    "CONSOLIDATED",
+    "Page1mContent",
+    "Page2mContent"
+   ],
+   "hide": [
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "consolidatedPage2": {
+   "show": [
+    "CONSOLIDATED",
+    "Page1mContent",
+    "Page2mContent"
+   ],
+   "hide": [
+    "mainPages",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:btnBackToMain": {
+   "show": [
+    "mainPages"
+   ],
+   "hide": [
+    "CONSOLIDATED",
+    "ATTACHMENT"
+   ]
+  },
+  "frm1701:btnViewAttachments": {
+   "show": [
+    "attachmentModalVIEW",
+    "tblEXView",
+    "tblSPView"
+   ],
+   "hide": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ]
+  },
+  "frm1701:lnkViewAttachments": {
+   "show": [
+    "attachmentModalVIEW",
+    "tblEXView",
+    "tblSPView"
+   ],
+   "hide": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ]
+  },
+  "frm1701:btnViewOnlyExemptAttachment": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnViewOnlySpecialAttachment": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnViewClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnEXAdd": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "frm1701:btnEXView": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "frm1701:btnSPAdd": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "frm1701:btnSPView": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": [
+    "CONSOLIDATED"
+   ]
+  },
+  "frm1701:btnEXClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "frm1701:btnSPClose": {
+   "show": [
+    "ATTACHMENT",
+    "PageFooter",
+    "formPaper"
+   ],
+   "hide": []
+  }
+ },
+ "1702EX": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702EXv2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702EXv2018C": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702MX": {
+  "frm1702MX:chkPg2Pt4I30MoreThanOne": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "viewExempt": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewSpecialRate": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "addAttachment",
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewMainBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "viewAttachBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702MXv2018": {
+  "frm1702MX:InstAPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "frm1702MX:InstBPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "viewExempt": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewSpecialRate": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "addAttachment",
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewMainBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "viewAttachBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702MXv2018C": {
+  "frm1702MX:InstAPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "frm1702MX:InstBPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "viewExempt": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewSpecialRate": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "addAttachment",
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewMainBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "viewAttachBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702MXv2018Cxx": {
+  "frm1702MX:InstAPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "frm1702MX:InstBPg2Part4": {
+   "show": [
+    "addAttachment"
+   ],
+   "hide": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ]
+  },
+  "viewExempt": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewSpecialRate": {
+   "show": [
+    "attachmentEX",
+    "attachmentSP",
+    "addAttachment",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "attachmentDelete": {
+   "show": [
+    "addAttachment",
+    "attachmentEX",
+    "attachmentSP",
+    "ATTACHMENT",
+    "mainPages"
+   ],
+   "hide": []
+  },
+  "viewMainBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "viewAttachBtn": {
+   "show": [
+    "ATTACHMENT",
+    "mainPages",
+    "addAttachment"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702Q": {
+  "btnATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "1702Qv2008C": {
+  "btnATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "1702RT": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702RTv2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1702RTv2018C": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1707v2018": {
+  "frm1707:rdoPg1I3ATCCorp": {
+   "show": [
+    "corpoClassificationView"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "1707v2021": {
+  "frm1707:rdoPg1I3ATCCorp": {
+   "show": [
+    "corpoClassificationView"
+   ],
+   "hide": []
+  },
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "2000OT": {
+  "btnATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "Content"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "Content"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2000v2018": {
+  "frm2000:btnSched1Add": {
+   "show": [
+    "ds106modal",
+    "ds130modal",
+    "ds131modal",
+    "ds132modal"
+   ],
+   "hide": []
+  },
+  "frm2000:btnSched1Delete": {
+   "show": [
+    "ds106modal",
+    "ds130modal",
+    "ds131modal",
+    "ds132modal"
+   ],
+   "hide": []
+  }
+ },
+ "2200A": {
+  "frm2200A:chkPymntManner_1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "MainContent"
+   ]
+  },
+  "frm2200A:chkPymntManner_2": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "MainContent"
+   ]
+  },
+  "frm2200A:chkPymntManner_3": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "MainContent"
+   ]
+  },
+  "frm2200A:btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "MainContent"
+   ]
+  },
+  "frm2200A:btnOK": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "frm2200A:btnCancelSched1": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2200AN": {
+  "frm2200AN:btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2200AN:btnOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2200Cv2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "2200M": {
+  "frm2200M:btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2200M:btnOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2200Mv2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "2200P": {
+  "frm2200P:btnSchedule1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper"
+   ]
+  },
+  "frm2200P:btnOK": {
+   "show": [
+    "formPaper"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2200Pv2020": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ },
+ "2200S": {
+  "frm2200S:btnSchedule1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "tempContainer",
+    "MainContent"
+   ]
+  },
+  "frm2200S:btnOK": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "frm2200S:btnCancel": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  }
+ },
+ "2200T": {
+  "frm2200T:btnSchedule1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "formPaper",
+    "MainContent"
+   ]
+  },
+  "frm2200T:btnOK": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "frm2200T:btnCancel": {
+   "show": [
+    "formPaper",
+    "MainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "frm2200T:btnXT35Cancel": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": []
+  },
+  "frm2200T:btnXT36Cancel": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": []
+  },
+  "frm2200T:btnXT40Cancel": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": []
+  },
+  "frm2200T:btnXT140Cancel": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": []
+  },
+  "frm2200T:btnXT150Cancel": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": []
+  }
+ },
+ "2550DS-old": {
+  "btnAddSpecify22D": {
+   "show": [
+    "modalNo22D"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAdd5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo22D"
+   ]
+  },
+  "btnAdd6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo22D"
+   ]
+  }
+ },
+ "2550DS": {
+  "btnAddSpecify22D": {
+   "show": [
+    "modalNo22D"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAdd5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo22D"
+   ]
+  },
+  "btnAdd6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo22D"
+   ]
+  }
+ },
+ "2550M": {
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched2": {
+   "show": [
+    "modalSched2"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched3A": {
+   "show": [
+    "modalSched3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched3B": {
+   "show": [
+    "modalSched3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched4": {
+   "show": [
+    "modalSched4"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched5": {
+   "show": [
+    "modalSched5"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched6": {
+   "show": [
+    "modalSched6"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched7": {
+   "show": [
+    "modalSched7"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched8": {
+   "show": [
+    "modalSched8"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched1ATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnOkPop1": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "mainContent",
+    "modalSched1"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnOkPop2": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched2"
+   ]
+  },
+  "btnCancelPop2": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched2"
+   ]
+  },
+  "btnOkPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched3"
+   ]
+  },
+  "btnCancelPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched3"
+   ]
+  },
+  "btnOkPop4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched4"
+   ]
+  },
+  "btnCancelPop4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched4"
+   ]
+  },
+  "btnOkPop5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5"
+   ]
+  },
+  "btnCancelPop5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5"
+   ]
+  },
+  "btnOkPop6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched6"
+   ]
+  },
+  "btnCancelPop6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched6"
+   ]
+  },
+  "btnOkPop7": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched7"
+   ]
+  },
+  "btnCancelPop7": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched7"
+   ]
+  },
+  "btnOkPop8": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched8"
+   ]
+  },
+  "btnCancelPop8": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched8"
+   ]
+  }
+ },
+ "2550Q": {
+  "btnSched1": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched2": {
+   "show": [
+    "modalSched2"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched3A": {
+   "show": [
+    "modalSched3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched3B": {
+   "show": [
+    "modalSched3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched4": {
+   "show": [
+    "modalSched4"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched5": {
+   "show": [
+    "modalSched5"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched6": {
+   "show": [
+    "modalSched6"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched7": {
+   "show": [
+    "modalSched7"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched8": {
+   "show": [
+    "modalSched8"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnSched1ATC": {
+   "show": [
+    "modalAtc"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnOkPop1": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched1"
+   ]
+  },
+  "btnCancelPop": {
+   "show": [
+    "mainContent",
+    "modalSched1"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnOkPop": {
+   "show": [
+    "modalSched1"
+   ],
+   "hide": [
+    "modalAtc"
+   ]
+  },
+  "btnOkPop2": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched2"
+   ]
+  },
+  "btnCancelPop2": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched2"
+   ]
+  },
+  "btnOkPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched3"
+   ]
+  },
+  "btnCancelPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched3"
+   ]
+  },
+  "btnOkPop4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched4"
+   ]
+  },
+  "btnCancelPop4": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched4"
+   ]
+  },
+  "btnOkPop5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5"
+   ]
+  },
+  "btnCancelPop5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched5"
+   ]
+  },
+  "btnOkPop6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched6"
+   ]
+  },
+  "btnCancelPop6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched6"
+   ]
+  },
+  "btnOkPop7": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched7"
+   ]
+  },
+  "btnCancelPop7": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched7"
+   ]
+  },
+  "btnOkPop8": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched8"
+   ]
+  },
+  "btnCancelPop8": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalSched8"
+   ]
+  }
+ },
+ "2550Qv2024": {
+  "btnAddSpecify19": {
+   "show": [
+    "modalNo19"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnNewSched1": {
+   "show": [
+    "modalNewSched1"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAddSpecify42": {
+   "show": [
+    "modalNo42"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAddSpecify47": {
+   "show": [
+    "modalNo47"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAddSpecify56": {
+   "show": [
+    "modalNo56"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnNewSched3": {
+   "show": [
+    "modalNewSched3"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnNewSched4": {
+   "show": [
+    "modalNewSched4"
+   ],
+   "hide": [
+    "mainContent"
+   ]
+  },
+  "btnAdd5": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo19"
+   ]
+  },
+  "btnAdd6": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo19"
+   ]
+  },
+  "btnAdd5A": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo42"
+   ]
+  },
+  "btnAdd6A": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo42"
+   ]
+  },
+  "btnAdd5B": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo47"
+   ]
+  },
+  "btnAdd6B": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo47"
+   ]
+  },
+  "btnAdd5C": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo56"
+   ]
+  },
+  "btnAdd6C": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNo56"
+   ]
+  },
+  "btnOkPop3": {
+   "show": [
+    "mainContent"
+   ],
+   "hide": [
+    "modalNewSched4"
+   ]
+  }
+ },
+ "2551M": {
+  "btnAddATCPartII": {
+   "show": [
+    "modalAtc",
+    "formPaper"
+   ],
+   "hide": []
+  },
+  "btnOkPop": {
+   "show": [
+    "modalAtc",
+    "formPaper"
+   ],
+   "hide": []
+  }
+ },
+ "2552v2018": {
+  "ebirOnlineConfirmCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirEnrollNo": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "isregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "notregistered": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  },
+  "ebirOnlineCancel": {
+   "show": [
+    "containerPage",
+    "wrapper",
+    "PageFooter"
+   ],
+   "hide": []
+  }
+ }
+}

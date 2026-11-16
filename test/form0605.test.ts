@@ -8,7 +8,7 @@ import { webkit, type Browser } from "playwright";
 import { createLegacyHost } from "../host/legacy-server.ts";
 import { addMoney, formatMoney, parseMoney } from "@/form/money.ts";
 import { computeAll, toRecords, type FormState } from "@/form/schema.ts";
-import { FORM_0605, validate0605 } from "@/form/form0605.ts";
+import { FORM_0605, validate0605, validateItem0605 } from "@/form/form0605.ts";
 import { parseSavefile, serializeSavefile, writeSavefile } from "@/lib/savefile.ts";
 
 describe("centavo money (exact, matches BIR's display)", () => {
@@ -64,9 +64,16 @@ describe("0605 validation", () => {
     "frm0605:txtBranchCode": "00000",
     "frm0605:txtRDOCode": "043",
     "frm0605:txtTaxPayerName": "DELA CRUZ, JUAN",
+    txtATCCode: "II011",
+    txtTaxTypeCode: "IT",
   };
   it("passes a complete, valid form", () => {
     expect(validate0605(full)).toEqual([]);
+  });
+  it("Validate (not Save) needs item 6 ATC and item 8 Tax Type, in BIR's words", () => {
+    expect(validate0605({ ...full, txtATCCode: "", txtTaxTypeCode: "" })).toEqual([]); // BIR's Save doesn't ask
+    const message = validateItem0605({ ...full, txtATCCode: "", txtTaxTypeCode: "" }).map((p) => p.message);
+    expect(message).toEqual(["Please enter a valid ATC on Item 6.", "Please select Tax Type Code on Item 8."]);
   });
   it("flags a missing return period and a bad TIN", () => {
     const bad = { ...full, "frm0605:txtReturnPeriodMonth": "", "frm0605:txtTIN3": "999" };
@@ -123,6 +130,9 @@ describe.skipIf(!existsSync(`${ORIGINAL}/forms/BIR-Form0605.hta`))("native 0605 
       "frm0605:txtTax20A": "10.50",
       "frm0605:txtTax20B": "20.25",
       "frm0605:txtTax20C": "5.00",
+      txtATCCode: "II011",
+      txtTaxTypeCode: "IT",
+      TaxTypeCode9: "true",
     };
     expect(validate0605(state)).toEqual([]);
 

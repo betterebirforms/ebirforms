@@ -60,6 +60,10 @@ export const FORM_0605: FormSchema = {
     money("frm0605:txtTax21", { compute: sum("frm0605:txtTax19", "frm0605:txtTax20D") }),
     radio("frm0605:itemApprovedYN:_1"),
     radio("frm0605:itemApprovedYN:_2"),
+    // item 6 ATC and item 8 Tax Type: filled from BIR's pick lists (picker.ts), and the tax type list's own radios
+    f("txtATCCode"),
+    f("txtTaxTypeCode"),
+    ...Array.from({ length: 40 }, (_, i) => radio(`TaxTypeCode${i + 1}`)),
     f("txtFinalFlag"),
     f("txtEnroll"),
     // the eBIRForms-Online credential fields exist in the legacy form but we never persist them
@@ -78,5 +82,13 @@ export function validate0605(state: FormState): Problem[] {
   if (tin.length === 9 && validateTin(tin) !== TinStatus.Valid) {
     problem.push({ id: "frm0605:txtTIN1", message: "The TIN's check digit doesn't match." });
   }
+  return problem;
+}
+
+/** BIR's Validate (not its Save): item 6, then item 8, in its words. */
+export function validateItem0605(state: FormState): Problem[] {
+  const problem: Problem[] = [];
+  if (!(state.txtATCCode ?? "").trim()) problem.push({ id: "txtATCCode", message: "Please enter a valid ATC on Item 6." });
+  if (!(state.txtTaxTypeCode ?? "").trim()) problem.push({ id: "txtTaxTypeCode", message: "Please select Tax Type Code on Item 8." });
   return problem;
 }

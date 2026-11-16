@@ -469,3 +469,40 @@ html:has(.bir-layout) {
 body:has(.bir-layout) {
   background: transparent;
 }
+/* BIR's ATC pick list on the web version (AtcPicker.tsx) */
+.atc-picker table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.atc-picker th {
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 0.3rem;
+}
+.atc-picker td {
+  padding: 0.35rem 0.3rem;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.atc-picker tr.on td {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.atc-picker td.rate {
+  text-align: right;
+  white-space: nowrap;
+}
+.atc-picker label {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  white-space: nowrap;
+}
+.atc-picker .actions {
+  display: flex;
+  gap: 0.6rem;
+  position: sticky;
+  bottom: 0;
+  background: var(--panel);
+  padding-top: 0.5rem;
+}

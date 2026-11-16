@@ -69,7 +69,11 @@ for (const r of route) {
     if (info.menu && /^(File|Help|Go)$/.test(info.text)) continue;
     dead.push(info);
   }
-  report.push({ code: r.code, clickable: count, dead });
+  // BIR's pop-up buttons and what each opens (LayoutView.tsx marks them)
+  const popup = await page.evaluate(() =>
+    Array.from(document.querySelector(".bir-layout")?.shadowRoot?.querySelectorAll("[data-ebf-popup]") ?? [], (e) => ({ id: e.id, open: e.dataset.ebfPopup })),
+  );
+  report.push({ code: r.code, clickable: count, dead, popup });
   process.stdout.write(`${r.code}: ${count - dead.length}/${count} wired\n`);
   await page.close();
 }
@@ -80,5 +84,8 @@ const total = report.reduce((n, r) => n + r.clickable, 0);
 const deadTotal = report.reduce((n, r) => n + r.dead.length, 0);
 const shownDead = report.reduce((n, r) => n + r.dead.filter((d) => d.shown).length, 0);
 console.log(`\n${route.length} pages, ${total} clickable controls, ${total - deadTotal} wired, ${deadTotal} do nothing (${shownDead} on screen, ${deadTotal - shownDead} inside closed pop-ups)`);
+const kind = {};
+for (const r of report) for (const p of r.popup) kind[p.open] = (kind[p.open] ?? 0) + 1;
+console.log(`pop-up buttons: ${Object.entries(kind).map(([k, n]) => `${n} ${k}`).join(", ")}`);
 const out = process.argv[2];
 if (out) writeFileSync(out, JSON.stringify(report, null, 1));

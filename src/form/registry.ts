@@ -1,6 +1,6 @@
 // The registry of natively-rewritten forms. Each entry drives the generic schema renderer (FormView).
 import type { FormSchema, FormState, GroupState, Problem } from "./schema.ts";
-import { FORM_0605, validate0605 } from "./form0605.ts";
+import { FORM_0605, validate0605, validateItem0605 } from "./form0605.ts";
 import { FORM_0619E, validate0619E } from "./form0619e.ts";
 import { FORM_0619F, validate0619F } from "./form0619f.ts";
 import { FORM_1601E, validate1601E } from "./form1601e.ts";
@@ -48,6 +48,8 @@ export interface NativeForm {
   schema: FormSchema;
   /** Form rules; schedule-row checks (ATC on the list, row order) need the rows, so they are passed too. */
   validate: (state: FormState, groups?: GroupState) => Problem[];
+  /** Checks BIR's Validate (and so Submit) runs but its Save does not: 0605's ATC and Tax Type. */
+  validate_only?: (state: FormState, groups?: GroupState) => Problem[];
   /** Friendly labels by field id; unlisted fields fall back to a cleaned id. */
   label: Record<string, string>;
   /** Period segment of the savefile name, built from the form's period fields the way BIR's createXMLFileName
@@ -64,6 +66,7 @@ const pad = (s: string | undefined, n: number) => (s ?? "").padStart(n, "0");
 export const NATIVE_FORM: Record<string, NativeForm> = {
   "0605": {
     schema: FORM_0605,
+    validate_only: validateItem0605,
     validate: validate0605,
     label: {
       "frm0605:txtReturnPeriodMonth": "Return period — month (MM)",

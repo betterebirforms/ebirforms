@@ -118,7 +118,7 @@ export function fill_form(arg: { form_code: string; value?: Record<string, unkno
   const profile = readProfile(data, arg.tin);
   const input = withProfile(arg.form_code, state, profile);
   const computed = computeForm(def.schema, input, groups);
-  const problem = def.validate(computed, groups).map((p) => ({ id: p.id, message: p.message }));
+  const problem = [...def.validate(computed, groups), ...(def.validate_only?.(computed, groups) ?? [])].map((p) => ({ id: p.id, message: p.message }));
   return {
     form_code: arg.form_code,
     computed: Object.fromEntries(Object.entries(computed).filter(([, v]) => v !== "" && v !== undefined)),

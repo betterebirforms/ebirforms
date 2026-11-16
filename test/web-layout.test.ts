@@ -7,13 +7,25 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { createServer, type Server } from "node:http";
 import { extname, join } from "node:path";
 import type { AddressInfo } from "node:net";
-import { chromium, type Browser } from "playwright";
+import { chromium, type Browser, type Page } from "playwright";
 
 const WEB = "dist-web";
 const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".gif": "image/gif", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
 const HAS_CHROMIUM = await chromium.launch().then((b) => (void b.close(), true), () => false);
 // BIR's main screen, a short form, a long one, and one with schedules
 const PAGE = ["/", "/form/0605", "/form/1701Qv2018", "/form/2550Qv2024"];
+
+/** 0605 items 8 and 6 through BIR's own pop-ups: Tax Type IT (its list, OK), then the first ATC the list offers. */
+async function pick0605(page: Page) {
+  const box = (id: string) => page.locator(`[id="${id}"]`);
+  await box("btnTaxType").evaluate((e: HTMLElement) => e.click());
+  await box("TaxTypeCode9").check({ force: true });
+  await page.locator('#modalTaxTypeCode [id="btnOkPop"]').click();
+  await expect.poll(() => box("txtTaxTypeCode").inputValue()).toBe("IT");
+  await box("btnATC").evaluate((e: HTMLElement) => e.click());
+  await page.locator(".atc-picker tbody tr").first().click();
+  await page.locator(".atc-picker button", { hasText: "OK" }).click();
+}
 
 describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: BIR's pages as BIR's app shows them", () => {
   let server: Server, base: string, browser: Browser;
@@ -83,6 +95,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const typed = { "frm0605:txtReturnPeriodMonth": "10", "frm0605:txtReturnPeriodDay": "15", "frm0605:txtReturnPeriodYear": "2026", "frm0605:txtTIN1": "846", "frm0605:txtTIN2": "532", "frm0605:txtTIN3": "107", "frm0605:txtBranchCode": "00000", "frm0605:txtTaxPayerName": "JUAN DELA CRUZ" };
     for (const [id, v] of Object.entries(typed)) await box(id).fill(v);
     await box("frm0605:txtRDOCode").selectOption({ index: 1 });
+    await pick0605(page);
     await box("frm0605:cmdValidate").click();
     await expect.poll(() => alert.at(-1)).toMatch(/^Validation successful/);
     await expect.poll(() => box("frm0605:cmdValidate").isDisabled()).toBe(true);
@@ -124,6 +137,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const typed = { "frm0605:txtReturnPeriodMonth": "10", "frm0605:txtReturnPeriodDay": "15", "frm0605:txtReturnPeriodYear": "2026", "frm0605:txtTIN1": "846", "frm0605:txtTIN2": "532", "frm0605:txtTIN3": "107", "frm0605:txtBranchCode": "00000", "frm0605:txtTaxPayerName": "JUAN DELA CRUZ" };
     for (const [id, v] of Object.entries(typed)) await box(id).fill(v);
     await box("frm0605:txtRDOCode").selectOption({ index: 1 });
+    await pick0605(page);
     await box("frm0605:cmdValidate").click();
     await expect.poll(() => dialog.at(-1)).toMatch(/Validation successful/);
     const download = page.waitForEvent("download");
@@ -154,6 +168,43 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await page.locator("[data-go-menu] a.toplevel").click();
     await page.locator("[data-go-menu] a", { hasText: "Show Saved Returns" }).click();
     await expect.poll(() => dialog.at(-1)).toMatch(/^alert: 1 saved return, in this browser\./);
+    await page.close();
+  }, 90_000);
+
+  // BIR's pick lists: its script builds them, so the web version lists the same codes and fills what BIR fills
+  it("ATC pick lists fill the form as BIR's do", async () => {
+    const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+    const alert: string[] = [];
+    page.on("dialog", (d) => void (alert.push(d.message()), d.accept()));
+    const value = (id: string) => page.locator(`[id="${id}"]`).inputValue();
+    const go = async (code: string) => {
+      await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
+      await page.locator(".bir-layout").waitFor();
+    };
+    const click = (id: string) => page.locator(`[id="${id}"]`).evaluate((e: HTMLElement) => e.click());
+    // 0605: item 6 needs item 8 first, in BIR's words; Tax Type IT lists no PT codes
+    await go("0605");
+    await click("btnATC");
+    await expect.poll(() => alert.at(-1)).toBe("Please select a valid Tax Type  on Item 8.");
+    await pick0605(page);
+    expect(await value("txtTaxTypeCode")).toBe("IT");
+    expect(await value("txtATCCode")).toMatch(/^(?!PT)[A-Z]{2}\d{3}$/);
+    // 1601-EQ: eight picks fill the six rows on the page; the rest are under "Other Selected ATC", shown only then
+    await go("1601EQ");
+    expect(await page.locator('[id="btnOtherTax"]').isVisible()).toBe(false);
+    await click("btnAddATCPartII");
+    for (let i = 0; i < 8; i++) await page.locator(".atc-picker tbody tr").nth(i).click();
+    await page.locator(".atc-picker button", { hasText: "OK" }).click();
+    await page.keyboard.press("Escape");
+    await expect.poll(() => value("frm1601EQ:txtAtcCd6")).not.toBe("");
+    await click("btnOtherTax");
+    await expect.poll(() => page.locator(".schedule-modal tbody tr").count()).toBe(2);
+    // 2000-OT: the list is on BIR's page; OK copies the code and its rate (DS125 as BIR writes 0.50)
+    await go("2000OT");
+    await click("btnATC");
+    await page.locator('[id="AtcCode2"]').check({ force: true });
+    await page.locator("#modalAtc .ebf-close").click();
+    await expect.poll(async () => [await value("frm2000OT:txtATC"), await value("frm2000OT:txtTax15")]).toEqual(["DS125", "0.5"]);
     await page.close();
   }, 90_000);
 
