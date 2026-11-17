@@ -1,4 +1,6 @@
 {
+ "frm1707:totalAmount": [],
+ "frm1707:totalAmount1": [],
  "frm1707:txt16Specify": [
   "frm1707:TaxRelief_O"
  ],
@@ -29,10 +31,23 @@
  "frm1707:txt17Total": [
   "frm1707:TaxRelief_IS"
  ],
+ "frm1707:txt4": [],
+ "frm1707:txt4C": [],
+ "frm1707:txtBranchCode": [],
+ "frm1707:txtLess": [],
  "frm1707:txtLess2": [
   "frm1707:j_id217:_1"
  ],
+ "frm1707:txtNetCap": [],
  "frm1707:txtSpecify": [
   "frm1707:TaxRelief_Y"
- ]
+ ],
+ "frm1707:txtTIN1": [],
+ "frm1707:txtTIN2": [],
+ "frm1707:txtTIN3": [],
+ "frm1707:txtTax": [],
+ "frm1707:txtTaxDue2": [],
+ "frm1707:txtTaxPayable": [],
+ "frm1707:txtTotal": [],
+ "frm1707:txtTotalPenalties": []
 }

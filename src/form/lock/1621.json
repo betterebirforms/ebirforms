@@ -1,7 +1,40 @@
 {
+ "frm1621:atc": [],
+ "frm1621:branchCode": [],
+ "frm1621:branchCode_2": [],
+ "frm1621:cashAmt": [],
+ "frm1621:cashBank": [],
+ "frm1621:cashDate": [],
+ "frm1621:cashNum": [],
+ "frm1621:checkAmt": [],
+ "frm1621:checkBank": [],
+ "frm1621:checkDate": [],
+ "frm1621:checkNum": [],
+ "frm1621:othersAmt": [],
+ "frm1621:othersBank": [],
+ "frm1621:othersDate": [],
+ "frm1621:othersDetails": [],
+ "frm1621:othersNum": [],
+ "frm1621:rdoCode": [],
+ "frm1621:registeredAddress": [],
+ "frm1621:registeredName": [],
+ "frm1621:registeredName_2": [],
+ "frm1621:taxAmt": [],
+ "frm1621:taxDate": [],
+ "frm1621:taxNum": [],
+ "frm1621:telephoneNumber": [],
+ "frm1621:tinA": [],
+ "frm1621:tinA_2": [],
+ "frm1621:tinB": [],
+ "frm1621:tinB_2": [],
+ "frm1621:tinC": [],
+ "frm1621:tinC_2": [],
+ "frm1621:txtMaxPage": [],
+ "frm1621:txtPen_Tot": [],
  "frm1621:txtRemittance_Prev": [
   "frm1621:amendedRtn_1"
  ],
+ "frm1621:txtRemittance_Tot": [],
  "frm1621:txtSched1_1_DateDeath": [
   "frm1621:taxWithheld_1"
  ],
@@ -17,6 +50,7 @@
  "frm1621:txtSched1_1_Withdrawn": [
   "frm1621:taxWithheld_1"
  ],
+ "frm1621:txtSched1_1_Withheld": [],
  "frm1621:txtSched1_2_DateDeath": [
   "frm1621:taxWithheld_1"
  ],
@@ -32,6 +66,7 @@
  "frm1621:txtSched1_2_Withdrawn": [
   "frm1621:taxWithheld_1"
  ],
+ "frm1621:txtSched1_2_Withheld": [],
  "frm1621:txtSched1_3_DateDeath": [
   "frm1621:taxWithheld_1"
  ],
@@ -47,6 +82,7 @@
  "frm1621:txtSched1_3_Withdrawn": [
   "frm1621:taxWithheld_1"
  ],
+ "frm1621:txtSched1_3_Withheld": [],
  "frm1621:txtSched1_4_DateDeath": [
   "frm1621:taxWithheld_1"
  ],
@@ -62,6 +98,7 @@
  "frm1621:txtSched1_4_Withdrawn": [
   "frm1621:taxWithheld_1"
  ],
+ "frm1621:txtSched1_4_Withheld": [],
  "frm1621:txtSched1_5_DateDeath": [
   "frm1621:taxWithheld_1"
  ],
@@ -76,5 +113,15 @@
  ],
  "frm1621:txtSched1_5_Withdrawn": [
   "frm1621:taxWithheld_1"
- ]
+ ],
+ "frm1621:txtSched1_5_Withheld": [],
+ "frm1621:txtSched1_Total_Withdrawn": [],
+ "frm1621:txtSched1_Total_Withheld": [],
+ "frm1621:txtStillDue": [],
+ "frm1621:txtStillDue_tot": [],
+ "frm1621:txtTaxBase": [],
+ "frm1621:txtTaxRate": [],
+ "frm1621:txtTaxWithheld": [],
+ "frm1621:zipCode": [],
+ "txtEmail": []
 }

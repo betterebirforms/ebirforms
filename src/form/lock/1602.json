@@ -5,54 +5,124 @@
  "frm1602:txt14A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt14B": [],
+ "frm1602:txt14C": [],
  "frm1602:txt15A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt15B": [],
+ "frm1602:txt15C": [],
  "frm1602:txt16A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt16B": [],
+ "frm1602:txt16C": [],
  "frm1602:txt17A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt17B": [],
+ "frm1602:txt17C": [],
  "frm1602:txt18A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt18B": [],
+ "frm1602:txt18C": [],
  "frm1602:txt19A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt19B": [],
+ "frm1602:txt19C": [],
  "frm1602:txt20A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt20B": [],
+ "frm1602:txt20C": [],
  "frm1602:txt21A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt21B": [],
+ "frm1602:txt21C": [],
  "frm1602:txt22A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt22B": [],
+ "frm1602:txt22C": [],
  "frm1602:txt22D": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt22E": [],
+ "frm1602:txt22F": [],
  "frm1602:txt22G": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt22H": [],
+ "frm1602:txt22I": [],
  "frm1602:txt23A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt23B": [],
+ "frm1602:txt23C": [],
  "frm1602:txt24A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt24B": [],
  "frm1602:txt24C": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt24D": [],
  "frm1602:txt25A": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt25B": [],
  "frm1602:txt25C": [
   "frm1602:OptTaxWithheld1"
  ],
+ "frm1602:txt25D": [],
+ "frm1602:txt26": [],
+ "frm1602:txt27": [],
+ "frm1602:txt27A": [],
+ "frm1602:txt27B": [],
+ "frm1602:txt27C": [],
+ "frm1602:txt27D": [],
+ "frm1602:txt28": [],
+ "frm1602:txt28A": [],
+ "frm1602:txt28B": [],
+ "frm1602:txt28C": [],
+ "frm1602:txt28D": [],
+ "frm1602:txt29": [],
+ "frm1602:txt30": [],
+ "frm1602:txt30A": [],
+ "frm1602:txt30B": [],
+ "frm1602:txt30C": [],
+ "frm1602:txt30D": [],
+ "frm1602:txt31": [],
+ "frm1602:txt31A": [],
+ "frm1602:txt31B": [],
+ "frm1602:txt31C": [],
+ "frm1602:txt31D": [],
+ "frm1602:txt32": [],
+ "frm1602:txt33": [],
  "frm1602:txt34": [
   "frm1602:AmendedRtn1"
  ],
+ "frm1602:txt35": [],
+ "frm1602:txt36D": [],
+ "frm1602:txt37": [],
+ "frm1602:txtATC14": [],
+ "frm1602:txtATC15": [],
+ "frm1602:txtATC16": [],
+ "frm1602:txtATC17": [],
+ "frm1602:txtATC18": [],
+ "frm1602:txtATC19": [],
+ "frm1602:txtATC20": [],
+ "frm1602:txtATC21": [],
+ "frm1602:txtATC22": [],
+ "frm1602:txtATC22B": [],
+ "frm1602:txtATC22C": [],
+ "frm1602:txtATC23": [],
+ "frm1602:txtATC24": [],
+ "frm1602:txtATC25": [],
+ "frm1602:txtBranchCode": [],
  "frm1602:txtForeign1": [
   "frm1602:OptTaxWithheld1"
  ],
@@ -142,5 +212,22 @@
  ],
  "frm1602:txtReg9": [
   "frm1602:OptTaxWithheld1"
- ]
+ ],
+ "frm1602:txtTIN1": [],
+ "frm1602:txtTIN2": [],
+ "frm1602:txtTIN3": [],
+ "frm1602:txtTotal10C": [],
+ "frm1602:txtTotal1C": [],
+ "frm1602:txtTotal2C": [],
+ "frm1602:txtTotal3C": [],
+ "frm1602:txtTotal4C": [],
+ "frm1602:txtTotal5C": [],
+ "frm1602:txtTotal6C": [],
+ "frm1602:txtTotal7C": [],
+ "frm1602:txtTotal8C": [],
+ "frm1602:txtTotal9C": [],
+ "frm1602:txtTotalA": [],
+ "frm1602:txtTotalB": [],
+ "frm1602:txtTotalC": [],
+ "frm1602:txtTotalD": []
 }

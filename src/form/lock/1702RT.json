@@ -1,1 +1,450 @@
-{}
+{
+ "BranchMaskP1": [],
+ "frm1702RT:ddlPg1I2Month": [],
+ "frm1702RT:ddlPg8Sc12I10C2": [],
+ "frm1702RT:drpPg1I5AtcOther": [],
+ "frm1702RT:txtMaxPage": [],
+ "frm1702RT:txtPg1Pt1I12Email": [],
+ "frm1702RT:txtPg1Pt1I6TIN1": [],
+ "frm1702RT:txtPg1Pt1I6TIN2": [],
+ "frm1702RT:txtPg1Pt1I6TIN3": [],
+ "frm1702RT:txtPg1Pt1I6TIN4": [],
+ "frm1702RT:txtPg1Pt1I7RDO": [],
+ "frm1702RT:txtPg1Pt2I16IncomeTax": [],
+ "frm1702RT:txtPg1Pt2I17TotalTaxCredits": [],
+ "frm1702RT:txtPg1Pt2I18NetTax": [],
+ "frm1702RT:txtPg1Pt2I19TotalPenalties": [],
+ "frm1702RT:txtPg1Pt2I20TotalAmount": [],
+ "frm1702RT:txtPg1Pt2PagesFilled": [],
+ "frm1702RT:txtPg1Pt2Signatory": [],
+ "frm1702RT:txtPg2Pt4I30NetSales": [],
+ "frm1702RT:txtPg2Pt4I31LessCost": [],
+ "frm1702RT:txtPg2Pt4I32GrossIncome": [],
+ "frm1702RT:txtPg2Pt4I33AddOtherTaxable": [],
+ "frm1702RT:txtPg2Pt4I34TotalGross": [],
+ "frm1702RT:txtPg2Pt4I35OrdinaryAllowable": [],
+ "frm1702RT:txtPg2Pt4I36SpecialAllowable": [],
+ "frm1702RT:txtPg2Pt4I37Nolco": [],
+ "frm1702RT:txtPg2Pt4I38TotalItemized": [],
+ "frm1702RT:txtPg2Pt4I39OptionalStandard": [],
+ "frm1702RT:txtPg2Pt4I40NetTaxable": [],
+ "frm1702RT:txtPg2Pt4I42IncomeTaxDue": [],
+ "frm1702RT:txtPg2Pt4I43MinimumCorporate": [],
+ "frm1702RT:txtPg2Pt4I44TotalIncomeTax": [],
+ "frm1702RT:txtPg2Pt4I45LessTotalTax": [],
+ "frm1702RT:txtPg2Pt4I46NetTax": [],
+ "frm1702RT:txtPg2Pt4I50TotalPenalties": [],
+ "frm1702RT:txtPg2Pt4I51TotalAmount": [],
+ "frm1702RT:txtPg2Pt5I52SpecialAllowable": [],
+ "frm1702RT:txtPg2Pt5I53AddSpecialTax": [],
+ "frm1702RT:txtPg2Pt5I54TotalTax": [],
+ "frm1702RT:txtPg2RegisteredName": [],
+ "frm1702RT:txtPg2TIN1": [],
+ "frm1702RT:txtPg2TIN2": [],
+ "frm1702RT:txtPg2TIN3": [],
+ "frm1702RT:txtPg2TIN4": [],
+ "frm1702RT:txtPg3RegisteredName": [],
+ "frm1702RT:txtPg3Sc1I4Total": [],
+ "frm1702RT:txtPg3Sc1I6NetSales": [],
+ "frm1702RT:txtPg3Sc2I10RawMatUsed": [],
+ "frm1702RT:txtPg3Sc2I13TotalManCost": [],
+ "frm1702RT:txtPg3Sc2I16CostOfGoods": [],
+ "frm1702RT:txtPg3Sc2I19CostOfGoods": [],
+ "frm1702RT:txtPg3Sc2I26TotalService": [],
+ "frm1702RT:txtPg3Sc2I27TotalSales": [],
+ "frm1702RT:txtPg3Sc2I3TotalGoods": [],
+ "frm1702RT:txtPg3Sc2I5CostofSales": [],
+ "frm1702RT:txtPg3Sc2I8MaterialsAvaliable": [],
+ "frm1702RT:txtPg3TIN1": [],
+ "frm1702RT:txtPg3TIN2": [],
+ "frm1702RT:txtPg3TIN3": [],
+ "frm1702RT:txtPg3TIN4": [],
+ "frm1702RT:txtPg4RegisteredName": [],
+ "frm1702RT:txtPg4Sc3I2OtherTaxAmount": [
+  "frm1702RT:txtPg4Sc3I1OtherTaxAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc3I2OtherTaxIncome": [
+  "frm1702RT:txtPg4Sc3I1OtherTaxAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc3I3C1": [
+  "frm1702RT:txtPg4Sc3I2OtherTaxAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc3I3C2": [
+  "frm1702RT:txtPg4Sc3I2OtherTaxAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc3I3Subtotal": [],
+ "frm1702RT:txtPg4Sc3I4OtherTaxTotalAmount": [],
+ "frm1702RT:txtPg4Sc4I3Amortization": [
+  "frm1702RT:txtPg4Sc4I2AmortizationAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc4I3AmortizationAmount": [
+  "frm1702RT:txtPg4Sc4I2AmortizationAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc4I4C1": [
+  "frm1702RT:txtPg4Sc4I3AmortizationAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc4I4C2": [
+  "frm1702RT:txtPg4Sc4I3AmortizationAmount=*"
+ ],
+ "frm1702RT:txtPg4Sc4I4Subtotal": [],
+ "frm1702RT:txtPg4TIN1": [],
+ "frm1702RT:txtPg4TIN2": [],
+ "frm1702RT:txtPg4TIN3": [],
+ "frm1702RT:txtPg4TIN4": [],
+ "frm1702RT:txtPg5BranchCode": [],
+ "frm1702RT:txtPg5RegisteredName": [],
+ "frm1702RT:txtPg5Sc4I37C1": [
+  "frm1702RT:txtPg5Sc4I36C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I37C2": [
+  "frm1702RT:txtPg5Sc4I36C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I38C1": [
+  "frm1702RT:txtPg5Sc4I37C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I38C2": [
+  "frm1702RT:txtPg5Sc4I37C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I39C1": [
+  "frm1702RT:txtPg5Sc4I38C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I39C2": [
+  "frm1702RT:txtPg5Sc4I38C2=*"
+ ],
+ "frm1702RT:txtPg5Sc4I39Subtotal": [],
+ "frm1702RT:txtPg5Sc4I40TotalOrdinaryAllowable": [],
+ "frm1702RT:txtPg5Sc5I2C1": [
+  "frm1702RT:txtPg5Sc5I1C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I2C2": [
+  "frm1702RT:txtPg5Sc5I1C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I2C3": [
+  "frm1702RT:txtPg5Sc5I1C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I3C1": [
+  "frm1702RT:txtPg5Sc5I2C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I3C2": [
+  "frm1702RT:txtPg5Sc5I2C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I3C3": [
+  "frm1702RT:txtPg5Sc5I2C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I4C1": [
+  "frm1702RT:txtPg5Sc5I3C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I4C2": [
+  "frm1702RT:txtPg5Sc5I3C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I4C3": [
+  "frm1702RT:txtPg5Sc5I3C3=*"
+ ],
+ "frm1702RT:txtPg5Sc5I4Subtotal": [],
+ "frm1702RT:txtPg5Sc5I5TotalSpecialAllowable": [],
+ "frm1702RT:txtPg5Sc6AI4C1": [],
+ "frm1702RT:txtPg5Sc6AI4C2": [],
+ "frm1702RT:txtPg5Sc6AI4C3": [],
+ "frm1702RT:txtPg5Sc6AI4C4": [],
+ "frm1702RT:txtPg5Sc6AI4C5": [],
+ "frm1702RT:txtPg5Sc6AI4C6": [],
+ "frm1702RT:txtPg5Sc6AI5C6": [],
+ "frm1702RT:txtPg5Sc6AI6C1": [],
+ "frm1702RT:txtPg5Sc6AI6C2": [],
+ "frm1702RT:txtPg5Sc6AI6C3": [],
+ "frm1702RT:txtPg5Sc6AI6C4": [],
+ "frm1702RT:txtPg5Sc6AI6C5": [],
+ "frm1702RT:txtPg5Sc6AI6C6": [],
+ "frm1702RT:txtPg5Sc6AI7C1": [],
+ "frm1702RT:txtPg5Sc6AI7C2": [],
+ "frm1702RT:txtPg5Sc6AI7C3": [],
+ "frm1702RT:txtPg5Sc6AI7C4": [],
+ "frm1702RT:txtPg5Sc6AI7C5": [],
+ "frm1702RT:txtPg5Sc6AI7C6": [],
+ "frm1702RT:txtPg5Sc6AI8TotalNOLCO": [],
+ "frm1702RT:txtPg5Sc6I1GrossIncome": [],
+ "frm1702RT:txtPg5Sc6I2TotalDeductions": [],
+ "frm1702RT:txtPg5Sc6I3NetOperatingLoss": [],
+ "frm1702RT:txtPg5TIN1": [],
+ "frm1702RT:txtPg5TIN2": [],
+ "frm1702RT:txtPg5TIN3": [],
+ "frm1702RT:txtPg6BranchCode": [],
+ "frm1702RT:txtPg6RegisteredName": [],
+ "frm1702RT:txtPg6Sc7I11C1": [
+  "frm1702RT:txtPg5Sc7I10C2=*"
+ ],
+ "frm1702RT:txtPg6Sc7I11C2": [
+  "frm1702RT:txtPg5Sc7I10C2=*"
+ ],
+ "frm1702RT:txtPg6Sc7I11Subtotal": [],
+ "frm1702RT:txtPg6Sc7I12TotalTaxCredits": [],
+ "frm1702RT:txtPg6Sc7I2IncomeTaxPaymentUnderMCIT": [],
+ "frm1702RT:txtPg6Sc7I4ExcessMCIT": [],
+ "frm1702RT:txtPg6Sc8I1C1": [],
+ "frm1702RT:txtPg6Sc8I1C2": [],
+ "frm1702RT:txtPg6Sc8I1C3": [],
+ "frm1702RT:txtPg6Sc8I1C4": [],
+ "frm1702RT:txtPg6Sc8I1C5": [],
+ "frm1702RT:txtPg6Sc8I1C6": [],
+ "frm1702RT:txtPg6Sc8I1C7": [],
+ "frm1702RT:txtPg6Sc8I1C8": [],
+ "frm1702RT:txtPg6Sc8I2C1": [],
+ "frm1702RT:txtPg6Sc8I2C2": [],
+ "frm1702RT:txtPg6Sc8I2C3": [],
+ "frm1702RT:txtPg6Sc8I2C4": [],
+ "frm1702RT:txtPg6Sc8I2C5": [],
+ "frm1702RT:txtPg6Sc8I2C6": [],
+ "frm1702RT:txtPg6Sc8I2C7": [],
+ "frm1702RT:txtPg6Sc8I2C8": [],
+ "frm1702RT:txtPg6Sc8I3C1": [],
+ "frm1702RT:txtPg6Sc8I3C2": [],
+ "frm1702RT:txtPg6Sc8I3C3": [],
+ "frm1702RT:txtPg6Sc8I3C4": [],
+ "frm1702RT:txtPg6Sc8I3C5": [],
+ "frm1702RT:txtPg6Sc8I3C6": [],
+ "frm1702RT:txtPg6Sc8I3C7": [],
+ "frm1702RT:txtPg6Sc8I3C8": [],
+ "frm1702RT:txtPg6Sc8I4TotalExcessMCIT": [],
+ "frm1702RT:txtPg6Sc9I10NetTaxableIncome": [],
+ "frm1702RT:txtPg6Sc9I3C1": [
+  "frm1702RT:txtPg6Sc9I2C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I3C2": [
+  "frm1702RT:txtPg6Sc9I2C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I3Subtotal": [],
+ "frm1702RT:txtPg6Sc9I4Total": [],
+ "frm1702RT:txtPg6Sc9I6C1": [
+  "frm1702RT:txtPg6Sc9I5C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I6C2": [
+  "frm1702RT:txtPg6Sc9I5C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I6Subtotal": [],
+ "frm1702RT:txtPg6Sc9I8C1": [
+  "frm1702RT:txtPg6Sc9I7C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I8C2": [
+  "frm1702RT:txtPg6Sc9I7C2=*"
+ ],
+ "frm1702RT:txtPg6Sc9I8Subtotal": [],
+ "frm1702RT:txtPg6Sc9I9Total": [],
+ "frm1702RT:txtPg6TIN1": [],
+ "frm1702RT:txtPg6TIN2": [],
+ "frm1702RT:txtPg6TIN3": [],
+ "frm1702RT:txtPg7BranchCode": [],
+ "frm1702RT:txtPg7RegisteredName": [],
+ "frm1702RT:txtPg7Sc10I12TotalLiabilities": [],
+ "frm1702RT:txtPg7Sc10I16TotalEquity": [],
+ "frm1702RT:txtPg7Sc10I17TotalLiabilitiesEquity": [],
+ "frm1702RT:txtPg7Sc10I7TotalAssets": [],
+ "frm1702RT:txtPg7Sc11I10C1": [],
+ "frm1702RT:txtPg7Sc11I10C3": [],
+ "frm1702RT:txtPg7Sc11I10C4": [],
+ "frm1702RT:txtPg7Sc11I10Tin1": [],
+ "frm1702RT:txtPg7Sc11I10Tin2": [],
+ "frm1702RT:txtPg7Sc11I10Tin3": [],
+ "frm1702RT:txtPg7Sc11I10Tin4": [],
+ "frm1702RT:txtPg7Sc11I11C1": [],
+ "frm1702RT:txtPg7Sc11I11C3": [],
+ "frm1702RT:txtPg7Sc11I11C4": [],
+ "frm1702RT:txtPg7Sc11I11Tin1": [],
+ "frm1702RT:txtPg7Sc11I11Tin2": [],
+ "frm1702RT:txtPg7Sc11I11Tin3": [],
+ "frm1702RT:txtPg7Sc11I11Tin4": [],
+ "frm1702RT:txtPg7Sc11I12C1": [],
+ "frm1702RT:txtPg7Sc11I12C3": [],
+ "frm1702RT:txtPg7Sc11I12C4": [],
+ "frm1702RT:txtPg7Sc11I12Tin1": [],
+ "frm1702RT:txtPg7Sc11I12Tin2": [],
+ "frm1702RT:txtPg7Sc11I12Tin3": [],
+ "frm1702RT:txtPg7Sc11I12Tin4": [],
+ "frm1702RT:txtPg7Sc11I13C1": [],
+ "frm1702RT:txtPg7Sc11I13C3": [],
+ "frm1702RT:txtPg7Sc11I13C4": [],
+ "frm1702RT:txtPg7Sc11I13Tin1": [],
+ "frm1702RT:txtPg7Sc11I13Tin2": [],
+ "frm1702RT:txtPg7Sc11I13Tin3": [],
+ "frm1702RT:txtPg7Sc11I13Tin4": [],
+ "frm1702RT:txtPg7Sc11I14C1": [],
+ "frm1702RT:txtPg7Sc11I14C3": [],
+ "frm1702RT:txtPg7Sc11I14C4": [],
+ "frm1702RT:txtPg7Sc11I14Tin1": [],
+ "frm1702RT:txtPg7Sc11I14Tin2": [],
+ "frm1702RT:txtPg7Sc11I14Tin3": [],
+ "frm1702RT:txtPg7Sc11I14Tin4": [],
+ "frm1702RT:txtPg7Sc11I15C1": [],
+ "frm1702RT:txtPg7Sc11I15C3": [],
+ "frm1702RT:txtPg7Sc11I15C4": [],
+ "frm1702RT:txtPg7Sc11I15Tin1": [],
+ "frm1702RT:txtPg7Sc11I15Tin2": [],
+ "frm1702RT:txtPg7Sc11I15Tin3": [],
+ "frm1702RT:txtPg7Sc11I15Tin4": [],
+ "frm1702RT:txtPg7Sc11I16C1": [],
+ "frm1702RT:txtPg7Sc11I16C3": [],
+ "frm1702RT:txtPg7Sc11I16C4": [],
+ "frm1702RT:txtPg7Sc11I16Tin1": [],
+ "frm1702RT:txtPg7Sc11I16Tin2": [],
+ "frm1702RT:txtPg7Sc11I16Tin3": [],
+ "frm1702RT:txtPg7Sc11I16Tin4": [],
+ "frm1702RT:txtPg7Sc11I17C1": [],
+ "frm1702RT:txtPg7Sc11I17C3": [],
+ "frm1702RT:txtPg7Sc11I17C4": [],
+ "frm1702RT:txtPg7Sc11I17Tin1": [],
+ "frm1702RT:txtPg7Sc11I17Tin2": [],
+ "frm1702RT:txtPg7Sc11I17Tin3": [],
+ "frm1702RT:txtPg7Sc11I17Tin4": [],
+ "frm1702RT:txtPg7Sc11I18C1": [],
+ "frm1702RT:txtPg7Sc11I18C3": [],
+ "frm1702RT:txtPg7Sc11I18C4": [],
+ "frm1702RT:txtPg7Sc11I18Tin1": [],
+ "frm1702RT:txtPg7Sc11I18Tin2": [],
+ "frm1702RT:txtPg7Sc11I18Tin3": [],
+ "frm1702RT:txtPg7Sc11I18Tin4": [],
+ "frm1702RT:txtPg7Sc11I19C1": [],
+ "frm1702RT:txtPg7Sc11I19C3": [],
+ "frm1702RT:txtPg7Sc11I19C4": [],
+ "frm1702RT:txtPg7Sc11I19Tin1": [],
+ "frm1702RT:txtPg7Sc11I19Tin2": [],
+ "frm1702RT:txtPg7Sc11I19Tin3": [],
+ "frm1702RT:txtPg7Sc11I19Tin4": [],
+ "frm1702RT:txtPg7Sc11I1C1": [],
+ "frm1702RT:txtPg7Sc11I1C3": [],
+ "frm1702RT:txtPg7Sc11I1C4": [],
+ "frm1702RT:txtPg7Sc11I1Tin1": [],
+ "frm1702RT:txtPg7Sc11I1Tin2": [],
+ "frm1702RT:txtPg7Sc11I1Tin3": [],
+ "frm1702RT:txtPg7Sc11I1Tin4": [],
+ "frm1702RT:txtPg7Sc11I20C1": [],
+ "frm1702RT:txtPg7Sc11I20C3": [],
+ "frm1702RT:txtPg7Sc11I20C4": [],
+ "frm1702RT:txtPg7Sc11I20Tin1": [],
+ "frm1702RT:txtPg7Sc11I20Tin2": [],
+ "frm1702RT:txtPg7Sc11I20Tin3": [],
+ "frm1702RT:txtPg7Sc11I20Tin4": [],
+ "frm1702RT:txtPg7Sc11I2C1": [],
+ "frm1702RT:txtPg7Sc11I2C3": [],
+ "frm1702RT:txtPg7Sc11I2C4": [],
+ "frm1702RT:txtPg7Sc11I2Tin1": [],
+ "frm1702RT:txtPg7Sc11I2Tin2": [],
+ "frm1702RT:txtPg7Sc11I2Tin3": [],
+ "frm1702RT:txtPg7Sc11I2Tin4": [],
+ "frm1702RT:txtPg7Sc11I3C1": [],
+ "frm1702RT:txtPg7Sc11I3C3": [],
+ "frm1702RT:txtPg7Sc11I3C4": [],
+ "frm1702RT:txtPg7Sc11I3Tin1": [],
+ "frm1702RT:txtPg7Sc11I3Tin2": [],
+ "frm1702RT:txtPg7Sc11I3Tin3": [],
+ "frm1702RT:txtPg7Sc11I3Tin4": [],
+ "frm1702RT:txtPg7Sc11I4C1": [],
+ "frm1702RT:txtPg7Sc11I4C3": [],
+ "frm1702RT:txtPg7Sc11I4C4": [],
+ "frm1702RT:txtPg7Sc11I4Tin1": [],
+ "frm1702RT:txtPg7Sc11I4Tin2": [],
+ "frm1702RT:txtPg7Sc11I4Tin3": [],
+ "frm1702RT:txtPg7Sc11I4Tin4": [],
+ "frm1702RT:txtPg7Sc11I5C1": [],
+ "frm1702RT:txtPg7Sc11I5C3": [],
+ "frm1702RT:txtPg7Sc11I5C4": [],
+ "frm1702RT:txtPg7Sc11I5Tin1": [],
+ "frm1702RT:txtPg7Sc11I5Tin2": [],
+ "frm1702RT:txtPg7Sc11I5Tin3": [],
+ "frm1702RT:txtPg7Sc11I5Tin4": [],
+ "frm1702RT:txtPg7Sc11I6C1": [],
+ "frm1702RT:txtPg7Sc11I6C3": [],
+ "frm1702RT:txtPg7Sc11I6C4": [],
+ "frm1702RT:txtPg7Sc11I6Tin1": [],
+ "frm1702RT:txtPg7Sc11I6Tin2": [],
+ "frm1702RT:txtPg7Sc11I6Tin3": [],
+ "frm1702RT:txtPg7Sc11I6Tin4": [],
+ "frm1702RT:txtPg7Sc11I7C1": [],
+ "frm1702RT:txtPg7Sc11I7C3": [],
+ "frm1702RT:txtPg7Sc11I7C4": [],
+ "frm1702RT:txtPg7Sc11I7Tin1": [],
+ "frm1702RT:txtPg7Sc11I7Tin2": [],
+ "frm1702RT:txtPg7Sc11I7Tin3": [],
+ "frm1702RT:txtPg7Sc11I7Tin4": [],
+ "frm1702RT:txtPg7Sc11I8C1": [],
+ "frm1702RT:txtPg7Sc11I8C3": [],
+ "frm1702RT:txtPg7Sc11I8C4": [],
+ "frm1702RT:txtPg7Sc11I8Tin1": [],
+ "frm1702RT:txtPg7Sc11I8Tin2": [],
+ "frm1702RT:txtPg7Sc11I8Tin3": [],
+ "frm1702RT:txtPg7Sc11I8Tin4": [],
+ "frm1702RT:txtPg7Sc11I9C1": [],
+ "frm1702RT:txtPg7Sc11I9C3": [],
+ "frm1702RT:txtPg7Sc11I9C4": [],
+ "frm1702RT:txtPg7Sc11I9Tin1": [],
+ "frm1702RT:txtPg7Sc11I9Tin2": [],
+ "frm1702RT:txtPg7Sc11I9Tin3": [],
+ "frm1702RT:txtPg7Sc11I9Tin4": [],
+ "frm1702RT:txtPg7TIN1": [],
+ "frm1702RT:txtPg7TIN2": [],
+ "frm1702RT:txtPg7TIN3": [],
+ "frm1702RT:txtPg8BranchCode": [],
+ "frm1702RT:txtPg8RegisteredName": [],
+ "frm1702RT:txtPg8Sc12I10C2": [],
+ "frm1702RT:txtPg8Sc12I11C2": [],
+ "frm1702RT:txtPg8Sc12I12C2": [],
+ "frm1702RT:txtPg8Sc12I13C2Date": [],
+ "frm1702RT:txtPg8Sc12I14C2": [],
+ "frm1702RT:txtPg8Sc12I15C2": [],
+ "frm1702RT:txtPg8Sc12I16C2": [
+  "frm1702RT:txtPg8Sc12I18C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I17C2": [
+  "frm1702RT:txtPg8Sc12I18C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I18C2": [
+  "frm1702RT:txtPg8Sc12I18C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I4Subtotal": [],
+ "frm1702RT:txtPg8Sc12I5C2": [
+  "frm1702RT:txtPg8Sc12I9C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I6C2": [
+  "frm1702RT:txtPg8Sc12I9C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I7C2": [
+  "frm1702RT:txtPg8Sc12I9C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I8C2": [
+  "frm1702RT:txtPg8Sc12I9C1=*"
+ ],
+ "frm1702RT:txtPg8Sc12I9C2": [
+  "frm1702RT:txtPg8Sc12I9C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I2C2": [
+  "frm1702RT:txtPg8Sc13I5C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I3C2": [
+  "frm1702RT:txtPg8Sc13I5C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I4C2": [
+  "frm1702RT:txtPg8Sc13I5C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I5C2": [
+  "frm1702RT:txtPg8Sc13I5C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I6C2": [
+  "frm1702RT:txtPg8Sc13I7C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I7C2": [
+  "frm1702RT:txtPg8Sc13I7C1=*"
+ ],
+ "frm1702RT:txtPg8Sc13I8TotalIncome": [],
+ "frm1702RT:txtPg8TIN1": [],
+ "frm1702RT:txtPg8TIN2": [],
+ "frm1702RT:txtPg8TIN3": [],
+ "frm1702RT:txtSc12I19TotalFinalTaxWitheld": [],
+ "frm1702RT:txtSignaturePresident": [],
+ "frm1702RT:txtSignatureTreasurer": [],
+ "frm1702RT:txtZIP": [],
+ "txtBranchMaskP2": [],
+ "txtBranchMaskP3": [],
+ "txtBranchMaskP4": [],
+ "txtBranchMaskP5": [],
+ "txtBranchMaskP6": [],
+ "txtBranchMaskP7": [],
+ "txtBranchMaskP8": []
+}

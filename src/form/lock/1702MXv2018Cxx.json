@@ -5,7 +5,8 @@
  ],
  "frm1702MX:drpPg1I5ATCR2": [
   "frm1702MX:chkPg1I5ATCR1",
-  "frm1702MX:chkPg1I5ATCR2"
+  "frm1702MX:chkPg1I5ATCR2",
+  "frm1702MX:txtPg1Pt1I8=*"
  ],
  "frm1702MX:txtPg2Sc3It27A": [
   "frm1702MX:rdoPg1I3AmendedYes"
@@ -16,31 +17,244 @@
  "frm1702MX:txtPg2Sc3It27C": [
   "frm1702MX:rdoPg1I3AmendedYes"
  ],
+ "frm1702MX:txtPg2Sc3It30A": [
+  "frm1702MX:txtPg2Sc3It30=*"
+ ],
+ "frm1702MX:txtPg2Sc3It30B": [
+  "frm1702MX:txtPg2Sc3It30=*"
+ ],
+ "frm1702MX:txtPg2Sc3It30C": [
+  "frm1702MX:txtPg2Sc3It30=*"
+ ],
+ "frm1702MX:txtPg2Sc3It30D": [
+  "frm1702MX:txtPg2Sc3It30=*"
+ ],
+ "frm1702MX:txtPg2Sc3It31": [
+  "frm1702MX:txtPg2Sc3It30=*"
+ ],
+ "frm1702MX:txtPg2Sc3It31A": [
+  "frm1702MX:txtPg2Sc3It31=*"
+ ],
+ "frm1702MX:txtPg2Sc3It31B": [
+  "frm1702MX:txtPg2Sc3It31=*"
+ ],
+ "frm1702MX:txtPg2Sc3It31C": [
+  "frm1702MX:txtPg2Sc3It31=*"
+ ],
+ "frm1702MX:txtPg2Sc3It31D": [
+  "frm1702MX:txtPg2Sc3It31=*"
+ ],
+ "frm1702MX:txtPg3Sc5It17e": [
+  "frm1702MX:txtPg3Sc5It17d=*"
+ ],
+ "frm1702MX:txtPg3Sc5It17f": [
+  "frm1702MX:txtPg3Sc5It17e=*"
+ ],
+ "frm1702MX:txtPg3Sc5It17g": [
+  "frm1702MX:txtPg3Sc5It17f=*"
+ ],
+ "frm1702MX:txtPg3Sc5It17h": [
+  "frm1702MX:txtPg3Sc5It17g=*"
+ ],
+ "frm1702MX:txtPg3Sc5It17i": [
+  "frm1702MX:txtPg3Sc5It17h=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17dA": [
+  "frm1702MX:txtPg3Sc5Itm17cC=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17dB": [
+  "frm1702MX:txtPg3Sc5Itm17cC=*"
+ ],
  "frm1702MX:txtPg3Sc5Itm17dC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5Itm17cC=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17dD": [
+  "frm1702MX:txtPg3Sc5Itm17cC=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17eA": [
+  "frm1702MX:txtPg3Sc5It17e=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17eB": [
+  "frm1702MX:txtPg3Sc5It17e=*"
  ],
  "frm1702MX:txtPg3Sc5Itm17eC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5It17e=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17eD": [
+  "frm1702MX:txtPg3Sc5It17e=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17fA": [
+  "frm1702MX:txtPg3Sc5It17f=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17fB": [
+  "frm1702MX:txtPg3Sc5It17f=*"
  ],
  "frm1702MX:txtPg3Sc5Itm17fC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5It17f=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17fD": [
+  "frm1702MX:txtPg3Sc5It17f=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17gA": [
+  "frm1702MX:txtPg3Sc5It17g=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17gB": [
+  "frm1702MX:txtPg3Sc5It17g=*"
  ],
  "frm1702MX:txtPg3Sc5Itm17gC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5It17g=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17gD": [
+  "frm1702MX:txtPg3Sc5It17g=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17hA": [
+  "frm1702MX:txtPg3Sc5It17h=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17hB": [
+  "frm1702MX:txtPg3Sc5It17h=*"
  ],
  "frm1702MX:txtPg3Sc5Itm17hC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5It17h=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17hD": [
+  "frm1702MX:txtPg3Sc5It17h=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17iA": [
+  "frm1702MX:txtPg3Sc5It17i=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17iB": [
+  "frm1702MX:txtPg3Sc5It17i=*"
  ],
  "frm1702MX:txtPg3Sc5Itm17iC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg3Sc5It17i=*"
+ ],
+ "frm1702MX:txtPg3Sc5Itm17iD": [
+  "frm1702MX:txtPg3Sc5It17i=*"
+ ],
+ "frm1702MX:txtPg3Sc6I2CB": [
+  "frm1702MX:txtPg6Sc6I1legal=*"
+ ],
+ "frm1702MX:txtPg3Sc6I4CA": [
+  "frm1702MX:txtPg6Sc6I3description=*"
+ ],
+ "frm1702MX:txtPg3Sc6I4CB": [
+  "frm1702MX:txtPg6Sc6I3description=*"
  ],
  "frm1702MX:txtPg3Sc6I4CC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg6Sc6I3description=*"
+ ],
+ "frm1702MX:txtPg3Sc6I4description": [
+  "frm1702MX:txtPg6Sc6I3description=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm2A": [
+  "frm1702MX:txtPg4Sc10Itm2=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm2B": [
+  "frm1702MX:txtPg4Sc10Itm2=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm2C": [
+  "frm1702MX:txtPg4Sc10Itm2=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm2D": [
+  "frm1702MX:txtPg4Sc10Itm2=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm3": [
+  "frm1702MX:txtPg4Sc10Itm2=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm3A": [
+  "frm1702MX:txtPg4Sc10Itm3=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm3B": [
+  "frm1702MX:txtPg4Sc10Itm3=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm3C": [
+  "frm1702MX:txtPg4Sc10Itm3=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm3D": [
+  "frm1702MX:txtPg4Sc10Itm3=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm5A": [
+  "frm1702MX:txtPg4Sc10Itm5=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm5B": [
+  "frm1702MX:txtPg4Sc10Itm5=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm5C": [
+  "frm1702MX:txtPg4Sc10Itm5=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm5D": [
+  "frm1702MX:txtPg4Sc10Itm5=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm6": [
+  "frm1702MX:txtPg4Sc10Itm5=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm6A": [
+  "frm1702MX:txtPg4Sc10Itm6=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm6B": [
+  "frm1702MX:txtPg4Sc10Itm6=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm6C": [
+  "frm1702MX:txtPg4Sc10Itm6=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm6D": [
+  "frm1702MX:txtPg4Sc10Itm6=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm7A": [
+  "frm1702MX:txtPg4Sc10Itm7=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm7B": [
+  "frm1702MX:txtPg4Sc10Itm7=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm7C": [
+  "frm1702MX:txtPg4Sc10Itm7=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm7D": [
+  "frm1702MX:txtPg4Sc10Itm7=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm8": [
+  "frm1702MX:txtPg4Sc10Itm7=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm8A": [
+  "frm1702MX:txtPg4Sc10Itm8=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm8B": [
+  "frm1702MX:txtPg4Sc10Itm8=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm8C": [
+  "frm1702MX:txtPg4Sc10Itm8=*"
+ ],
+ "frm1702MX:txtPg4Sc10Itm8D": [
+  "frm1702MX:txtPg4Sc10Itm8=*"
+ ],
+ "frm1702MX:txtPg4Sc6I3CB": [
+  "frm1702MX:txtPg6Sc6I2description=*"
+ ],
+ "frm1702MX:txtPg6Sc6I2CA": [
+  "frm1702MX:txtPg6Sc6I1legal=*"
  ],
  "frm1702MX:txtPg6Sc6I2CC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg6Sc6I1legal=*"
+ ],
+ "frm1702MX:txtPg6Sc6I2description": [
+  "frm1702MX:txtPg6Sc6I1legal=*"
+ ],
+ "frm1702MX:txtPg6Sc6I3CA": [
+  "frm1702MX:txtPg6Sc6I2description=*"
  ],
  "frm1702MX:txtPg6Sc6I3CC": [
-  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized"
+  "frm1702MX:rdoPg1Pt1I13MethodOfDeducItemized",
+  "frm1702MX:txtPg6Sc6I2description=*"
+ ],
+ "frm1702MX:txtPg6Sc6I3description": [
+  "frm1702MX:txtPg6Sc6I2description=*"
  ]
 }

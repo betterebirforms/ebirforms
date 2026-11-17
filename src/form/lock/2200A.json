@@ -1,8 +1,46 @@
 {
+ "CalcSubTotalXA035Bottle": [],
+ "CalcSubTotalXA035Bulk": [],
+ "CalcSubTotalXA036Bottle": [],
+ "CalcSubTotalXA036Bulk": [],
+ "CalcSubTotalXA055": [],
+ "CalcSubTotalXA0552": [],
+ "CalcSubTotalXA056": [],
+ "CalcSubTotalXA0562": [],
+ "CalcSubTotalXA057": [],
+ "CalcSubTotalXA061": [],
+ "CalcSubTotalXA062": [],
+ "CalcSubTotalXA070": [],
+ "CalcSubTotalXA080": [],
  "frm2200A:lstTaxTreaty": [
   "frm2200A:optTreaty_1"
  ],
+ "frm2200A:txt17OthMannerofPymnt": [
+  "frm2200A:chkPymntManner_3"
+ ],
+ "frm2200A:txtAddress": [],
+ "frm2200A:txtBranchCode": [],
+ "frm2200A:txtContactNum": [],
+ "frm2200A:txtEmailAddress": [],
+ "frm2200A:txtLineBus": [],
+ "frm2200A:txtRDOCode": [],
+ "frm2200A:txtSheets": [],
+ "frm2200A:txtTIN1": [],
+ "frm2200A:txtTIN2": [],
+ "frm2200A:txtTIN3": [],
+ "frm2200A:txtTax18": [],
+ "frm2200A:txtTax19B": [],
+ "frm2200A:txtTax19C": [],
+ "frm2200A:txtTax20": [],
  "frm2200A:txtTax21": [
   "frm2200A:amendedRtn_1"
- ]
+ ],
+ "frm2200A:txtTax22": [],
+ "frm2200A:txtTax23D": [],
+ "frm2200A:txtTax24": [],
+ "frm2200A:txtTax25B": [],
+ "frm2200A:txtTax25C": [],
+ "frm2200A:txtTax26": [],
+ "frm2200A:txtTaxPayerName": [],
+ "frm2200A:txtZipCode": []
 }

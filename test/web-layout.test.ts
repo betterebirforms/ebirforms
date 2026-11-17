@@ -8,6 +8,7 @@ import { createServer, type Server } from "node:http";
 import { extname, join } from "node:path";
 import type { AddressInfo } from "node:net";
 import { chromium, type Browser, type Page } from "playwright";
+import { NATIVE_FORM } from "../src/form/registry.ts";
 
 const WEB = "dist-web";
 const MIME: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".gif": "image/gif", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
@@ -524,15 +525,21 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const miss: string[] = [];
     for (const file of readdirSync("src/form/lock").filter((f) => f.endsWith(".json"))) {
       const code = file.slice(0, -".json".length);
-      const box = Object.keys(JSON.parse(readFileSync(`src/form/lock/${file}`, "utf8")) as Record<string, string[]>);
+      // a box BIR never opens while filling in ([]) defers to the web's own model where it has one: a gated box
+      // follows its gate, and this page has no profile picked, so the profile's boxes stay typable
+      const def = NATIVE_FORM[code];
+      const rule = JSON.parse(readFileSync(`src/form/lock/${file}`, "utf8")) as Record<string, string[]>;
+      const box = Object.keys(rule).filter((id) => rule[id]!.length > 0 || !def || !(id in def.prefill || def.schema.field.find((f) => f.id === id)?.gate));
       if (box.length === 0 || !existsSync(`asset/bir/layout/${code}.html`)) continue;
       await page.goto(`${base}/form/${code}`, { waitUntil: "networkidle" });
       await page.locator(".bir-layout").waitFor();
       await page.waitForTimeout(800);
       const open = await page.evaluate((ids) => {
         const root = document.querySelector(".bir-layout")!.shadowRoot!;
+        // the first element with the id that is not a hidden input: the one BIR's code reaches (1801 (2018) keeps a
+        // hidden twin of its line-of-business box; 1707A (2021) a second, open e-mail box with the greyed one's id)
         return ids.filter((id) => {
-          const el = root.getElementById(id) as HTMLInputElement | null;
+          const el = Array.from(root.querySelectorAll<HTMLInputElement>(`[id="${id}"]`)).find((e) => e.type !== "hidden");
           return el && !el.disabled && !el.readOnly;
         });
       }, box);

@@ -8,6 +8,7 @@
 //   • any other greyed box (BIR opens it by a longer path the capture cannot walk: a schedule row once its
 //     attachment is added) is left to the page as before.
 import fixedFile from "./lock-fixed.json";
+import ruleFile from "./lock-rule.json";
 import { PICKER, LIST_FILLED } from "./picker.ts";
 import type { FieldSpec } from "./schema.ts";
 
@@ -54,5 +55,10 @@ export const LOCK_RULE: Record<string, Record<string, string[]>> = {
   "2200Pv2020": { "frm2200P:txtPg1Pt2MOPOtherDesc": ["frm2200P:rdoPg1Pt2MOPOther"] },
 };
 
-/** A form's lock openers: the captured ones, then LOCK_RULE's. */
-export const lockRule = (form_code: string, captured: Record<string, string[]>): Record<string, string[]> => ({ ...captured, ...LOCK_RULE[form_code] });
+/** A form's lock openers: the captured ones, then those read from BIR's source (src/form/lock-rule.json,
+ *  test/capture-rule.test.ts: MCIT, and boxes only BIR's Edit opens, [] = never while filling in), then LOCK_RULE's. */
+export const lockRule = (form_code: string, captured: Record<string, string[]>): Record<string, string[]> => ({
+  ...captured,
+  ...(ruleFile as Record<string, Record<string, string[]>>)[form_code],
+  ...LOCK_RULE[form_code],
+});

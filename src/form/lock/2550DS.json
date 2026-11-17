@@ -11,12 +11,16 @@
  "frm2550ds:addPenaltiesSurcharge": [
   "frm2550ds:paymentValueAddedTax"
  ],
+ "frm2550ds:addPenaltiesTotal": [],
  "frm2550ds:advancePaymentDeposit": [
   "frm2550ds:paymentAdvanceDeposit"
  ],
  "frm2550ds:advancePaymentOrDepositMadeThisQuarter": [
   "frm2550ds:paymentValueAddedTax"
  ],
+ "frm2550ds:balanceSubjectToVAT": [],
+ "frm2550ds:branchCode": [],
+ "frm2550ds:emailAddress": [],
  "frm2550ds:excessPaymentCarriedOver": [
   "frm2550ds:paymentValueAddedTax"
  ],
@@ -32,11 +36,23 @@
  "frm2550ds:otherPaymentCreditSpecify": [
   "frm2550ds:paymentValueAddedTax"
  ],
+ "frm2550ds:rdoCode": [],
  "frm2550ds:selectedMonthNo2": [
   "frm2550ds:fiscalNo1"
  ],
+ "frm2550ds:taxpayerName": [],
+ "frm2550ds:totalAmountPayable": [],
+ "frm2550ds:totalPaymentsCredits": [],
+ "frm2550ds:txtATC": [],
+ "frm2550ds:txtTIN1": [],
+ "frm2550ds:txtTIN2": [],
+ "frm2550ds:txtTIN3": [],
  "frm2550ds:vatPaidInReturn": [
   "frm2550ds:amendedReturnYesNo5",
   "frm2550ds:paymentValueAddedTax"
- ]
+ ],
+ "frm2550ds:vatPayable": [],
+ "frm2550ds:vatRate": [],
+ "frm2550ds:vatStillPayable": [],
+ "resultOtherCreditsNo22D": []
 }

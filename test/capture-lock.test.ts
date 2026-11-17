@@ -4,7 +4,7 @@
 // note every greyed box, then for each enabled radio or checkbox reload the blank form, click it, and note which
 // greyed boxes opened. Then the same for each option of each list (up to 12 options; a longer list, its second
 // option stands for "anything picked"), and for typing into each open text box (one page, box after box: a box
-// that opens is put down to the last one typed). A box with no opener found is left out (it may open some other
+// that opens is put down to the last one typed; repeated over the boxes that opened, until none does). A box with no opener found is left out (it may open some other
 // way, so the web keeps it open).
 //   EBF_CAPTURE_LOCK=0605,1701Qv2018 npx vitest run test/capture-lock.test.ts   (=1 for every form)
 // Writes src/form/lock/<CODE>.json: { "<box id>": [opener, ...] }, the box open while any opener holds:
@@ -28,7 +28,13 @@ const code = existsSync(`${ORIGINAL}/forms`)
 /** Boxes (text, list, text area) BIR has greyed out, and choices it leaves clickable, by id. */
 const scan = (tab: Page) =>
   tab.evaluate(() => {
-    const visible = (el: HTMLElement) => el.getClientRects().length > 0;
+    // on screen, or on another page of BIR's pager (Page2Content ...): a user reaches it by turning the page
+    const visible = (el: HTMLElement) => {
+      if (el.getClientRects().length > 0) return true;
+      if (getComputedStyle(el).display === "none") return false;
+      for (let x = el.parentElement; x; x = x.parentElement) if (getComputedStyle(x).display === "none" && !/^Page\d+m?(Content)?$/.test(x.id)) return false;
+      return true;
+    };
     const locked: string[] = [];
     const choice: string[] = [];
     const list: { id: string; value: string[] }[] = [];
@@ -37,7 +43,8 @@ const scan = (tab: Page) =>
       if (!el.id) continue;
       const kind = el.tagName === "INPUT" ? el.type : el.tagName.toLowerCase();
       if (kind === "radio" || kind === "checkbox") {
-        if (!el.disabled && visible(el)) choice.push(el.id);
+        // a greyed choice too: BIR opens it some other way (its own rule covers that), and what it opens is learned here
+        if (visible(el)) choice.push(el.id);
       } else if (!el.disabled && !el.readOnly && visible(el)) {
         if (kind === "select") {
           const s = el as unknown as HTMLSelectElement;
@@ -63,7 +70,7 @@ describe.runIf(want)("capture BIR's locked boxes and what opens them", () => {
       const tab: Page[] = [];
       for (let i = 0; i < TAB; i++) {
         const t = await oracle.browser.newPage({ viewport: { width: 1280, height: 900 } });
-        t.on("dialog", (d) => void d.dismiss().catch(() => {}));
+        t.on("dialog", (d) => void d.accept().catch(() => {})); // a user who says yes: some boxes open only after BIR's confirm (2550-Q short period)
         tab.push(t);
       }
       await tab[0]!.goto(url);
@@ -87,6 +94,7 @@ describe.runIf(want)("capture BIR's locked boxes and what opens them", () => {
               await t.evaluate(([x, v]) => {
                 const el = document.getElementById(x) as HTMLInputElement | null;
                 if (!el) return;
+                el.disabled = false;
                 if (v === null) el.click();
                 else {
                   el.value = v;
@@ -102,27 +110,108 @@ describe.runIf(want)("capture BIR's locked boxes and what opens them", () => {
           }
         }),
       );
-      // typing: one blank page, each open text box in turn
+      // typing: one blank page, each open text box in turn, then again over the boxes that typing opened (BIR's rows
+      // open one after the other: row 2 once row 1 is in), until nothing new opens. The typed value is one BIR's own
+      // checks accept: a year in a 4-digit box, a date in a date box, else "1".
       try {
         const t = tab[0]!;
         await t.goto(url);
         await t.waitForTimeout(1500);
         let still = new Set((await scan(t)).locked);
-        for (const id of blank.text) {
-          await t.evaluate((x) => {
-            const el = document.getElementById(x) as HTMLInputElement | null;
-            if (!el || el.disabled) return;
-            el.focus();
-            el.value = "1";
-            for (const type of ["input", "keyup", "change"]) el.dispatchEvent(new Event(type, { bubbles: true }));
-            el.blur();
-          }, id).catch(() => {});
-          const now = new Set((await scan(t).catch(() => ({ locked: [...still] }))).locked);
-          for (const box of still) if (!now.has(box) && locked.has(box)) (open[box] ??= []).push(`${id}=*`);
-          still = now;
+        const typed = new Set<string>();
+        let round = blank.text;
+        for (let pass = 0; pass < 8 && round.length; pass++) {
+          for (const id of round) {
+            typed.add(id);
+            await t.evaluate((x) => {
+              const el = document.getElementById(x) as HTMLInputElement | null;
+              if (!el || el.disabled) return;
+              const value = /date|dob|birth/i.test(x) ? "01/01/2020" : el.maxLength === 4 ? "2020" : "1";
+              el.focus();
+              el.value = value;
+              for (const type of ["input", "keyup", "change"]) el.dispatchEvent(new Event(type, { bubbles: true }));
+              // a box on another page of the pager cannot take focus, so blur() would not run BIR's onblur: send it
+              if (document.activeElement === el) el.blur();
+              else el.dispatchEvent(new FocusEvent("blur"));
+            }, id).catch(() => {});
+            const now = new Set((await scan(t).catch(() => ({ locked: [...still] }))).locked);
+            for (const box of still) if (!now.has(box) && locked.has(box)) (open[box] ??= []).push(`${id}=*`);
+            still = now;
+          }
+          round = (await scan(t).catch(() => ({ text: [] as string[] }))).text.filter((id) => !typed.has(id));
         }
       } catch {
         /* the page navigated away while typing: keep what was learned */
+      }
+      // everything at once: one page where every choice is ticked (greyed ones too), every list set and every box
+      // typed, round after round, so a box that needs several things first can open. A box that opens is put down to
+      // the action just taken; a greyed box that never opens, even so, is never opened while filling in ([]).
+      try {
+        const t = tab[0]!;
+        await t.goto(url);
+        await t.waitForTimeout(1500);
+        let still = new Set((await scan(t)).locked);
+        const done = new Set<string>();
+        for (let pass = 0; pass < 4; pass++) {
+          const now0 = await scan(t);
+          const act: Array<[string, string, string | null]> = [
+            ...now0.choice.map((id) => [id, id, null] as [string, string, string | null]),
+            // every option of a list (up to 40): some boxes open on one value only (1702-Q Schedule 4 on its ATC)
+            ...(
+              await t.evaluate((ids) =>
+                ids.map((id) => [id, Array.from((document.getElementById(id) as HTMLSelectElement).options, (o) => o.value).filter((v) => v !== "").slice(0, 40)] as [string, string[]]),
+                now0.list.map((l) => l.id),
+              )
+            ).flatMap(([id, value]) => value.map((v) => [`${id}=${v}`, id, v] as [string, string, string | null])),
+            ...now0.text.map((id) => [`${id}=*`, id, ""] as [string, string, string | null]),
+          ].filter(([rule]) => !done.has(rule));
+          if (!act.length) break;
+          for (const [rule, id, v] of act) {
+            done.add(rule);
+            await t.evaluate(([x, v]) => {
+              const el = document.getElementById(x) as HTMLInputElement | null;
+              if (!el) return;
+              el.disabled = false;
+              if (v === null) {
+                if (!el.checked) el.click();
+              } else if (v !== "") {
+                el.value = v;
+                el.dispatchEvent(new Event("change", { bubbles: true }));
+              } else {
+                el.value = /date|dob|birth/i.test(x) ? "01/01/2020" : el.maxLength === 4 ? "2020" : "1";
+                for (const type of ["input", "keyup", "change"]) el.dispatchEvent(new Event(type, { bubbles: true }));
+                el.dispatchEvent(new FocusEvent("blur"));
+              }
+            }, [id, v] as [string, string | null]).catch(() => {});
+            let now = new Set((await scan(t).catch(() => ({ locked: [...still] }))).locked);
+            const opened = [...still].filter((box) => !now.has(box) && locked.has(box) && !open[box]);
+            if (v !== null && v !== "" && opened.length) {
+              // a list opened them: try its every value, and keep each one the box is open on ("=*" when all are)
+              const all = await t.evaluate((x) => Array.from((document.getElementById(x) as HTMLSelectElement).options, (o) => o.value).filter((o) => o !== "").slice(0, 40), id);
+              const on: Record<string, string[]> = {};
+              for (const o of all) {
+                await t.evaluate(([x, o]) => {
+                  const el = document.getElementById(x) as HTMLSelectElement;
+                  el.value = o;
+                  el.dispatchEvent(new Event("change", { bubbles: true }));
+                }, [id, o] as [string, string]).catch(() => {});
+                const at = new Set((await scan(t).catch(() => ({ locked: [...now] }))).locked);
+                for (const box of opened) if (!at.has(box)) (on[box] ??= []).push(o);
+              }
+              await t.evaluate(([x, o]) => {
+                const el = document.getElementById(x) as HTMLSelectElement;
+                el.value = o;
+                el.dispatchEvent(new Event("change", { bubbles: true }));
+              }, [id, v] as [string, string]).catch(() => {});
+              now = new Set((await scan(t).catch(() => ({ locked: [...now] }))).locked);
+              for (const box of opened) open[box] = (on[box] ?? [v]).length === all.length ? [`${id}=*`] : (on[box] ?? [v]).map((o) => `${id}=${o}`);
+            } else for (const box of opened) (open[box] ??= []).push(rule);
+            still = now;
+          }
+        }
+        for (const box of locked) if (!open[box] && still.has(box)) open[box] = [];
+      } catch {
+        /* the page navigated away: keep what was learned */
       }
       for (const t of tab) await t.close();
       const sorted = Object.fromEntries(Object.keys(open).sort().map((k) => [k, open[k]!.sort()]));

@@ -2,9 +2,15 @@
  "frm1706:j_id391:_7": [
   "frm1706:j_id391:_8"
  ],
+ "frm1706:selTreaty": [
+  "frm1706:rdTreaty:_1"
+ ],
+ "frm1706:txt4": [],
+ "frm1706:txt4C": [],
  "frm1706:txtAmount": [
   "frm1706:j_id395:_3"
  ],
+ "frm1706:txtBranchCode": [],
  "frm1706:txtCost": [
   "frm1706:j_id395:_3"
  ],
@@ -27,13 +33,21 @@
   "frm1706:j_id395:_2",
   "frm1706:j_id395:_5"
  ],
+ "frm1706:txtRate": [],
  "frm1706:txtSelling": [
   "frm1706:j_id395:_3"
  ],
+ "frm1706:txtTIN1": [],
+ "frm1706:txtTIN2": [],
+ "frm1706:txtTIN3": [],
+ "frm1706:txtTax": [],
+ "frm1706:txtTaxDue": [],
+ "frm1706:txtTotal": [],
  "frm1706:txtTotalN": [
   "frm1706:j_id395:_3"
  ],
  "frm1706:txtTotalP": [
   "frm1706:j_id395:_3"
- ]
+ ],
+ "frm1706:txtTotalPenalties": []
 }

@@ -72,7 +72,8 @@ export function boxClass(code: string, id: string): BoxClass {
   const def = NATIVE_FORM[code]!;
   const { lock, picker, never, computed, total, field, sub } = context(code);
   const f = field.get(id);
-  if (id in lock) return { by: "rule", locked: true };
+  // an empty opener list (never opened while filling in) on a gated box: the gate decides, as in LayoutView
+  if (id in lock && !(lock[id]!.length === 0 && f?.gate)) return { by: "rule", locked: true };
   if (!f) {
     // not a box the engine drives: the page's own greyed state stands
     return { by: sub.has(id) || sub.has(rowStem(id)) ? "group row" : "no field", locked: true };

@@ -1,9 +1,41 @@
 {
+ "frm2000OT:Sched2:txtTaxableBase": [],
+ "frm2000OT:Sched2:txtTotalFairMarket": [],
+ "frm2000OT:sched1A:txtFMVSubTot0": [],
+ "frm2000OT:sched1A:txtFMVSubTot1": [],
+ "frm2000OT:sched1A:txtFMVSubTot2": [],
+ "frm2000OT:sched1A:txtFMVSubTot3": [],
+ "frm2000OT:sched1A:txtFMVSubTot4": [],
+ "frm2000OT:sched1A:txtFMVTotal": [],
+ "frm2000OT:txtAddress": [],
+ "frm2000OT:txtAddress2": [],
+ "frm2000OT:txtBranchCode": [],
+ "frm2000OT:txtMaxPage": [],
+ "frm2000OT:txtPg2BranchCode": [],
+ "frm2000OT:txtPg2TIN1": [],
+ "frm2000OT:txtPg2TIN2": [],
+ "frm2000OT:txtPg2TIN3": [],
+ "frm2000OT:txtPg2TaxpayerName": [],
+ "frm2000OT:txtRDOCode": [],
  "frm2000OT:txtRealLocation": [
   "frm2000OT:rbTransNature_2",
   "frm2000OT:rbTransNature_3"
  ],
+ "frm2000OT:txtTIN1": [],
+ "frm2000OT:txtTIN2": [],
+ "frm2000OT:txtTIN3": [],
+ "frm2000OT:txtTax14": [],
+ "frm2000OT:txtTax15": [],
+ "frm2000OT:txtTax16": [],
+ "frm2000OT:txtTax17": [],
  "frm2000OT:txtTax18": [
   "frm2000OT:AmendedRtn_1"
- ]
+ ],
+ "frm2000OT:txtTax19": [],
+ "frm2000OT:txtTax20D": [],
+ "frm2000OT:txtTax21": [],
+ "frm2000OT:txtTaxpayerName": [],
+ "frm2000OT:txtTelNum": [],
+ "frm2000OT:txtZipCode": [],
+ "txtEmail": []
 }

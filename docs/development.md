@@ -110,9 +110,10 @@ A `v*` tag builds all three platforms in CI (`.github/workflows/build.yml`) and 
 | `EBF_LAYOUT_ABSENT` | (none) | With BIR's tree present, rewrite `asset/bir/layout/absent.json`: the save keys each form's page has no box for, proven commented out in BIR's source. CI checks against this list |
 | `EBF_CAPTURE_LAYOUT` | (none) | Capture BIR's page layouts for the web version into `asset/bir/layout/`: a list of form codes plus `main` for the main screen, or `1` for all. Scripts, handlers and `javascript:` links are removed; images are copied into `img/` |
 | `EBF_LOCK_REPORT` | (none) | A file path. `test/lock-blank.test.ts` and `test/web-lock.test.ts` append, per form, what BIR greys out on its blank page, what fills it and what the web leaves typable |
-| `EBF_LOCK_FIXED` | (none) | Set it with `EBF_LOCK_REPORT` to also list, per form, the greyed boxes BIR's code opens by a path the capture cannot walk (the web leaves them open) |
+| `EBF_LOCK_FIXED` | (none) | Set it with `EBF_LOCK_REPORT` to also list, per form, the greyed boxes no rule opens (expected empty: every greyed box has a captured or source-read rule) |
+| `EBF_CAPTURE_RULE` | (none) | Read BIR's source for openers the page capture cannot click (the MCIT schedules, boxes only BIR's Edit opens), into `src/form/lock-rule.json`: a list of form codes, or `1` for all (seconds). Needs BIR's tree in `vendor/original/` |
 | `EBF_CAPTURE_FIXED` | (none) | Read BIR's source for each form and list the greyed boxes it never enables, into `src/form/lock-fixed.json`: a list of form codes, or `1` for all (seconds). Needs BIR's tree in `vendor/original/` |
-| `EBF_CAPTURE_LOCK` | (none) | Capture which boxes BIR's pages grey out on a new form, and which choice, list value or typed box opens each one, into `src/form/lock/`: a list of form codes, or `1` for all (about an hour). Needs BIR's tree in `vendor/original/` |
+| `EBF_CAPTURE_LOCK` | (none) | Capture which boxes BIR's pages grey out on a new form, and which choice, list value or typed box opens each one (greyed choices too, every page of BIR's pager, BIR's confirms answered yes, and a last pass that does everything at once; a box that never opens gets an empty list), into `src/form/lock/`: a list of form codes, or `1` for all (about an hour). Needs BIR's tree in `vendor/original/` |
 
 ### Test and debug switches
 

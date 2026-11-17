@@ -1,8 +1,45 @@
 {
+ "frm0619F:txtAddress": [],
+ "frm0619F:txtAddress2": [],
+ "frm0619F:txtBranchCode": [],
+ "frm0619F:txtDueMonth": [],
+ "frm0619F:txtDueYear": [],
+ "frm0619F:txtRDOCode": [],
+ "frm0619F:txtTIN1": [],
+ "frm0619F:txtTIN2": [],
+ "frm0619F:txtTIN3": [],
  "frm0619F:txtTax14": [
   "frm0619F:txtTaxTypeCode=WF"
  ],
+ "frm0619F:txtTax15": [],
  "frm0619F:txtTax16": [
   "frm0619F:optAmend:Y"
- ]
+ ],
+ "frm0619F:txtTax17": [],
+ "frm0619F:txtTax18D": [],
+ "frm0619F:txtTax19": [],
+ "frm0619F:txtTaxpayerName": [],
+ "frm0619F:txtTelNum": [],
+ "frm0619F:txtZipCode": [],
+ "txtAgency20": [],
+ "txtAgency21": [],
+ "txtAgency22": [],
+ "txtAgency23": [],
+ "txtAmount20": [],
+ "txtAmount21": [],
+ "txtAmount22": [],
+ "txtAmount23": [],
+ "txtDate20": [],
+ "txtDate21": [],
+ "txtDate22": [],
+ "txtDate23": [],
+ "txtDateExpiry": [],
+ "txtDateIssue": [],
+ "txtEmail": [],
+ "txtNumber20": [],
+ "txtNumber21": [],
+ "txtNumber22": [],
+ "txtNumber23": [],
+ "txtParticular23": [],
+ "txtTaxAgentNo": []
 }

@@ -1,13 +1,30 @@
 {
+ "frm2000:txt13A": [],
+ "frm2000:txt13B": [],
+ "frm2000:txt13C": [],
+ "frm2000:txt13D": [],
+ "frm2000:txt13E": [],
+ "frm2000:txt13F": [],
  "frm2000:txt13G": [
   "frm2000:optSection:_2",
   "frm2000:optSection:_2"
  ],
+ "frm2000:txt13H": [],
+ "frm2000:txt13I": [],
+ "frm2000:txtATC": [],
+ "frm2000:txtBranchCode": [],
+ "frm2000:txtSumTaxDue": [],
+ "frm2000:txtTIN1": [],
+ "frm2000:txtTIN2": [],
+ "frm2000:txtTIN3": [],
  "frm2000:txtTax15": [
   "frm2000:optSection:_2",
   "frm2000:optSection:_2"
  ],
  "frm2000:txtTax16": [
   "frm2000:AmendedRtn_1"
- ]
+ ],
+ "frm2000:txtTax17": [],
+ "frm2000:txtTax18D": [],
+ "frm2000:txtTax19": []
 }

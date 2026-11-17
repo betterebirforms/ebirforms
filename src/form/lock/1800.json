@@ -2,7 +2,35 @@
  "frm1800:selTreaty": [
   "frm1800:rdTreaty:_1"
  ],
+ "frm1800:totalRelative": [],
+ "frm1800:totalRelativeB": [],
+ "frm1800:totalStranger": [],
+ "frm1800:totalStrangerB": [],
+ "frm1800:txt18A": [],
+ "frm1800:txt18B": [],
+ "frm1800:txt19A": [],
+ "frm1800:txt19B": [],
+ "frm1800:txt20A": [],
+ "frm1800:txt20B": [],
+ "frm1800:txt21K": [],
+ "frm1800:txt21L": [],
+ "frm1800:txt22A": [],
+ "frm1800:txt22B": [],
+ "frm1800:txt24A": [],
+ "frm1800:txt24B": [],
+ "frm1800:txt25A": [],
+ "frm1800:txt25B": [],
+ "frm1800:txt25C": [],
  "frm1800:txt26C": [
   "frm1800:amendedRtn_1"
- ]
+ ],
+ "frm1800:txt26D": [],
+ "frm1800:txt27": [],
+ "frm1800:txt29": [],
+ "frm1800:txt4": [],
+ "frm1800:txtDonorBranchCode": [],
+ "frm1800:txtDonorTIN1": [],
+ "frm1800:txtDonorTIN2": [],
+ "frm1800:txtDonorTIN3": [],
+ "frm1800:txtTotalPenalties": []
 }

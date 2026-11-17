@@ -1,32 +1,277 @@
 {
+ "frm1700:txtMaxPage": [],
+ "frm1700:txtPg1I10Email": [],
  "frm1700:txtPg1I13ForeignTaxNumber": [
   "frm1700:rdoPg1I12ForeignTaxCreditsYes"
  ],
+ "frm1700:txtPg1I14TelNum": [],
+ "frm1700:txtPg1I18SBranchCode": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I18STIN1": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I18STIN2": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I18STIN3": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I21SpouseName": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I22TSpouseTelNum": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I23SpouseCitizenship": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I25SpouseForeignTaxNumber": [
+  "frm1700:rdoPg1I24SpouseForeignTaxCreditsYes"
+ ],
+ "frm1700:txtPg1I26A": [],
+ "frm1700:txtPg1I26B": [],
+ "frm1700:txtPg1I27A": [],
+ "frm1700:txtPg1I27B": [],
+ "frm1700:txtPg1I28A": [],
+ "frm1700:txtPg1I28B": [],
+ "frm1700:txtPg1I29B": [
+  "frm1700:rdoPg1I17FilingStatusJ",
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeE"
+ ],
+ "frm1700:txtPg1I30A": [],
+ "frm1700:txtPg1I30B": [],
+ "frm1700:txtPg1I31B": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I32B": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I33B": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg1I34A": [],
+ "frm1700:txtPg1I34B": [],
+ "frm1700:txtPg1I35A": [],
+ "frm1700:txtPg1I35B": [],
+ "frm1700:txtPg1I36": [],
+ "frm1700:txtPg1I37Particular": [],
+ "frm1700:txtPg1I38Agency": [],
+ "frm1700:txtPg1I38Amount": [],
+ "frm1700:txtPg1I38Date": [],
+ "frm1700:txtPg1I38Number": [],
+ "frm1700:txtPg1I39Agency": [],
+ "frm1700:txtPg1I39Amount": [],
+ "frm1700:txtPg1I39Date": [],
+ "frm1700:txtPg1I39Number": [],
+ "frm1700:txtPg1I3ATC": [],
+ "frm1700:txtPg1I40Amount": [],
+ "frm1700:txtPg1I40Date": [],
+ "frm1700:txtPg1I40Number": [],
+ "frm1700:txtPg1I41Agency": [],
+ "frm1700:txtPg1I41Amount": [],
+ "frm1700:txtPg1I41Date": [],
+ "frm1700:txtPg1I41Number": [],
+ "frm1700:txtPg1I4BranchCode": [],
+ "frm1700:txtPg1I4TIN1": [],
+ "frm1700:txtPg1I4TIN2": [],
+ "frm1700:txtPg1I4TIN3": [],
+ "frm1700:txtPg1I7TaxpayerName": [],
+ "frm1700:txtPg1I8AZipCode": [],
+ "frm1700:txtPg1I8Address": [],
+ "frm1700:txtPg1I8Address2": [],
+ "frm1700:txtPg2BranchCode": [],
+ "frm1700:txtPg2I1PartVIEmployerBranchCode": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I1PartVIEmployerName1": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I1PartVIEmployerName2": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I1PartVIEmployerTIN1": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I1PartVIEmployerTIN2": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I1PartVIEmployerTIN3": [
+  "frm1700:rdoPg2I1PartVIEmployeeS",
+  "frm1700:rdoPg2I1PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerBranchCode": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerName1": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerName2": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerTIN1": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerTIN2": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I2PartVIEmployerTIN3": [
+  "frm1700:rdoPg2I2PartVIEmployeeS",
+  "frm1700:rdoPg2I2PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerBranchCode": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerName1": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerName2": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerTIN1": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerTIN2": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I3PartVIEmployerTIN3": [
+  "frm1700:rdoPg2I3PartVIEmployeeS",
+  "frm1700:rdoPg2I3PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I42A": [],
+ "frm1700:txtPg2I42B": [],
  "frm1700:txtPg2I43A": [
   "frm1700:rdoPg1I6TaxpayerTypeE"
  ],
+ "frm1700:txtPg2I43B": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeE"
+ ],
+ "frm1700:txtPg2I44A": [],
+ "frm1700:txtPg2I44B": [],
  "frm1700:txtPg2I45A": [
   "frm1700:rdoPg1I6TaxpayerTypeE"
  ],
+ "frm1700:txtPg2I45B": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeE"
+ ],
  "frm1700:txtPg2I45Desc": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeE",
   "frm1700:rdoPg1I6TaxpayerTypeE"
  ],
+ "frm1700:txtPg2I46A": [],
+ "frm1700:txtPg2I46B": [],
+ "frm1700:txtPg2I47A": [],
+ "frm1700:txtPg2I47B": [],
+ "frm1700:txtPg2I48A": [],
+ "frm1700:txtPg2I48B": [],
  "frm1700:txtPg2I49A": [
   "frm1700:rdoPg1I6TaxpayerTypeN"
  ],
+ "frm1700:txtPg2I49B": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeN"
+ ],
  "frm1700:txtPg2I49Desc": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeN",
   "frm1700:rdoPg1I6TaxpayerTypeN"
  ],
+ "frm1700:txtPg2I4PartVIEmployerBranchCode": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I4PartVIEmployerName1": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I4PartVIEmployerName2": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I4PartVIEmployerTIN1": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I4PartVIEmployerTIN2": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I4PartVIEmployerTIN3": [
+  "frm1700:rdoPg2I4PartVIEmployeeS",
+  "frm1700:rdoPg2I4PartVIEmployeeT"
+ ],
+ "frm1700:txtPg2I50A": [],
+ "frm1700:txtPg2I50B": [],
  "frm1700:txtPg2I51A": [
   "frm1700:rdoPg1I6TaxpayerTypeN"
  ],
+ "frm1700:txtPg2I51B": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeN"
+ ],
  "frm1700:txtPg2I51Desc": [
+  "frm1700:rdoPg1I20SpouseTaxpayerTypeN",
   "frm1700:rdoPg1I6TaxpayerTypeN"
  ],
+ "frm1700:txtPg2I52A": [],
+ "frm1700:txtPg2I52B": [],
+ "frm1700:txtPg2I53A": [],
+ "frm1700:txtPg2I53B": [],
+ "frm1700:txtPg2I54A": [],
+ "frm1700:txtPg2I54B": [],
  "frm1700:txtPg2I55A": [
   "frm1700:rdoPg1I2AmendedYes"
  ],
+ "frm1700:txtPg2I55B": [],
  "frm1700:txtPg2I56A": [
   "frm1700:rdoPg1I12ForeignTaxCreditsYes"
- ]
+ ],
+ "frm1700:txtPg2I56B": [
+  "frm1700:rdoPg1I24SpouseForeignTaxCreditsYes"
+ ],
+ "frm1700:txtPg2I57B": [
+  "frm1700:rdoPg1I17FilingStatusJ"
+ ],
+ "frm1700:txtPg2I58A": [],
+ "frm1700:txtPg2I58B": [],
+ "frm1700:txtPg2I59A": [],
+ "frm1700:txtPg2I59B": [],
+ "frm1700:txtPg2ISched1c_1REG": [],
+ "frm1700:txtPg2ISched1c_2REG": [],
+ "frm1700:txtPg2ISched1c_3REG": [],
+ "frm1700:txtPg2ISched1c_4REG": [],
+ "frm1700:txtPg2ISched1c_5AREG": [],
+ "frm1700:txtPg2ISched1c_5BREG": [],
+ "frm1700:txtPg2ISched1d_1CIFR": [],
+ "frm1700:txtPg2ISched1d_2CIFR": [],
+ "frm1700:txtPg2ISched1d_3CIFR": [],
+ "frm1700:txtPg2ISched1d_4CIFR": [],
+ "frm1700:txtPg2ISched1d_5ACIFR": [],
+ "frm1700:txtPg2ISched1d_5BCIFR": [],
+ "frm1700:txtPg2ISched1e_1TW": [],
+ "frm1700:txtPg2ISched1e_2TW": [],
+ "frm1700:txtPg2ISched1e_3TW": [],
+ "frm1700:txtPg2ISched1e_4TW": [],
+ "frm1700:txtPg2ISched1e_5ATW": [],
+ "frm1700:txtPg2ISched1e_5BTW": [],
+ "frm1700:txtPg2Pt6I4SubtotalC": [],
+ "frm1700:txtPg2Pt6I4SubtotalD": [],
+ "frm1700:txtPg2Pt6I4SubtotalE": [],
+ "frm1700:txtPg2TIN1": [],
+ "frm1700:txtPg2TIN2": [],
+ "frm1700:txtPg2TIN3": [],
+ "frm1700:txtPg2TaxpayerName": [],
+ "frm1700:txtRDOCode": []
 }

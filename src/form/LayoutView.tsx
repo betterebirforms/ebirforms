@@ -1133,10 +1133,13 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       // (the web opens a form with no profile picked, which BIR never does: then the profile's own boxes stay typable)
       const known = f.id in def.prefill || picked.has(f.id) || never.has(f.id);
       const birLocked = blankLocked.has(f.id) && (ro || permanentLock(f, f.id in lock, known)) && !(f.id in def.prefill && !profile.tin1);
-      if (f.kind === "select") el.disabled = ro || fromProfile || lockedByBir(f.id) || birLocked;
+      // a box BIR never opens while a form is filled in (an empty opener list) stays locked, except where the web's
+      // own model decides: a gated box follows its gate, and with no profile picked the profile's boxes stay typable
+      const shut = lockedByBir(f.id) && !(lock[f.id]?.length === 0 && (Boolean(f.gate) || (f.id in def.prefill && !profile.tin1)));
+      if (f.kind === "select") el.disabled = ro || fromProfile || shut || birLocked;
       else {
         el.readOnly = ro;
-        el.disabled = fromProfile || lockedByBir(f.id) || birLocked;
+        el.disabled = fromProfile || shut || birLocked;
       }
     }
     // schedule rows BIR shows on the page: the row's value, computed columns locked
