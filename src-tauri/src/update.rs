@@ -87,12 +87,10 @@ pub fn check(app: AppHandle, data: PathBuf, manual: bool) {
         if !manual && s["skip"].as_str() == Some(update.version.as_str()) {
             return;
         }
-        let notes = update.body.clone().unwrap_or_default();
+        let notes = short_notes(update.body.as_deref().unwrap_or_default());
         let message = format!(
             "eBIRForms {} is available. You have {}.\n\n{}\n\nSave any open return first: the app restarts after the update.",
-            update.version,
-            update.current_version,
-            notes.trim()
+            update.version, update.current_version, notes
         );
         let install = ask(&app, "Update available", &message, Some(("Install and Restart", "Skip This Version"))).await;
         if !install {
@@ -105,6 +103,28 @@ pub fn check(app: AppHandle, data: PathBuf, manual: bool) {
             Err(e) => say(&app, "The update didn't install", &format!("{e}\n\nYou can download it from github.com/betterebirforms/ebirforms/releases/latest")),
         }
     });
+}
+
+/// Most bullets and characters per bullet the update prompt shows. The Mac alert grows with its text: v0.2.1's 30
+/// bullets pushed Install and Restart below the screen, and the modal alert held the app (reported 2026-11-17).
+/// latest.json's notes are shortened the same way when a release is built (tool/short-note.mjs); this keeps the
+/// prompt short whatever a manifest says.
+const NOTE_BULLET: usize = 4;
+const NOTE_CHAR: usize = 180;
+const NOTE_CAP: usize = 1200;
+
+fn short_notes(notes: &str) -> String {
+    let line: Vec<&str> = notes.lines().map(str::trim).filter(|l| !l.is_empty()).collect();
+    let bullet: Vec<&str> = line.iter().copied().filter(|l| l.starts_with("- ")).collect();
+    if bullet.len() <= NOTE_BULLET {
+        let all = line.join("\n");
+        return if all.chars().count() <= NOTE_CAP { all } else { format!("{}...", all.chars().take(NOTE_CAP).collect::<String>()) };
+    }
+    let cut = |l: &str| if l.chars().count() > NOTE_CHAR { format!("{}...", l.chars().take(NOTE_CHAR - 3).collect::<String>()) } else { l.to_string() };
+    let mut out: Vec<String> = bullet[..NOTE_BULLET].iter().map(|l| cut(l)).collect();
+    out.push(String::new());
+    out.push(format!("And {} more changes: https://github.com/betterebirforms/ebirforms/blob/main/CHANGELOG.md", bullet.len() - NOTE_BULLET));
+    out.join("\n")
 }
 
 fn say(app: &AppHandle, title: &str, text: &str) {
@@ -199,5 +219,18 @@ mod test {
         set_auto_check(&dir, true);
         assert_eq!(settings(&dir)["check"], json!(true));
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn long_notes_shrink_to_four_bullets_and_a_pointer() {
+        let long: String = (1..=30).map(|n| format!("- Change {n}: {}\n", "word ".repeat(60))).collect();
+        let short = short_notes(&long);
+        assert_eq!(short.lines().filter(|l| l.starts_with("- ")).count(), NOTE_BULLET);
+        assert!(short.lines().filter(|l| l.starts_with("- ")).all(|l| l.chars().count() <= NOTE_CHAR));
+        assert!(short.ends_with("And 26 more changes: https://github.com/betterebirforms/ebirforms/blob/main/CHANGELOG.md"));
+        // a short manifest note (what latest.json carries from v0.2.2) is shown as is
+        assert_eq!(short_notes("- One fix.\n\n- Two fix.\n"), "- One fix.\n- Two fix.");
+        // one huge paragraph is capped too
+        assert!(short_notes(&"x".repeat(5000)).chars().count() <= NOTE_CAP + 3);
     }
 }

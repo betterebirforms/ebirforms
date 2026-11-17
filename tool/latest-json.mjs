@@ -4,6 +4,7 @@
 // release never tells some users there is an update they cannot install.
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { shortNote } from "./short-note.mjs";
 
 const dir = process.argv[2];
 if (!dir) throw new Error("usage: node tool/latest-json.mjs <dir with the release files>");
@@ -22,14 +23,15 @@ const TARGET = {
   "linux-x86_64-deb": "_Linux_amd64.deb",
 };
 
-// the release notes: this version's section of CHANGELOG.md, as plain lines
+// the release notes: this version's section of CHANGELOG.md, shortened (tool/short-note.mjs: the app shows them in
+// an alert that grows with its text)
 function notes() {
   const text = readFileSync("CHANGELOG.md", "utf8");
   const start = text.indexOf(`## v${version}`);
   if (start < 0) return `See what's new: https://github.com/${repo}/releases/tag/v${version}`;
   const rest = text.slice(start).split("\n").slice(1);
   const end = rest.findIndex((l) => l.startsWith("## "));
-  return rest.slice(0, end < 0 ? undefined : end).join("\n").trim().replace(/\*\*/g, "");
+  return shortNote(rest.slice(0, end < 0 ? undefined : end).join("\n"));
 }
 
 const platforms = {};
