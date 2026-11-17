@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.2.2 (18 November 2026)
+
 - Fixed: on a Mac, the update message could be taller than the screen, so its Install button was out of reach and the app seemed frozen. The message now lists the first few changes and links to the full list.
 - Links to the web version now show a preview picture when you share them in a chat or on social media.
 - On the web version, Edit after Validate opens the 1702-Q TIN boxes, as BIR's Edit does, even when your profile filled them.
