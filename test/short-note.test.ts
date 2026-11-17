@@ -29,4 +29,11 @@ describe("update prompt notes", () => {
   it("a short note keeps every bullet and still links the full list", () => {
     expect(shortNote("- One fix.\n- Two fix.")).toBe(`- One fix.\n- Two fix.\n\nDetails: ${CHANGELOG_URL}`);
   });
+
+  it("the release job checks out every file tool/latest-json.mjs imports (v0.2.2's first build failed on this)", () => {
+    const yml = readFileSync(".github/workflows/build.yml", "utf8");
+    const local = [...readFileSync("tool/latest-json.mjs", "utf8").matchAll(/from "\.\/([^"]+)"/g)].map((m) => `tool/${m[1]}`);
+    expect(local).toContain("tool/short-note.mjs");
+    for (const f of local) expect(yml, f).toMatch(new RegExp(`^\\s+${f.replace(/\./g, "\\.")}$`, "m"));
+  });
 });

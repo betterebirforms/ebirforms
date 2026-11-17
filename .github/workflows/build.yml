@@ -92,6 +92,7 @@ jobs:
             CHANGELOG.md
             src-tauri/tauri.conf.json
             tool/latest-json.mjs
+            tool/short-note.mjs
           sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v4
         with: { pattern: "dist-*", path: out, merge-multiple: true }
