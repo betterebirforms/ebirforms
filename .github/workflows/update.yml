@@ -75,8 +75,15 @@ jobs:
           for i in $(seq 1 36); do
             sleep 5
             pid=$(pgrep -n "$exe" || echo 0)
-            if out=$(osascript -e "tell application \"System Events\" to tell (first process whose unix id is $pid) to click button \"Install and Restart\" of (first window whose (exists button \"Install and Restart\"))" 2>&1); then asked=true; break; fi
-            [ $((i % 6)) = 1 ] && echo "try $i pid=$pid: $out" && osascript -e "tell application \"System Events\" to get {name, name of every window, name of every button of every window} of (first process whose unix id is $pid)" 2>&1 | head -c 600; echo
+            if out=$(osascript -e "tell application \"System Events\"" -e "tell (first process whose unix id is $pid)" \
+                -e "repeat with w in windows" \
+                -e "if exists button \"Install and Restart\" of w then" \
+                -e "click button \"Install and Restart\" of w" \
+                -e "return \"pressed\"" \
+                -e "end if" -e "end repeat" \
+                -e "error \"no prompt; windows: \" & ((name of every window) as text)" \
+                -e "end tell" -e "end tell" 2>&1); then asked=true; echo "$out"; break; fi
+            [ $((i % 6)) = 1 ] && echo "try $i pid=$pid: $out"
           done
           echo "prompt answered: $asked"
           screencapture -x "$RUNNER_TEMP/screen.png" || true
