@@ -77,7 +77,7 @@ describe("1701 compute (BIR's own page script run over the native state)", () =>
       const once = computeForm(FORM_1701, s);
       expect(computeForm(FORM_1701, once)).toEqual(once);
     }
-  });
+  }, 60_000); // five whole-form simulations: past vitest's 5 s default on a slow CI runner
 });
 
 const PAGE = "[id^=Page][id$=Content]";
