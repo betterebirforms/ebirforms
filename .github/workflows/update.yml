@@ -74,13 +74,19 @@ jobs:
           asked=false
           for i in $(seq 1 36); do
             sleep 5
-            if osascript -e "tell application \"System Events\" to tell (first process whose unix id is $(pgrep -n "$exe" || echo 0)) to click button \"Install and Restart\" of (first window whose (exists button \"Install and Restart\"))" 2>/dev/null; then asked=true; break; fi
+            pid=$(pgrep -n "$exe" || echo 0)
+            if out=$(osascript -e "tell application \"System Events\" to tell (first process whose unix id is $pid) to click button \"Install and Restart\" of (first window whose (exists button \"Install and Restart\"))" 2>&1); then asked=true; break; fi
+            [ $((i % 6)) = 1 ] && echo "try $i pid=$pid: $out" && osascript -e "tell application \"System Events\" to get {name, name of every window, name of every button of every window} of (first process whose unix id is $pid)" 2>&1 | head -c 600; echo
           done
           echo "prompt answered: $asked"
+          screencapture -x "$RUNNER_TEMP/screen.png" || true
           sleep 150
           after=$(version "$app")
           echo "UPDATE macos from=$before after=$after latest=$latest"
           [ "$after" = "$latest" ] || exit 1
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: macos-screen, path: "${{ runner.temp }}/screen.png", if-no-files-found: ignore }
 
   linux:
     runs-on: ubuntu-22.04
