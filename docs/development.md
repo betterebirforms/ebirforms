@@ -80,6 +80,8 @@ npm run check:share  # proves that build has no BIR server names or secrets in i
 The macOS download opens on a window that shows how to install and first open the app. Edit
 `asset/brand/dmg/background.html`, then run `npm run asset:dmg` (macOS only) to redraw it. The Windows installer's
 side picture and banner come from `asset/brand/installer/`; redraw them with `npm run asset:nsis`.
+The share preview of the web version is `asset/brand/og.png` (copied to `public-web/og.png`). Redraw it with
+`python3 asset/brand/device/og.py asset/brand/device/shot asset/brand/logo.png asset/brand/og.png`. Its two screens are real captures, placed unchanged in bodies drawn to the real devices' sizes and to one scale. After `npm run build:web`: `node asset/brand/device/laptop.mjs dist-web asset/brand/device/shot` (BIR Form 1701Q at a 13-inch laptop's viewport, headless) and `node asset/brand/device/phone-sim.mjs dist-web asset/brand/device/shot` (the Profile screen in the iPhone 17 Pro simulator; needs Xcode, opens no window). The phone frame is Xcode's own, read from the Xcode install each run.
 
 The release page text (install steps for each system) is `.github/release-note.md`. CI puts it on every release. Its Windows pictures
 (`asset/brand/release/`) are real SmartScreen screenshots from GitHub's Windows Server 2025 runner, and its Linux one is Ubuntu 24.04's

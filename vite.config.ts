@@ -34,6 +34,30 @@ function legacyHost(): Plugin {
 /** The web build's base path: "/" by default, "/ebirforms/" for GitHub Pages (`EBF_WEB_BASE`, set by the Pages workflow). */
 const base = process.env.EBF_WEB_BASE ?? "/";
 
+/** The share preview (Open Graph + X card). The image URL must be absolute: link scrapers do not resolve a relative one. */
+const shareUrl = "https://betterebirforms.github.io/ebirforms/";
+const shareTitle = "eBIRForms on Mac, Windows, Linux and the web";
+const shareAbout = "Free. Same forms, same savefiles as BIR's.";
+const shareMeta = [
+  ["name", "description", shareAbout],
+  ["property", "og:type", "website"],
+  ["property", "og:site_name", "eBIRForms"],
+  ["property", "og:title", shareTitle],
+  ["property", "og:description", shareAbout],
+  ["property", "og:url", shareUrl],
+  ["property", "og:image", `${shareUrl}og.png`],
+  ["property", "og:image:type", "image/png"],
+  ["property", "og:image:width", "1200"],
+  ["property", "og:image:height", "630"],
+  ["property", "og:image:alt", "The eBIRForms web version on a laptop, with BIR Form 1701Q filled in, and on a phone"],
+  ["name", "twitter:card", "summary_large_image"],
+  ["name", "twitter:title", shareTitle],
+  ["name", "twitter:description", shareAbout],
+  ["name", "twitter:image", `${shareUrl}og.png`],
+]
+  .map(([k, n, v]) => `<meta ${k}="${n}" content="${v!.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}" />`)
+  .join("");
+
 const webManifest = (): Plugin => ({
   name: "ebirforms-web-manifest",
   // the service worker (public-web/sw.js) precaches every built file listed here, so the app works offline. BIR's
@@ -75,7 +99,7 @@ const webManifest = (): Plugin => ({
   transformIndexHtml: (html) =>
     html.replace(
       "</head>",
-      `<link rel="manifest" href="${base}manifest.webmanifest" /><link rel="apple-touch-icon" href="${base}apple-touch-icon.png" /><meta name="apple-mobile-web-app-capable" content="yes" /></head>`,
+      `<link rel="manifest" href="${base}manifest.webmanifest" /><link rel="apple-touch-icon" href="${base}apple-touch-icon.png" /><meta name="apple-mobile-web-app-capable" content="yes" />${shareMeta}</head>`,
     ),
 });
 

@@ -5,6 +5,7 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Links to the web version now show a preview picture when you share them in a chat or on social media.
 - On the web version, Edit after Validate opens the 1702-Q TIN boxes, as BIR's Edit does, even when your profile filled them.
 
 ## v0.2.1 (17 November 2026)
