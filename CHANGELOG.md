@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.2.1 (17 November 2026)
+
 - On the 1702-RT (2018 editions), the "(Add more...)" button of Schedule 3A item 7 turns on once the year and amount are in, as in BIR's app, and explains that BIR's own form cannot add more rows there, instead of doing nothing.
 - On the web version, every box BIR's app greys out on a blank form is now greyed out too, in all 84 forms: your TIN, name and other taxpayer details, codes that a pick list fills, totals and the boxes BIR fills itself. They are filled from your profile, the pick list or the form's own sums, and you cannot type over them, as in BIR's app. Boxes BIR opens only after a choice (a spouse, an amended return, a later row once the row above is filled, the MCIT schedule) open on that same choice.
 - On the 2200-A (2013 edition), Schedule 1 takes a calculator's total only when you press Compute, Clear or delete its last row, as in BIR's app. Print shows BIR's legal paper notice first, and "You are advised to print this computation" prints the calculator the same way.
