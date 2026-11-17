@@ -370,6 +370,13 @@ LIST_COPY["0605"] = {
   },
 };
 LIST_COPY["1702Qv2008C"] = { modalAtc: atc1702q };
+/** The boxes each pop-up list above fills when OK is pressed (what its copy returns), by form. */
+export const LIST_FILLED: Record<string, string[]> = {
+  "0605": ["txtTaxTypeCode", "txtATCCode"],
+  "1702Q": ["frm1702q:txtAtc", "frm1702q:txt25B"],
+  "1702Qv2008C": ["frm1702q:txtAtc", "frm1702q:txt25B"],
+  "2000OT": ["frm2000OT:txtATC", "frm2000OT:txtTax15"],
+};
 // 2000OT: the radio's code, and its rate cell as item 15 (BIR's fix: DS125 is 0.50, which JavaScript writes "0.5")
 LIST_COPY["2000OT"] = {
   modalAtc: (root) => {

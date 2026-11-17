@@ -12,6 +12,7 @@ import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type AttachmentSpec, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { AtcPicker, natureOf } from "./AtcPicker.tsx";
+import { blankDisabled, neverOpened, permanentLock, pickerFilled } from "./lock.ts";
 import { BUTTON_ACTION, BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
 import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
@@ -1038,6 +1039,10 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     }
   }, [root, validated, final]);
 
+  // the boxes BIR's blank page has greyed out, read before the engine touches any (see src/form/lock.ts)
+  const blankLocked = useMemo(() => (root ? blankDisabled(root) : new Set<string>()), [root]);
+  const never = useMemo(() => neverOpened(form_code), [form_code]);
+  const picked = useMemo(() => pickerFilled(form_code), [form_code]);
   // engine → page: write every known field's value, and lock what BIR locks
   useEffect(() => {
     if (!root) return;
@@ -1121,10 +1126,15 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       if (el !== focused && el.value !== value) el.value = value;
       // BIR fills the taxpayer's details from the profile and greys them out; with no profile they stay open to type
       const fromProfile = f.id in def.prefill && Boolean(state[f.id]);
-      if (f.kind === "select") el.disabled = ro || fromProfile || lockedByBir(f.id);
+      // a box BIR's blank page greys out stays greyed unless BIR opens it (a rule above, a gate, an editable default):
+      // the taxpayer's details, what a pick list fills, what BIR computes or fills itself
+      // (the web opens a form with no profile picked, which BIR never does: then the profile's own boxes stay typable)
+      const known = f.id in def.prefill || picked.has(f.id) || never.has(f.id);
+      const birLocked = blankLocked.has(f.id) && (ro || permanentLock(f, f.id in lock, known)) && !(f.id in def.prefill && !profile.tin1);
+      if (f.kind === "select") el.disabled = ro || fromProfile || lockedByBir(f.id) || birLocked;
       else {
         el.readOnly = ro;
-        el.disabled = fromProfile || lockedByBir(f.id);
+        el.disabled = fromProfile || lockedByBir(f.id) || birLocked;
       }
     }
     // schedule rows BIR shows on the page: the row's value, computed columns locked
