@@ -38,3 +38,21 @@ export function pickerFilled(form_code: string): Set<string> {
 /** A greyed box nothing on BIR's page opens, whose fill source the web has: no opener, not gated, not an editable
  *  default, and it is filled by the profile or a pick list, or BIR's source never enables it. */
 export const permanentLock = (f: FieldSpec, has_opener: boolean, known: boolean): boolean => !has_opener && !f.gate && !f.is_editable && known;
+
+/** Openers read from BIR's source where the capture cannot reach them (its choice is greyed on a blank page, or the
+ *  box needs two things at once), added to the captured src/form/lock/<CODE>.json. An opener may join conditions
+ *  with "&": all must hold. */
+export const LOCK_RULE: Record<string, Record<string, string[]>> = {
+  // processAmend / the load: 59A opens on an amended return, 59B on an amended return with the spouse named. BIR
+  // greys them again on "No" without clearing them, so this is a lock, not a gate (a gate would zero the value)
+  "1701Qv2018": {
+    "frm1701q:txt59A": ["frm1701q:AmendedRtn_1"],
+    "frm1701q:txt59B": ["frm1701q:AmendedRtn_1&frm1701q:txtSpouseName=*"],
+  },
+  // modeOfPayment: "Other similar schemes (specify)" opens only once "Others" is ticked
+  "2200Mv2018": { "frm2200M:txtPg1Pt2MOPOtherDesc": ["frm2200M:rdoPg1Pt2MOPOther"] },
+  "2200Pv2020": { "frm2200P:txtPg1Pt2MOPOtherDesc": ["frm2200P:rdoPg1Pt2MOPOther"] },
+};
+
+/** A form's lock openers: the captured ones, then LOCK_RULE's. */
+export const lockRule = (form_code: string, captured: Record<string, string[]>): Record<string, string[]> => ({ ...captured, ...LOCK_RULE[form_code] });

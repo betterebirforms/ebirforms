@@ -12,7 +12,7 @@ import { NATIVE_FORM } from "./registry.ts";
 import { computeForm, computeGroupRows, formRecords, typedMoney, isGateOpen, radioGroupName, groupAggs, type Problem, type AttachmentSpec, type FieldSpec, type FormState, type GroupRow, type GroupSpec, type GroupState } from "./schema.ts";
 import { ScheduleTable } from "./FormView.tsx";
 import { AtcPicker, natureOf } from "./AtcPicker.tsx";
-import { blankDisabled, neverOpened, permanentLock, pickerFilled } from "./lock.ts";
+import { blankDisabled, lockRule, neverOpened, permanentLock, pickerFilled } from "./lock.ts";
 import { BUTTON_ACTION, BUTTON_GROUP, CSV_BUTTON, DIALOG, LIST_COPY, NEXT_PAGE, POPUP_GROUP, POPUP_NEED, pickerOf, rateText, type Picker } from "./picker.ts";
 import { CsvError, parseSched1Csv, parseSched2Csv, placeSchedCsv } from "./form1707a.ts";
 import { atcPickIndex } from "./atc.ts";
@@ -31,7 +31,7 @@ const imageFile = import.meta.glob("../../asset/bir/layout/img/*", { eager: true
 // BIR's locked boxes: each box BIR greys out on a blank form, with the choices that open it (captured from BIR's
 // pages by test/capture-lock.test.ts). A box not listed stays as the engine says.
 const lockFile = import.meta.glob("./lock/*.json", { eager: true, import: "default" }) as Record<string, Record<string, string[]>>;
-const lockOf = (form_code: string): Record<string, string[]> => lockFile[`./lock/${form_code}.json`] ?? {};
+const lockOf = (form_code: string): Record<string, string[]> => lockRule(form_code, lockFile[`./lock/${form_code}.json`] ?? {});
 
 // BIR's print stylesheet (css/print.css, media="print" on every form page) and the paper-size message its Print
 // Preview shows first on 15 forms (tool/print-extract.mjs)
@@ -1081,7 +1081,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const now = (c: string) => (c in state ? computed[c] : (saved.get(c) ?? computed[c])) ?? "";
     const lockedByBir = (id: string) => {
       const opener = lock[id];
-      return !!opener && !opener.some((o) => {
+      const holds = (o: string): boolean => {
+        if (o.includes("&")) return o.split("&").every(holds);
         const at = o.indexOf("=");
         // a choice BIR's blank page already ticks opens the box only from its click (1701MS item 2 "No"), not
         // from being ticked: it counts once the user has picked it
@@ -1092,7 +1093,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         const v = now(c).trim();
         const blank = el instanceof HTMLSelectElement ? (Array.from(el.options).find((x) => x.defaultSelected)?.value ?? "") : (el?.defaultValue ?? "");
         return v !== "" && v !== blank.trim();
-      });
+      };
+      return !!opener && !opener.some(holds);
     };
     for (const f of schema.field) {
       const el = byId(root, f.id);

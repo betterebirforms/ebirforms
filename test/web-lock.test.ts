@@ -134,4 +134,31 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     expect(await box("txtATCCode").isDisabled()).toBe(true);
     await page.close();
   }, 60_000);
+
+  it("1701-Q (2018) item 59 and 2200-M / 2200-P \"Others (specify)\": greyed on a blank form, open on the choices BIR's code opens them on", async () => {
+    const tick = (page: Page, id: string) => page.locator(`[id="${id}"]`).evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    const off = (page: Page, id: string) => page.locator(`[id="${id}"]`).isDisabled();
+    for (const code of ["2200Mv2018", "2200Pv2020"]) {
+      const page = await open(code);
+      const P = code.startsWith("2200M") ? "frm2200M:" : "frm2200P:";
+      expect(await off(page, `${P}txtPg1Pt2MOPOtherDesc`), code).toBe(true);
+      await tick(page, `${P}rdoPg1Pt2MOPOther`);
+      await expect.poll(() => off(page, `${P}txtPg1Pt2MOPOtherDesc`)).toBe(false);
+      await page.close();
+    }
+    const page = await open("1701Qv2018");
+    expect([await off(page, "frm1701q:txt59A"), await off(page, "frm1701q:txt59B")]).toEqual([true, true]);
+    await tick(page, "frm1701q:AmendedRtn_1");
+    await expect.poll(() => off(page, "frm1701q:txt59A")).toBe(false);
+    expect(await off(page, "frm1701q:txt59B")).toBe(true); // no spouse named yet
+    await page.locator('[id="frm1701q:txtSpouseName"]').evaluate((e: HTMLInputElement) => {
+      e.disabled = false;
+      e.value = "DELA CRUZ, MARIA";
+      for (const t of ["input", "change", "blur"]) e.dispatchEvent(new Event(t, { bubbles: true }));
+    });
+    await expect.poll(() => off(page, "frm1701q:txt59B")).toBe(false);
+    await tick(page, "frm1701q:AmendedRtn_2");
+    await expect.poll(() => off(page, "frm1701q:txt59A")).toBe(true);
+    await page.close();
+  }, 120_000);
 });

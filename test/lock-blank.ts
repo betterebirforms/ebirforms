@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { NATIVE_FORM } from "../src/form/registry.ts";
 import { computeForm, groupAggs, isGateOpen, type FieldSpec } from "../src/form/schema.ts";
-import { neverOpened, permanentLock, pickerFilled } from "../src/form/lock.ts";
+import { lockRule, neverOpened, permanentLock, pickerFilled } from "../src/form/lock.ts";
 
 /** Ids of the text boxes, lists and text areas BIR's blank page has greyed out (disabled). */
 export function blankLock(code: string): string[] {
@@ -44,7 +44,7 @@ function context(code: string) {
   if (!c) {
     const def = NATIVE_FORM[code]!;
     c = {
-      lock: JSON.parse(readFileSync(`src/form/lock/${code}.json`, "utf8")) as Record<string, string[]>,
+      lock: lockRule(code, JSON.parse(readFileSync(`src/form/lock/${code}.json`, "utf8")) as Record<string, string[]>),
       picker: pickerFilled(code),
       never: neverOpened(code),
       computed: computeForm(def.schema, {}, Object.fromEntries((def.schema.group ?? []).map((g) => [g.name, []]))),
