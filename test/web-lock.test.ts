@@ -161,4 +161,18 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await expect.poll(() => off(page, "frm1701q:txt59A")).toBe(true);
     await page.close();
   }, 120_000);
+
+  // BIR's Edit runs enableAllControl, which leaves 1702-Q's TIN open (src/form/lock-rule.json "@edit"): greyed and
+  // filled from the profile while the form is filled in, typable after Edit. Its item 28 (MCIT), also opened there,
+  // is a sum BIR recomputes: the web keeps it computed. Edit is clicked directly: Validate is tested in web-layout.
+  it("1702-Q: the TIN is greyed from the profile until Edit, then typable, as BIR's enableAllControl", async () => {
+    const page = await open("1702Q");
+    const box = (id: string) => page.locator(`.bir-layout [id="${id}"]`);
+    const tin = ["frm1702q:txtTin1", "frm1702q:txtTin2", "frm1702q:txtTin3"];
+    expect(await read(page, tin)).toEqual(Object.fromEntries(tin.map((id, i) => [id, { disabled: true, value: ["123", "456", "789"][i] }])));
+    await box("frm1702q:cmdEdit").evaluate((e: HTMLInputElement) => ((e.disabled = false), e.click()));
+    await expect.poll(async () => Object.values(await read(page, tin)).map((x) => x?.disabled)).toEqual([false, false, false]);
+    expect((await read(page, ["frm1702q:txt28"]))["frm1702q:txt28"]!.disabled).toBe(true);
+    await page.close();
+  }, 60_000);
 });

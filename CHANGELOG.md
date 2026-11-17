@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- On the web version, Edit after Validate opens the 1702-Q TIN boxes, as BIR's Edit does, even when your profile filled them.
+
 ## v0.2.1 (17 November 2026)
 
 - On the 1702-RT (2018 editions), the "(Add more...)" button of Schedule 3A item 7 turns on once the year and amount are in, as in BIR's app, and explains that BIR's own form cannot add more rows there, instead of doing nothing.

@@ -59,7 +59,7 @@ describe("1701 attachments (BIR's addAttachment copies of the page 1m-5m block)"
     expect(key[first + 332]).toBe(id("txtPg1mTIN1EX2"));
     expect(key[first + 664]).toBe(id("txtPg1mTIN1SP1"));
     expect(key[first + 996]).toBe(id("txtPg1mTIN1TYPE"));
-  });
+  }, 60_000); // whole-form computes with five copies: past vitest's 5 s default on a loaded machine (13.5 s seen)
 
   it("runs BIR's handlers over the copies; the only script errors are BIR's own (the oracle's page errors too)", () => {
     // BIR's disableLinkIfEmpty -> isAmountValid asks getSpouseIDviaTaxfilerID for a copy's box, gets "" and reads

@@ -3,7 +3,9 @@
 //   • MCIT: enableMCITFields opens Schedule 4 / 8 / 9 (and the MCIT payment line) while the MCIT choice is ticked;
 //     BIR ticks it itself from the date of incorporation, and its click handler never runs enableMCITFields;
 //   • Edit only: a box whose every `disabled = false` in BIR's source sits in enableAllControl /
-//     enableAllControlAfterLoad (the Edit button after Validate). On a form being filled in it is never open.
+//     enableAllControlAfterLoad (the Edit button after Validate). On a form being filled in it is never open: [].
+//     If the Edit button's own function leaves it open (its last `disabled =` for the box is false), "@edit": open
+//     once Edit is clicked (0620 due month; 1702-Q TIN). 0605's Edit opens its TIN, then greys it again: [].
 //   EBF_CAPTURE_RULE=1 npx vitest run test/capture-rule.test.ts   (or a list of form codes)
 // Writes src/form/lock-rule.json: { "<CODE>": { "<box id>": [opener, ...] } }, the same openers as src/form/lock/
 // ([] = never opened while filling in). Read by src/form/lock.ts (lockRule). Needs BIR's tree in vendor/original/.
@@ -27,7 +29,8 @@ function lineFunction(src: string[]): string[] {
 }
 
 export function ruleFromSource(code: string): Record<string, string[]> {
-  const src = readFileSync(`${ORIGINAL}/forms/BIR-Form${code}.hta`, "utf8").split("\n");
+  const text = readFileSync(`${ORIGINAL}/forms/BIR-Form${code}.hta`, "utf8");
+  const src = text.split("\n");
   const fn = lineFunction(src);
   const out: Record<string, string[]> = {};
   // MCIT
@@ -49,9 +52,33 @@ export function ruleFromSource(code: string): Record<string, string[]> {
     const line = src.map((l, i) => [l, i] as const).filter(([l]) => quoted.test(l) && !/^\s*</.test(l));
     const enabling = line.filter(([l]) => /disabled\s*=\s*(false|!)|removeAttr\(["']disabled|["']disabled["']\s*,\s*false/.test(l));
     // every mention outside the markup is an enable in an Edit function, or a plain disable / value line
-    if (enabling.length && enabling.every(([, i]) => EDIT.has(fn[i]!))) out[id] = [];
+    if (enabling.length && enabling.every(([, i]) => EDIT.has(fn[i]!))) out[id] = editLeavesOpen(text, id) ? ["@edit"] : [];
   }
   return out;
+}
+
+/** The body of a function in BIR's source, by its braces. */
+function body(text: string, name: string): string {
+  const at = text.search(new RegExp(`function\\s+${name}\\s*\\(`));
+  if (at < 0) return "";
+  const open = text.indexOf("{", at);
+  let depth = 0;
+  for (let i = open; i < text.length; i++) {
+    if (text[i] === "{") depth++;
+    else if (text[i] === "}" && --depth === 0) return text.slice(open, i);
+  }
+  return "";
+}
+
+/** Whether the function BIR's Edit button calls ends with the box enabled. */
+function editLeavesOpen(text: string, id: string): boolean {
+  const button = /<input[^>]*value="Edit"[^>]*>/s.exec(text)?.[0] ?? "";
+  const call = /onclick="\s*([A-Za-z0-9_$]+)\s*\(/.exec(button)?.[1];
+  if (!call) return false;
+  const quoted = id.replace(/[$:.]/g, (c) => `\\${c}`);
+  let last: string | undefined;
+  for (const m of body(text, call).matchAll(new RegExp(`["']${quoted}["']\\)\\.disabled\\s*=\\s*(true|false)`, "g"))) last = m[1];
+  return last === "false";
 }
 
 const code = existsSync(`${ORIGINAL}/forms`)

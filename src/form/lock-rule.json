@@ -12,8 +12,12 @@
   "frm0605:txtTIN3": []
  },
  "0620": {
-  "frm0620:txtDueMonth": [],
-  "frm0620:txtDueYear": []
+  "frm0620:txtDueMonth": [
+   "@edit"
+  ],
+  "frm0620:txtDueYear": [
+   "@edit"
+  ]
  },
  "1601C": {
   "frm1601c:txtBranchCode": [],
@@ -279,17 +283,31 @@
   ]
  },
  "1702Q": {
-  "frm1702q:txt28": [],
+  "frm1702q:txt28": [
+   "@edit"
+  ],
   "frm1702q:txtBranchCode": [],
-  "frm1702q:txtTin1": [],
-  "frm1702q:txtTin2": [],
-  "frm1702q:txtTin3": []
+  "frm1702q:txtTin1": [
+   "@edit"
+  ],
+  "frm1702q:txtTin2": [
+   "@edit"
+  ],
+  "frm1702q:txtTin3": [
+   "@edit"
+  ]
  },
  "1702Qv2008C": {
   "frm1702q:txtBranchCode": [],
-  "frm1702q:txtTin1": [],
-  "frm1702q:txtTin2": [],
-  "frm1702q:txtTin3": []
+  "frm1702q:txtTin1": [
+   "@edit"
+  ],
+  "frm1702q:txtTin2": [
+   "@edit"
+  ],
+  "frm1702q:txtTin3": [
+   "@edit"
+  ]
  },
  "1702RT": {
   "frm1702RT:txtPg6Sc7I2IncomeTaxPaymentUnderMCIT": [

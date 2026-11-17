@@ -193,6 +193,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
   // a final copy (made here, or opened from a savefile ending "...BIR 2012.0") stays locked: no Edit, no Save
   const [final, setFinal] = useState(initial?.is_final_copy ?? false);
   const [validated, setValidated] = useState(final);
+  // Edit clicked after Validate: BIR's enableAllControl leaves a few boxes open from then on (0620 due month, 1702-Q TIN)
+  const [edited, setEdited] = useState(false);
   const isFinal = useRef(final);
   const latest = useRef({ state, computed, groups });
   const groupBox = useRef(new Map<Element, { group: GroupSpec; row: number; id: string }>());
@@ -388,7 +390,11 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
           setValidated(true);
           window.alert("Validation successful. Click on Edit if you wish to modify your entries.");
         });
-      else if (v === "Edit") on(b, "click", () => setValidated(false));
+      else if (v === "Edit")
+        on(b, "click", () => {
+          setValidated(false);
+          setEdited(true);
+        });
       else if (v === "Save") on(b, "click", () => void save());
       else if (v === "Prev") on(b, "click", () => showPage(current - 1));
       else if (v === "Next") on(b, "click", () => showPage(current + 1));
@@ -1082,6 +1088,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
     const lockedByBir = (id: string) => {
       const opener = lock[id];
       const holds = (o: string): boolean => {
+        if (o === "@edit") return edited;
         if (o.includes("&")) return o.split("&").every(holds);
         const at = o.indexOf("=");
         // a choice BIR's blank page already ticks opens the box only from its click (1701MS item 2 "No"), not
@@ -1127,7 +1134,9 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       }
       if (el !== focused && el.value !== value) el.value = value;
       // BIR fills the taxpayer's details from the profile and greys them out; with no profile they stay open to type
-      const fromProfile = f.id in def.prefill && Boolean(state[f.id]);
+      // ...until Edit, where BIR's enableAllControl leaves them open ("@edit": 1702-Q's TIN). A box the engine computes
+      // stays computed (0620's due month, 1702-Q item 28: BIR's Edit opens them, and its next recompute overwrites them)
+      const fromProfile = f.id in def.prefill && Boolean(state[f.id]) && !(edited && lock[f.id]?.includes("@edit"));
       // a box BIR's blank page greys out stays greyed unless BIR opens it (a rule above, a gate, an editable default):
       // the taxpayer's details, what a pick list fills, what BIR computes or fills itself
       // (the web opens a form with no profile picked, which BIR never does: then the profile's own boxes stay typable)
@@ -1135,7 +1144,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       const birLocked = blankLocked.has(f.id) && (ro || permanentLock(f, f.id in lock, known)) && !(f.id in def.prefill && !profile.tin1);
       // a box BIR never opens while a form is filled in (an empty opener list) stays locked, except where the web's
       // own model decides: a gated box follows its gate, and with no profile picked the profile's boxes stay typable
-      const shut = lockedByBir(f.id) && !(lock[f.id]?.length === 0 && (Boolean(f.gate) || (f.id in def.prefill && !profile.tin1)));
+      const editOnly = lock[f.id]?.every((o) => o === "@edit"); // [] or opened only by Edit: never while filling in
+      const shut = lockedByBir(f.id) && !(editOnly && (Boolean(f.gate) || (f.id in def.prefill && !profile.tin1)));
       if (f.kind === "select") el.disabled = ro || fromProfile || shut || birLocked;
       else {
         el.readOnly = ro;
@@ -1174,7 +1184,7 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         el.disabled = false;
         delete el.dataset.validated;
       }
-  }, [root, schema, state, computed, groups, validated]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [root, schema, state, computed, groups, validated, edited]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const open = openGroup && (schema.group ?? []).find((g) => g.name === openGroup.name);
   // the picker's list and what is ticked now: a Part II table's rows, or the payee row's code
