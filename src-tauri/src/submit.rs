@@ -57,7 +57,7 @@ impl std::fmt::Display for SubmitError {
             SubmitError::Auth => write!(f, "the server rejected the username or password."),
             SubmitError::Transport(e) => write!(
                 f,
-                "could not reach BIR's upload server ({e}). Your return was not sent. Check your internet connection and click Submit again."
+                "could not reach BIR's upload server ({e}). Your return was not sent. Check your internet connection and click Submit again. If you are outside the Philippines: BIR's upload server does not answer most connections from abroad (BIR's own app fails the same way), so connect through a Philippine VPN and click Submit again."
             ),
             SubmitError::Interrupted(e) => write!(
                 f,
@@ -286,6 +286,8 @@ mod test {
         assert_eq!(count.load(std::sync::atomic::Ordering::SeqCst), 3);
         assert!(started.elapsed() < std::time::Duration::from_secs(5));
         assert!(e.to_string().contains("was not sent"));
+        // issue 7: abroad, BIR's upload host never answers; the message names the fix
+        assert!(e.to_string().contains("Philippine VPN"));
     }
 
     /// Nothing listening at all (no internet): same, tried again, then "not sent".

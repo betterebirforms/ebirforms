@@ -28,7 +28,7 @@ export class SubmitError extends Error {
         : kind === "host_key_changed"
           ? `BIR's upload server presented a different SSH key (${detail}). Refusing to upload: this could be an interception.`
           : kind === "transport"
-            ? `could not reach BIR's upload server (${detail}). Your return was not sent. Check your internet connection and click Submit again.`
+            ? `could not reach BIR's upload server (${detail}). Your return was not sent. Check your internet connection and click Submit again. If you are outside the Philippines: BIR's upload server does not answer most connections from abroad (BIR's own app fails the same way), so connect through a Philippine VPN and click Submit again.`
             : `the connection dropped while sending (${detail}). BIR may or may not have received your return. Wait for BIR's confirmation email before sending it again.`,
     );
   }

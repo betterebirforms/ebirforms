@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+- When sending to BIR fails because BIR's upload server does not answer, the message now says what to do if you are outside the Philippines: BIR's server ignores most connections from abroad, so connect through a Philippine VPN and send again.
+
 ## v0.2.2 (18 November 2026)
 
 - Fixed: on a Mac, the update message could be taller than the screen, so its Install button was out of reach and the app seemed frozen. The message now lists the first few changes and links to the full list.
