@@ -5,6 +5,8 @@ the `docs/` folder.
 
 ## Unreleased
 
+## v0.2.3 (21 November 2026)
+
 - When sending to BIR fails because BIR's upload server does not answer, the message now says what to do if you are outside the Philippines: BIR's server ignores most connections from abroad, so connect through a Philippine VPN and send again.
 
 ## v0.2.2 (18 November 2026)
