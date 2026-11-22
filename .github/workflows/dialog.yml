@@ -18,14 +18,17 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: npm }
+        with: { node-version: 24, cache: pnpm }
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with: { workspaces: src-tauri }
       - if: runner.os == 'Linux'
         run: bash .github/script/apt-install.sh libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xvfb xdotool
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - if: runner.os == 'Linux'
         run: |
           EBF_DIALOGTEST=1 timeout 1500 xvfb-run -a npm run tauri dev 2>&1 | tee dialog.log || true
@@ -50,14 +53,17 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: npm }
+        with: { node-version: 24, cache: pnpm }
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with: { workspaces: src-tauri }
       - if: runner.os == 'Linux'
         run: bash .github/script/apt-install.sh libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xvfb xdotool imagemagick
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - run: mkdir shot
       - if: runner.os == 'Linux'
         run: |

@@ -15,9 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: npm }
-      - run: npm ci
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
       - run: npm run gate
 
   # BIR's form tree, staged once (helpers, *.exe/dll/pdb, *.vbs and proxy.ini refused by stage-package.mjs)
@@ -25,10 +28,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: npm }
+        with: { node-version: 24, cache: pnpm }
       - run: bash .github/script/apt-install.sh innoextract
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       # keep BIR's file name: stage-package.mjs reads the version (7.9.6.2.1) from it; the release notes still say 7.9.6.1
       - run: curl -fsSL -A "Mozilla/5.0" -o "$(basename "$BIR_ZIP_URL")" "$BIR_ZIP_URL"
       - run: npm run extract -- "$(basename "$BIR_ZIP_URL")"
@@ -56,15 +62,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
-        with: { node-version: 24, cache: npm }
+        with: { node-version: 24, cache: pnpm }
       - uses: dtolnay/rust-toolchain@stable
         with: { targets: "${{ matrix.rust_target }}" }
       - uses: Swatinem/rust-cache@v2
         with: { workspaces: src-tauri }
       - if: runner.os == 'Linux'
         run: bash .github/script/apt-install.sh libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - uses: actions/download-artifact@v4
         with: { name: package-bir, path: src-tauri/package-bir }
       - run: cargo test --manifest-path src-tauri/Cargo.toml --no-default-features
