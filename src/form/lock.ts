@@ -50,6 +50,9 @@ export const LOCK_RULE: Record<string, Record<string, string[]>> = {
     "frm1701q:txt59A": ["frm1701q:AmendedRtn_1"],
     "frm1701q:txt59B": ["frm1701q:AmendedRtn_1&frm1701q:txtSpouseName=*"],
   },
+  // ProcessAmended / ATCEnableDisableSchedule4 / the load: Schedule 4 item 6 (tax paid in the return previously
+  // filed) opens on an amended return once an ATC is picked; "No" greys it again (and zeroes it)
+  "1702Qv2018C": { "frm1702q:Sched4:txtTax6": ["frm1702q:rbAmendedRtn_1&frm1702q:cbATC_2=*"] },
   // modeOfPayment: "Other similar schemes (specify)" opens only once "Others" is ticked
   "2200Mv2018": { "frm2200M:txtPg1Pt2MOPOtherDesc": ["frm2200M:rdoPg1Pt2MOPOther"] },
   "2200Pv2020": { "frm2200P:txtPg1Pt2MOPOtherDesc": ["frm2200P:rdoPg1Pt2MOPOther"] },

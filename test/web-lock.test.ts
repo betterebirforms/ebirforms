@@ -35,6 +35,12 @@ const opfs = (page: Page, path: string[], text: string) =>
     { path, text },
   );
 
+// a profile whose TIN passes the check digit, for a test that has to get past Validate
+const VALID_FILE = "84653210700000.xml";
+const VALID = serializeSavefile(
+  profileToSavefile({ tin1: "846", tin2: "532", tin3: "107", tin4: "00000", rdo: "059", lob: "ACCOUNTING FIRM", fn: "DELA CRUZ, JUAN", regAddr: "LIPA CITY", zip: "4217", telNo: "09170000000", email: "juan@example.com", formType: "0" }),
+);
+
 describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version: the boxes BIR greys out are greyed out here", () => {
   let server: Server, base: string, context: BrowserContext, dir: string;
 
@@ -54,6 +60,7 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     const page = await context.newPage();
     await page.goto(`${base}/`);
     await opfs(page, ["profile", PROFILE_FILE], PROFILE);
+    await opfs(page, ["profile", VALID_FILE], VALID);
     await page.close();
   }, 60_000);
 
@@ -63,10 +70,10 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     rmSync(dir, { recursive: true, force: true });
   });
 
-  const open = async (code: string) => {
+  const open = async (code: string, profile = PROFILE_FILE) => {
     const page = await context.newPage();
     page.on("dialog", (d) => void d.dismiss().catch(() => {}));
-    await page.goto(`${base}/form/${code}#profile=${PROFILE_FILE}`, { waitUntil: "networkidle" });
+    await page.goto(`${base}/form/${code}#profile=${profile}`, { waitUntil: "networkidle" });
     await page.locator(".bir-layout").waitFor();
     await page.waitForTimeout(800); // the engine fills and locks the page after it mounts
     return page;
@@ -161,6 +168,61 @@ describe.skipIf(!existsSync(`${WEB}/index.html`) || !HAS_CHROMIUM)("web version:
     await expect.poll(() => off(page, "frm1701q:txt59A")).toBe(true);
     await page.close();
   }, 120_000);
+
+  // BIR's ProcessAmended / ATCEnableDisableSchedule4 open Schedule 4 item 6 (tax paid in the return previously filed)
+  // on an amended return once an ATC is picked: two things at once, which the one-choice capture cannot see
+  it("1702-Q (2018): Schedule 4 item 6 opens on an amended return with an ATC picked, and greys on \"No\"", async () => {
+    const page = await open("1702Qv2018C");
+    const box = (id: string) => page.locator(`.bir-layout [id="${id}"]`);
+    const off = () => box("frm1702q:Sched4:txtTax6").isDisabled();
+    expect(await off()).toBe(true);
+    await box("frm1702q:rbQuarter_2").check();
+    await box("frm1702q:rbAmendedRtn_1").check();
+    await page.waitForTimeout(300);
+    expect(await off()).toBe(true); // no ATC yet
+    await box("frm1702q:cbATC_2").selectOption("IC010_25%");
+    await expect.poll(off).toBe(false);
+    await box("frm1702q:rbAmendedRtn_2").check();
+    await expect.poll(off).toBe(true);
+    await page.close();
+  }, 60_000);
+
+  // the page selector under BIR's pages: the page number is where you type to move, the page count beside it is
+  // never typable, also in Print Preview (which makes every other text box a white read-only box)
+  it("1702-Q (2018): in Print Preview the page number stays typable and the page count greyed", async () => {
+    const page = await open("1702Qv2018C");
+    const state = () => page.evaluate(() => {
+      const root = document.querySelector(".bir-layout")!.shadowRoot!;
+      return ["frm1702q:txtCurrentPage", "frm1702q:txtMaxPage"].map((i) => {
+        const e = root.getElementById(i) as HTMLInputElement;
+        return i.endsWith("CurrentPage") ? [e.disabled, e.readOnly] : [e.disabled];
+      });
+    });
+    expect(await state()).toEqual([[false, false], [true]]);
+    await page.locator(".bir-layout").evaluate((host) => {
+      const a = Array.from(host.shadowRoot!.querySelectorAll<HTMLElement>("#formMenu a")).find((e) => e.textContent?.trim() === "Print Preview")!;
+      a.click();
+    });
+    await expect.poll(() => page.locator('.bir-layout [id="printMenu"]').isVisible()).toBe(true);
+    expect(await state()).toEqual([[false, false], [true]]);
+    await page.close();
+  }, 60_000);
+
+  // after Validate every box locks, as BIR's disableAllControl does, but the page number still moves between pages
+  it("1601-C (2018): after Validate the page number stays typable and the rest is locked", async () => {
+    const page = await open("1601Cv2018", VALID_FILE);
+    const box = (id: string) => page.locator(`.bir-layout [id="${id}"]`);
+    await box("frm1601c:txtMonth").selectOption({ index: 1 });
+    await box("frm1601c:txtYear").fill("2026");
+    await box("frm1601c:AmendedRtn_2").check();
+    await box("frm1601c:TaxWithheld_2").check();
+    await page.locator(".bir-layout").evaluate((h) => (h.shadowRoot!.getElementById("frm1601c:btnValidate") as HTMLElement).click());
+    await expect.poll(() => box("frm1601c:txtYear").isDisabled()).toBe(true);
+    expect(await box("frm1601c:btnEdit").isDisabled()).toBe(false);
+    expect(await box("frm1601c:txtCurrentPage").isDisabled()).toBe(false);
+    expect(await box("frm1601c:txtMaxPage").isDisabled()).toBe(true);
+    await page.close();
+  }, 60_000);
 
   // BIR's Edit runs enableAllControl, which leaves 1702-Q's TIN open (src/form/lock-rule.json "@edit"): greyed and
   // filled from the profile while the form is filled in, typable after Edit. Its item 28 (MCIT), also opened there,

@@ -1,0 +1,19 @@
+{
+  "title": "1702-Q: Edit after Validate opens Schedules 1, 2 and 4 for every ATC",
+  "about": "When you picked an ATC, BIR's 1702-Q (2018) opened Schedules 1, 2 and 4 whatever the ATC was. But Edit after Validate reopened them only for the regular-rate ATCs. With a special rate or exempt ATC (such as IC030 10% or IC011 0%) Schedule 4, the tax credits and payments, stayed greyed out after Edit. Edit now reopens the same boxes for every ATC, as picking the ATC does.",
+  "on": true,
+  "file": "form",
+  "form": ["1702Qv2018C"],
+  "rule": [
+    {
+      "find": "(txtTax8A'\\)\\.disabled = false;\\s*)break;(\\s*case \"IC030_10%\": case \"IC030_1%\")",
+      "to": "$1$2",
+      "once": true
+    },
+    {
+      "find": "(txtTax12B'\\)\\.disabled = false;\\s*)break;(\\s*case \"IC010_30%\": case \"IC010_25%\")",
+      "to": "$1$2",
+      "once": true
+    }
+  ]
+}

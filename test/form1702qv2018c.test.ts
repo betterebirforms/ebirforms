@@ -140,6 +140,20 @@ describe.skipIf(!hasForm("1702Qv2018C"))("native 1702Qv2018C matches BIR's own f
     txtAddress: "1 RIZAL ST., QUEZON CITY", txtZipCode: "1100", txtTelNum: "0281234567", txtLOB: "RETAIL",
   });
 
+  // mod/fix/edit-schedule-by-atc: BIR's Edit (enableAllControl) reopened Schedules 1, 2 and 4 only for the
+  // regular-rate ATCs, while picking any ATC opens them; a special-rate or exempt ATC left Schedule 4 greyed
+  it("Validate then Edit reopens Schedule 4 for every ATC, as picking the ATC does", async () => {
+    for (const atc of ["IC010_25%", "IC030_10%", "IC011_0%"]) {
+      const state = { ...identity, ...v({ rbForClndrFscl_1: "true", rbQuarter_2: "true", rbAmendedRtn_1: "true", cbATC_2: atc }) };
+      const { page } = await oracle.openSaved(FORM_1702Qv2018C, state, `84653210700000-1702Qv2018C-edit${atc.replace(/\W/g, "")}.xml`);
+      const open = () => page.evaluate(() => [1, 2, 3, 4, 5, 6].filter((n) => !(document.getElementById(`frm1702q:Sched4:txtTax${n}`) as HTMLInputElement).disabled));
+      expect(await open(), atc).toEqual([1, 2, 3, 4, 5, 6]);
+      await page.evaluate("disableAllControl(); enableAllControl();");
+      expect(await open(), atc).toEqual([1, 2, 3, 4, 5, 6]);
+      await page.close();
+    }
+  }, 90_000);
+
   it("BIR reopens the save and shows the same Part II", async () => {
     const { value, error } = await oracle.openSaved(FORM_1702Qv2018C, { ...identity, ...rcit }, "84653210700000-1702Qv2018C-2025Q2.xml");
     expect(await value(`${P}Sched2:txtTax11`)).toBe("500,000.00");

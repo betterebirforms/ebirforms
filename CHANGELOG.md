@@ -5,6 +5,10 @@ the `docs/` folder.
 
 ## Unreleased
 
+- Fixed: in the desktop app's 1702-Q (2018), Edit after Validate left Schedule 4 (tax credits and payments) greyed out when the ATC had a special rate or was exempt, such as IC030 10% or IC011 0%. This was a bug in BIR's own form. Edit now opens the same boxes for every ATC, as picking the ATC does.
+- Fixed: on the web version, the 1702-Q (2018) Schedule 4 item 6, "Tax paid in return previously filed if this is an amended return", stayed greyed out on an amended return. It now opens once the return is amended and an ATC is picked, as in BIR's app.
+- Fixed: on the web version, the page number box under BIR's pages was greyed out after Validate and in Print Preview, while the page count beside it looked typable. You can now type a page number to jump to it, and the page count stays greyed.
+
 ## v0.2.3 (21 November 2026)
 
 - When sending to BIR fails because BIR's upload server does not answer, the message now says what to do if you are outside the Philippines: BIR's server ignores most connections from abroad, so connect through a Philippine VPN and send again.

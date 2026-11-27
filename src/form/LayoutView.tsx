@@ -351,7 +351,8 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
       css(".imgClass", { margin: "auto", display: "block", position: "relative", overflow: "visible" });
       css("#formPaper", { border: "#000 3px solid" });
       for (const el of Array.from(root.querySelectorAll("input, select, textarea")) as HTMLInputElement[]) {
-        if (el.type === "hidden" || /:txtCurrentPage$/.test(el.id)) continue;
+        // the page-number box stays typable to move between pages, and the page count stays greyed beside it
+        if (el.type === "hidden" || /:txt(CurrentPage|MaxPage)$/.test(el.id)) continue;
         if (el.type === "button" || el.type === "submit") {
           keep(el).classList.add("previewButtonClass");
         } else if (el.type === "radio" || el.type === "checkbox") {
@@ -1172,6 +1173,10 @@ export function LayoutView({ form_code, profile, initial, onClose, onSaved }: { 
         const el = byId(root, f.id);
         if (el && !f.secret) el.disabled = true;
       }
+      // ...except the page-number box: it only moves between pages, so a validated return can still be paged
+      // through by number, as BIR's final copy can (it re-enables txtCurrentPage after disableAllElementIDs)
+      const pageBox = root.querySelector("input[id$=':txtCurrentPage']") as HTMLInputElement | null;
+      if (pageBox) pageBox.disabled = false;
       for (const box of groupBox.current.keys()) {
         const el = box as HTMLInputElement;
         if (!el.disabled) el.dataset.validated = "";
